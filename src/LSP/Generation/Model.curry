@@ -214,6 +214,17 @@ instance FromJSON MetaNotification where
 
 instance FromJSON MetaStructure where
   fromJSON j = case j of
+    JObject vs -> do
+      name    <- lookupStringFromJSON "name" vs
+      props   <- lookupFromJSON "properties" vs
+      extends <- lookupFromJSON "extends" vs
+      mixins  <- lookupFromJSON "mixins" vs
+      return $ MetaStructure
+        { msName = name
+        , msProperties = props
+        , msExtends = extends
+        , msMixins = mixins
+        }
     _ -> Left $ "Unrecognized structure value: " ++ ppJSON j
 
 instance FromJSON MetaEnumeration where
