@@ -117,6 +117,8 @@ instance FromJSON MetaModel where
 
 instance FromJSON MetaRequest where
   fromJSON j = case j of
+    -- JObject vs -> do
+    --   method <- lookup' "method" vs >>= fromJSON
     _ -> Left $ "Unrecognized request value: " ++ ppJSON j
 
 instance FromJSON MetaNotification where
