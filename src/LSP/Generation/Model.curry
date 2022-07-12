@@ -188,6 +188,7 @@ instance FromJSON MetaType where
         "or"            -> MetaTypeOr            <$> lookupFromJSON "items" vs
         "literal"       -> MetaTypeLiteral       <$> lookupPathFromJSON ["value", "properties"] vs
         "stringLiteral" -> MetaTypeStringLiteral <$> lookupStringFromJSON "value" vs
+        "tuple"         -> MetaTypeTuple         <$> lookupFromJSON "items" vs
         _ -> Left $ "Unrecognized type kind: " ++ kind
     _ -> Left $ "Unrecognized type value: " ++ ppJSON j
 
