@@ -3,8 +3,9 @@ module LSP.Utils.JSON
   , ToJSON (..)
   ) where
 
-import JSON.Parser
-import JSON.Pretty
+import JSON.Data ( JValue (..) )
+import JSON.Parser ( parseJSON )
+import JSON.Pretty ( ppJSON )
 
 class FromJSON a where
   -- | Converts from a JSON value to the type.

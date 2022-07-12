@@ -2,7 +2,10 @@ module LSP.Generation.Model
   ( 
   ) where
 
-import JSON.Data
+import JSON.Data ( JValue (..) )
+import JSON.Pretty ( ppJSON )
+import LSP.Utils.General ( lookup' )
+import LSP.Utils.JSON ( FromJSON (..) )
 
 data MetaProperty = MetaProperty
   { mpName :: String
@@ -93,3 +96,46 @@ data MetaModel = MetaModel
   , mmTypeAliases :: [MetaTypeAlias]
   }
 
+-- JSON conversions
+
+instance FromJSON MetaModel where
+  fromJSON j = case j of
+    JObject vs -> do
+      reqs <- lookup' "requests" vs >>= fromJSON
+      nots <- lookup' "notifications" vs >>= fromJSON
+      structs <- lookup' "structures" vs >>= fromJSON
+      enums <- lookup' "enumerations" vs >>= fromJSON
+      aliases <- lookup' "typeAliases" vs >>= fromJSON
+      return $ MetaModel
+        { mmRequests = reqs
+        , mmNotifications = nots
+        , mmStructures = structs
+        , mmEnumerations = enums
+        , mmTypeAliases = aliases
+        }
+    _ -> Left $ "Unrecognized top-level value: " ++ ppJSON j
+
+instance FromJSON MetaRequest where
+  fromJSON j = case j of
+    _ -> Left $ "Unrecognized request value: " ++ ppJSON j
+
+instance FromJSON MetaNotification where
+  fromJSON j = case j of
+    _ -> Left $ "Unrecognized notification value: " ++ ppJSON j
+
+instance FromJSON MetaStructure where
+  fromJSON j = case j of
+    _ -> Left $ "Unrecognized structure value: " ++ ppJSON j
+
+instance FromJSON MetaEnumeration where
+  fromJSON j = case j of
+    _ -> Left $ "Unrecognized enumeration value: " ++ ppJSON j
+
+instance FromJSON MetaTypeAlias where
+  fromJSON j = case j of
+    _ -> Left $ "Unrecognized type alias value: " ++ ppJSON j
+
+instance FromJSON a => FromJSON [a] where
+  fromJSON j = case j of
+    JArray vs -> mapM fromJSON vs
+    _ -> Left $ "Expected array but was: " ++ ppJSON j
