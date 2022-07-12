@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+cd "$(dirname $0)/.."
+
+mkdir -p resources
+
+echo "==> Downloading LSP metamodel..."
+
+cd resources
+curl -OL "https://raw.githubusercontent.com/microsoft/vscode-languageserver-node/main/protocol/metaModel.json"
