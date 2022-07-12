@@ -1,8 +1,9 @@
 module LSP.Utils.JSON
   ( FromJSON (..)
   , ToJSON (..)
-  , stringFromJSON, arrayFromJSON, maybeFromJSON, integralFromJSON, fractionalFromJSON
-  , lookupFromJSON, lookupStringFromJSON, lookupMaybeStringFromJSON, lookupMaybeFromJSON
+  , stringFromJSON, arrayFromJSON, objectFromJSON, maybeFromJSON, boolFromJSON, integralFromJSON, fractionalFromJSON
+  , lookupFromJSON, lookupStringFromJSON, lookupObjectFromJSON, lookupMaybeStringFromJSON, lookupMaybeFromJSON
+  , lookupPathFromJSON
   ) where
 
 import JSON.Data ( JValue (..) )
@@ -28,6 +29,9 @@ class ToJSON a where
   toJSONString :: a -> String
   toJSONString = ppJSON . toJSON
 
+instance FromJSON Bool where
+  fromJSON = boolFromJSON
+
 instance FromJSON Int where
   fromJSON = integralFromJSON
 
@@ -45,6 +49,13 @@ instance FromJSON JValue where
 
 instance ToJSON JValue where
   toJSON = id
+
+-- Parses a boolean value from JSON.
+boolFromJSON :: JValue -> Either String Bool
+boolFromJSON j = case j of
+  JTrue  -> Right True
+  JFalse -> Right False
+  _ -> Left $ "Expected boolean but was: " ++ ppJSON j
 
 -- Parses an integral value from JSON.
 integralFromJSON :: Integral a => JValue -> Either String a
@@ -64,11 +75,17 @@ stringFromJSON j = case j of
   JString s -> Right s
   _ -> Left $ "Expected string but was: " ++ ppJSON j
 
+-- Parses an object from JSON.
+objectFromJSON :: FromJSON a => JValue -> Either String [(String, a)]
+objectFromJSON j = case j of
+  JObject vs -> mapM (\(k, v) -> (\x -> (k, x)) <$> fromJSON v) vs
+  _ -> Left $ "Expected object but was: " ++ ppJSON j
+
 -- Parses an array from JSON.
 arrayFromJSON :: FromJSON a => JValue -> Either String [a]
 arrayFromJSON j = case j of
   JArray vs -> mapM fromJSON vs
-  _ -> Left $ "Expected string but was: " ++ ppJSON j
+  _ -> Left $ "Expected array but was: " ++ ppJSON j
 
 -- Parses an optional from JSON.
 maybeFromJSON :: FromJSON a => JValue -> Maybe a
@@ -78,6 +95,13 @@ maybeFromJSON = rightToMaybe . fromJSON
 lookupFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String a
 lookupFromJSON k vs = lookup' k vs >>= fromJSON
 
+-- Parses a path lookup on a JSON object's properties.
+lookupPathFromJSON :: FromJSON a => [String] -> [(String, JValue)] -> Either String a
+lookupPathFromJSON path vs = case path of
+  []     -> Left $ "Cannot look up empty path"
+  [k]    -> lookupFromJSON k vs
+  (k:ks) -> lookupObjectFromJSON k vs >>= lookupPathFromJSON ks
+
 -- Implementation note: The reason why we treat strings specially is
 -- that adding an overlapping instance of FromJSON String is currently
 -- something the compiler disallows.
@@ -85,6 +109,10 @@ lookupFromJSON k vs = lookup' k vs >>= fromJSON
 -- Parses a string lookup on a JSON object's properties.
 lookupStringFromJSON :: String -> [(String, JValue)] -> Either String String
 lookupStringFromJSON k vs = lookup' k vs >>= stringFromJSON
+
+-- Parses an object lookup on a JSON object's properties.
+lookupObjectFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String [(String, a)]
+lookupObjectFromJSON k vs = lookup' k vs >>= objectFromJSON
 
 -- Parses an optional lookup on a JSON object's properties.
 lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String (Maybe a)

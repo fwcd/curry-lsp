@@ -4,7 +4,10 @@ module LSP.Generation.Model
 
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.JSON ( FromJSON (..), lookupFromJSON, lookupStringFromJSON, lookupMaybeStringFromJSON, lookupMaybeFromJSON )
+import LSP.Utils.JSON ( FromJSON (..)
+                      , lookupFromJSON, lookupStringFromJSON, lookupObjectFromJSON
+                      , lookupMaybeStringFromJSON, lookupMaybeFromJSON, lookupPathFromJSON
+                      )
 
 data MetaProperty = MetaProperty
   { mpName :: String
@@ -20,7 +23,6 @@ data MetaBaseType =
   | MetaBaseTypeUInteger
   | MetaBaseTypeDecimal
   | MetaBaseTypeNull
-  | MetaBaseTypeUnknown { mbtName :: String }
 
 data MetaType =
     MetaTypeReference     { mtName :: String }
@@ -100,10 +102,10 @@ data MetaModel = MetaModel
 instance FromJSON MetaModel where
   fromJSON j = case j of
     JObject vs -> do
-      reqs <- lookupFromJSON "requests" vs
-      nots <- lookupFromJSON "notifications" vs
+      reqs    <- lookupFromJSON "requests" vs
+      nots    <- lookupFromJSON "notifications" vs
       structs <- lookupFromJSON "structures" vs
-      enums <- lookupFromJSON "enumerations" vs
+      enums   <- lookupFromJSON "enumerations" vs
       aliases <- lookupFromJSON "typeAliases" vs
       return $ MetaModel
         { mmRequests = reqs
@@ -116,12 +118,51 @@ instance FromJSON MetaModel where
 
 instance FromJSON MetaRequest where
   fromJSON j = case j of
-    JObject vs -> do
-      method <- lookupStringFromJSON "method" vs
-      return $ MetaRequest
-        { mrMethod = method
-        }
+    -- JObject vs -> do
+    --   method <- lookupStringFromJSON "method" vs
+    --   result <- lookupFromJSON "result" vs
+    --   return $ MetaRequest
+    --     { mrMethod = method
+    --     }
     _ -> Left $ "Unrecognized request value: " ++ ppJSON j
+
+instance FromJSON MetaType where
+  fromJSON j = case j of
+    JObject vs -> do
+      kind <- lookupStringFromJSON "kind" vs
+      case kind of
+        "reference" -> MetaTypeReference <$> lookupStringFromJSON "name" vs
+        "array"     -> MetaTypeArray     <$> lookupFromJSON "element" vs
+        "base"      -> MetaTypeBase      <$> lookupFromJSON "name" vs
+        "or"        -> MetaTypeOr        <$> lookupFromJSON "items" vs
+        "literal"   -> MetaTypeLiteral   <$> lookupObjectFromJSON "properties" vs
+        _ -> Left $ "Unrecognized type kind: " ++ kind
+    _ -> Left $ "Unrecognized type value: " ++ ppJSON j
+
+instance FromJSON MetaBaseType where
+  fromJSON j = case j of
+    JString "string"   -> Right MetaBaseTypeString
+    JString "boolean"  -> Right MetaBaseTypeBoolean
+    JString "integer"  -> Right MetaBaseTypeInteger
+    JString "uinteger" -> Right MetaBaseTypeUInteger
+    JString "decimal"  -> Right MetaBaseTypeDecimal
+    JString t          -> Left $ "Unknown base type: " ++ t
+    _                  -> Left $ "Unrecognized base type value: " ++ ppJSON j
+
+instance FromJSON MetaProperty where
+  fromJSON j = case j of
+    JObject vs -> do
+      name     <- lookupStringFromJSON "name" vs
+      ty       <- lookupFromJSON "type" vs
+      optional <- lookupMaybeFromJSON "optional" vs
+      doc      <- lookupMaybeStringFromJSON "documentation" vs
+      return $ MetaProperty
+        { mpName = name
+        , mpType = ty
+        , mpOptional = optional
+        , mpDocumentation = doc
+        }
+    _ -> Left $ "Unrecognized property value: " ++ ppJSON j
 
 instance FromJSON MetaNotification where
   fromJSON j = case j of
