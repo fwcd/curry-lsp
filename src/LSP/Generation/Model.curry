@@ -34,6 +34,7 @@ data MetaBaseType =
   | MetaBaseTypeUInteger
   | MetaBaseTypeDecimal
   | MetaBaseTypeNull
+  | MetaBaseTypeDocumentUri
   deriving (Show, Eq)
 
 data MetaType =
@@ -188,14 +189,15 @@ instance FromJSON MetaType where
 
 instance FromJSON MetaBaseType where
   fromJSON j = case j of
-    JString "string"   -> Right MetaBaseTypeString
-    JString "boolean"  -> Right MetaBaseTypeBoolean
-    JString "integer"  -> Right MetaBaseTypeInteger
-    JString "uinteger" -> Right MetaBaseTypeUInteger
-    JString "decimal"  -> Right MetaBaseTypeDecimal
-    JString "null"     -> Right MetaBaseTypeNull
-    JString t          -> Left $ "Unknown base type: " ++ t
-    _                  -> Left $ "Unrecognized base type value: " ++ ppJSON j
+    JString "string"      -> Right MetaBaseTypeString
+    JString "boolean"     -> Right MetaBaseTypeBoolean
+    JString "integer"     -> Right MetaBaseTypeInteger
+    JString "uinteger"    -> Right MetaBaseTypeUInteger
+    JString "decimal"     -> Right MetaBaseTypeDecimal
+    JString "null"        -> Right MetaBaseTypeNull
+    JString "DocumentUri" -> Right MetaBaseTypeDocumentUri
+    JString t             -> Left $ "Unknown base type: " ++ t
+    _                     -> Left $ "Unrecognized base type value: " ++ ppJSON j
 
 instance FromJSON MetaProperty where
   fromJSON j = case j of
