@@ -1,11 +1,12 @@
 {
   "name": "curry-lsp",
   "version": "0.0.1",
-  "author": "YOUR NAME <YOUR EMAIL ADDRESS>",
-  "synopsis": "PLEASE PROVIDE A ONE-LINE SUMMARY ABOUT THE PACKAGE",
+  "author": "fwcd",
+  "synopsis": "Language Server Protocol framework for Curry",
   "category": [ "Programming" ],
   "license": "BSD-3-Clause",
   "licenseFile": "LICENSE",
   "dependencies": {
+    "json": ">= 3.0.0, < 4.0.0"
   }
 }
