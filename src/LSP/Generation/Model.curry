@@ -193,6 +193,7 @@ instance FromJSON MetaBaseType where
     JString "integer"  -> Right MetaBaseTypeInteger
     JString "uinteger" -> Right MetaBaseTypeUInteger
     JString "decimal"  -> Right MetaBaseTypeDecimal
+    JString "null"     -> Right MetaBaseTypeNull
     JString t          -> Left $ "Unknown base type: " ++ t
     _                  -> Left $ "Unrecognized base type value: " ++ ppJSON j
 
