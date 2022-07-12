@@ -191,7 +191,26 @@ instance FromJSON MetaProperty where
 
 instance FromJSON MetaNotification where
   fromJSON j = case j of
+    JObject vs -> do
+      method        <- lookupStringFromJSON "method" vs
+      dir           <- lookupFromJSON "messageDirection" vs
+      params        <- lookupMaybeFromJSON "params" vs
+      doc           <- lookupMaybeStringFromJSON "documentation" vs
+      since         <- lookupMaybeStringFromJSON "since" vs
+      regMethod     <- lookupMaybeStringFromJSON "registrationMethod" vs
+      regOpts       <- lookupMaybeFromJSON "registrationOptions" vs
+      return $ MetaNotification
+        { mnMethod = method
+        , mnDirection = dir
+        , mnParams = params
+        , mnDocumentation = doc
+        , mnSince = since
+        , mnRegistrationMethod = regMethod
+        , mnRegistrationOptions = regOpts
+        }
     _ -> Left $ "Unrecognized notification value: " ++ ppJSON j
+
+
 
 instance FromJSON MetaStructure where
   fromJSON j = case j of
