@@ -8,5 +8,11 @@
   "licenseFile": "LICENSE",
   "dependencies": {
     "json": ">= 3.0.0, < 4.0.0"
-  }
+  },
+  "executables": [
+    {
+      "name": "curry-lsp-generation",
+      "main": "LSP.Generation.Main"
+    }
+  ]
 }
