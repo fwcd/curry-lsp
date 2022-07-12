@@ -4,8 +4,7 @@ module LSP.Generation.Model
 
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.General ( lookup' )
-import LSP.Utils.JSON ( FromJSON (..) )
+import LSP.Utils.JSON ( FromJSON (..), lookupFromJSON, lookupStringFromJSON, lookupMaybeFromJSON )
 
 data MetaProperty = MetaProperty
   { mpName :: String
@@ -101,11 +100,11 @@ data MetaModel = MetaModel
 instance FromJSON MetaModel where
   fromJSON j = case j of
     JObject vs -> do
-      reqs <- lookup' "requests" vs >>= fromJSON
-      nots <- lookup' "notifications" vs >>= fromJSON
-      structs <- lookup' "structures" vs >>= fromJSON
-      enums <- lookup' "enumerations" vs >>= fromJSON
-      aliases <- lookup' "typeAliases" vs >>= fromJSON
+      reqs <- lookupFromJSON "requests" vs
+      nots <- lookupFromJSON "notifications" vs
+      structs <- lookupFromJSON "structures" vs
+      enums <- lookupFromJSON "enumerations" vs
+      aliases <- lookupFromJSON "typeAliases" vs
       return $ MetaModel
         { mmRequests = reqs
         , mmNotifications = nots
@@ -117,8 +116,11 @@ instance FromJSON MetaModel where
 
 instance FromJSON MetaRequest where
   fromJSON j = case j of
-    -- JObject vs -> do
-    --   method <- lookup' "method" vs >>= fromJSON
+    JObject vs -> do
+      method <- lookupStringFromJSON "method" vs
+      return $ MetaRequest
+        { mrMethod = method
+        }
     _ -> Left $ "Unrecognized request value: " ++ ppJSON j
 
 instance FromJSON MetaNotification where
@@ -137,7 +139,3 @@ instance FromJSON MetaTypeAlias where
   fromJSON j = case j of
     _ -> Left $ "Unrecognized type alias value: " ++ ppJSON j
 
-instance FromJSON a => FromJSON [a] where
-  fromJSON j = case j of
-    JArray vs -> mapM fromJSON vs
-    _ -> Left $ "Expected array but was: " ++ ppJSON j

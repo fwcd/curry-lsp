@@ -2,7 +2,7 @@ module LSP.Utils.JSON
   ( FromJSON (..)
   , ToJSON (..)
   , stringFromJSON, arrayFromJSON, maybeFromJSON
-  , lookupFromJSON, lookupMaybeFromJSON
+  , lookupFromJSON, lookupStringFromJSON, lookupMaybeFromJSON
   ) where
 
 import JSON.Data ( JValue (..) )
@@ -60,8 +60,12 @@ maybeFromJSON = rightToMaybe . fromJSON
 lookupFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String a
 lookupFromJSON k vs = lookup' k vs >>= fromJSON
 
+-- Parses a string lookup on a JSON object's properties.
+lookupStringFromJSON :: String -> [(String, JValue)] -> Either String String
+lookupStringFromJSON k vs = lookup' k vs >>= stringFromJSON
+
 -- Parses an optional lookup on a JSON object's properties.
-lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Maybe a
-lookupMaybeFromJSON k vs = do
-  v <- lookup k vs
-  maybeFromJSON v
+lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String (Maybe a)
+lookupMaybeFromJSON k vs = case lookup k vs of
+  Just x  -> fromJSON x
+  Nothing -> Right Nothing
