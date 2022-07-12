@@ -92,3 +92,4 @@ data MetaModel = MetaModel
   , mmEnumerations :: [MetaEnumeration]
   , mmTypeAliases :: [MetaTypeAlias]
   }
+
