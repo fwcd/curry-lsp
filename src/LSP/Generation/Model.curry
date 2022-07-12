@@ -4,7 +4,7 @@ module LSP.Generation.Model
 
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.JSON ( FromJSON (..), lookupFromJSON, lookupStringFromJSON, lookupMaybeFromJSON )
+import LSP.Utils.JSON ( FromJSON (..), lookupFromJSON, lookupStringFromJSON, lookupMaybeStringFromJSON, lookupMaybeFromJSON )
 
 data MetaProperty = MetaProperty
   { mpName :: String
