@@ -44,7 +44,7 @@ data MetaType =
   | MetaTypeMap           { mtKey :: MetaType, mtElement :: MetaType }
   | MetaTypeBase          { mtBaseType :: MetaBaseType }
   | MetaTypeOr            { mtItems :: [MetaType] }
-  | MetaTypeLiteral       { mtProperties :: [(String, MetaProperty)] }
+  | MetaTypeLiteral       { mtProperties :: [MetaProperty] }
   | MetaTypeStringLiteral { mtValue :: String }
   | MetaTypeTuple         { mtItems :: [MetaType] }
   deriving (Show, Eq)
@@ -181,12 +181,13 @@ instance FromJSON MetaType where
     JObject vs -> do
       kind <- lookupStringFromJSON "kind" vs
       case kind of
-        "reference" -> MetaTypeReference <$> lookupStringFromJSON "name" vs
-        "array"     -> MetaTypeArray     <$> lookupFromJSON "element" vs
-        "map"       -> MetaTypeMap       <$> lookupFromJSON "key" vs <*> lookupFromJSON "value" vs
-        "base"      -> MetaTypeBase      <$> lookupFromJSON "name" vs
-        "or"        -> MetaTypeOr        <$> lookupFromJSON "items" vs
-        "literal"   -> MetaTypeLiteral   <$> (lookupObjectFromJSON "value" vs >>= lookupObjectFromJSON "properties")
+        "reference"     -> MetaTypeReference     <$> lookupStringFromJSON "name" vs
+        "array"         -> MetaTypeArray         <$> lookupFromJSON "element" vs
+        "map"           -> MetaTypeMap           <$> lookupFromJSON "key" vs <*> lookupFromJSON "value" vs
+        "base"          -> MetaTypeBase          <$> lookupFromJSON "name" vs
+        "or"            -> MetaTypeOr            <$> lookupFromJSON "items" vs
+        "literal"       -> MetaTypeLiteral       <$> lookupPathFromJSON ["value", "properties"] vs
+        "stringLiteral" -> MetaTypeStringLiteral <$> lookupStringFromJSON "value" vs
         _ -> Left $ "Unrecognized type kind: " ++ kind
     _ -> Left $ "Unrecognized type value: " ++ ppJSON j
 
