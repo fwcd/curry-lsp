@@ -1,5 +1,15 @@
 module LSP.Generation.Model
-  ( 
+  ( MetaProperty (..)
+  , MetaBaseType (..)
+  , MetaType (..)
+  , MetaMessageDirection (..)
+  , MetaRequest (..)
+  , MetaNotification (..)
+  , MetaStructure (..)
+  , MetaEnumerationValue (..)
+  , MetaEnumeration (..)
+  , MetaTypeAlias (..)
+  , MetaModel (..)
   ) where
 
 import JSON.Data ( JValue (..) )
@@ -15,6 +25,7 @@ data MetaProperty = MetaProperty
   , mpOptional :: Maybe Bool
   , mpDocumentation :: Maybe String
   }
+  deriving (Show, Eq)
 
 data MetaBaseType =
     MetaBaseTypeString
@@ -23,6 +34,7 @@ data MetaBaseType =
   | MetaBaseTypeUInteger
   | MetaBaseTypeDecimal
   | MetaBaseTypeNull
+  deriving (Show, Eq)
 
 data MetaType =
     MetaTypeReference     { mtName :: String }
@@ -32,11 +44,13 @@ data MetaType =
   | MetaTypeLiteral       { mtProperties :: [(String, MetaProperty)] }
   | MetaTypeStringLiteral { mtValue :: String }
   | MetaTypeTuple         { mtItems :: [MetaType] }
+  deriving (Show, Eq)
 
 data MetaMessageDirection =
     MetaMessageDirectionServerToClient
   | MetaMessageDirectionClientToServer
   | MetaMessageDirectionBoth
+  deriving (Show, Eq)
 
 data MetaRequest = MetaRequest
   { mrMethod :: String
@@ -50,6 +64,7 @@ data MetaRequest = MetaRequest
   , mrRegistrationOptions :: Maybe MetaType
   , mrErrorData :: Maybe MetaType
   }
+  deriving (Show, Eq)
 
 data MetaNotification = MetaNotification
   { mnMethod :: String
@@ -60,6 +75,7 @@ data MetaNotification = MetaNotification
   , mnRegistrationMethod :: Maybe String
   , mnRegistrationOptions :: Maybe MetaType
   }
+  deriving (Show, Eq)
 
 data MetaStructure = MetaStructure
   { msName :: String
@@ -68,12 +84,14 @@ data MetaStructure = MetaStructure
   , msMixins :: [MetaType]
   , msDocumentation :: Maybe String
   }
+  deriving (Show, Eq)
 
 data MetaEnumerationValue = MetaEnumerationValue
   { mevName :: String
   , mevValue :: JValue
   , mevDocumentation :: Maybe String
   }
+  deriving (Show, Eq)
 
 data MetaEnumeration = MetaEnumeration
   { meName :: String
@@ -83,12 +101,14 @@ data MetaEnumeration = MetaEnumeration
   , meDocumentation :: Maybe String
   , meSince :: Maybe String
   }
+  deriving (Show, Eq)
 
 data MetaTypeAlias = MetaTypeAlias
   { mtaName :: String
   , mtaType :: MetaType
   , mtaDocumentation :: Maybe String
   }
+  deriving (Show, Eq)
 
 data MetaModel = MetaModel
   { mmRequests :: [MetaRequest]
@@ -97,6 +117,7 @@ data MetaModel = MetaModel
   , mmEnumerations :: [MetaEnumeration]
   , mmTypeAliases :: [MetaTypeAlias]
   }
+  deriving (Show, Eq)
 
 -- JSON conversions
 
