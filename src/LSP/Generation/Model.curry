@@ -264,5 +264,14 @@ instance FromJSON MetaEnumerationValue where
 
 instance FromJSON MetaTypeAlias where
   fromJSON j = case j of
+    JObject vs -> do
+      name <- lookupStringFromJSON "name" vs
+      ty   <- lookupFromJSON "type" vs
+      doc  <- lookupMaybeStringFromJSON "documentation" vs
+      return $ MetaTypeAlias
+        { mtaName = name
+        , mtaType = ty
+        , mtaDocumentation = doc
+        }
     _ -> Left $ "Unrecognized type alias value: " ++ ppJSON j
 
