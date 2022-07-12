@@ -12,6 +12,7 @@ module LSP.Generation.Model
   , MetaModel (..)
   ) where
 
+import Data.Maybe ( fromMaybe )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Utils.JSON ( FromJSON (..)
@@ -40,6 +41,7 @@ data MetaBaseType =
 data MetaType =
     MetaTypeReference     { mtName :: String }
   | MetaTypeArray         { mtElement :: MetaType }
+  | MetaTypeMap           { mtKey :: MetaType, mtElement :: MetaType }
   | MetaTypeBase          { mtBaseType :: MetaBaseType }
   | MetaTypeOr            { mtItems :: [MetaType] }
   | MetaTypeLiteral       { mtProperties :: [(String, MetaProperty)] }
@@ -181,9 +183,10 @@ instance FromJSON MetaType where
       case kind of
         "reference" -> MetaTypeReference <$> lookupStringFromJSON "name" vs
         "array"     -> MetaTypeArray     <$> lookupFromJSON "element" vs
+        "map"       -> MetaTypeMap       <$> lookupFromJSON "key" vs <*> lookupFromJSON "value" vs
         "base"      -> MetaTypeBase      <$> lookupFromJSON "name" vs
         "or"        -> MetaTypeOr        <$> lookupFromJSON "items" vs
-        "literal"   -> MetaTypeLiteral   <$> lookupObjectFromJSON "properties" vs
+        "literal"   -> MetaTypeLiteral   <$> (lookupObjectFromJSON "value" vs >>= lookupObjectFromJSON "properties")
         _ -> Left $ "Unrecognized type kind: " ++ kind
     _ -> Left $ "Unrecognized type value: " ++ ppJSON j
 
@@ -242,8 +245,8 @@ instance FromJSON MetaStructure where
     JObject vs -> do
       name    <- lookupStringFromJSON "name" vs
       props   <- lookupFromJSON "properties" vs
-      extends <- lookupFromJSON "extends" vs
-      mixins  <- lookupFromJSON "mixins" vs
+      extends <- fromMaybe [] <$> lookupMaybeFromJSON "extends" vs
+      mixins  <- fromMaybe [] <$> lookupMaybeFromJSON "mixins" vs
       doc     <- lookupMaybeStringFromJSON "documentation" vs
       return $ MetaStructure
         { msName = name

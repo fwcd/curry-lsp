@@ -5,7 +5,7 @@ module LSP.Utils.General
 
 -- | A version of lookup that returns a descriptive error message.
 lookup' :: Eq a => String -> [(String, a)] -> Either String a
-lookup' k = maybeToRight ("Could not find key " ++ k) . lookup k
+lookup' k = maybeToRight ("Could not find key '" ++ k ++ "'") . lookup k
 
 -- | Converts an Either to a Maybe.
 rightToMaybe :: Either a b -> Maybe b
