@@ -66,6 +66,7 @@ data MetaStructure = MetaStructure
   , msProperties :: [MetaProperty]
   , msExtends :: [MetaType]
   , msMixins :: [MetaType]
+  , msDocumentation :: Maybe String
   }
 
 data MetaEnumerationValue = MetaEnumerationValue
@@ -219,17 +220,47 @@ instance FromJSON MetaStructure where
       props   <- lookupFromJSON "properties" vs
       extends <- lookupFromJSON "extends" vs
       mixins  <- lookupFromJSON "mixins" vs
+      doc     <- lookupMaybeStringFromJSON "documentation" vs
       return $ MetaStructure
         { msName = name
         , msProperties = props
         , msExtends = extends
         , msMixins = mixins
+        , msDocumentation = doc
         }
     _ -> Left $ "Unrecognized structure value: " ++ ppJSON j
 
 instance FromJSON MetaEnumeration where
   fromJSON j = case j of
+    JObject vs -> do
+      name    <- lookupStringFromJSON "name" vs
+      ty      <- lookupFromJSON "type" vs
+      values  <- lookupFromJSON "values" vs
+      customs <- lookupMaybeFromJSON "supportsCustomValues" vs
+      doc     <- lookupMaybeStringFromJSON "documentation" vs
+      since   <- lookupMaybeStringFromJSON "since" vs
+      return $ MetaEnumeration
+        { meName = name
+        , meType = ty
+        , meValues = values
+        , meSupportsCustomValues = customs
+        , meDocumentation = doc
+        , meSince = since
+        }
     _ -> Left $ "Unrecognized enumeration value: " ++ ppJSON j
+
+instance FromJSON MetaEnumerationValue where
+  fromJSON j = case j of
+    JObject vs -> do
+      name  <- lookupStringFromJSON "name" vs
+      value <- lookupFromJSON "value" vs
+      doc   <- lookupMaybeStringFromJSON "documentation" vs
+      return $ MetaEnumerationValue
+        { mevName = name
+        , mevValue = value
+        , mevDocumentation = doc
+        }
+    _ -> Left $ "Unrecognized enumeration value value: " ++ ppJSON j
 
 instance FromJSON MetaTypeAlias where
   fromJSON j = case j of
