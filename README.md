@@ -1,3 +1,3 @@
 # curry-lsp
 
-Language Server Protocol framework for Curry.
+A framework for writing language servers and clients in Curry.
