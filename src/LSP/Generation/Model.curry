@@ -118,13 +118,38 @@ instance FromJSON MetaModel where
 
 instance FromJSON MetaRequest where
   fromJSON j = case j of
-    -- JObject vs -> do
-    --   method <- lookupStringFromJSON "method" vs
-    --   result <- lookupFromJSON "result" vs
-    --   return $ MetaRequest
-    --     { mrMethod = method
-    --     }
+    JObject vs -> do
+      method        <- lookupStringFromJSON "method" vs
+      result        <- lookupFromJSON "result" vs
+      dir           <- lookupFromJSON "messageDirection" vs
+      params        <- lookupMaybeFromJSON "params" vs
+      partialResult <- lookupMaybeFromJSON "partialResult" vs
+      doc           <- lookupMaybeStringFromJSON "documentation" vs
+      since         <- lookupMaybeStringFromJSON "since" vs
+      regMethod     <- lookupMaybeStringFromJSON "registrationMethod" vs
+      regOpts       <- lookupMaybeFromJSON "registrationOptions" vs
+      errData       <- lookupMaybeFromJSON "errorData" vs
+      return $ MetaRequest
+        { mrMethod = method
+        , mrResult = result
+        , mrDirection = dir
+        , mrParams = params
+        , mrPartialResult = partialResult
+        , mrDocumentation = doc
+        , mrSince = since
+        , mrRegistrationMethod = regMethod
+        , mrRegistrationOptions = regOpts
+        , mrErrorData = errData
+        }
     _ -> Left $ "Unrecognized request value: " ++ ppJSON j
+
+instance FromJSON MetaMessageDirection where
+  fromJSON j = case j of
+    JString "serverToClient" -> Right MetaMessageDirectionServerToClient
+    JString "clientToServer" -> Right MetaMessageDirectionClientToServer
+    JString "both"           -> Right MetaMessageDirectionBoth
+    JString d                -> Left $ "Unknown message direction: " ++ d
+    _                        -> Left $ "Unrecognized message direction value: " ++ ppJSON j
 
 instance FromJSON MetaType where
   fromJSON j = case j of
