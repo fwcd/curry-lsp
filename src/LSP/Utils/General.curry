@@ -1,7 +1,13 @@
 module LSP.Utils.General
-  ( lookup'
+  ( lookup', fromRight'
   , rightToMaybe, maybeToRight
   ) where
+
+-- | A version of fromRight that throws a descriptive error message.
+fromRight' :: Either String a -> a
+fromRight' e = case e of
+  Right x -> x
+  Left m  -> error m
 
 -- | A version of lookup that returns a descriptive error message.
 lookup' :: Eq a => String -> [(String, a)] -> Either String a
