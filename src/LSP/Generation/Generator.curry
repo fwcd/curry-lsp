@@ -45,8 +45,32 @@ maybeTypeExprIf True = ACB.maybeType
 -- | Converts a meta type to a Curry type expression.
 metaTypeToTypeExpr :: MetaType -> AC.CTypeExpr
 metaTypeToTypeExpr t = case t of
-  MetaTypeReference n -> ACB.baseType $ mkQName n
-  _                   -> ACB.baseType $ AC.pre "()" -- TODO
+  MetaTypeReference n     -> ACB.baseType $ mkQName n
+  MetaTypeArray a         -> ACB.listType $ metaTypeToTypeExpr a
+  MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") $ metaTypeToTypeExpr <$> [k, e]
+  MetaTypeBase b          -> metaBaseTypeToTypeExpr b
+  MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) $ metaTypeToTypeExpr <$> is
+  -- TODO: Find a better representation for string literal types?
+  -- We should probably rewrite or-ed string literal types to algebraic data types!
+  MetaTypeStringLiteral _ -> ACB.stringType
+  MetaTypeTuple is        -> ACB.tupleType $ metaTypeToTypeExpr <$> is
+  MetaTypeLiteral _       -> ACB.unitType -- TODO
+
+-- | Converts a meta base type to a Curry type expression.
+metaBaseTypeToTypeExpr :: MetaBaseType -> AC.CTypeExpr
+metaBaseTypeToTypeExpr b = case b of
+  MetaBaseTypeString      -> ACB.stringType
+  MetaBaseTypeBoolean     -> ACB.boolType
+  MetaBaseTypeInteger     -> ACB.intType
+  MetaBaseTypeUInteger    -> ACB.intType
+  MetaBaseTypeDecimal     -> ACB.floatType
+  -- TODO: We should probably be clever about this and rewrite e.g. 'or-null' types to maybes
+  MetaBaseTypeNull        -> ACB.unitType
+  MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
+
+-- | An identifier from the LSP.Protocol.Support module.
+support :: String -> AC.QName
+support n = ("LSP.Protocol.Support", n)
 
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName

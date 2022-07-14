@@ -16,4 +16,4 @@ main = do
   let metaModel = (fromRight' $ fromJSONString rawMetaModel) :: MetaModel
 
   putStrLn "==> Generating Curry from meta-model..."
-  writeFile "src/LSP/Protocol.curry" $ autogenNote ++ metaModelToPrettyCurry "LSP.Protocol" metaModel
+  writeFile "src/LSP/Protocol/Types.curry" $ autogenNote ++ metaModelToPrettyCurry "LSP.Protocol.Types" metaModel
