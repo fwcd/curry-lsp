@@ -1,5 +1,7 @@
 module LSP.Protocol.Support
   ( DocumentUri (..)
+  , LSPAny
+  , JValue (..)
   ) where
 
 import JSON.Data ( JValue (..) )

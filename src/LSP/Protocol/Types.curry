@@ -79,7 +79,7 @@ data CallHierarchyItem = CallHierarchyItem { callHierarchyItemName :: String
                                            , callHierarchyItemUri :: LSP.Protocol.Support.DocumentUri
                                            , callHierarchyItemRange :: Range
                                            , callHierarchyItemSelectionRange :: Range
-                                           , callHierarchyItemData :: Maybe LSPAny }
+                                           , callHierarchyItemData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data CallHierarchyRegistrationOptions = CallHierarchyRegistrationOptions {  }
 
@@ -157,7 +157,7 @@ data TypeHierarchyItem = TypeHierarchyItem { typeHierarchyItemName :: String
                                            , typeHierarchyItemUri :: LSP.Protocol.Support.DocumentUri
                                            , typeHierarchyItemRange :: Range
                                            , typeHierarchyItemSelectionRange :: Range
-                                           , typeHierarchyItemData :: Maybe LSPAny }
+                                           , typeHierarchyItemData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data TypeHierarchyRegistrationOptions = TypeHierarchyRegistrationOptions {  }
 
@@ -181,7 +181,7 @@ data InlayHint = InlayHint { inlayHintPosition :: Position
                            , inlayHintTooltip :: Maybe (Either String MarkupContent)
                            , inlayHintPaddingLeft :: Maybe Bool
                            , inlayHintPaddingRight :: Maybe Bool
-                           , inlayHintData :: Maybe LSPAny }
+                           , inlayHintData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data InlayHintRegistrationOptions = InlayHintRegistrationOptions {  }
 
@@ -226,7 +226,7 @@ data InitializeError = InitializeError { initializeErrorRetry :: Bool }
 
 data InitializedParams = InitializedParams {  }
 
-data DidChangeConfigurationParams = DidChangeConfigurationParams { didChangeConfigurationParamsSettings :: LSPAny }
+data DidChangeConfigurationParams = DidChangeConfigurationParams { didChangeConfigurationParamsSettings :: LSP.Protocol.Support.LSPAny }
 
 data DidChangeConfigurationRegistrationOptions = DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection :: Maybe (Either String [String]) }
 
@@ -289,7 +289,7 @@ data CompletionItem = CompletionItem { completionItemLabel :: String
                                      , completionItemAdditionalTextEdits :: Maybe [TextEdit]
                                      , completionItemCommitCharacters :: Maybe [String]
                                      , completionItemCommand :: Maybe Command
-                                     , completionItemData :: Maybe LSPAny }
+                                     , completionItemData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data CompletionList = CompletionList { completionListIsIncomplete :: Bool
                                      , completionListItemDefaults :: Maybe ()
@@ -349,7 +349,7 @@ data CodeActionParams = CodeActionParams { codeActionParamsTextDocument :: TextD
 
 data Command = Command { commandTitle :: String
                        , commandCommand :: String
-                       , commandArguments :: Maybe [LSPAny] }
+                       , commandArguments :: Maybe [LSP.Protocol.Support.LSPAny] }
 
 data CodeAction = CodeAction { codeActionTitle :: String
                              , codeActionKind :: Maybe CodeActionKind
@@ -358,14 +358,14 @@ data CodeAction = CodeAction { codeActionTitle :: String
                              , codeActionDisabled :: Maybe ()
                              , codeActionEdit :: Maybe WorkspaceEdit
                              , codeActionCommand :: Maybe Command
-                             , codeActionData :: Maybe LSPAny }
+                             , codeActionData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data CodeActionRegistrationOptions = CodeActionRegistrationOptions {  }
 
 data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsQuery :: String }
 
 data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolLocation :: Either Location ()
-                                       , workspaceSymbolData :: Maybe LSPAny }
+                                       , workspaceSymbolData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data WorkspaceSymbolRegistrationOptions = WorkspaceSymbolRegistrationOptions {  }
 
@@ -373,7 +373,7 @@ data CodeLensParams = CodeLensParams { codeLensParamsTextDocument :: TextDocumen
 
 data CodeLens = CodeLens { codeLensRange :: Range
                          , codeLensCommand :: Maybe Command
-                         , codeLensData :: Maybe LSPAny }
+                         , codeLensData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data CodeLensRegistrationOptions = CodeLensRegistrationOptions {  }
 
@@ -382,7 +382,7 @@ data DocumentLinkParams = DocumentLinkParams { documentLinkParamsTextDocument ::
 data DocumentLink = DocumentLink { documentLinkRange :: Range
                                  , documentLinkTarget :: Maybe String
                                  , documentLinkTooltip :: Maybe String
-                                 , documentLinkData :: Maybe LSPAny }
+                                 , documentLinkData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data DocumentLinkRegistrationOptions = DocumentLinkRegistrationOptions {  }
 
@@ -413,7 +413,7 @@ data RenameRegistrationOptions = RenameRegistrationOptions {  }
 data PrepareRenameParams = PrepareRenameParams {  }
 
 data ExecuteCommandParams = ExecuteCommandParams { executeCommandParamsCommand :: String
-                                                 , executeCommandParamsArguments :: Maybe [LSPAny] }
+                                                 , executeCommandParamsArguments :: Maybe [LSP.Protocol.Support.LSPAny] }
 
 data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions {  }
 
@@ -446,7 +446,7 @@ data LogTraceParams = LogTraceParams { logTraceParamsMessage :: String
 data CancelParams = CancelParams { cancelParamsId :: Either Int String }
 
 data ProgressParams = ProgressParams { progressParamsToken :: ProgressToken
-                                     , progressParamsValue :: LSPAny }
+                                     , progressParamsValue :: LSP.Protocol.Support.LSPAny }
 
 data TextDocumentPositionParams = TextDocumentPositionParams { textDocumentPositionParamsTextDocument :: TextDocumentIdentifier
                                                              , textDocumentPositionParamsPosition :: Position }
@@ -599,7 +599,7 @@ data NotebookDocumentIdentifier = NotebookDocumentIdentifier { notebookDocumentI
 
 data Registration = Registration { registrationId :: String
                                  , registrationMethod :: String
-                                 , registrationRegisterOptions :: Maybe LSPAny }
+                                 , registrationRegisterOptions :: Maybe LSP.Protocol.Support.LSPAny }
 
 data Unregistration = Unregistration { unregistrationId :: String
                                      , unregistrationMethod :: String }
@@ -610,7 +610,7 @@ data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsProcessId
                                                  , baseInitializeParamsRootPath :: Maybe (Either String ())
                                                  , baseInitializeParamsRootUri :: Either LSP.Protocol.Support.DocumentUri ()
                                                  , baseInitializeParamsCapabilities :: ClientCapabilities
-                                                 , baseInitializeParamsInitializationOptions :: Maybe LSPAny
+                                                 , baseInitializeParamsInitializationOptions :: Maybe LSP.Protocol.Support.LSPAny
                                                  , baseInitializeParamsTrace :: Maybe (Either (Either (Either String String) String) String) }
 
 data WorkspaceFoldersInitializeParams = WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders :: Maybe (Either [WorkspaceFolder] ()) }
@@ -649,7 +649,7 @@ data ServerCapabilities = ServerCapabilities { serverCapabilitiesPositionEncodin
                                              , serverCapabilitiesInlayHintProvider :: Maybe (Either (Either Bool InlayHintOptions) InlayHintRegistrationOptions)
                                              , serverCapabilitiesDiagnosticProvider :: Maybe (Either DiagnosticOptions DiagnosticRegistrationOptions)
                                              , serverCapabilitiesWorkspace :: Maybe ()
-                                             , serverCapabilitiesExperimental :: Maybe LSPAny }
+                                             , serverCapabilitiesExperimental :: Maybe LSP.Protocol.Support.LSPAny }
 
 data VersionedTextDocumentIdentifier = VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion :: Int }
 
@@ -669,7 +669,7 @@ data Diagnostic = Diagnostic { diagnosticRange :: Range
                              , diagnosticMessage :: String
                              , diagnosticTags :: Maybe [DiagnosticTag]
                              , diagnosticRelatedInformation :: Maybe [DiagnosticRelatedInformation]
-                             , diagnosticData :: Maybe LSPAny }
+                             , diagnosticData :: Maybe LSP.Protocol.Support.LSPAny }
 
 data CompletionContext = CompletionContext { completionContextTriggerKind :: CompletionTriggerKind
                                            , completionContextTriggerCharacter :: Maybe String }
@@ -791,7 +791,7 @@ data ClientCapabilities = ClientCapabilities { clientCapabilitiesWorkspace :: Ma
                                              , clientCapabilitiesNotebookDocument :: Maybe NotebookDocumentClientCapabilities
                                              , clientCapabilitiesWindow :: Maybe WindowClientCapabilities
                                              , clientCapabilitiesGeneral :: Maybe GeneralClientCapabilities
-                                             , clientCapabilitiesExperimental :: Maybe LSPAny }
+                                             , clientCapabilitiesExperimental :: Maybe LSP.Protocol.Support.LSPAny }
 
 data TextDocumentSyncOptions = TextDocumentSyncOptions { textDocumentSyncOptionsOpenClose :: Maybe Bool
                                                        , textDocumentSyncOptionsChange :: Maybe TextDocumentSyncKind
@@ -1052,7 +1052,7 @@ type Definition = Either Location [Location]
 
 type DefinitionLink = LocationLink
 
-type LSPArray = [LSPAny]
+type LSPArray = [LSP.Protocol.Support.LSPAny]
 
 type Declaration = Either Location [Location]
 
