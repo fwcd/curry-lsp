@@ -1,11 +1,17 @@
 module LSP.Utils.General
-  ( lookup', fromRight'
+  ( lookup', fromJust', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
   , replaceSingle
   ) where
 
 import Data.Char ( toUpper, toLower )
+
+-- | A version of fromJust that throws a descriptive error message.
+fromJust' :: String -> Maybe a -> a
+fromJust' m v = case v of
+  Just x  -> x
+  Nothing -> error m
 
 -- | A version of fromRight that throws a descriptive error message.
 fromRight' :: Either String a -> a

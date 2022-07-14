@@ -1,5 +1,6 @@
 module LSP.Protocol.Message
-  ( Message (..)
+  ( Request (..)
+  , Response (..)
   ) where
 
 import JSON.Data ( JValue (..) )
@@ -7,12 +8,13 @@ import JSON.Pretty ( ppJSON )
 import LSP.Utils.JSON ( FromJSON (..), ToJSON (..), lookupFromJSON, lookupStringFromJSON )
 
 -- | A JSON-RPC message.
-data Message a = Message
-  { msgJsonrpc :: String
-  , msgMethod :: String
-  , msgParams :: a
-  , msgId :: JValue
+data Request a = Request
+  { reqJsonrpc :: String
+  , reqMethod :: String
+  , reqParams :: a
+  , reqId :: JValue
   }
+  deriving (Show, Eq)
 
 -- TODO: Add support for (representing and en-/decoding) errors.
 
@@ -22,19 +24,20 @@ data Response a = Response
   , rspResult :: a
   , rspId :: JValue
   }
+  deriving (Show, Eq)
 
-instance FromJSON a => FromJSON (Message a) where
+instance FromJSON a => FromJSON (Request a) where
   fromJSON j = case j of
     JObject vs -> do
       jrpc   <- lookupStringFromJSON "jsonrpc" vs
       method <- lookupStringFromJSON "method" vs
       params <- lookupFromJSON "params" vs
       id     <- lookupFromJSON "id" vs
-      return $ Message
-        { msgJsonrpc = jrpc
-        , msgMethod = method
-        , msgParams = params
-        , msgId = id
+      return $ Request
+        { reqJsonrpc = jrpc
+        , reqMethod = method
+        , reqParams = params
+        , reqId = id
         }
     _ -> Left $ "Unrecognized message value: " ++ ppJSON j
 
