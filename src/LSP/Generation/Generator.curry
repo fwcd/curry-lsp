@@ -41,21 +41,9 @@ metaModelToProg name m = do
 -- | Converts a meta structure to Curry type declarations.
 metaStructureToType :: MetaStructure -> GM AC.CTypeDecl
 metaStructureToType s = do
-  sm <- gets gsStructMap
   let name = escapeName $ msName s
       qn = mkQName name
-      -- | Computes the transitive closure of properties for the given type name.
-      transitiveProps :: String -> [MetaProperty]
-      transitiveProps n = do
-        s' <- maybeToList $ M.lookup n sm
-        msProperties s ++ (msExtends s' >>= extractName >>= transitiveProps)
-                       ++ (msMixins s' >>= extractName >>= transitiveProps)
-        where
-          extractName :: MetaType -> [String]
-          extractName t = case t of
-            MetaTypeReference n' -> [n']
-            _                    -> []
-      props = transitiveProps name
+      props = msProperties s
       fs = metaPropertyToField name <$> props
       vis = AC.Public
       cdecl = AC.CRecord qn vis fs
