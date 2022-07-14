@@ -7,6 +7,7 @@ import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
 import Data.Maybe ( fromMaybe )
 import LSP.Generation.Model
+import LSP.Utils.General ( capitalize, uncapitalize )
 
 -- | Converts a meta structure to a prettyprinted Curry program.
 metaModelToPrettyCurry :: String -> MetaModel -> String
@@ -24,16 +25,17 @@ metaModelToProg name m = AC.CurryProg name imps Nothing [] [] tys funs []
 metaStructureToType :: MetaStructure -> AC.CTypeDecl
 metaStructureToType s = AC.CType qn vis [] [cdecl] []
   where
-    qn = mkQName $ msName s
+    name = msName s
+    qn = mkQName name
     vis = AC.Public
-    fs = metaPropertyToField <$> msProperties s
+    fs = metaPropertyToField name <$> msProperties s
     cdecl = AC.CRecord qn vis fs
 
 -- | Converts a meta property to a Curry record field declaration.
-metaPropertyToField :: MetaProperty -> AC.CFieldDecl
-metaPropertyToField p = AC.CField qn vis texp
+metaPropertyToField :: String -> MetaProperty -> AC.CFieldDecl
+metaPropertyToField prefix p = AC.CField qn vis texp
   where
-    qn = mkQName $ mpName p
+    qn = mkQName $ uncapitalize prefix ++ capitalize (mpName p)
     vis = AC.Public
     texp = maybeTypeExprIf (fromMaybe False (mpOptional p)) $ metaTypeToTypeExpr $ mpType p
 

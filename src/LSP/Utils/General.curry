@@ -1,7 +1,10 @@
 module LSP.Utils.General
   ( lookup', fromRight'
   , rightToMaybe, maybeToRight
+  , capitalize, uncapitalize
   ) where
+
+import Data.Char ( toUpper, toLower )
 
 -- | A version of fromRight that throws a descriptive error message.
 fromRight' :: Either String a -> a
@@ -24,3 +27,13 @@ maybeToRight :: a -> Maybe b -> Either a b
 maybeToRight d m = case m of
   Just x  -> Right x
   Nothing -> Left d
+
+-- | Uppercases the first character.
+capitalize :: String -> String
+capitalize [] = []
+capitalize (c:cs) = toUpper c : cs
+
+-- | Lowercases the first character.
+uncapitalize :: String -> String
+uncapitalize [] = []
+uncapitalize (c:cs) = toLower c : cs
