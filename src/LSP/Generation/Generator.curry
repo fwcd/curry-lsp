@@ -5,31 +5,61 @@ module LSP.Generation.Generator
 import qualified AbstractCurry.Types as AC
 import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
-import Data.Maybe ( fromMaybe )
+import Control.Monad.Trans.State ( State, evalState, gets )
+import qualified Data.Map as M
+import Data.Maybe ( fromMaybe, maybeToList )
 import LSP.Generation.Model
 import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle )
 
+-- | Internal generator state.
+data GeneratorState = GeneratorState
+  { gsStructMap :: M.Map String MetaStructure
+  }
+
+type GM = State GeneratorState
+
+-- | Creates the initial generator state.
+initialGeneratorState :: MetaModel -> GeneratorState
+initialGeneratorState m = GeneratorState
+  { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
+  }
+
 -- | Converts a meta structure to a prettyprinted Curry program.
 metaModelToPrettyCurry :: String -> MetaModel -> String
-metaModelToPrettyCurry name = ACP.showCProg . metaModelToProg name
+metaModelToPrettyCurry name m = ACP.showCProg $ evalState (metaModelToProg name m) st
+  where
+    st = initialGeneratorState m
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProg :: String -> MetaModel -> AC.CurryProg
-metaModelToProg name m = AC.CurryProg name imps Nothing [] [] tys funs []
-  where
-    imps = []
-    tys = metaStructureToType <$> mmStructures m
-    funs = []
+metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
+metaModelToProg name m = do
+  let imps = []
+      funs = []
+  tys <- mapM metaStructureToType $ mmStructures m
+  return $ AC.CurryProg name imps Nothing [] [] tys funs []
 
 -- | Converts a meta structure to Curry type declarations.
-metaStructureToType :: MetaStructure -> AC.CTypeDecl
-metaStructureToType s = AC.CType qn vis [] [cdecl] []
-  where
-    name = escapeName $ msName s
-    qn = mkQName name
-    vis = AC.Public
-    fs = metaPropertyToField name <$> msProperties s
-    cdecl = AC.CRecord qn vis fs
+metaStructureToType :: MetaStructure -> GM AC.CTypeDecl
+metaStructureToType s = do
+  sm <- gets gsStructMap
+  let name = escapeName $ msName s
+      qn = mkQName name
+      -- | Computes the transitive closure of properties for the given type name.
+      transitiveProps :: String -> [MetaProperty]
+      transitiveProps n = do
+        s' <- maybeToList $ M.lookup n sm
+        msProperties s ++ (msExtends s' >>= extractName >>= transitiveProps)
+                       ++ (msMixins s' >>= extractName >>= transitiveProps)
+        where
+          extractName :: MetaType -> [String]
+          extractName t = case t of
+            MetaTypeReference n' -> [n']
+            _                    -> []
+      props = transitiveProps name
+      fs = metaPropertyToField name <$> props
+      vis = AC.Public
+      cdecl = AC.CRecord qn vis fs
+  return $ AC.CType qn vis [] [cdecl] []
 
 -- | Converts a meta property to a Curry record field declaration.
 metaPropertyToField :: String -> MetaProperty -> AC.CFieldDecl
