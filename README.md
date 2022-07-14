@@ -1,6 +1,6 @@
 # curry-lsp
 
-A framework for writing language servers and clients in Curry.
+A framework for writing [Language Server Protocol (LSP)](https://microsoft.github.io/language-server-protocol/) servers and clients in Curry.
 
 ## Overview
 
