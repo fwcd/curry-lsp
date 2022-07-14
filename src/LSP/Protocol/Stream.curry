@@ -17,11 +17,12 @@ readMessage h = fromRight' . fromJSONString <$> readRawMessage h
 -- | Reads a single raw message with content-length header from the stream.
 readRawMessage :: Handle -> IO String
 readRawMessage h = do
-  headers <- readHeaders h
-  let rawLen = fromJust' "Missing Content-Length header" $ lookup "content-length" headers
+  headers <-  readHeaders h
+  let headers' = (\(k, v) -> (toLower <$> k, v)) <$> headers
+      rawLen = fromJust' ("Missing Content-Length header (got: " ++ show headers ++ ")") $ lookup "content-length" headers'
       len = (read rawLen) :: Int
   -- FIXME: Remove this debug message
-  hPutStrLn stderr $ "Reading " ++ show len ++ "bytes..."
+  hPutStrLn stderr $ "Reading " ++ show len ++ " bytes..."
   readBytes len h
 
 -- | Reads all headers. After calling this method, the handle points to the content.
@@ -31,7 +32,7 @@ readHeaders h = do
   c <- hGetChar h
   if c == '\r' then do skipString "\n" h
                        return [(k, v)]
-               else ((toLower <$> k, v):) <$> readHeaders h
+               else ((k, v):) <$> readHeaders h
 
 -- | Reads a single header. After calling this method, the handle points to the next
 -- header (or '\r\n...' if there are no more headers).
