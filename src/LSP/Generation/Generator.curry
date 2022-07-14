@@ -18,7 +18,7 @@ metaModelToProg m = AC.CurryProg name imps Nothing [] [] tys funs []
   where
     name = "Generated"
     imps = []
-    tys = []
+    tys = metaStructureToType <$> mmStructures m
     funs = []
 
 -- | Converts a meta structure to Curry type declarations.
