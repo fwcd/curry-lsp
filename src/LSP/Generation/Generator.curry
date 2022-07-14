@@ -89,7 +89,7 @@ metaEnumerationToType e = do
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
 metaEnumerationValueToCons prefix v = do
-  let name = prefix ++ capitalize (escapeName (mevName v))
+  let name = enumValueName prefix (mevName v)
       qn = mkQName name
       vis = AC.Public
   return $ AC.CCons qn vis []
@@ -109,7 +109,7 @@ metaAliasToAlias a = do
 -- | Converts a meta property to a Curry record field declaration.
 metaPropertyToField :: String -> MetaProperty -> GM AC.CFieldDecl
 metaPropertyToField prefix p = do
-  let qn = mkQName $ uncapitalize prefix ++ capitalize (mpName p)
+  let qn = mkQName $ fieldName prefix (mpName p)
       vis = AC.Public
   texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr (mpType p)
   return $ AC.CField qn vis texp
@@ -153,6 +153,14 @@ support n = ("LSP.Protocol.Support", n)
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName
 mkQName n = ("", n)
+
+-- | Generates a prefixed enum value name.
+enumValueName :: String -> String -> String
+enumValueName prefix name = capitalize prefix ++ capitalize name
+
+-- | Generates a field name.
+fieldName :: String -> String -> String
+fieldName prefix name = uncapitalize prefix ++ capitalize name
 
 -- | Escapes a type name for use in Curry (e.g. replacing underscores with 'Base').
 escapeName :: String -> String
