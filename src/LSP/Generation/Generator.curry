@@ -7,13 +7,17 @@ import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
 import Control.Monad.Trans.State ( State, evalState, gets )
 import qualified Data.Map as M
-import Data.Maybe ( fromMaybe, maybeToList )
+import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import LSP.Generation.Model
 import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle )
+
+-- TODO: Generate documentation
+-- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
 
 -- | Internal generator state.
 data GeneratorState = GeneratorState
   { gsStructMap :: M.Map String MetaStructure
+  , gsBuiltInTypeAliases :: M.Map String AC.QName
   }
 
 type GM = State GeneratorState
@@ -22,6 +26,9 @@ type GM = State GeneratorState
 initialGeneratorState :: MetaModel -> GeneratorState
 initialGeneratorState m = GeneratorState
   { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
+  , gsBuiltInTypeAliases = M.fromList
+    [ ("LSPAny", support "LSPAny")
+    ]
   }
 
 -- | Converts a meta structure to a prettyprinted Curry program.
@@ -35,10 +42,12 @@ metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
   let imps = []
       funs = []
-  tys <- mapM metaStructureToType $ mmStructures m
+  sts <- mapM metaStructureToType (mmStructures m)
+  as <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
+  let tys = sts ++ as
   return $ AC.CurryProg name imps Nothing [] [] tys funs []
 
--- | Converts a meta structure to Curry type declarations.
+-- | Converts a meta structure to a Curry type declaration.
 metaStructureToType :: MetaStructure -> GM AC.CTypeDecl
 metaStructureToType s = do
   let name = escapeName $ msName s
@@ -48,6 +57,18 @@ metaStructureToType s = do
       vis = AC.Public
       cdecl = AC.CRecord qn vis fs
   return $ AC.CType qn vis [] [cdecl] []
+
+-- | Converts a meta type alias to a Curry type alias.
+metaAliasToAlias :: MetaTypeAlias -> GM (Maybe AC.CTypeDecl)
+metaAliasToAlias a = do
+  let name = escapeName $ mtaName a
+      qn = mkQName name
+      vis = AC.Public
+      texp = metaTypeToTypeExpr $ mtaType a
+  bis <- gets gsBuiltInTypeAliases
+  return $ case M.lookup name bis of
+    Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
+    Nothing -> Just $ AC.CTypeSyn qn vis [] texp
 
 -- | Converts a meta property to a Curry record field declaration.
 metaPropertyToField :: String -> MetaProperty -> AC.CFieldDecl
