@@ -12,4 +12,5 @@ main = do
   rawMetaModel <- readFile "resources/metaModel.json"
   let metaModel = (fromRight' $ fromJSONString rawMetaModel) :: MetaModel
 
-  putStrLn $ metaModelToPrettyCurry metaModel
+  putStrLn "==> Generating Curry from meta-model..."
+  writeFile "src/LSP/Protocol.curry" $ metaModelToPrettyCurry "LSP.Protocol" metaModel

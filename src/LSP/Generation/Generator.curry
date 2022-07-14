@@ -9,14 +9,13 @@ import Data.Maybe ( fromMaybe )
 import LSP.Generation.Model
 
 -- | Converts a meta structure to a prettyprinted Curry program.
-metaModelToPrettyCurry :: MetaModel -> String
-metaModelToPrettyCurry = ACP.showCProg . metaModelToProg
+metaModelToPrettyCurry :: String -> MetaModel -> String
+metaModelToPrettyCurry name = ACP.showCProg . metaModelToProg name
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProg :: MetaModel -> AC.CurryProg
-metaModelToProg m = AC.CurryProg name imps Nothing [] [] tys funs []
+metaModelToProg :: String -> MetaModel -> AC.CurryProg
+metaModelToProg name m = AC.CurryProg name imps Nothing [] [] tys funs []
   where
-    name = "Generated"
     imps = []
     tys = metaStructureToType <$> mmStructures m
     funs = []
