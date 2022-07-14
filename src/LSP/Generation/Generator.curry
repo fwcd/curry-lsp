@@ -18,6 +18,8 @@ import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle )
 data GeneratorState = GeneratorState
   { gsStructMap :: M.Map String MetaStructure
   , gsBuiltInTypeAliases :: M.Map String AC.QName
+  , gsStandardDerivings :: [AC.QName]
+  , gsStandardEnumDerivings :: [AC.QName]
   }
 
 type GM = State GeneratorState
@@ -28,6 +30,15 @@ initialGeneratorState m = GeneratorState
   { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
   , gsBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
+    ]
+  , gsStandardDerivings =
+    [ AC.pre "Show"
+    , AC.pre "Eq"
+    ]
+  , gsStandardEnumDerivings =
+    [ AC.pre "Enum"
+    , AC.pre "Bounded"
+    , AC.pre "Ord"
     ]
   }
 
@@ -56,8 +67,9 @@ metaStructureToType s = do
       props = msProperties s
       vis = AC.Public
   fs <- mapM (metaPropertyToField name) props
+  derivs <- gets gsStandardDerivings
   let cdecl = AC.CRecord qn vis fs
-  return $ AC.CType qn vis [] [cdecl] []
+  return $ AC.CType qn vis [] [cdecl] derivs
 
 -- | Converts a meta enumeration to a Curry type declaration.
 metaEnumerationToType :: MetaEnumeration -> GM AC.CTypeDecl
@@ -67,7 +79,12 @@ metaEnumerationToType e = do
       vis = AC.Public
       vals = meValues e
   cdecls <- mapM (metaEnumerationValueToCons name) vals
-  return $ AC.CType qn vis [] cdecls []
+  -- TODO: liftA2 on StateT is broken due to the missing implementation of <*>, causing the program to loop
+  -- derivs <- liftA2 (++) (gets gsStandardDerivings) (gets gsStandardEnumDerivings)
+  stdDerivs <- gets gsStandardDerivings
+  enumDerivs <- gets gsStandardEnumDerivings
+  let derivs = stdDerivs ++ enumDerivs
+  return $ AC.CType qn vis [] cdecls derivs
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
