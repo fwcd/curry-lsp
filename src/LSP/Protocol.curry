@@ -1,3 +1,4 @@
+-- NOTE: This file is generated automatically and should not be edited manually!
 module LSP.Protocol where
 
 data ImplementationParams = ImplementationParams {  }
