@@ -42,9 +42,10 @@ metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
   let imps = []
       funs = []
-  sts <- mapM metaStructureToType (mmStructures m)
-  as <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
-  let tys = sts ++ as
+  structs <- mapM metaStructureToType (mmStructures m)
+  enums <- mapM metaEnumerationToType (mmEnumerations m)
+  aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
+  let tys = structs ++ enums ++ aliases
   return $ AC.CurryProg name imps Nothing [] [] tys funs []
 
 -- | Converts a meta structure to a Curry type declaration.
@@ -53,10 +54,28 @@ metaStructureToType s = do
   let name = escapeName $ msName s
       qn = mkQName name
       props = msProperties s
+      vis = AC.Public
   fs <- mapM (metaPropertyToField name) props
-  let vis = AC.Public
-      cdecl = AC.CRecord qn vis fs
+  let cdecl = AC.CRecord qn vis fs
   return $ AC.CType qn vis [] [cdecl] []
+
+-- | Converts a meta enumeration to a Curry type declaration.
+metaEnumerationToType :: MetaEnumeration -> GM AC.CTypeDecl
+metaEnumerationToType e = do
+  let name = escapeName $ meName e
+      qn = mkQName name
+      vis = AC.Public
+      vals = meValues e
+  cdecls <- mapM (metaEnumerationValueToCons name) vals
+  return $ AC.CType qn vis [] cdecls []
+
+-- | Converts a meta enumeration value to a Curry constructor.
+metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
+metaEnumerationValueToCons prefix v = do
+  let name = prefix ++ capitalize (escapeName (mevName v))
+      qn = mkQName name
+      vis = AC.Public
+  return $ AC.CCons qn vis []
 
 -- | Converts a meta type alias to a Curry type alias.
 metaAliasToAlias :: MetaTypeAlias -> GM (Maybe AC.CTypeDecl)

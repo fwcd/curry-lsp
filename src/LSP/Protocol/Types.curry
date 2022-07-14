@@ -1048,6 +1048,212 @@ data MarkdownClientCapabilities = MarkdownClientCapabilities { markdownClientCap
                                                              , markdownClientCapabilitiesVersion :: Maybe String
                                                              , markdownClientCapabilitiesAllowedTags :: Maybe [String] }
 
+data SemanticTokenTypes = SemanticTokenTypesNamespace
+                        | SemanticTokenTypesType
+                        | SemanticTokenTypesClass
+                        | SemanticTokenTypesEnum
+                        | SemanticTokenTypesInterface
+                        | SemanticTokenTypesStruct
+                        | SemanticTokenTypesTypeParameter
+                        | SemanticTokenTypesParameter
+                        | SemanticTokenTypesVariable
+                        | SemanticTokenTypesProperty
+                        | SemanticTokenTypesEnumMember
+                        | SemanticTokenTypesEvent
+                        | SemanticTokenTypesFunction
+                        | SemanticTokenTypesMethod
+                        | SemanticTokenTypesMacro
+                        | SemanticTokenTypesKeyword
+                        | SemanticTokenTypesModifier
+                        | SemanticTokenTypesComment
+                        | SemanticTokenTypesString
+                        | SemanticTokenTypesNumber
+                        | SemanticTokenTypesRegexp
+                        | SemanticTokenTypesOperator
+                        | SemanticTokenTypesDecorator
+
+data SemanticTokenModifiers = SemanticTokenModifiersDeclaration
+                            | SemanticTokenModifiersDefinition
+                            | SemanticTokenModifiersReadonly
+                            | SemanticTokenModifiersStatic
+                            | SemanticTokenModifiersDeprecated
+                            | SemanticTokenModifiersAbstract
+                            | SemanticTokenModifiersAsync
+                            | SemanticTokenModifiersModification
+                            | SemanticTokenModifiersDocumentation
+                            | SemanticTokenModifiersDefaultLibrary
+
+data ErrorCodes = ErrorCodesParseError
+                | ErrorCodesInvalidRequest
+                | ErrorCodesMethodNotFound
+                | ErrorCodesInvalidParams
+                | ErrorCodesInternalError
+                | ErrorCodesJsonrpcReservedErrorRangeStart
+                | ErrorCodesServerErrorStart
+                | ErrorCodesServerNotInitialized
+                | ErrorCodesUnknownErrorCode
+                | ErrorCodesJsonrpcReservedErrorRangeEnd
+                | ErrorCodesServerErrorEnd
+
+data LSPErrorCodes = LSPErrorCodesLspReservedErrorRangeStart
+                   | LSPErrorCodesRequestFailed
+                   | LSPErrorCodesServerCancelled
+                   | LSPErrorCodesContentModified
+                   | LSPErrorCodesRequestCancelled
+                   | LSPErrorCodesLspReservedErrorRangeEnd
+
+data FoldingRangeKind = FoldingRangeKindComment
+                      | FoldingRangeKindImports
+                      | FoldingRangeKindRegion
+
+data SymbolKind = SymbolKindFile
+                | SymbolKindModule
+                | SymbolKindNamespace
+                | SymbolKindPackage
+                | SymbolKindClass
+                | SymbolKindMethod
+                | SymbolKindProperty
+                | SymbolKindField
+                | SymbolKindConstructor
+                | SymbolKindEnum
+                | SymbolKindInterface
+                | SymbolKindFunction
+                | SymbolKindVariable
+                | SymbolKindConstant
+                | SymbolKindString
+                | SymbolKindNumber
+                | SymbolKindBoolean
+                | SymbolKindArray
+                | SymbolKindObject
+                | SymbolKindKey
+                | SymbolKindNull
+                | SymbolKindEnumMember
+                | SymbolKindStruct
+                | SymbolKindEvent
+                | SymbolKindOperator
+                | SymbolKindTypeParameter
+
+data SymbolTag = SymbolTagDeprecated
+
+data UniquenessLevel = UniquenessLevelDocument
+                     | UniquenessLevelProject
+                     | UniquenessLevelGroup
+                     | UniquenessLevelScheme
+                     | UniquenessLevelGlobal
+
+data MonikerKind = MonikerKindImport | MonikerKindExport | MonikerKindLocal
+
+data InlayHintKind = InlayHintKindType | InlayHintKindParameter
+
+data MessageType = MessageTypeError
+                 | MessageTypeWarning
+                 | MessageTypeInfo
+                 | MessageTypeLog
+
+data TextDocumentSyncKind = TextDocumentSyncKindNone
+                          | TextDocumentSyncKindFull
+                          | TextDocumentSyncKindIncremental
+
+data TextDocumentSaveReason = TextDocumentSaveReasonManual
+                            | TextDocumentSaveReasonAfterDelay
+                            | TextDocumentSaveReasonFocusOut
+
+data CompletionItemKind = CompletionItemKindText
+                        | CompletionItemKindMethod
+                        | CompletionItemKindFunction
+                        | CompletionItemKindConstructor
+                        | CompletionItemKindField
+                        | CompletionItemKindVariable
+                        | CompletionItemKindClass
+                        | CompletionItemKindInterface
+                        | CompletionItemKindModule
+                        | CompletionItemKindProperty
+                        | CompletionItemKindUnit
+                        | CompletionItemKindValue
+                        | CompletionItemKindEnum
+                        | CompletionItemKindKeyword
+                        | CompletionItemKindSnippet
+                        | CompletionItemKindColor
+                        | CompletionItemKindFile
+                        | CompletionItemKindReference
+                        | CompletionItemKindFolder
+                        | CompletionItemKindEnumMember
+                        | CompletionItemKindConstant
+                        | CompletionItemKindStruct
+                        | CompletionItemKindEvent
+                        | CompletionItemKindOperator
+                        | CompletionItemKindTypeParameter
+
+data CompletionItemTag = CompletionItemTagDeprecated
+
+data InsertTextFormat = InsertTextFormatPlainText | InsertTextFormatSnippet
+
+data InsertTextMode = InsertTextModeAsIs | InsertTextModeAdjustIndentation
+
+data DocumentHighlightKind = DocumentHighlightKindText
+                           | DocumentHighlightKindRead
+                           | DocumentHighlightKindWrite
+
+data CodeActionKind = CodeActionKindEmpty
+                    | CodeActionKindQuickFix
+                    | CodeActionKindRefactor
+                    | CodeActionKindRefactorExtract
+                    | CodeActionKindRefactorInline
+                    | CodeActionKindRefactorRewrite
+                    | CodeActionKindSource
+                    | CodeActionKindSourceOrganizeImports
+                    | CodeActionKindSourceFixAll
+
+data TraceValues = TraceValuesOff | TraceValuesMessages | TraceValuesVerbose
+
+data MarkupKind = MarkupKindPlainText | MarkupKindMarkdown
+
+data PositionEncodingKind = PositionEncodingKindUTF8
+                          | PositionEncodingKindUTF16
+                          | PositionEncodingKindUTF32
+
+data FileChangeType = FileChangeTypeCreated
+                    | FileChangeTypeChanged
+                    | FileChangeTypeDeleted
+
+data WatchKind = WatchKindCreate | WatchKindChange | WatchKindDelete
+
+data DiagnosticSeverity = DiagnosticSeverityError
+                        | DiagnosticSeverityWarning
+                        | DiagnosticSeverityInformation
+                        | DiagnosticSeverityHint
+
+data DiagnosticTag = DiagnosticTagUnnecessary | DiagnosticTagDeprecated
+
+data CompletionTriggerKind = CompletionTriggerKindInvoked
+                           | CompletionTriggerKindTriggerCharacter
+                           | CompletionTriggerKindTriggerForIncompleteCompletions
+
+data SignatureHelpTriggerKind = SignatureHelpTriggerKindInvoked
+                              | SignatureHelpTriggerKindTriggerCharacter
+                              | SignatureHelpTriggerKindContentChange
+
+data CodeActionTriggerKind = CodeActionTriggerKindInvoked
+                           | CodeActionTriggerKindAutomatic
+
+data FileOperationPatternKind = FileOperationPatternKindFile
+                              | FileOperationPatternKindFolder
+
+data NotebookCellKind = NotebookCellKindMarkup | NotebookCellKindCode
+
+data ResourceOperationKind = ResourceOperationKindCreate
+                           | ResourceOperationKindRename
+                           | ResourceOperationKindDelete
+
+data FailureHandlingKind = FailureHandlingKindAbort
+                         | FailureHandlingKindTransactional
+                         | FailureHandlingKindTextOnlyTransactional
+                         | FailureHandlingKindUndo
+
+data PrepareSupportDefaultBehavior = PrepareSupportDefaultBehaviorIdentifier
+
+data TokenFormat = TokenFormatRelative
+
 type Definition = Either Location [Location]
 
 type DefinitionLink = LocationLink
