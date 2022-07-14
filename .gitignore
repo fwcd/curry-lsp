@@ -3,4 +3,5 @@
 .curry
 .DS_Store
 .vscode
+/bin
 Curry_Main_Goal.curry

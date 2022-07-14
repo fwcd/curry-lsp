@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+cd "$(dirname $0)/.."
+
+mkdir -p bin
+
+echo "==> Compiling example language server..."
+curry :l LSP.Example.ServerMain :save main :q
+mv LSP.Example.ServerMain bin/curry-lsp-example-server

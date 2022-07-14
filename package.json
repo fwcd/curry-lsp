@@ -16,6 +16,10 @@
     {
       "name": "curry-lsp-generation",
       "main": "LSP.Generation.Main"
+    },
+    {
+      "name": "curry-lsp-example-server",
+      "main": "LSP.Example.ServerMain"
     }
   ]
 }
