@@ -7,7 +7,7 @@ import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
 import Data.Maybe ( fromMaybe )
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle )
 
 -- | Converts a meta structure to a prettyprinted Curry program.
 metaModelToPrettyCurry :: String -> MetaModel -> String
@@ -25,7 +25,7 @@ metaModelToProg name m = AC.CurryProg name imps Nothing [] [] tys funs []
 metaStructureToType :: MetaStructure -> AC.CTypeDecl
 metaStructureToType s = AC.CType qn vis [] [cdecl] []
   where
-    name = msName s
+    name = escapeName $ msName s
     qn = mkQName name
     vis = AC.Public
     fs = metaPropertyToField name <$> msProperties s
@@ -77,3 +77,7 @@ support n = ("LSP.Protocol.Support", n)
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName
 mkQName n = ("", n)
+
+-- | Escapes a type name for use in Curry (e.g. replacing underscores with 'Base').
+escapeName :: String -> String
+escapeName = replaceSingle '_' "Base"

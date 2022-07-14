@@ -2,6 +2,7 @@ module LSP.Utils.General
   ( lookup', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
+  , replaceSingle
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -37,3 +38,9 @@ capitalize (c:cs) = toUpper c : cs
 uncapitalize :: String -> String
 uncapitalize [] = []
 uncapitalize (c:cs) = toLower c : cs
+
+-- | Replaces an element with a list.
+replaceSingle :: Eq a => a -> [a] -> [a] -> [a]
+replaceSingle _ _ [] = []
+replaceSingle y ys (x:xs) | x == y    = ys ++ xs
+                          | otherwise = x : replaceSingle y ys xs

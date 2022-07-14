@@ -604,14 +604,14 @@ data Registration = Registration { registrationId :: String
 data Unregistration = Unregistration { unregistrationId :: String
                                      , unregistrationMethod :: String }
 
-data _InitializeParams = _InitializeParams { _InitializeParamsProcessId :: Either Int ()
-                                           , _InitializeParamsClientInfo :: Maybe ()
-                                           , _InitializeParamsLocale :: Maybe String
-                                           , _InitializeParamsRootPath :: Maybe (Either String ())
-                                           , _InitializeParamsRootUri :: Either LSP.Protocol.Support.DocumentUri ()
-                                           , _InitializeParamsCapabilities :: ClientCapabilities
-                                           , _InitializeParamsInitializationOptions :: Maybe LSPAny
-                                           , _InitializeParamsTrace :: Maybe (Either (Either (Either String String) String) String) }
+data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsProcessId :: Either Int ()
+                                                 , baseInitializeParamsClientInfo :: Maybe ()
+                                                 , baseInitializeParamsLocale :: Maybe String
+                                                 , baseInitializeParamsRootPath :: Maybe (Either String ())
+                                                 , baseInitializeParamsRootUri :: Either LSP.Protocol.Support.DocumentUri ()
+                                                 , baseInitializeParamsCapabilities :: ClientCapabilities
+                                                 , baseInitializeParamsInitializationOptions :: Maybe LSPAny
+                                                 , baseInitializeParamsTrace :: Maybe (Either (Either (Either String String) String) String) }
 
 data WorkspaceFoldersInitializeParams = WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders :: Maybe (Either [WorkspaceFolder] ()) }
 
