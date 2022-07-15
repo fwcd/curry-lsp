@@ -9,1889 +9,3583 @@ import JSON.Data
 instance FromJSON ImplementationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ImplementationParams {  }
       _ -> Left "Unrecognized ImplementationParams value"
 
 instance FromJSON Location where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedRange <- lookupFromJSON "range" vs
+           return
+            Location { locationUri = parsedUri, locationRange = parsedRange }
       _ -> Left "Unrecognized Location value"
 
 instance FromJSON ImplementationRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ImplementationRegistrationOptions {  }
       _ -> Left "Unrecognized ImplementationRegistrationOptions value"
 
 instance FromJSON TypeDefinitionParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeDefinitionParams {  }
       _ -> Left "Unrecognized TypeDefinitionParams value"
 
 instance FromJSON TypeDefinitionRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeDefinitionRegistrationOptions {  }
       _ -> Left "Unrecognized TypeDefinitionRegistrationOptions value"
 
 instance FromJSON WorkspaceFolder where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedName <- lookupFromJSON "name" vs
+           return
+            WorkspaceFolder { workspaceFolderUri = parsedUri
+                            , workspaceFolderName = parsedName }
       _ -> Left "Unrecognized WorkspaceFolder value"
 
 instance FromJSON DidChangeWorkspaceFoldersParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedEvent <- lookupFromJSON "event" vs
+           return
+            DidChangeWorkspaceFoldersParams { didChangeWorkspaceFoldersParamsEvent = parsedEvent }
       _ -> Left "Unrecognized DidChangeWorkspaceFoldersParams value"
 
 instance FromJSON ConfigurationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItems <- lookupFromJSON "items" vs
+           return
+            ConfigurationParams { configurationParamsItems = parsedItems }
       _ -> Left "Unrecognized ConfigurationParams value"
 
 instance FromJSON PartialResultParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedPartialResultToken <- lookupFromJSON "partialResultToken" vs
+           return
+            PartialResultParams { partialResultParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left "Unrecognized PartialResultParams value"
 
 instance FromJSON DocumentColorParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            DocumentColorParams { documentColorParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized DocumentColorParams value"
 
 instance FromJSON ColorInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedColor <- lookupFromJSON "color" vs
+           return
+            ColorInformation { colorInformationRange = parsedRange
+                             , colorInformationColor = parsedColor }
       _ -> Left "Unrecognized ColorInformation value"
 
 instance FromJSON DocumentColorRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentColorRegistrationOptions {  }
       _ -> Left "Unrecognized DocumentColorRegistrationOptions value"
 
 instance FromJSON ColorPresentationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedColor <- lookupFromJSON "color" vs
+           parsedRange <- lookupFromJSON "range" vs
+           return
+            ColorPresentationParams { colorPresentationParamsTextDocument = parsedTextDocument
+                                    , colorPresentationParamsColor = parsedColor
+                                    , colorPresentationParamsRange = parsedRange }
       _ -> Left "Unrecognized ColorPresentationParams value"
 
 instance FromJSON ColorPresentation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedTextEdit <- lookupFromJSON "textEdit" vs
+           parsedAdditionalTextEdits <- lookupFromJSON "additionalTextEdits"
+                                         vs
+           return
+            ColorPresentation { colorPresentationLabel = parsedLabel
+                              , colorPresentationTextEdit = parsedTextEdit
+                              , colorPresentationAdditionalTextEdits = parsedAdditionalTextEdits }
       _ -> Left "Unrecognized ColorPresentation value"
 
 instance FromJSON WorkDoneProgressOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupFromJSON "workDoneProgress" vs
+           return
+            WorkDoneProgressOptions { workDoneProgressOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left "Unrecognized WorkDoneProgressOptions value"
 
 instance FromJSON TextDocumentRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           return
+            TextDocumentRegistrationOptions { textDocumentRegistrationOptionsDocumentSelector = parsedDocumentSelector }
       _ -> Left "Unrecognized TextDocumentRegistrationOptions value"
 
 instance FromJSON FoldingRangeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            FoldingRangeParams { foldingRangeParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized FoldingRangeParams value"
 
 instance FromJSON FoldingRange where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedStartLine <- lookupFromJSON "startLine" vs
+           parsedStartCharacter <- lookupFromJSON "startCharacter" vs
+           parsedEndLine <- lookupFromJSON "endLine" vs
+           parsedEndCharacter <- lookupFromJSON "endCharacter" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedCollapsedText <- lookupFromJSON "collapsedText" vs
+           return
+            FoldingRange { foldingRangeStartLine = parsedStartLine
+                         , foldingRangeStartCharacter = parsedStartCharacter
+                         , foldingRangeEndLine = parsedEndLine
+                         , foldingRangeEndCharacter = parsedEndCharacter
+                         , foldingRangeKind = parsedKind
+                         , foldingRangeCollapsedText = parsedCollapsedText }
       _ -> Left "Unrecognized FoldingRange value"
 
 instance FromJSON FoldingRangeRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return FoldingRangeRegistrationOptions {  }
       _ -> Left "Unrecognized FoldingRangeRegistrationOptions value"
 
 instance FromJSON DeclarationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DeclarationParams {  }
       _ -> Left "Unrecognized DeclarationParams value"
 
 instance FromJSON DeclarationRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DeclarationRegistrationOptions {  }
       _ -> Left "Unrecognized DeclarationRegistrationOptions value"
 
 instance FromJSON SelectionRangeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPositions <- lookupFromJSON "positions" vs
+           return
+            SelectionRangeParams { selectionRangeParamsTextDocument = parsedTextDocument
+                                 , selectionRangeParamsPositions = parsedPositions }
       _ -> Left "Unrecognized SelectionRangeParams value"
 
 instance FromJSON SelectionRange where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedParent <- lookupFromJSON "parent" vs
+           return
+            SelectionRange { selectionRangeRange = parsedRange
+                           , selectionRangeParent = parsedParent }
       _ -> Left "Unrecognized SelectionRange value"
 
 instance FromJSON SelectionRangeRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return SelectionRangeRegistrationOptions {  }
       _ -> Left "Unrecognized SelectionRangeRegistrationOptions value"
 
 instance FromJSON WorkDoneProgressCreateParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedToken <- lookupFromJSON "token" vs
+           return
+            WorkDoneProgressCreateParams { workDoneProgressCreateParamsToken = parsedToken }
       _ -> Left "Unrecognized WorkDoneProgressCreateParams value"
 
 instance FromJSON WorkDoneProgressCancelParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedToken <- lookupFromJSON "token" vs
+           return
+            WorkDoneProgressCancelParams { workDoneProgressCancelParamsToken = parsedToken }
       _ -> Left "Unrecognized WorkDoneProgressCancelParams value"
 
 instance FromJSON CallHierarchyPrepareParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CallHierarchyPrepareParams {  }
       _ -> Left "Unrecognized CallHierarchyPrepareParams value"
 
 instance FromJSON CallHierarchyItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedDetail <- lookupFromJSON "detail" vs
+           parsedUri <- lookupFromJSON "uri" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedSelectionRange <- lookupFromJSON "selectionRange" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            CallHierarchyItem { callHierarchyItemName = parsedName
+                              , callHierarchyItemKind = parsedKind
+                              , callHierarchyItemTags = parsedTags
+                              , callHierarchyItemDetail = parsedDetail
+                              , callHierarchyItemUri = parsedUri
+                              , callHierarchyItemRange = parsedRange
+                              , callHierarchyItemSelectionRange = parsedSelectionRange
+                              , callHierarchyItemData = parsedData }
       _ -> Left "Unrecognized CallHierarchyItem value"
 
 instance FromJSON CallHierarchyRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CallHierarchyRegistrationOptions {  }
       _ -> Left "Unrecognized CallHierarchyRegistrationOptions value"
 
 instance FromJSON CallHierarchyIncomingCallsParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItem <- lookupFromJSON "item" vs
+           return
+            CallHierarchyIncomingCallsParams { callHierarchyIncomingCallsParamsItem = parsedItem }
       _ -> Left "Unrecognized CallHierarchyIncomingCallsParams value"
 
 instance FromJSON CallHierarchyIncomingCall where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFrom <- lookupFromJSON "from" vs
+           parsedFromRanges <- lookupFromJSON "fromRanges" vs
+           return
+            CallHierarchyIncomingCall { callHierarchyIncomingCallFrom = parsedFrom
+                                      , callHierarchyIncomingCallFromRanges = parsedFromRanges }
       _ -> Left "Unrecognized CallHierarchyIncomingCall value"
 
 instance FromJSON CallHierarchyOutgoingCallsParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItem <- lookupFromJSON "item" vs
+           return
+            CallHierarchyOutgoingCallsParams { callHierarchyOutgoingCallsParamsItem = parsedItem }
       _ -> Left "Unrecognized CallHierarchyOutgoingCallsParams value"
 
 instance FromJSON CallHierarchyOutgoingCall where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTo <- lookupFromJSON "to" vs
+           parsedFromRanges <- lookupFromJSON "fromRanges" vs
+           return
+            CallHierarchyOutgoingCall { callHierarchyOutgoingCallTo = parsedTo
+                                      , callHierarchyOutgoingCallFromRanges = parsedFromRanges }
       _ -> Left "Unrecognized CallHierarchyOutgoingCall value"
 
 instance FromJSON SemanticTokensParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            SemanticTokensParams { semanticTokensParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized SemanticTokensParams value"
 
 instance FromJSON SemanticTokens where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResultId <- lookupFromJSON "resultId" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            SemanticTokens { semanticTokensResultId = parsedResultId
+                           , semanticTokensData = parsedData }
       _ -> Left "Unrecognized SemanticTokens value"
 
 instance FromJSON SemanticTokensPartialResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedData <- lookupFromJSON "data" vs
+           return
+            SemanticTokensPartialResult { semanticTokensPartialResultData = parsedData }
       _ -> Left "Unrecognized SemanticTokensPartialResult value"
 
 instance FromJSON SemanticTokensRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return SemanticTokensRegistrationOptions {  }
       _ -> Left "Unrecognized SemanticTokensRegistrationOptions value"
 
 instance FromJSON SemanticTokensDeltaParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPreviousResultId <- lookupFromJSON "previousResultId" vs
+           return
+            SemanticTokensDeltaParams { semanticTokensDeltaParamsTextDocument = parsedTextDocument
+                                      , semanticTokensDeltaParamsPreviousResultId = parsedPreviousResultId }
       _ -> Left "Unrecognized SemanticTokensDeltaParams value"
 
 instance FromJSON SemanticTokensDelta where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResultId <- lookupFromJSON "resultId" vs
+           parsedEdits <- lookupFromJSON "edits" vs
+           return
+            SemanticTokensDelta { semanticTokensDeltaResultId = parsedResultId
+                                , semanticTokensDeltaEdits = parsedEdits }
       _ -> Left "Unrecognized SemanticTokensDelta value"
 
 instance FromJSON SemanticTokensDeltaPartialResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedEdits <- lookupFromJSON "edits" vs
+           return
+            SemanticTokensDeltaPartialResult { semanticTokensDeltaPartialResultEdits = parsedEdits }
       _ -> Left "Unrecognized SemanticTokensDeltaPartialResult value"
 
 instance FromJSON SemanticTokensRangeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRange <- lookupFromJSON "range" vs
+           return
+            SemanticTokensRangeParams { semanticTokensRangeParamsTextDocument = parsedTextDocument
+                                      , semanticTokensRangeParamsRange = parsedRange }
       _ -> Left "Unrecognized SemanticTokensRangeParams value"
 
 instance FromJSON ShowDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedExternal <- lookupFromJSON "external" vs
+           parsedTakeFocus <- lookupFromJSON "takeFocus" vs
+           parsedSelection <- lookupFromJSON "selection" vs
+           return
+            ShowDocumentParams { showDocumentParamsUri = parsedUri
+                               , showDocumentParamsExternal = parsedExternal
+                               , showDocumentParamsTakeFocus = parsedTakeFocus
+                               , showDocumentParamsSelection = parsedSelection }
       _ -> Left "Unrecognized ShowDocumentParams value"
 
 instance FromJSON ShowDocumentResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSuccess <- lookupFromJSON "success" vs
+           return
+            ShowDocumentResult { showDocumentResultSuccess = parsedSuccess }
       _ -> Left "Unrecognized ShowDocumentResult value"
 
 instance FromJSON LinkedEditingRangeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return LinkedEditingRangeParams {  }
       _ -> Left "Unrecognized LinkedEditingRangeParams value"
 
 instance FromJSON LinkedEditingRanges where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRanges <- lookupFromJSON "ranges" vs
+           parsedWordPattern <- lookupFromJSON "wordPattern" vs
+           return
+            LinkedEditingRanges { linkedEditingRangesRanges = parsedRanges
+                                , linkedEditingRangesWordPattern = parsedWordPattern }
       _ -> Left "Unrecognized LinkedEditingRanges value"
 
 instance FromJSON LinkedEditingRangeRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return LinkedEditingRangeRegistrationOptions {  }
       _ -> Left "Unrecognized LinkedEditingRangeRegistrationOptions value"
 
 instance FromJSON CreateFilesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFiles <- lookupFromJSON "files" vs
+           return CreateFilesParams { createFilesParamsFiles = parsedFiles }
       _ -> Left "Unrecognized CreateFilesParams value"
 
 instance FromJSON WorkspaceEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedChanges <- lookupFromJSON "changes" vs
+           parsedDocumentChanges <- lookupFromJSON "documentChanges" vs
+           parsedChangeAnnotations <- lookupFromJSON "changeAnnotations" vs
+           return
+            WorkspaceEdit { workspaceEditChanges = parsedChanges
+                          , workspaceEditDocumentChanges = parsedDocumentChanges
+                          , workspaceEditChangeAnnotations = parsedChangeAnnotations }
       _ -> Left "Unrecognized WorkspaceEdit value"
 
 instance FromJSON FileOperationRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFilters <- lookupFromJSON "filters" vs
+           return
+            FileOperationRegistrationOptions { fileOperationRegistrationOptionsFilters = parsedFilters }
       _ -> Left "Unrecognized FileOperationRegistrationOptions value"
 
 instance FromJSON RenameFilesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFiles <- lookupFromJSON "files" vs
+           return RenameFilesParams { renameFilesParamsFiles = parsedFiles }
       _ -> Left "Unrecognized RenameFilesParams value"
 
 instance FromJSON DeleteFilesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFiles <- lookupFromJSON "files" vs
+           return DeleteFilesParams { deleteFilesParamsFiles = parsedFiles }
       _ -> Left "Unrecognized DeleteFilesParams value"
 
 instance FromJSON MonikerParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return MonikerParams {  }
       _ -> Left "Unrecognized MonikerParams value"
 
 instance FromJSON Moniker where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedScheme <- lookupFromJSON "scheme" vs
+           parsedIdentifier <- lookupFromJSON "identifier" vs
+           parsedUnique <- lookupFromJSON "unique" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           return
+            Moniker { monikerScheme = parsedScheme
+                    , monikerIdentifier = parsedIdentifier
+                    , monikerUnique = parsedUnique
+                    , monikerKind = parsedKind }
       _ -> Left "Unrecognized Moniker value"
 
 instance FromJSON MonikerRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return MonikerRegistrationOptions {  }
       _ -> Left "Unrecognized MonikerRegistrationOptions value"
 
 instance FromJSON TypeHierarchyPrepareParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeHierarchyPrepareParams {  }
       _ -> Left "Unrecognized TypeHierarchyPrepareParams value"
 
 instance FromJSON TypeHierarchyItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedDetail <- lookupFromJSON "detail" vs
+           parsedUri <- lookupFromJSON "uri" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedSelectionRange <- lookupFromJSON "selectionRange" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            TypeHierarchyItem { typeHierarchyItemName = parsedName
+                              , typeHierarchyItemKind = parsedKind
+                              , typeHierarchyItemTags = parsedTags
+                              , typeHierarchyItemDetail = parsedDetail
+                              , typeHierarchyItemUri = parsedUri
+                              , typeHierarchyItemRange = parsedRange
+                              , typeHierarchyItemSelectionRange = parsedSelectionRange
+                              , typeHierarchyItemData = parsedData }
       _ -> Left "Unrecognized TypeHierarchyItem value"
 
 instance FromJSON TypeHierarchyRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeHierarchyRegistrationOptions {  }
       _ -> Left "Unrecognized TypeHierarchyRegistrationOptions value"
 
 instance FromJSON TypeHierarchySupertypesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItem <- lookupFromJSON "item" vs
+           return
+            TypeHierarchySupertypesParams { typeHierarchySupertypesParamsItem = parsedItem }
       _ -> Left "Unrecognized TypeHierarchySupertypesParams value"
 
 instance FromJSON TypeHierarchySubtypesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItem <- lookupFromJSON "item" vs
+           return
+            TypeHierarchySubtypesParams { typeHierarchySubtypesParamsItem = parsedItem }
       _ -> Left "Unrecognized TypeHierarchySubtypesParams value"
 
 instance FromJSON InlineValueParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedContext <- lookupFromJSON "context" vs
+           return
+            InlineValueParams { inlineValueParamsTextDocument = parsedTextDocument
+                              , inlineValueParamsRange = parsedRange
+                              , inlineValueParamsContext = parsedContext }
       _ -> Left "Unrecognized InlineValueParams value"
 
 instance FromJSON InlineValueRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return InlineValueRegistrationOptions {  }
       _ -> Left "Unrecognized InlineValueRegistrationOptions value"
 
 instance FromJSON InlayHintParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRange <- lookupFromJSON "range" vs
+           return
+            InlayHintParams { inlayHintParamsTextDocument = parsedTextDocument
+                            , inlayHintParamsRange = parsedRange }
       _ -> Left "Unrecognized InlayHintParams value"
 
 instance FromJSON InlayHint where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedPosition <- lookupFromJSON "position" vs
+           parsedLabel <- lookupFromJSON "label" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTextEdits <- lookupFromJSON "textEdits" vs
+           parsedTooltip <- lookupFromJSON "tooltip" vs
+           parsedPaddingLeft <- lookupFromJSON "paddingLeft" vs
+           parsedPaddingRight <- lookupFromJSON "paddingRight" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            InlayHint { inlayHintPosition = parsedPosition
+                      , inlayHintLabel = parsedLabel
+                      , inlayHintKind = parsedKind
+                      , inlayHintTextEdits = parsedTextEdits
+                      , inlayHintTooltip = parsedTooltip
+                      , inlayHintPaddingLeft = parsedPaddingLeft
+                      , inlayHintPaddingRight = parsedPaddingRight
+                      , inlayHintData = parsedData }
       _ -> Left "Unrecognized InlayHint value"
 
 instance FromJSON InlayHintRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return InlayHintRegistrationOptions {  }
       _ -> Left "Unrecognized InlayHintRegistrationOptions value"
 
 instance FromJSON DocumentDiagnosticParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedIdentifier <- lookupFromJSON "identifier" vs
+           parsedPreviousResultId <- lookupFromJSON "previousResultId" vs
+           return
+            DocumentDiagnosticParams { documentDiagnosticParamsTextDocument = parsedTextDocument
+                                     , documentDiagnosticParamsIdentifier = parsedIdentifier
+                                     , documentDiagnosticParamsPreviousResultId = parsedPreviousResultId }
       _ -> Left "Unrecognized DocumentDiagnosticParams value"
 
 instance FromJSON DocumentDiagnosticReportPartialResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRelatedDocuments <- lookupFromJSON "relatedDocuments" vs
+           return
+            DocumentDiagnosticReportPartialResult { documentDiagnosticReportPartialResultRelatedDocuments = parsedRelatedDocuments }
       _ -> Left "Unrecognized DocumentDiagnosticReportPartialResult value"
 
 instance FromJSON DiagnosticServerCancellationData where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRetriggerRequest <- lookupFromJSON "retriggerRequest" vs
+           return
+            DiagnosticServerCancellationData { diagnosticServerCancellationDataRetriggerRequest = parsedRetriggerRequest }
       _ -> Left "Unrecognized DiagnosticServerCancellationData value"
 
 instance FromJSON DiagnosticRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DiagnosticRegistrationOptions {  }
       _ -> Left "Unrecognized DiagnosticRegistrationOptions value"
 
 instance FromJSON WorkspaceDiagnosticParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIdentifier <- lookupFromJSON "identifier" vs
+           parsedPreviousResultIds <- lookupFromJSON "previousResultIds" vs
+           return
+            WorkspaceDiagnosticParams { workspaceDiagnosticParamsIdentifier = parsedIdentifier
+                                      , workspaceDiagnosticParamsPreviousResultIds = parsedPreviousResultIds }
       _ -> Left "Unrecognized WorkspaceDiagnosticParams value"
 
 instance FromJSON WorkspaceDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItems <- lookupFromJSON "items" vs
+           return
+            WorkspaceDiagnosticReport { workspaceDiagnosticReportItems = parsedItems }
       _ -> Left "Unrecognized WorkspaceDiagnosticReport value"
 
 instance FromJSON WorkspaceDiagnosticReportPartialResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedItems <- lookupFromJSON "items" vs
+           return
+            WorkspaceDiagnosticReportPartialResult { workspaceDiagnosticReportPartialResultItems = parsedItems }
       _ -> Left "Unrecognized WorkspaceDiagnosticReportPartialResult value"
 
 instance FromJSON DidOpenNotebookDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
+           parsedCellTextDocuments <- lookupFromJSON "cellTextDocuments" vs
+           return
+            DidOpenNotebookDocumentParams { didOpenNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
+                                          , didOpenNotebookDocumentParamsCellTextDocuments = parsedCellTextDocuments }
       _ -> Left "Unrecognized DidOpenNotebookDocumentParams value"
 
 instance FromJSON DidChangeNotebookDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
+           parsedChange <- lookupFromJSON "change" vs
+           return
+            DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
+                                            , didChangeNotebookDocumentParamsChange = parsedChange }
       _ -> Left "Unrecognized DidChangeNotebookDocumentParams value"
 
 instance FromJSON DidSaveNotebookDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
+           return
+            DidSaveNotebookDocumentParams { didSaveNotebookDocumentParamsNotebookDocument = parsedNotebookDocument }
       _ -> Left "Unrecognized DidSaveNotebookDocumentParams value"
 
 instance FromJSON DidCloseNotebookDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
+           parsedCellTextDocuments <- lookupFromJSON "cellTextDocuments" vs
+           return
+            DidCloseNotebookDocumentParams { didCloseNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
+                                           , didCloseNotebookDocumentParamsCellTextDocuments = parsedCellTextDocuments }
       _ -> Left "Unrecognized DidCloseNotebookDocumentParams value"
 
 instance FromJSON RegistrationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRegistrations <- lookupFromJSON "registrations" vs
+           return
+            RegistrationParams { registrationParamsRegistrations = parsedRegistrations }
       _ -> Left "Unrecognized RegistrationParams value"
 
 instance FromJSON UnregistrationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUnregisterations <- lookupFromJSON "unregisterations" vs
+           return
+            UnregistrationParams { unregistrationParamsUnregisterations = parsedUnregisterations }
       _ -> Left "Unrecognized UnregistrationParams value"
 
 instance FromJSON InitializeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return InitializeParams {  }
       _ -> Left "Unrecognized InitializeParams value"
 
 instance FromJSON InitializeResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedCapabilities <- lookupFromJSON "capabilities" vs
+           parsedServerInfo <- lookupFromJSON "serverInfo" vs
+           return
+            InitializeResult { initializeResultCapabilities = parsedCapabilities
+                             , initializeResultServerInfo = parsedServerInfo }
       _ -> Left "Unrecognized InitializeResult value"
 
 instance FromJSON InitializeError where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRetry <- lookupFromJSON "retry" vs
+           return InitializeError { initializeErrorRetry = parsedRetry }
       _ -> Left "Unrecognized InitializeError value"
 
 instance FromJSON InitializedParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return InitializedParams {  }
       _ -> Left "Unrecognized InitializedParams value"
 
 instance FromJSON DidChangeConfigurationParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSettings <- lookupFromJSON "settings" vs
+           return
+            DidChangeConfigurationParams { didChangeConfigurationParamsSettings = parsedSettings }
       _ -> Left "Unrecognized DidChangeConfigurationParams value"
 
 instance FromJSON DidChangeConfigurationRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSection <- lookupFromJSON "section" vs
+           return
+            DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection = parsedSection }
       _ -> Left "Unrecognized DidChangeConfigurationRegistrationOptions value"
 
 instance FromJSON ShowMessageParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedType <- lookupFromJSON "type" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           return
+            ShowMessageParams { showMessageParamsType = parsedType
+                              , showMessageParamsMessage = parsedMessage }
       _ -> Left "Unrecognized ShowMessageParams value"
 
 instance FromJSON ShowMessageRequestParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedType <- lookupFromJSON "type" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           parsedActions <- lookupFromJSON "actions" vs
+           return
+            ShowMessageRequestParams { showMessageRequestParamsType = parsedType
+                                     , showMessageRequestParamsMessage = parsedMessage
+                                     , showMessageRequestParamsActions = parsedActions }
       _ -> Left "Unrecognized ShowMessageRequestParams value"
 
 instance FromJSON MessageActionItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTitle <- lookupFromJSON "title" vs
+           return MessageActionItem { messageActionItemTitle = parsedTitle }
       _ -> Left "Unrecognized MessageActionItem value"
 
 instance FromJSON LogMessageParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedType <- lookupFromJSON "type" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           return
+            LogMessageParams { logMessageParamsType = parsedType
+                             , logMessageParamsMessage = parsedMessage }
       _ -> Left "Unrecognized LogMessageParams value"
 
 instance FromJSON DidOpenTextDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            DidOpenTextDocumentParams { didOpenTextDocumentParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized DidOpenTextDocumentParams value"
 
 instance FromJSON DidChangeTextDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedContentChanges <- lookupFromJSON "contentChanges" vs
+           return
+            DidChangeTextDocumentParams { didChangeTextDocumentParamsTextDocument = parsedTextDocument
+                                        , didChangeTextDocumentParamsContentChanges = parsedContentChanges }
       _ -> Left "Unrecognized DidChangeTextDocumentParams value"
 
 instance FromJSON TextDocumentChangeRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSyncKind <- lookupFromJSON "syncKind" vs
+           return
+            TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsSyncKind = parsedSyncKind }
       _ -> Left "Unrecognized TextDocumentChangeRegistrationOptions value"
 
 instance FromJSON DidCloseTextDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            DidCloseTextDocumentParams { didCloseTextDocumentParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized DidCloseTextDocumentParams value"
 
 instance FromJSON DidSaveTextDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedText <- lookupFromJSON "text" vs
+           return
+            DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument = parsedTextDocument
+                                      , didSaveTextDocumentParamsText = parsedText }
       _ -> Left "Unrecognized DidSaveTextDocumentParams value"
 
 instance FromJSON TextDocumentSaveRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TextDocumentSaveRegistrationOptions {  }
       _ -> Left "Unrecognized TextDocumentSaveRegistrationOptions value"
 
 instance FromJSON WillSaveTextDocumentParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedReason <- lookupFromJSON "reason" vs
+           return
+            WillSaveTextDocumentParams { willSaveTextDocumentParamsTextDocument = parsedTextDocument
+                                       , willSaveTextDocumentParamsReason = parsedReason }
       _ -> Left "Unrecognized WillSaveTextDocumentParams value"
 
 instance FromJSON TextEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedNewText <- lookupFromJSON "newText" vs
+           return
+            TextEdit { textEditRange = parsedRange
+                     , textEditNewText = parsedNewText }
       _ -> Left "Unrecognized TextEdit value"
 
 instance FromJSON DidChangeWatchedFilesParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedChanges <- lookupFromJSON "changes" vs
+           return
+            DidChangeWatchedFilesParams { didChangeWatchedFilesParamsChanges = parsedChanges }
       _ -> Left "Unrecognized DidChangeWatchedFilesParams value"
 
 instance FromJSON DidChangeWatchedFilesRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWatchers <- lookupFromJSON "watchers" vs
+           return
+            DidChangeWatchedFilesRegistrationOptions { didChangeWatchedFilesRegistrationOptionsWatchers = parsedWatchers }
       _ -> Left "Unrecognized DidChangeWatchedFilesRegistrationOptions value"
 
 instance FromJSON PublishDiagnosticsParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           parsedDiagnostics <- lookupFromJSON "diagnostics" vs
+           return
+            PublishDiagnosticsParams { publishDiagnosticsParamsUri = parsedUri
+                                     , publishDiagnosticsParamsVersion = parsedVersion
+                                     , publishDiagnosticsParamsDiagnostics = parsedDiagnostics }
       _ -> Left "Unrecognized PublishDiagnosticsParams value"
 
 instance FromJSON CompletionParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedContext <- lookupFromJSON "context" vs
+           return CompletionParams { completionParamsContext = parsedContext }
       _ -> Left "Unrecognized CompletionParams value"
 
 instance FromJSON CompletionItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedLabelDetails <- lookupFromJSON "labelDetails" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedDetail <- lookupFromJSON "detail" vs
+           parsedDocumentation <- lookupFromJSON "documentation" vs
+           parsedDeprecated <- lookupFromJSON "deprecated" vs
+           parsedPreselect <- lookupFromJSON "preselect" vs
+           parsedSortText <- lookupFromJSON "sortText" vs
+           parsedFilterText <- lookupFromJSON "filterText" vs
+           parsedInsertText <- lookupFromJSON "insertText" vs
+           parsedInsertTextFormat <- lookupFromJSON "insertTextFormat" vs
+           parsedInsertTextMode <- lookupFromJSON "insertTextMode" vs
+           parsedTextEdit <- lookupFromJSON "textEdit" vs
+           parsedTextEditText <- lookupFromJSON "textEditText" vs
+           parsedAdditionalTextEdits <- lookupFromJSON "additionalTextEdits"
+                                         vs
+           parsedCommitCharacters <- lookupFromJSON "commitCharacters" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            CompletionItem { completionItemLabel = parsedLabel
+                           , completionItemLabelDetails = parsedLabelDetails
+                           , completionItemKind = parsedKind
+                           , completionItemTags = parsedTags
+                           , completionItemDetail = parsedDetail
+                           , completionItemDocumentation = parsedDocumentation
+                           , completionItemDeprecated = parsedDeprecated
+                           , completionItemPreselect = parsedPreselect
+                           , completionItemSortText = parsedSortText
+                           , completionItemFilterText = parsedFilterText
+                           , completionItemInsertText = parsedInsertText
+                           , completionItemInsertTextFormat = parsedInsertTextFormat
+                           , completionItemInsertTextMode = parsedInsertTextMode
+                           , completionItemTextEdit = parsedTextEdit
+                           , completionItemTextEditText = parsedTextEditText
+                           , completionItemAdditionalTextEdits = parsedAdditionalTextEdits
+                           , completionItemCommitCharacters = parsedCommitCharacters
+                           , completionItemCommand = parsedCommand
+                           , completionItemData = parsedData }
       _ -> Left "Unrecognized CompletionItem value"
 
 instance FromJSON CompletionList where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIsIncomplete <- lookupFromJSON "isIncomplete" vs
+           parsedItemDefaults <- lookupFromJSON "itemDefaults" vs
+           parsedItems <- lookupFromJSON "items" vs
+           return
+            CompletionList { completionListIsIncomplete = parsedIsIncomplete
+                           , completionListItemDefaults = parsedItemDefaults
+                           , completionListItems = parsedItems }
       _ -> Left "Unrecognized CompletionList value"
 
 instance FromJSON CompletionRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CompletionRegistrationOptions {  }
       _ -> Left "Unrecognized CompletionRegistrationOptions value"
 
 instance FromJSON HoverParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return HoverParams {  }
       _ -> Left "Unrecognized HoverParams value"
 
 instance FromJSON Hover where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedContents <- lookupFromJSON "contents" vs
+           parsedRange <- lookupFromJSON "range" vs
+           return
+            Hover { hoverContents = parsedContents, hoverRange = parsedRange }
       _ -> Left "Unrecognized Hover value"
 
 instance FromJSON HoverRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return HoverRegistrationOptions {  }
       _ -> Left "Unrecognized HoverRegistrationOptions value"
 
 instance FromJSON SignatureHelpParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedContext <- lookupFromJSON "context" vs
+           return
+            SignatureHelpParams { signatureHelpParamsContext = parsedContext }
       _ -> Left "Unrecognized SignatureHelpParams value"
 
 instance FromJSON SignatureHelp where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSignatures <- lookupFromJSON "signatures" vs
+           parsedActiveSignature <- lookupFromJSON "activeSignature" vs
+           parsedActiveParameter <- lookupFromJSON "activeParameter" vs
+           return
+            SignatureHelp { signatureHelpSignatures = parsedSignatures
+                          , signatureHelpActiveSignature = parsedActiveSignature
+                          , signatureHelpActiveParameter = parsedActiveParameter }
       _ -> Left "Unrecognized SignatureHelp value"
 
 instance FromJSON SignatureHelpRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return SignatureHelpRegistrationOptions {  }
       _ -> Left "Unrecognized SignatureHelpRegistrationOptions value"
 
 instance FromJSON DefinitionParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DefinitionParams {  }
       _ -> Left "Unrecognized DefinitionParams value"
 
 instance FromJSON DefinitionRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DefinitionRegistrationOptions {  }
       _ -> Left "Unrecognized DefinitionRegistrationOptions value"
 
 instance FromJSON ReferenceParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedContext <- lookupFromJSON "context" vs
+           return ReferenceParams { referenceParamsContext = parsedContext }
       _ -> Left "Unrecognized ReferenceParams value"
 
 instance FromJSON ReferenceRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ReferenceRegistrationOptions {  }
       _ -> Left "Unrecognized ReferenceRegistrationOptions value"
 
 instance FromJSON DocumentHighlightParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentHighlightParams {  }
       _ -> Left "Unrecognized DocumentHighlightParams value"
 
 instance FromJSON DocumentHighlight where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           return
+            DocumentHighlight { documentHighlightRange = parsedRange
+                              , documentHighlightKind = parsedKind }
       _ -> Left "Unrecognized DocumentHighlight value"
 
 instance FromJSON DocumentHighlightRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentHighlightRegistrationOptions {  }
       _ -> Left "Unrecognized DocumentHighlightRegistrationOptions value"
 
 instance FromJSON DocumentSymbolParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            DocumentSymbolParams { documentSymbolParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized DocumentSymbolParams value"
 
 instance FromJSON SymbolInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDeprecated <- lookupFromJSON "deprecated" vs
+           parsedLocation <- lookupFromJSON "location" vs
+           return
+            SymbolInformation { symbolInformationDeprecated = parsedDeprecated
+                              , symbolInformationLocation = parsedLocation }
       _ -> Left "Unrecognized SymbolInformation value"
 
 instance FromJSON DocumentSymbol where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedDetail <- lookupFromJSON "detail" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedDeprecated <- lookupFromJSON "deprecated" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedSelectionRange <- lookupFromJSON "selectionRange" vs
+           parsedChildren <- lookupFromJSON "children" vs
+           return
+            DocumentSymbol { documentSymbolName = parsedName
+                           , documentSymbolDetail = parsedDetail
+                           , documentSymbolKind = parsedKind
+                           , documentSymbolTags = parsedTags
+                           , documentSymbolDeprecated = parsedDeprecated
+                           , documentSymbolRange = parsedRange
+                           , documentSymbolSelectionRange = parsedSelectionRange
+                           , documentSymbolChildren = parsedChildren }
       _ -> Left "Unrecognized DocumentSymbol value"
 
 instance FromJSON DocumentSymbolRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentSymbolRegistrationOptions {  }
       _ -> Left "Unrecognized DocumentSymbolRegistrationOptions value"
 
 instance FromJSON CodeActionParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedContext <- lookupFromJSON "context" vs
+           return
+            CodeActionParams { codeActionParamsTextDocument = parsedTextDocument
+                             , codeActionParamsRange = parsedRange
+                             , codeActionParamsContext = parsedContext }
       _ -> Left "Unrecognized CodeActionParams value"
 
 instance FromJSON Command where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTitle <- lookupFromJSON "title" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           parsedArguments <- lookupFromJSON "arguments" vs
+           return
+            Command { commandTitle = parsedTitle
+                    , commandCommand = parsedCommand
+                    , commandArguments = parsedArguments }
       _ -> Left "Unrecognized Command value"
 
 instance FromJSON CodeAction where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTitle <- lookupFromJSON "title" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedDiagnostics <- lookupFromJSON "diagnostics" vs
+           parsedIsPreferred <- lookupFromJSON "isPreferred" vs
+           parsedDisabled <- lookupFromJSON "disabled" vs
+           parsedEdit <- lookupFromJSON "edit" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            CodeAction { codeActionTitle = parsedTitle
+                       , codeActionKind = parsedKind
+                       , codeActionDiagnostics = parsedDiagnostics
+                       , codeActionIsPreferred = parsedIsPreferred
+                       , codeActionDisabled = parsedDisabled
+                       , codeActionEdit = parsedEdit
+                       , codeActionCommand = parsedCommand
+                       , codeActionData = parsedData }
       _ -> Left "Unrecognized CodeAction value"
 
 instance FromJSON CodeActionRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CodeActionRegistrationOptions {  }
       _ -> Left "Unrecognized CodeActionRegistrationOptions value"
 
 instance FromJSON WorkspaceSymbolParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedQuery <- lookupFromJSON "query" vs
+           return
+            WorkspaceSymbolParams { workspaceSymbolParamsQuery = parsedQuery }
       _ -> Left "Unrecognized WorkspaceSymbolParams value"
 
 instance FromJSON WorkspaceSymbol where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLocation <- lookupFromJSON "location" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            WorkspaceSymbol { workspaceSymbolLocation = parsedLocation
+                            , workspaceSymbolData = parsedData }
       _ -> Left "Unrecognized WorkspaceSymbol value"
 
 instance FromJSON WorkspaceSymbolRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return WorkspaceSymbolRegistrationOptions {  }
       _ -> Left "Unrecognized WorkspaceSymbolRegistrationOptions value"
 
 instance FromJSON CodeLensParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            CodeLensParams { codeLensParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized CodeLensParams value"
 
 instance FromJSON CodeLens where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            CodeLens { codeLensRange = parsedRange
+                     , codeLensCommand = parsedCommand
+                     , codeLensData = parsedData }
       _ -> Left "Unrecognized CodeLens value"
 
 instance FromJSON CodeLensRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CodeLensRegistrationOptions {  }
       _ -> Left "Unrecognized CodeLensRegistrationOptions value"
 
 instance FromJSON DocumentLinkParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           return
+            DocumentLinkParams { documentLinkParamsTextDocument = parsedTextDocument }
       _ -> Left "Unrecognized DocumentLinkParams value"
 
 instance FromJSON DocumentLink where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedTarget <- lookupFromJSON "target" vs
+           parsedTooltip <- lookupFromJSON "tooltip" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            DocumentLink { documentLinkRange = parsedRange
+                         , documentLinkTarget = parsedTarget
+                         , documentLinkTooltip = parsedTooltip
+                         , documentLinkData = parsedData }
       _ -> Left "Unrecognized DocumentLink value"
 
 instance FromJSON DocumentLinkRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentLinkRegistrationOptions {  }
       _ -> Left "Unrecognized DocumentLinkRegistrationOptions value"
 
 instance FromJSON DocumentFormattingParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            DocumentFormattingParams { documentFormattingParamsTextDocument = parsedTextDocument
+                                     , documentFormattingParamsOptions = parsedOptions }
       _ -> Left "Unrecognized DocumentFormattingParams value"
 
 instance FromJSON DocumentFormattingRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentFormattingRegistrationOptions {  }
       _ -> Left "Unrecognized DocumentFormattingRegistrationOptions value"
 
 instance FromJSON DocumentRangeFormattingParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            DocumentRangeFormattingParams { documentRangeFormattingParamsTextDocument = parsedTextDocument
+                                          , documentRangeFormattingParamsRange = parsedRange
+                                          , documentRangeFormattingParamsOptions = parsedOptions }
       _ -> Left "Unrecognized DocumentRangeFormattingParams value"
 
 instance FromJSON DocumentRangeFormattingRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentRangeFormattingRegistrationOptions {  }
       _ ->
         Left "Unrecognized DocumentRangeFormattingRegistrationOptions value"
 
 instance FromJSON DocumentOnTypeFormattingParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           parsedCh <- lookupFromJSON "ch" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument = parsedTextDocument
+                                           , documentOnTypeFormattingParamsPosition = parsedPosition
+                                           , documentOnTypeFormattingParamsCh = parsedCh
+                                           , documentOnTypeFormattingParamsOptions = parsedOptions }
       _ -> Left "Unrecognized DocumentOnTypeFormattingParams value"
 
 instance FromJSON DocumentOnTypeFormattingRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentOnTypeFormattingRegistrationOptions {  }
       _ ->
         Left "Unrecognized DocumentOnTypeFormattingRegistrationOptions value"
 
 instance FromJSON RenameParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           parsedNewName <- lookupFromJSON "newName" vs
+           return
+            RenameParams { renameParamsTextDocument = parsedTextDocument
+                         , renameParamsPosition = parsedPosition
+                         , renameParamsNewName = parsedNewName }
       _ -> Left "Unrecognized RenameParams value"
 
 instance FromJSON RenameRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return RenameRegistrationOptions {  }
       _ -> Left "Unrecognized RenameRegistrationOptions value"
 
 instance FromJSON PrepareRenameParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return PrepareRenameParams {  }
       _ -> Left "Unrecognized PrepareRenameParams value"
 
 instance FromJSON ExecuteCommandParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedCommand <- lookupFromJSON "command" vs
+           parsedArguments <- lookupFromJSON "arguments" vs
+           return
+            ExecuteCommandParams { executeCommandParamsCommand = parsedCommand
+                                 , executeCommandParamsArguments = parsedArguments }
       _ -> Left "Unrecognized ExecuteCommandParams value"
 
 instance FromJSON ExecuteCommandRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ExecuteCommandRegistrationOptions {  }
       _ -> Left "Unrecognized ExecuteCommandRegistrationOptions value"
 
 instance FromJSON ApplyWorkspaceEditParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedEdit <- lookupFromJSON "edit" vs
+           return
+            ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel = parsedLabel
+                                     , applyWorkspaceEditParamsEdit = parsedEdit }
       _ -> Left "Unrecognized ApplyWorkspaceEditParams value"
 
 instance FromJSON ApplyWorkspaceEditResult where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedApplied <- lookupFromJSON "applied" vs
+           parsedFailureReason <- lookupFromJSON "failureReason" vs
+           parsedFailedChange <- lookupFromJSON "failedChange" vs
+           return
+            ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied = parsedApplied
+                                     , applyWorkspaceEditResultFailureReason = parsedFailureReason
+                                     , applyWorkspaceEditResultFailedChange = parsedFailedChange }
       _ -> Left "Unrecognized ApplyWorkspaceEditResult value"
 
 instance FromJSON WorkDoneProgressBegin where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedTitle <- lookupFromJSON "title" vs
+           parsedCancellable <- lookupFromJSON "cancellable" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           parsedPercentage <- lookupFromJSON "percentage" vs
+           return
+            WorkDoneProgressBegin { workDoneProgressBeginKind = parsedKind
+                                  , workDoneProgressBeginTitle = parsedTitle
+                                  , workDoneProgressBeginCancellable = parsedCancellable
+                                  , workDoneProgressBeginMessage = parsedMessage
+                                  , workDoneProgressBeginPercentage = parsedPercentage }
       _ -> Left "Unrecognized WorkDoneProgressBegin value"
 
 instance FromJSON WorkDoneProgressReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedCancellable <- lookupFromJSON "cancellable" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           parsedPercentage <- lookupFromJSON "percentage" vs
+           return
+            WorkDoneProgressReport { workDoneProgressReportKind = parsedKind
+                                   , workDoneProgressReportCancellable = parsedCancellable
+                                   , workDoneProgressReportMessage = parsedMessage
+                                   , workDoneProgressReportPercentage = parsedPercentage }
       _ -> Left "Unrecognized WorkDoneProgressReport value"
 
 instance FromJSON WorkDoneProgressEnd where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           return
+            WorkDoneProgressEnd { workDoneProgressEndKind = parsedKind
+                                , workDoneProgressEndMessage = parsedMessage }
       _ -> Left "Unrecognized WorkDoneProgressEnd value"
 
 instance FromJSON SetTraceParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedValue <- lookupFromJSON "value" vs
+           return SetTraceParams { setTraceParamsValue = parsedValue }
       _ -> Left "Unrecognized SetTraceParams value"
 
 instance FromJSON LogTraceParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedMessage <- lookupFromJSON "message" vs
+           parsedVerbose <- lookupFromJSON "verbose" vs
+           return
+            LogTraceParams { logTraceParamsMessage = parsedMessage
+                           , logTraceParamsVerbose = parsedVerbose }
       _ -> Left "Unrecognized LogTraceParams value"
 
 instance FromJSON CancelParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedId <- lookupFromJSON "id" vs
+           return CancelParams { cancelParamsId = parsedId }
       _ -> Left "Unrecognized CancelParams value"
 
 instance FromJSON ProgressParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedToken <- lookupFromJSON "token" vs
+           parsedValue <- lookupFromJSON "value" vs
+           return
+            ProgressParams { progressParamsToken = parsedToken
+                           , progressParamsValue = parsedValue }
       _ -> Left "Unrecognized ProgressParams value"
 
 instance FromJSON TextDocumentPositionParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           return
+            TextDocumentPositionParams { textDocumentPositionParamsTextDocument = parsedTextDocument
+                                       , textDocumentPositionParamsPosition = parsedPosition }
       _ -> Left "Unrecognized TextDocumentPositionParams value"
 
 instance FromJSON WorkDoneProgressParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWorkDoneToken <- lookupFromJSON "workDoneToken" vs
+           return
+            WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left "Unrecognized WorkDoneProgressParams value"
 
 instance FromJSON LocationLink where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedOriginSelectionRange <- lookupFromJSON "originSelectionRange"
+                                          vs
+           parsedTargetUri <- lookupFromJSON "targetUri" vs
+           parsedTargetRange <- lookupFromJSON "targetRange" vs
+           parsedTargetSelectionRange <- lookupFromJSON "targetSelectionRange"
+                                          vs
+           return
+            LocationLink { locationLinkOriginSelectionRange = parsedOriginSelectionRange
+                         , locationLinkTargetUri = parsedTargetUri
+                         , locationLinkTargetRange = parsedTargetRange
+                         , locationLinkTargetSelectionRange = parsedTargetSelectionRange }
       _ -> Left "Unrecognized LocationLink value"
 
 instance FromJSON Range where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedStart <- lookupFromJSON "start" vs
+           parsedEnd <- lookupFromJSON "end" vs
+           return Range { rangeStart = parsedStart, rangeEnd = parsedEnd }
       _ -> Left "Unrecognized Range value"
 
 instance FromJSON ImplementationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ImplementationOptions {  }
       _ -> Left "Unrecognized ImplementationOptions value"
 
 instance FromJSON StaticRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedId <- lookupFromJSON "id" vs
+           return
+            StaticRegistrationOptions { staticRegistrationOptionsId = parsedId }
       _ -> Left "Unrecognized StaticRegistrationOptions value"
 
 instance FromJSON TypeDefinitionOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeDefinitionOptions {  }
       _ -> Left "Unrecognized TypeDefinitionOptions value"
 
 instance FromJSON WorkspaceFoldersChangeEvent where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedAdded <- lookupFromJSON "added" vs
+           parsedRemoved <- lookupFromJSON "removed" vs
+           return
+            WorkspaceFoldersChangeEvent { workspaceFoldersChangeEventAdded = parsedAdded
+                                        , workspaceFoldersChangeEventRemoved = parsedRemoved }
       _ -> Left "Unrecognized WorkspaceFoldersChangeEvent value"
 
 instance FromJSON ConfigurationItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedScopeUri <- lookupFromJSON "scopeUri" vs
+           parsedSection <- lookupFromJSON "section" vs
+           return
+            ConfigurationItem { configurationItemScopeUri = parsedScopeUri
+                              , configurationItemSection = parsedSection }
       _ -> Left "Unrecognized ConfigurationItem value"
 
 instance FromJSON TextDocumentIdentifier where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           return
+            TextDocumentIdentifier { textDocumentIdentifierUri = parsedUri }
       _ -> Left "Unrecognized TextDocumentIdentifier value"
 
 instance FromJSON Color where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRed <- lookupFromJSON "red" vs
+           parsedGreen <- lookupFromJSON "green" vs
+           parsedBlue <- lookupFromJSON "blue" vs
+           parsedAlpha <- lookupFromJSON "alpha" vs
+           return
+            Color { colorRed = parsedRed
+                  , colorGreen = parsedGreen
+                  , colorBlue = parsedBlue
+                  , colorAlpha = parsedAlpha }
       _ -> Left "Unrecognized Color value"
 
 instance FromJSON DocumentColorOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentColorOptions {  }
       _ -> Left "Unrecognized DocumentColorOptions value"
 
 instance FromJSON FoldingRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return FoldingRangeOptions {  }
       _ -> Left "Unrecognized FoldingRangeOptions value"
 
 instance FromJSON DeclarationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DeclarationOptions {  }
       _ -> Left "Unrecognized DeclarationOptions value"
 
 instance FromJSON Position where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLine <- lookupFromJSON "line" vs
+           parsedCharacter <- lookupFromJSON "character" vs
+           return
+            Position { positionLine = parsedLine
+                     , positionCharacter = parsedCharacter }
       _ -> Left "Unrecognized Position value"
 
 instance FromJSON SelectionRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return SelectionRangeOptions {  }
       _ -> Left "Unrecognized SelectionRangeOptions value"
 
 instance FromJSON CallHierarchyOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return CallHierarchyOptions {  }
       _ -> Left "Unrecognized CallHierarchyOptions value"
 
 instance FromJSON SemanticTokensOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLegend <- lookupFromJSON "legend" vs
+           parsedRange <- lookupFromJSON "range" vs
+           parsedFull <- lookupFromJSON "full" vs
+           return
+            SemanticTokensOptions { semanticTokensOptionsLegend = parsedLegend
+                                  , semanticTokensOptionsRange = parsedRange
+                                  , semanticTokensOptionsFull = parsedFull }
       _ -> Left "Unrecognized SemanticTokensOptions value"
 
 instance FromJSON SemanticTokensEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedStart <- lookupFromJSON "start" vs
+           parsedDeleteCount <- lookupFromJSON "deleteCount" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            SemanticTokensEdit { semanticTokensEditStart = parsedStart
+                               , semanticTokensEditDeleteCount = parsedDeleteCount
+                               , semanticTokensEditData = parsedData }
       _ -> Left "Unrecognized SemanticTokensEdit value"
 
 instance FromJSON LinkedEditingRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return LinkedEditingRangeOptions {  }
       _ -> Left "Unrecognized LinkedEditingRangeOptions value"
 
 instance FromJSON FileCreate where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           return FileCreate { fileCreateUri = parsedUri }
       _ -> Left "Unrecognized FileCreate value"
 
 instance FromJSON TextDocumentEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedEdits <- lookupFromJSON "edits" vs
+           return
+            TextDocumentEdit { textDocumentEditTextDocument = parsedTextDocument
+                             , textDocumentEditEdits = parsedEdits }
       _ -> Left "Unrecognized TextDocumentEdit value"
 
 instance FromJSON CreateFile where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedUri <- lookupFromJSON "uri" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            CreateFile { createFileKind = parsedKind
+                       , createFileUri = parsedUri
+                       , createFileOptions = parsedOptions }
       _ -> Left "Unrecognized CreateFile value"
 
 instance FromJSON RenameFile where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedOldUri <- lookupFromJSON "oldUri" vs
+           parsedNewUri <- lookupFromJSON "newUri" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            RenameFile { renameFileKind = parsedKind
+                       , renameFileOldUri = parsedOldUri
+                       , renameFileNewUri = parsedNewUri
+                       , renameFileOptions = parsedOptions }
       _ -> Left "Unrecognized RenameFile value"
 
 instance FromJSON DeleteFile where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedUri <- lookupFromJSON "uri" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            DeleteFile { deleteFileKind = parsedKind
+                       , deleteFileUri = parsedUri
+                       , deleteFileOptions = parsedOptions }
       _ -> Left "Unrecognized DeleteFile value"
 
 instance FromJSON ChangeAnnotation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedNeedsConfirmation <- lookupFromJSON "needsConfirmation" vs
+           parsedDescription <- lookupFromJSON "description" vs
+           return
+            ChangeAnnotation { changeAnnotationLabel = parsedLabel
+                             , changeAnnotationNeedsConfirmation = parsedNeedsConfirmation
+                             , changeAnnotationDescription = parsedDescription }
       _ -> Left "Unrecognized ChangeAnnotation value"
 
 instance FromJSON FileOperationFilter where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedScheme <- lookupFromJSON "scheme" vs
+           parsedPattern <- lookupFromJSON "pattern" vs
+           return
+            FileOperationFilter { fileOperationFilterScheme = parsedScheme
+                                , fileOperationFilterPattern = parsedPattern }
       _ -> Left "Unrecognized FileOperationFilter value"
 
 instance FromJSON FileRename where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedOldUri <- lookupFromJSON "oldUri" vs
+           parsedNewUri <- lookupFromJSON "newUri" vs
+           return
+            FileRename { fileRenameOldUri = parsedOldUri
+                       , fileRenameNewUri = parsedNewUri }
       _ -> Left "Unrecognized FileRename value"
 
 instance FromJSON FileDelete where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           return FileDelete { fileDeleteUri = parsedUri }
       _ -> Left "Unrecognized FileDelete value"
 
 instance FromJSON MonikerOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return MonikerOptions {  }
       _ -> Left "Unrecognized MonikerOptions value"
 
 instance FromJSON TypeHierarchyOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return TypeHierarchyOptions {  }
       _ -> Left "Unrecognized TypeHierarchyOptions value"
 
 instance FromJSON InlineValueContext where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFrameId <- lookupFromJSON "frameId" vs
+           parsedStoppedLocation <- lookupFromJSON "stoppedLocation" vs
+           return
+            InlineValueContext { inlineValueContextFrameId = parsedFrameId
+                               , inlineValueContextStoppedLocation = parsedStoppedLocation }
       _ -> Left "Unrecognized InlineValueContext value"
 
 instance FromJSON InlineValueText where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedText <- lookupFromJSON "text" vs
+           return
+            InlineValueText { inlineValueTextRange = parsedRange
+                            , inlineValueTextText = parsedText }
       _ -> Left "Unrecognized InlineValueText value"
 
 instance FromJSON InlineValueVariableLookup where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedVariableName <- lookupFromJSON "variableName" vs
+           parsedCaseSensitiveLookup <- lookupFromJSON "caseSensitiveLookup"
+                                         vs
+           return
+            InlineValueVariableLookup { inlineValueVariableLookupRange = parsedRange
+                                      , inlineValueVariableLookupVariableName = parsedVariableName
+                                      , inlineValueVariableLookupCaseSensitiveLookup = parsedCaseSensitiveLookup }
       _ -> Left "Unrecognized InlineValueVariableLookup value"
 
 instance FromJSON InlineValueEvaluatableExpression where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedExpression <- lookupFromJSON "expression" vs
+           return
+            InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange = parsedRange
+                                             , inlineValueEvaluatableExpressionExpression = parsedExpression }
       _ -> Left "Unrecognized InlineValueEvaluatableExpression value"
 
 instance FromJSON InlineValueOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return InlineValueOptions {  }
       _ -> Left "Unrecognized InlineValueOptions value"
 
 instance FromJSON InlayHintLabelPart where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedValue <- lookupFromJSON "value" vs
+           parsedTooltip <- lookupFromJSON "tooltip" vs
+           parsedLocation <- lookupFromJSON "location" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           return
+            InlayHintLabelPart { inlayHintLabelPartValue = parsedValue
+                               , inlayHintLabelPartTooltip = parsedTooltip
+                               , inlayHintLabelPartLocation = parsedLocation
+                               , inlayHintLabelPartCommand = parsedCommand }
       _ -> Left "Unrecognized InlayHintLabelPart value"
 
 instance FromJSON MarkupContent where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedValue <- lookupFromJSON "value" vs
+           return
+            MarkupContent { markupContentKind = parsedKind
+                          , markupContentValue = parsedValue }
       _ -> Left "Unrecognized MarkupContent value"
 
 instance FromJSON InlayHintOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           return
+            InlayHintOptions { inlayHintOptionsResolveProvider = parsedResolveProvider }
       _ -> Left "Unrecognized InlayHintOptions value"
 
 instance FromJSON RelatedFullDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRelatedDocuments <- lookupFromJSON "relatedDocuments" vs
+           return
+            RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
       _ -> Left "Unrecognized RelatedFullDocumentDiagnosticReport value"
 
 instance FromJSON RelatedUnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRelatedDocuments <- lookupFromJSON "relatedDocuments" vs
+           return
+            RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
       _ -> Left "Unrecognized RelatedUnchangedDocumentDiagnosticReport value"
 
 instance FromJSON FullDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupFromJSON "resultId" vs
+           parsedItems <- lookupFromJSON "items" vs
+           return
+            FullDocumentDiagnosticReport { fullDocumentDiagnosticReportKind = parsedKind
+                                         , fullDocumentDiagnosticReportResultId = parsedResultId
+                                         , fullDocumentDiagnosticReportItems = parsedItems }
       _ -> Left "Unrecognized FullDocumentDiagnosticReport value"
 
 instance FromJSON UnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupFromJSON "resultId" vs
+           return
+            UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind = parsedKind
+                                              , unchangedDocumentDiagnosticReportResultId = parsedResultId }
       _ -> Left "Unrecognized UnchangedDocumentDiagnosticReport value"
 
 instance FromJSON DiagnosticOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIdentifier <- lookupFromJSON "identifier" vs
+           parsedInterFileDependencies <- lookupFromJSON
+                                           "interFileDependencies"
+                                           vs
+           parsedWorkspaceDiagnostics <- lookupFromJSON "workspaceDiagnostics"
+                                          vs
+           return
+            DiagnosticOptions { diagnosticOptionsIdentifier = parsedIdentifier
+                              , diagnosticOptionsInterFileDependencies = parsedInterFileDependencies
+                              , diagnosticOptionsWorkspaceDiagnostics = parsedWorkspaceDiagnostics }
       _ -> Left "Unrecognized DiagnosticOptions value"
 
 instance FromJSON PreviousResultId where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedValue <- lookupFromJSON "value" vs
+           return
+            PreviousResultId { previousResultIdUri = parsedUri
+                             , previousResultIdValue = parsedValue }
       _ -> Left "Unrecognized PreviousResultId value"
 
 instance FromJSON NotebookDocument where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedNotebookType <- lookupFromJSON "notebookType" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           parsedMetadata <- lookupFromJSON "metadata" vs
+           parsedCells <- lookupFromJSON "cells" vs
+           return
+            NotebookDocument { notebookDocumentUri = parsedUri
+                             , notebookDocumentNotebookType = parsedNotebookType
+                             , notebookDocumentVersion = parsedVersion
+                             , notebookDocumentMetadata = parsedMetadata
+                             , notebookDocumentCells = parsedCells }
       _ -> Left "Unrecognized NotebookDocument value"
 
 instance FromJSON TextDocumentItem where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedLanguageId <- lookupFromJSON "languageId" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           parsedText <- lookupFromJSON "text" vs
+           return
+            TextDocumentItem { textDocumentItemUri = parsedUri
+                             , textDocumentItemLanguageId = parsedLanguageId
+                             , textDocumentItemVersion = parsedVersion
+                             , textDocumentItemText = parsedText }
       _ -> Left "Unrecognized TextDocumentItem value"
 
 instance FromJSON VersionedNotebookDocumentIdentifier where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedVersion <- lookupFromJSON "version" vs
+           parsedUri <- lookupFromJSON "uri" vs
+           return
+            VersionedNotebookDocumentIdentifier { versionedNotebookDocumentIdentifierVersion = parsedVersion
+                                                , versionedNotebookDocumentIdentifierUri = parsedUri }
       _ -> Left "Unrecognized VersionedNotebookDocumentIdentifier value"
 
 instance FromJSON NotebookDocumentChangeEvent where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedMetadata <- lookupFromJSON "metadata" vs
+           parsedCells <- lookupFromJSON "cells" vs
+           return
+            NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata = parsedMetadata
+                                        , notebookDocumentChangeEventCells = parsedCells }
       _ -> Left "Unrecognized NotebookDocumentChangeEvent value"
 
 instance FromJSON NotebookDocumentIdentifier where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           return
+            NotebookDocumentIdentifier { notebookDocumentIdentifierUri = parsedUri }
       _ -> Left "Unrecognized NotebookDocumentIdentifier value"
 
 instance FromJSON Registration where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedId <- lookupFromJSON "id" vs
+           parsedMethod <- lookupFromJSON "method" vs
+           parsedRegisterOptions <- lookupFromJSON "registerOptions" vs
+           return
+            Registration { registrationId = parsedId
+                         , registrationMethod = parsedMethod
+                         , registrationRegisterOptions = parsedRegisterOptions }
       _ -> Left "Unrecognized Registration value"
 
 instance FromJSON Unregistration where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedId <- lookupFromJSON "id" vs
+           parsedMethod <- lookupFromJSON "method" vs
+           return
+            Unregistration { unregistrationId = parsedId
+                           , unregistrationMethod = parsedMethod }
       _ -> Left "Unrecognized Unregistration value"
 
 instance FromJSON BaseInitializeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedProcessId <- lookupFromJSON "processId" vs
+           parsedClientInfo <- lookupFromJSON "clientInfo" vs
+           parsedLocale <- lookupFromJSON "locale" vs
+           parsedRootPath <- lookupFromJSON "rootPath" vs
+           parsedRootUri <- lookupFromJSON "rootUri" vs
+           parsedCapabilities <- lookupFromJSON "capabilities" vs
+           parsedInitializationOptions <- lookupFromJSON
+                                           "initializationOptions"
+                                           vs
+           parsedTrace <- lookupFromJSON "trace" vs
+           return
+            BaseInitializeParams { baseInitializeParamsProcessId = parsedProcessId
+                                 , baseInitializeParamsClientInfo = parsedClientInfo
+                                 , baseInitializeParamsLocale = parsedLocale
+                                 , baseInitializeParamsRootPath = parsedRootPath
+                                 , baseInitializeParamsRootUri = parsedRootUri
+                                 , baseInitializeParamsCapabilities = parsedCapabilities
+                                 , baseInitializeParamsInitializationOptions = parsedInitializationOptions
+                                 , baseInitializeParamsTrace = parsedTrace }
       _ -> Left "Unrecognized BaseInitializeParams value"
 
 instance FromJSON WorkspaceFoldersInitializeParams where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWorkspaceFolders <- lookupFromJSON "workspaceFolders" vs
+           return
+            WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders = parsedWorkspaceFolders }
       _ -> Left "Unrecognized WorkspaceFoldersInitializeParams value"
 
 instance FromJSON ServerCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedPositionEncoding <- lookupFromJSON "positionEncoding" vs
+           parsedTextDocumentSync <- lookupFromJSON "textDocumentSync" vs
+           parsedNotebookDocumentSync <- lookupFromJSON "notebookDocumentSync"
+                                          vs
+           parsedCompletionProvider <- lookupFromJSON "completionProvider" vs
+           parsedHoverProvider <- lookupFromJSON "hoverProvider" vs
+           parsedSignatureHelpProvider <- lookupFromJSON
+                                           "signatureHelpProvider"
+                                           vs
+           parsedDeclarationProvider <- lookupFromJSON "declarationProvider"
+                                         vs
+           parsedDefinitionProvider <- lookupFromJSON "definitionProvider" vs
+           parsedTypeDefinitionProvider <- lookupFromJSON
+                                            "typeDefinitionProvider"
+                                            vs
+           parsedImplementationProvider <- lookupFromJSON
+                                            "implementationProvider"
+                                            vs
+           parsedReferencesProvider <- lookupFromJSON "referencesProvider" vs
+           parsedDocumentHighlightProvider <- lookupFromJSON
+                                               "documentHighlightProvider"
+                                               vs
+           parsedDocumentSymbolProvider <- lookupFromJSON
+                                            "documentSymbolProvider"
+                                            vs
+           parsedCodeActionProvider <- lookupFromJSON "codeActionProvider" vs
+           parsedCodeLensProvider <- lookupFromJSON "codeLensProvider" vs
+           parsedDocumentLinkProvider <- lookupFromJSON "documentLinkProvider"
+                                          vs
+           parsedColorProvider <- lookupFromJSON "colorProvider" vs
+           parsedWorkspaceSymbolProvider <- lookupFromJSON
+                                             "workspaceSymbolProvider"
+                                             vs
+           parsedDocumentFormattingProvider <- lookupFromJSON
+                                                "documentFormattingProvider"
+                                                vs
+           parsedDocumentRangeFormattingProvider <- lookupFromJSON
+                                                     "documentRangeFormattingProvider"
+                                                     vs
+           parsedDocumentOnTypeFormattingProvider <- lookupFromJSON
+                                                      "documentOnTypeFormattingProvider"
+                                                      vs
+           parsedRenameProvider <- lookupFromJSON "renameProvider" vs
+           parsedFoldingRangeProvider <- lookupFromJSON "foldingRangeProvider"
+                                          vs
+           parsedSelectionRangeProvider <- lookupFromJSON
+                                            "selectionRangeProvider"
+                                            vs
+           parsedExecuteCommandProvider <- lookupFromJSON
+                                            "executeCommandProvider"
+                                            vs
+           parsedCallHierarchyProvider <- lookupFromJSON
+                                           "callHierarchyProvider"
+                                           vs
+           parsedLinkedEditingRangeProvider <- lookupFromJSON
+                                                "linkedEditingRangeProvider"
+                                                vs
+           parsedSemanticTokensProvider <- lookupFromJSON
+                                            "semanticTokensProvider"
+                                            vs
+           parsedMonikerProvider <- lookupFromJSON "monikerProvider" vs
+           parsedTypeHierarchyProvider <- lookupFromJSON
+                                           "typeHierarchyProvider"
+                                           vs
+           parsedInlineValueProvider <- lookupFromJSON "inlineValueProvider"
+                                         vs
+           parsedInlayHintProvider <- lookupFromJSON "inlayHintProvider" vs
+           parsedDiagnosticProvider <- lookupFromJSON "diagnosticProvider" vs
+           parsedWorkspace <- lookupFromJSON "workspace" vs
+           parsedExperimental <- lookupFromJSON "experimental" vs
+           return
+            ServerCapabilities { serverCapabilitiesPositionEncoding = parsedPositionEncoding
+                               , serverCapabilitiesTextDocumentSync = parsedTextDocumentSync
+                               , serverCapabilitiesNotebookDocumentSync = parsedNotebookDocumentSync
+                               , serverCapabilitiesCompletionProvider = parsedCompletionProvider
+                               , serverCapabilitiesHoverProvider = parsedHoverProvider
+                               , serverCapabilitiesSignatureHelpProvider = parsedSignatureHelpProvider
+                               , serverCapabilitiesDeclarationProvider = parsedDeclarationProvider
+                               , serverCapabilitiesDefinitionProvider = parsedDefinitionProvider
+                               , serverCapabilitiesTypeDefinitionProvider = parsedTypeDefinitionProvider
+                               , serverCapabilitiesImplementationProvider = parsedImplementationProvider
+                               , serverCapabilitiesReferencesProvider = parsedReferencesProvider
+                               , serverCapabilitiesDocumentHighlightProvider = parsedDocumentHighlightProvider
+                               , serverCapabilitiesDocumentSymbolProvider = parsedDocumentSymbolProvider
+                               , serverCapabilitiesCodeActionProvider = parsedCodeActionProvider
+                               , serverCapabilitiesCodeLensProvider = parsedCodeLensProvider
+                               , serverCapabilitiesDocumentLinkProvider = parsedDocumentLinkProvider
+                               , serverCapabilitiesColorProvider = parsedColorProvider
+                               , serverCapabilitiesWorkspaceSymbolProvider = parsedWorkspaceSymbolProvider
+                               , serverCapabilitiesDocumentFormattingProvider = parsedDocumentFormattingProvider
+                               , serverCapabilitiesDocumentRangeFormattingProvider = parsedDocumentRangeFormattingProvider
+                               , serverCapabilitiesDocumentOnTypeFormattingProvider = parsedDocumentOnTypeFormattingProvider
+                               , serverCapabilitiesRenameProvider = parsedRenameProvider
+                               , serverCapabilitiesFoldingRangeProvider = parsedFoldingRangeProvider
+                               , serverCapabilitiesSelectionRangeProvider = parsedSelectionRangeProvider
+                               , serverCapabilitiesExecuteCommandProvider = parsedExecuteCommandProvider
+                               , serverCapabilitiesCallHierarchyProvider = parsedCallHierarchyProvider
+                               , serverCapabilitiesLinkedEditingRangeProvider = parsedLinkedEditingRangeProvider
+                               , serverCapabilitiesSemanticTokensProvider = parsedSemanticTokensProvider
+                               , serverCapabilitiesMonikerProvider = parsedMonikerProvider
+                               , serverCapabilitiesTypeHierarchyProvider = parsedTypeHierarchyProvider
+                               , serverCapabilitiesInlineValueProvider = parsedInlineValueProvider
+                               , serverCapabilitiesInlayHintProvider = parsedInlayHintProvider
+                               , serverCapabilitiesDiagnosticProvider = parsedDiagnosticProvider
+                               , serverCapabilitiesWorkspace = parsedWorkspace
+                               , serverCapabilitiesExperimental = parsedExperimental }
       _ -> Left "Unrecognized ServerCapabilities value"
 
 instance FromJSON VersionedTextDocumentIdentifier where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedVersion <- lookupFromJSON "version" vs
+           return
+            VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion = parsedVersion }
       _ -> Left "Unrecognized VersionedTextDocumentIdentifier value"
 
 instance FromJSON SaveOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIncludeText <- lookupFromJSON "includeText" vs
+           return SaveOptions { saveOptionsIncludeText = parsedIncludeText }
       _ -> Left "Unrecognized SaveOptions value"
 
 instance FromJSON FileEvent where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedType <- lookupFromJSON "type" vs
+           return
+            FileEvent { fileEventUri = parsedUri, fileEventType = parsedType }
       _ -> Left "Unrecognized FileEvent value"
 
 instance FromJSON FileSystemWatcher where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedGlobPattern <- lookupFromJSON "globPattern" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           return
+            FileSystemWatcher { fileSystemWatcherGlobPattern = parsedGlobPattern
+                              , fileSystemWatcherKind = parsedKind }
       _ -> Left "Unrecognized FileSystemWatcher value"
 
 instance FromJSON Diagnostic where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedSeverity <- lookupFromJSON "severity" vs
+           parsedCode <- lookupFromJSON "code" vs
+           parsedCodeDescription <- lookupFromJSON "codeDescription" vs
+           parsedSource <- lookupFromJSON "source" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedRelatedInformation <- lookupFromJSON "relatedInformation" vs
+           parsedData <- lookupFromJSON "data" vs
+           return
+            Diagnostic { diagnosticRange = parsedRange
+                       , diagnosticSeverity = parsedSeverity
+                       , diagnosticCode = parsedCode
+                       , diagnosticCodeDescription = parsedCodeDescription
+                       , diagnosticSource = parsedSource
+                       , diagnosticMessage = parsedMessage
+                       , diagnosticTags = parsedTags
+                       , diagnosticRelatedInformation = parsedRelatedInformation
+                       , diagnosticData = parsedData }
       _ -> Left "Unrecognized Diagnostic value"
 
 instance FromJSON CompletionContext where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTriggerKind <- lookupFromJSON "triggerKind" vs
+           parsedTriggerCharacter <- lookupFromJSON "triggerCharacter" vs
+           return
+            CompletionContext { completionContextTriggerKind = parsedTriggerKind
+                              , completionContextTriggerCharacter = parsedTriggerCharacter }
       _ -> Left "Unrecognized CompletionContext value"
 
 instance FromJSON CompletionItemLabelDetails where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDetail <- lookupFromJSON "detail" vs
+           parsedDescription <- lookupFromJSON "description" vs
+           return
+            CompletionItemLabelDetails { completionItemLabelDetailsDetail = parsedDetail
+                                       , completionItemLabelDetailsDescription = parsedDescription }
       _ -> Left "Unrecognized CompletionItemLabelDetails value"
 
 instance FromJSON InsertReplaceEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNewText <- lookupFromJSON "newText" vs
+           parsedInsert <- lookupFromJSON "insert" vs
+           parsedReplace <- lookupFromJSON "replace" vs
+           return
+            InsertReplaceEdit { insertReplaceEditNewText = parsedNewText
+                              , insertReplaceEditInsert = parsedInsert
+                              , insertReplaceEditReplace = parsedReplace }
       _ -> Left "Unrecognized InsertReplaceEdit value"
 
 instance FromJSON CompletionOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTriggerCharacters <- lookupFromJSON "triggerCharacters" vs
+           parsedAllCommitCharacters <- lookupFromJSON "allCommitCharacters"
+                                         vs
+           parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           parsedCompletionItem <- lookupFromJSON "completionItem" vs
+           return
+            CompletionOptions { completionOptionsTriggerCharacters = parsedTriggerCharacters
+                              , completionOptionsAllCommitCharacters = parsedAllCommitCharacters
+                              , completionOptionsResolveProvider = parsedResolveProvider
+                              , completionOptionsCompletionItem = parsedCompletionItem }
       _ -> Left "Unrecognized CompletionOptions value"
 
 instance FromJSON HoverOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return HoverOptions {  }
       _ -> Left "Unrecognized HoverOptions value"
 
 instance FromJSON SignatureHelpContext where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTriggerKind <- lookupFromJSON "triggerKind" vs
+           parsedTriggerCharacter <- lookupFromJSON "triggerCharacter" vs
+           parsedIsRetrigger <- lookupFromJSON "isRetrigger" vs
+           parsedActiveSignatureHelp <- lookupFromJSON "activeSignatureHelp"
+                                         vs
+           return
+            SignatureHelpContext { signatureHelpContextTriggerKind = parsedTriggerKind
+                                 , signatureHelpContextTriggerCharacter = parsedTriggerCharacter
+                                 , signatureHelpContextIsRetrigger = parsedIsRetrigger
+                                 , signatureHelpContextActiveSignatureHelp = parsedActiveSignatureHelp }
       _ -> Left "Unrecognized SignatureHelpContext value"
 
 instance FromJSON SignatureInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedDocumentation <- lookupFromJSON "documentation" vs
+           parsedParameters <- lookupFromJSON "parameters" vs
+           parsedActiveParameter <- lookupFromJSON "activeParameter" vs
+           return
+            SignatureInformation { signatureInformationLabel = parsedLabel
+                                 , signatureInformationDocumentation = parsedDocumentation
+                                 , signatureInformationParameters = parsedParameters
+                                 , signatureInformationActiveParameter = parsedActiveParameter }
       _ -> Left "Unrecognized SignatureInformation value"
 
 instance FromJSON SignatureHelpOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTriggerCharacters <- lookupFromJSON "triggerCharacters" vs
+           parsedRetriggerCharacters <- lookupFromJSON "retriggerCharacters"
+                                         vs
+           return
+            SignatureHelpOptions { signatureHelpOptionsTriggerCharacters = parsedTriggerCharacters
+                                 , signatureHelpOptionsRetriggerCharacters = parsedRetriggerCharacters }
       _ -> Left "Unrecognized SignatureHelpOptions value"
 
 instance FromJSON DefinitionOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DefinitionOptions {  }
       _ -> Left "Unrecognized DefinitionOptions value"
 
 instance FromJSON ReferenceContext where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIncludeDeclaration <- lookupFromJSON "includeDeclaration" vs
+           return
+            ReferenceContext { referenceContextIncludeDeclaration = parsedIncludeDeclaration }
       _ -> Left "Unrecognized ReferenceContext value"
 
 instance FromJSON ReferenceOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return ReferenceOptions {  }
       _ -> Left "Unrecognized ReferenceOptions value"
 
 instance FromJSON DocumentHighlightOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentHighlightOptions {  }
       _ -> Left "Unrecognized DocumentHighlightOptions value"
 
 instance FromJSON BaseSymbolInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupFromJSON "tags" vs
+           parsedContainerName <- lookupFromJSON "containerName" vs
+           return
+            BaseSymbolInformation { baseSymbolInformationName = parsedName
+                                  , baseSymbolInformationKind = parsedKind
+                                  , baseSymbolInformationTags = parsedTags
+                                  , baseSymbolInformationContainerName = parsedContainerName }
       _ -> Left "Unrecognized BaseSymbolInformation value"
 
 instance FromJSON DocumentSymbolOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           return
+            DocumentSymbolOptions { documentSymbolOptionsLabel = parsedLabel }
       _ -> Left "Unrecognized DocumentSymbolOptions value"
 
 instance FromJSON CodeActionContext where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDiagnostics <- lookupFromJSON "diagnostics" vs
+           parsedOnly <- lookupFromJSON "only" vs
+           parsedTriggerKind <- lookupFromJSON "triggerKind" vs
+           return
+            CodeActionContext { codeActionContextDiagnostics = parsedDiagnostics
+                              , codeActionContextOnly = parsedOnly
+                              , codeActionContextTriggerKind = parsedTriggerKind }
       _ -> Left "Unrecognized CodeActionContext value"
 
 instance FromJSON CodeActionOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedCodeActionKinds <- lookupFromJSON "codeActionKinds" vs
+           parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           return
+            CodeActionOptions { codeActionOptionsCodeActionKinds = parsedCodeActionKinds
+                              , codeActionOptionsResolveProvider = parsedResolveProvider }
       _ -> Left "Unrecognized CodeActionOptions value"
 
 instance FromJSON WorkspaceSymbolOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           return
+            WorkspaceSymbolOptions { workspaceSymbolOptionsResolveProvider = parsedResolveProvider }
       _ -> Left "Unrecognized WorkspaceSymbolOptions value"
 
 instance FromJSON CodeLensOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           return
+            CodeLensOptions { codeLensOptionsResolveProvider = parsedResolveProvider }
       _ -> Left "Unrecognized CodeLensOptions value"
 
 instance FromJSON DocumentLinkOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedResolveProvider <- lookupFromJSON "resolveProvider" vs
+           return
+            DocumentLinkOptions { documentLinkOptionsResolveProvider = parsedResolveProvider }
       _ -> Left "Unrecognized DocumentLinkOptions value"
 
 instance FromJSON FormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTabSize <- lookupFromJSON "tabSize" vs
+           parsedInsertSpaces <- lookupFromJSON "insertSpaces" vs
+           parsedTrimTrailingWhitespace <- lookupFromJSON
+                                            "trimTrailingWhitespace"
+                                            vs
+           parsedInsertFinalNewline <- lookupFromJSON "insertFinalNewline" vs
+           parsedTrimFinalNewlines <- lookupFromJSON "trimFinalNewlines" vs
+           return
+            FormattingOptions { formattingOptionsTabSize = parsedTabSize
+                              , formattingOptionsInsertSpaces = parsedInsertSpaces
+                              , formattingOptionsTrimTrailingWhitespace = parsedTrimTrailingWhitespace
+                              , formattingOptionsInsertFinalNewline = parsedInsertFinalNewline
+                              , formattingOptionsTrimFinalNewlines = parsedTrimFinalNewlines }
       _ -> Left "Unrecognized FormattingOptions value"
 
 instance FromJSON DocumentFormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentFormattingOptions {  }
       _ -> Left "Unrecognized DocumentFormattingOptions value"
 
 instance FromJSON DocumentRangeFormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return DocumentRangeFormattingOptions {  }
       _ -> Left "Unrecognized DocumentRangeFormattingOptions value"
 
 instance FromJSON DocumentOnTypeFormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedFirstTriggerCharacter <- lookupFromJSON
+                                           "firstTriggerCharacter"
+                                           vs
+           parsedMoreTriggerCharacter <- lookupFromJSON "moreTriggerCharacter"
+                                          vs
+           return
+            DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter = parsedFirstTriggerCharacter
+                                            , documentOnTypeFormattingOptionsMoreTriggerCharacter = parsedMoreTriggerCharacter }
       _ -> Left "Unrecognized DocumentOnTypeFormattingOptions value"
 
 instance FromJSON RenameOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedPrepareProvider <- lookupFromJSON "prepareProvider" vs
+           return
+            RenameOptions { renameOptionsPrepareProvider = parsedPrepareProvider }
       _ -> Left "Unrecognized RenameOptions value"
 
 instance FromJSON ExecuteCommandOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedCommands <- lookupFromJSON "commands" vs
+           return
+            ExecuteCommandOptions { executeCommandOptionsCommands = parsedCommands }
       _ -> Left "Unrecognized ExecuteCommandOptions value"
 
 instance FromJSON SemanticTokensLegend where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedTokenTypes <- lookupFromJSON "tokenTypes" vs
+           parsedTokenModifiers <- lookupFromJSON "tokenModifiers" vs
+           return
+            SemanticTokensLegend { semanticTokensLegendTokenTypes = parsedTokenTypes
+                                 , semanticTokensLegendTokenModifiers = parsedTokenModifiers }
       _ -> Left "Unrecognized SemanticTokensLegend value"
 
 instance FromJSON OptionalVersionedTextDocumentIdentifier where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedVersion <- lookupFromJSON "version" vs
+           return
+            OptionalVersionedTextDocumentIdentifier { optionalVersionedTextDocumentIdentifierVersion = parsedVersion }
       _ -> Left "Unrecognized OptionalVersionedTextDocumentIdentifier value"
 
 instance FromJSON AnnotatedTextEdit where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedAnnotationId <- lookupFromJSON "annotationId" vs
+           return
+            AnnotatedTextEdit { annotatedTextEditAnnotationId = parsedAnnotationId }
       _ -> Left "Unrecognized AnnotatedTextEdit value"
 
 instance FromJSON ResourceOperation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedAnnotationId <- lookupFromJSON "annotationId" vs
+           return
+            ResourceOperation { resourceOperationKind = parsedKind
+                              , resourceOperationAnnotationId = parsedAnnotationId }
       _ -> Left "Unrecognized ResourceOperation value"
 
 instance FromJSON CreateFileOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedOverwrite <- lookupFromJSON "overwrite" vs
+           parsedIgnoreIfExists <- lookupFromJSON "ignoreIfExists" vs
+           return
+            CreateFileOptions { createFileOptionsOverwrite = parsedOverwrite
+                              , createFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
       _ -> Left "Unrecognized CreateFileOptions value"
 
 instance FromJSON RenameFileOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedOverwrite <- lookupFromJSON "overwrite" vs
+           parsedIgnoreIfExists <- lookupFromJSON "ignoreIfExists" vs
+           return
+            RenameFileOptions { renameFileOptionsOverwrite = parsedOverwrite
+                              , renameFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
       _ -> Left "Unrecognized RenameFileOptions value"
 
 instance FromJSON DeleteFileOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRecursive <- lookupFromJSON "recursive" vs
+           parsedIgnoreIfNotExists <- lookupFromJSON "ignoreIfNotExists" vs
+           return
+            DeleteFileOptions { deleteFileOptionsRecursive = parsedRecursive
+                              , deleteFileOptionsIgnoreIfNotExists = parsedIgnoreIfNotExists }
       _ -> Left "Unrecognized DeleteFileOptions value"
 
 instance FromJSON FileOperationPattern where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedGlob <- lookupFromJSON "glob" vs
+           parsedMatches <- lookupFromJSON "matches" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            FileOperationPattern { fileOperationPatternGlob = parsedGlob
+                                 , fileOperationPatternMatches = parsedMatches
+                                 , fileOperationPatternOptions = parsedOptions }
       _ -> Left "Unrecognized FileOperationPattern value"
 
 instance FromJSON WorkspaceFullDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           return
+            WorkspaceFullDocumentDiagnosticReport { workspaceFullDocumentDiagnosticReportUri = parsedUri
+                                                  , workspaceFullDocumentDiagnosticReportVersion = parsedVersion }
       _ -> Left "Unrecognized WorkspaceFullDocumentDiagnosticReport value"
 
 instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           return
+            WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportUri = parsedUri
+                                                       , workspaceUnchangedDocumentDiagnosticReportVersion = parsedVersion }
       _ ->
         Left "Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value"
 
 instance FromJSON LSPObject where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return LSPObject {  }
       _ -> Left "Unrecognized LSPObject value"
 
 instance FromJSON NotebookCell where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedDocument <- lookupFromJSON "document" vs
+           parsedMetadata <- lookupFromJSON "metadata" vs
+           parsedExecutionSummary <- lookupFromJSON "executionSummary" vs
+           return
+            NotebookCell { notebookCellKind = parsedKind
+                         , notebookCellDocument = parsedDocument
+                         , notebookCellMetadata = parsedMetadata
+                         , notebookCellExecutionSummary = parsedExecutionSummary }
       _ -> Left "Unrecognized NotebookCell value"
 
 instance FromJSON NotebookCellArrayChange where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedStart <- lookupFromJSON "start" vs
+           parsedDeleteCount <- lookupFromJSON "deleteCount" vs
+           parsedCells <- lookupFromJSON "cells" vs
+           return
+            NotebookCellArrayChange { notebookCellArrayChangeStart = parsedStart
+                                    , notebookCellArrayChangeDeleteCount = parsedDeleteCount
+                                    , notebookCellArrayChangeCells = parsedCells }
       _ -> Left "Unrecognized NotebookCellArrayChange value"
 
 instance FromJSON ClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWorkspace <- lookupFromJSON "workspace" vs
+           parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
+           parsedWindow <- lookupFromJSON "window" vs
+           parsedGeneral <- lookupFromJSON "general" vs
+           parsedExperimental <- lookupFromJSON "experimental" vs
+           return
+            ClientCapabilities { clientCapabilitiesWorkspace = parsedWorkspace
+                               , clientCapabilitiesTextDocument = parsedTextDocument
+                               , clientCapabilitiesNotebookDocument = parsedNotebookDocument
+                               , clientCapabilitiesWindow = parsedWindow
+                               , clientCapabilitiesGeneral = parsedGeneral
+                               , clientCapabilitiesExperimental = parsedExperimental }
       _ -> Left "Unrecognized ClientCapabilities value"
 
 instance FromJSON TextDocumentSyncOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedOpenClose <- lookupFromJSON "openClose" vs
+           parsedChange <- lookupFromJSON "change" vs
+           parsedWillSave <- lookupFromJSON "willSave" vs
+           parsedWillSaveWaitUntil <- lookupFromJSON "willSaveWaitUntil" vs
+           parsedSave <- lookupFromJSON "save" vs
+           return
+            TextDocumentSyncOptions { textDocumentSyncOptionsOpenClose = parsedOpenClose
+                                    , textDocumentSyncOptionsChange = parsedChange
+                                    , textDocumentSyncOptionsWillSave = parsedWillSave
+                                    , textDocumentSyncOptionsWillSaveWaitUntil = parsedWillSaveWaitUntil
+                                    , textDocumentSyncOptionsSave = parsedSave }
       _ -> Left "Unrecognized TextDocumentSyncOptions value"
 
 instance FromJSON NotebookDocumentSyncOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebookSelector <- lookupFromJSON "notebookSelector" vs
+           parsedSave <- lookupFromJSON "save" vs
+           return
+            NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector = parsedNotebookSelector
+                                        , notebookDocumentSyncOptionsSave = parsedSave }
       _ -> Left "Unrecognized NotebookDocumentSyncOptions value"
 
 instance FromJSON NotebookDocumentSyncRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs -> do return NotebookDocumentSyncRegistrationOptions {  }
       _ -> Left "Unrecognized NotebookDocumentSyncRegistrationOptions value"
 
 instance FromJSON WorkspaceFoldersServerCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSupported <- lookupFromJSON "supported" vs
+           parsedChangeNotifications <- lookupFromJSON "changeNotifications"
+                                         vs
+           return
+            WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported = parsedSupported
+                                               , workspaceFoldersServerCapabilitiesChangeNotifications = parsedChangeNotifications }
       _ -> Left "Unrecognized WorkspaceFoldersServerCapabilities value"
 
 instance FromJSON FileOperationOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDidCreate <- lookupFromJSON "didCreate" vs
+           parsedWillCreate <- lookupFromJSON "willCreate" vs
+           parsedDidRename <- lookupFromJSON "didRename" vs
+           parsedWillRename <- lookupFromJSON "willRename" vs
+           parsedDidDelete <- lookupFromJSON "didDelete" vs
+           parsedWillDelete <- lookupFromJSON "willDelete" vs
+           return
+            FileOperationOptions { fileOperationOptionsDidCreate = parsedDidCreate
+                                 , fileOperationOptionsWillCreate = parsedWillCreate
+                                 , fileOperationOptionsDidRename = parsedDidRename
+                                 , fileOperationOptionsWillRename = parsedWillRename
+                                 , fileOperationOptionsDidDelete = parsedDidDelete
+                                 , fileOperationOptionsWillDelete = parsedWillDelete }
       _ -> Left "Unrecognized FileOperationOptions value"
 
 instance FromJSON CodeDescription where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedHref <- lookupFromJSON "href" vs
+           return CodeDescription { codeDescriptionHref = parsedHref }
       _ -> Left "Unrecognized CodeDescription value"
 
 instance FromJSON DiagnosticRelatedInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLocation <- lookupFromJSON "location" vs
+           parsedMessage <- lookupFromJSON "message" vs
+           return
+            DiagnosticRelatedInformation { diagnosticRelatedInformationLocation = parsedLocation
+                                         , diagnosticRelatedInformationMessage = parsedMessage }
       _ -> Left "Unrecognized DiagnosticRelatedInformation value"
 
 instance FromJSON ParameterInformation where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedLabel <- lookupFromJSON "label" vs
+           parsedDocumentation <- lookupFromJSON "documentation" vs
+           return
+            ParameterInformation { parameterInformationLabel = parsedLabel
+                                 , parameterInformationDocumentation = parsedDocumentation }
       _ -> Left "Unrecognized ParameterInformation value"
 
 instance FromJSON NotebookCellTextDocumentFilter where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedNotebook <- lookupFromJSON "notebook" vs
+           parsedLanguage <- lookupFromJSON "language" vs
+           return
+            NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook = parsedNotebook
+                                           , notebookCellTextDocumentFilterLanguage = parsedLanguage }
       _ -> Left "Unrecognized NotebookCellTextDocumentFilter value"
 
 instance FromJSON FileOperationPatternOptions where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedIgnoreCase <- lookupFromJSON "ignoreCase" vs
+           return
+            FileOperationPatternOptions { fileOperationPatternOptionsIgnoreCase = parsedIgnoreCase }
       _ -> Left "Unrecognized FileOperationPatternOptions value"
 
 instance FromJSON ExecutionSummary where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedExecutionOrder <- lookupFromJSON "executionOrder" vs
+           parsedSuccess <- lookupFromJSON "success" vs
+           return
+            ExecutionSummary { executionSummaryExecutionOrder = parsedExecutionOrder
+                             , executionSummarySuccess = parsedSuccess }
       _ -> Left "Unrecognized ExecutionSummary value"
 
 instance FromJSON WorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedApplyEdit <- lookupFromJSON "applyEdit" vs
+           parsedWorkspaceEdit <- lookupFromJSON "workspaceEdit" vs
+           parsedDidChangeConfiguration <- lookupFromJSON
+                                            "didChangeConfiguration"
+                                            vs
+           parsedDidChangeWatchedFiles <- lookupFromJSON
+                                           "didChangeWatchedFiles"
+                                           vs
+           parsedSymbol <- lookupFromJSON "symbol" vs
+           parsedExecuteCommand <- lookupFromJSON "executeCommand" vs
+           parsedWorkspaceFolders <- lookupFromJSON "workspaceFolders" vs
+           parsedConfiguration <- lookupFromJSON "configuration" vs
+           parsedSemanticTokens <- lookupFromJSON "semanticTokens" vs
+           parsedCodeLens <- lookupFromJSON "codeLens" vs
+           parsedFileOperations <- lookupFromJSON "fileOperations" vs
+           parsedInlineValue <- lookupFromJSON "inlineValue" vs
+           parsedInlayHint <- lookupFromJSON "inlayHint" vs
+           parsedDiagnostics <- lookupFromJSON "diagnostics" vs
+           return
+            WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit = parsedApplyEdit
+                                        , workspaceClientCapabilitiesWorkspaceEdit = parsedWorkspaceEdit
+                                        , workspaceClientCapabilitiesDidChangeConfiguration = parsedDidChangeConfiguration
+                                        , workspaceClientCapabilitiesDidChangeWatchedFiles = parsedDidChangeWatchedFiles
+                                        , workspaceClientCapabilitiesSymbol = parsedSymbol
+                                        , workspaceClientCapabilitiesExecuteCommand = parsedExecuteCommand
+                                        , workspaceClientCapabilitiesWorkspaceFolders = parsedWorkspaceFolders
+                                        , workspaceClientCapabilitiesConfiguration = parsedConfiguration
+                                        , workspaceClientCapabilitiesSemanticTokens = parsedSemanticTokens
+                                        , workspaceClientCapabilitiesCodeLens = parsedCodeLens
+                                        , workspaceClientCapabilitiesFileOperations = parsedFileOperations
+                                        , workspaceClientCapabilitiesInlineValue = parsedInlineValue
+                                        , workspaceClientCapabilitiesInlayHint = parsedInlayHint
+                                        , workspaceClientCapabilitiesDiagnostics = parsedDiagnostics }
       _ -> Left "Unrecognized WorkspaceClientCapabilities value"
 
 instance FromJSON TextDocumentClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSynchronization <- lookupFromJSON "synchronization" vs
+           parsedCompletion <- lookupFromJSON "completion" vs
+           parsedHover <- lookupFromJSON "hover" vs
+           parsedSignatureHelp <- lookupFromJSON "signatureHelp" vs
+           parsedDeclaration <- lookupFromJSON "declaration" vs
+           parsedDefinition <- lookupFromJSON "definition" vs
+           parsedTypeDefinition <- lookupFromJSON "typeDefinition" vs
+           parsedImplementation <- lookupFromJSON "implementation" vs
+           parsedReferences <- lookupFromJSON "references" vs
+           parsedDocumentHighlight <- lookupFromJSON "documentHighlight" vs
+           parsedDocumentSymbol <- lookupFromJSON "documentSymbol" vs
+           parsedCodeAction <- lookupFromJSON "codeAction" vs
+           parsedCodeLens <- lookupFromJSON "codeLens" vs
+           parsedDocumentLink <- lookupFromJSON "documentLink" vs
+           parsedColorProvider <- lookupFromJSON "colorProvider" vs
+           parsedFormatting <- lookupFromJSON "formatting" vs
+           parsedRangeFormatting <- lookupFromJSON "rangeFormatting" vs
+           parsedOnTypeFormatting <- lookupFromJSON "onTypeFormatting" vs
+           parsedRename <- lookupFromJSON "rename" vs
+           parsedFoldingRange <- lookupFromJSON "foldingRange" vs
+           parsedSelectionRange <- lookupFromJSON "selectionRange" vs
+           parsedPublishDiagnostics <- lookupFromJSON "publishDiagnostics" vs
+           parsedCallHierarchy <- lookupFromJSON "callHierarchy" vs
+           parsedSemanticTokens <- lookupFromJSON "semanticTokens" vs
+           parsedLinkedEditingRange <- lookupFromJSON "linkedEditingRange" vs
+           parsedMoniker <- lookupFromJSON "moniker" vs
+           parsedTypeHierarchy <- lookupFromJSON "typeHierarchy" vs
+           parsedInlineValue <- lookupFromJSON "inlineValue" vs
+           parsedInlayHint <- lookupFromJSON "inlayHint" vs
+           parsedDiagnostic <- lookupFromJSON "diagnostic" vs
+           return
+            TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization = parsedSynchronization
+                                           , textDocumentClientCapabilitiesCompletion = parsedCompletion
+                                           , textDocumentClientCapabilitiesHover = parsedHover
+                                           , textDocumentClientCapabilitiesSignatureHelp = parsedSignatureHelp
+                                           , textDocumentClientCapabilitiesDeclaration = parsedDeclaration
+                                           , textDocumentClientCapabilitiesDefinition = parsedDefinition
+                                           , textDocumentClientCapabilitiesTypeDefinition = parsedTypeDefinition
+                                           , textDocumentClientCapabilitiesImplementation = parsedImplementation
+                                           , textDocumentClientCapabilitiesReferences = parsedReferences
+                                           , textDocumentClientCapabilitiesDocumentHighlight = parsedDocumentHighlight
+                                           , textDocumentClientCapabilitiesDocumentSymbol = parsedDocumentSymbol
+                                           , textDocumentClientCapabilitiesCodeAction = parsedCodeAction
+                                           , textDocumentClientCapabilitiesCodeLens = parsedCodeLens
+                                           , textDocumentClientCapabilitiesDocumentLink = parsedDocumentLink
+                                           , textDocumentClientCapabilitiesColorProvider = parsedColorProvider
+                                           , textDocumentClientCapabilitiesFormatting = parsedFormatting
+                                           , textDocumentClientCapabilitiesRangeFormatting = parsedRangeFormatting
+                                           , textDocumentClientCapabilitiesOnTypeFormatting = parsedOnTypeFormatting
+                                           , textDocumentClientCapabilitiesRename = parsedRename
+                                           , textDocumentClientCapabilitiesFoldingRange = parsedFoldingRange
+                                           , textDocumentClientCapabilitiesSelectionRange = parsedSelectionRange
+                                           , textDocumentClientCapabilitiesPublishDiagnostics = parsedPublishDiagnostics
+                                           , textDocumentClientCapabilitiesCallHierarchy = parsedCallHierarchy
+                                           , textDocumentClientCapabilitiesSemanticTokens = parsedSemanticTokens
+                                           , textDocumentClientCapabilitiesLinkedEditingRange = parsedLinkedEditingRange
+                                           , textDocumentClientCapabilitiesMoniker = parsedMoniker
+                                           , textDocumentClientCapabilitiesTypeHierarchy = parsedTypeHierarchy
+                                           , textDocumentClientCapabilitiesInlineValue = parsedInlineValue
+                                           , textDocumentClientCapabilitiesInlayHint = parsedInlayHint
+                                           , textDocumentClientCapabilitiesDiagnostic = parsedDiagnostic }
       _ -> Left "Unrecognized TextDocumentClientCapabilities value"
 
 instance FromJSON NotebookDocumentClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSynchronization <- lookupFromJSON "synchronization" vs
+           return
+            NotebookDocumentClientCapabilities { notebookDocumentClientCapabilitiesSynchronization = parsedSynchronization }
       _ -> Left "Unrecognized NotebookDocumentClientCapabilities value"
 
 instance FromJSON WindowClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupFromJSON "workDoneProgress" vs
+           parsedShowMessage <- lookupFromJSON "showMessage" vs
+           parsedShowDocument <- lookupFromJSON "showDocument" vs
+           return
+            WindowClientCapabilities { windowClientCapabilitiesWorkDoneProgress = parsedWorkDoneProgress
+                                     , windowClientCapabilitiesShowMessage = parsedShowMessage
+                                     , windowClientCapabilitiesShowDocument = parsedShowDocument }
       _ -> Left "Unrecognized WindowClientCapabilities value"
 
 instance FromJSON GeneralClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedStaleRequestSupport <- lookupFromJSON "staleRequestSupport"
+                                         vs
+           parsedRegularExpressions <- lookupFromJSON "regularExpressions" vs
+           parsedMarkdown <- lookupFromJSON "markdown" vs
+           parsedPositionEncodings <- lookupFromJSON "positionEncodings" vs
+           return
+            GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport = parsedStaleRequestSupport
+                                      , generalClientCapabilitiesRegularExpressions = parsedRegularExpressions
+                                      , generalClientCapabilitiesMarkdown = parsedMarkdown
+                                      , generalClientCapabilitiesPositionEncodings = parsedPositionEncodings }
       _ -> Left "Unrecognized GeneralClientCapabilities value"
 
 instance FromJSON RelativePattern where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedBaseUri <- lookupFromJSON "baseUri" vs
+           parsedPattern <- lookupFromJSON "pattern" vs
+           return
+            RelativePattern { relativePatternBaseUri = parsedBaseUri
+                            , relativePatternPattern = parsedPattern }
       _ -> Left "Unrecognized RelativePattern value"
 
 instance FromJSON WorkspaceEditClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDocumentChanges <- lookupFromJSON "documentChanges" vs
+           parsedResourceOperations <- lookupFromJSON "resourceOperations" vs
+           parsedFailureHandling <- lookupFromJSON "failureHandling" vs
+           parsedNormalizesLineEndings <- lookupFromJSON
+                                           "normalizesLineEndings"
+                                           vs
+           parsedChangeAnnotationSupport <- lookupFromJSON
+                                             "changeAnnotationSupport"
+                                             vs
+           return
+            WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges = parsedDocumentChanges
+                                            , workspaceEditClientCapabilitiesResourceOperations = parsedResourceOperations
+                                            , workspaceEditClientCapabilitiesFailureHandling = parsedFailureHandling
+                                            , workspaceEditClientCapabilitiesNormalizesLineEndings = parsedNormalizesLineEndings
+                                            , workspaceEditClientCapabilitiesChangeAnnotationSupport = parsedChangeAnnotationSupport }
       _ -> Left "Unrecognized WorkspaceEditClientCapabilities value"
 
 instance FromJSON DidChangeConfigurationClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized DidChangeConfigurationClientCapabilities value"
 
 instance FromJSON DidChangeWatchedFilesClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedRelativePatternSupport <- lookupFromJSON
+                                            "relativePatternSupport"
+                                            vs
+           return
+            DidChangeWatchedFilesClientCapabilities { didChangeWatchedFilesClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                                    , didChangeWatchedFilesClientCapabilitiesRelativePatternSupport = parsedRelativePatternSupport }
       _ -> Left "Unrecognized DidChangeWatchedFilesClientCapabilities value"
 
 instance FromJSON WorkspaceSymbolClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedSymbolKind <- lookupFromJSON "symbolKind" vs
+           parsedTagSupport <- lookupFromJSON "tagSupport" vs
+           parsedResolveSupport <- lookupFromJSON "resolveSupport" vs
+           return
+            WorkspaceSymbolClientCapabilities { workspaceSymbolClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                              , workspaceSymbolClientCapabilitiesSymbolKind = parsedSymbolKind
+                                              , workspaceSymbolClientCapabilitiesTagSupport = parsedTagSupport
+                                              , workspaceSymbolClientCapabilitiesResolveSupport = parsedResolveSupport }
       _ -> Left "Unrecognized WorkspaceSymbolClientCapabilities value"
 
 instance FromJSON ExecuteCommandClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized ExecuteCommandClientCapabilities value"
 
 instance FromJSON SemanticTokensWorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRefreshSupport <- lookupFromJSON "refreshSupport" vs
+           return
+            SemanticTokensWorkspaceClientCapabilities { semanticTokensWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
       _ -> Left "Unrecognized SemanticTokensWorkspaceClientCapabilities value"
 
 instance FromJSON CodeLensWorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRefreshSupport <- lookupFromJSON "refreshSupport" vs
+           return
+            CodeLensWorkspaceClientCapabilities { codeLensWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
       _ -> Left "Unrecognized CodeLensWorkspaceClientCapabilities value"
 
 instance FromJSON FileOperationClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedDidCreate <- lookupFromJSON "didCreate" vs
+           parsedWillCreate <- lookupFromJSON "willCreate" vs
+           parsedDidRename <- lookupFromJSON "didRename" vs
+           parsedWillRename <- lookupFromJSON "willRename" vs
+           parsedDidDelete <- lookupFromJSON "didDelete" vs
+           parsedWillDelete <- lookupFromJSON "willDelete" vs
+           return
+            FileOperationClientCapabilities { fileOperationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                            , fileOperationClientCapabilitiesDidCreate = parsedDidCreate
+                                            , fileOperationClientCapabilitiesWillCreate = parsedWillCreate
+                                            , fileOperationClientCapabilitiesDidRename = parsedDidRename
+                                            , fileOperationClientCapabilitiesWillRename = parsedWillRename
+                                            , fileOperationClientCapabilitiesDidDelete = parsedDidDelete
+                                            , fileOperationClientCapabilitiesWillDelete = parsedWillDelete }
       _ -> Left "Unrecognized FileOperationClientCapabilities value"
 
 instance FromJSON InlineValueWorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRefreshSupport <- lookupFromJSON "refreshSupport" vs
+           return
+            InlineValueWorkspaceClientCapabilities { inlineValueWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
       _ -> Left "Unrecognized InlineValueWorkspaceClientCapabilities value"
 
 instance FromJSON InlayHintWorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRefreshSupport <- lookupFromJSON "refreshSupport" vs
+           return
+            InlayHintWorkspaceClientCapabilities { inlayHintWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
       _ -> Left "Unrecognized InlayHintWorkspaceClientCapabilities value"
 
 instance FromJSON DiagnosticWorkspaceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRefreshSupport <- lookupFromJSON "refreshSupport" vs
+           return
+            DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
       _ -> Left "Unrecognized DiagnosticWorkspaceClientCapabilities value"
 
 instance FromJSON TextDocumentSyncClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedWillSave <- lookupFromJSON "willSave" vs
+           parsedWillSaveWaitUntil <- lookupFromJSON "willSaveWaitUntil" vs
+           parsedDidSave <- lookupFromJSON "didSave" vs
+           return
+            TextDocumentSyncClientCapabilities { textDocumentSyncClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                               , textDocumentSyncClientCapabilitiesWillSave = parsedWillSave
+                                               , textDocumentSyncClientCapabilitiesWillSaveWaitUntil = parsedWillSaveWaitUntil
+                                               , textDocumentSyncClientCapabilitiesDidSave = parsedDidSave }
       _ -> Left "Unrecognized TextDocumentSyncClientCapabilities value"
 
 instance FromJSON CompletionClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedCompletionItem <- lookupFromJSON "completionItem" vs
+           parsedCompletionItemKind <- lookupFromJSON "completionItemKind" vs
+           parsedInsertTextMode <- lookupFromJSON "insertTextMode" vs
+           parsedContextSupport <- lookupFromJSON "contextSupport" vs
+           parsedCompletionList <- lookupFromJSON "completionList" vs
+           return
+            CompletionClientCapabilities { completionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                         , completionClientCapabilitiesCompletionItem = parsedCompletionItem
+                                         , completionClientCapabilitiesCompletionItemKind = parsedCompletionItemKind
+                                         , completionClientCapabilitiesInsertTextMode = parsedInsertTextMode
+                                         , completionClientCapabilitiesContextSupport = parsedContextSupport
+                                         , completionClientCapabilitiesCompletionList = parsedCompletionList }
       _ -> Left "Unrecognized CompletionClientCapabilities value"
 
 instance FromJSON HoverClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedContentFormat <- lookupFromJSON "contentFormat" vs
+           return
+            HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                    , hoverClientCapabilitiesContentFormat = parsedContentFormat }
       _ -> Left "Unrecognized HoverClientCapabilities value"
 
 instance FromJSON SignatureHelpClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedSignatureInformation <- lookupFromJSON "signatureInformation"
+                                          vs
+           parsedContextSupport <- lookupFromJSON "contextSupport" vs
+           return
+            SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                            , signatureHelpClientCapabilitiesSignatureInformation = parsedSignatureInformation
+                                            , signatureHelpClientCapabilitiesContextSupport = parsedContextSupport }
       _ -> Left "Unrecognized SignatureHelpClientCapabilities value"
 
 instance FromJSON DeclarationClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedLinkSupport <- lookupFromJSON "linkSupport" vs
+           return
+            DeclarationClientCapabilities { declarationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                          , declarationClientCapabilitiesLinkSupport = parsedLinkSupport }
       _ -> Left "Unrecognized DeclarationClientCapabilities value"
 
 instance FromJSON DefinitionClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedLinkSupport <- lookupFromJSON "linkSupport" vs
+           return
+            DefinitionClientCapabilities { definitionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                         , definitionClientCapabilitiesLinkSupport = parsedLinkSupport }
       _ -> Left "Unrecognized DefinitionClientCapabilities value"
 
 instance FromJSON TypeDefinitionClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedLinkSupport <- lookupFromJSON "linkSupport" vs
+           return
+            TypeDefinitionClientCapabilities { typeDefinitionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                             , typeDefinitionClientCapabilitiesLinkSupport = parsedLinkSupport }
       _ -> Left "Unrecognized TypeDefinitionClientCapabilities value"
 
 instance FromJSON ImplementationClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedLinkSupport <- lookupFromJSON "linkSupport" vs
+           return
+            ImplementationClientCapabilities { implementationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                             , implementationClientCapabilitiesLinkSupport = parsedLinkSupport }
       _ -> Left "Unrecognized ImplementationClientCapabilities value"
 
 instance FromJSON ReferenceClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            ReferenceClientCapabilities { referenceClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized ReferenceClientCapabilities value"
 
 instance FromJSON DocumentHighlightClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DocumentHighlightClientCapabilities { documentHighlightClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized DocumentHighlightClientCapabilities value"
 
 instance FromJSON DocumentSymbolClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedSymbolKind <- lookupFromJSON "symbolKind" vs
+           parsedHierarchicalDocumentSymbolSupport <- lookupFromJSON
+                                                       "hierarchicalDocumentSymbolSupport"
+                                                       vs
+           parsedTagSupport <- lookupFromJSON "tagSupport" vs
+           parsedLabelSupport <- lookupFromJSON "labelSupport" vs
+           return
+            DocumentSymbolClientCapabilities { documentSymbolClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                             , documentSymbolClientCapabilitiesSymbolKind = parsedSymbolKind
+                                             , documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport = parsedHierarchicalDocumentSymbolSupport
+                                             , documentSymbolClientCapabilitiesTagSupport = parsedTagSupport
+                                             , documentSymbolClientCapabilitiesLabelSupport = parsedLabelSupport }
       _ -> Left "Unrecognized DocumentSymbolClientCapabilities value"
 
 instance FromJSON CodeActionClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedCodeActionLiteralSupport <- lookupFromJSON
+                                              "codeActionLiteralSupport"
+                                              vs
+           parsedIsPreferredSupport <- lookupFromJSON "isPreferredSupport" vs
+           parsedDisabledSupport <- lookupFromJSON "disabledSupport" vs
+           parsedDataSupport <- lookupFromJSON "dataSupport" vs
+           parsedResolveSupport <- lookupFromJSON "resolveSupport" vs
+           parsedHonorsChangeAnnotations <- lookupFromJSON
+                                             "honorsChangeAnnotations"
+                                             vs
+           return
+            CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                         , codeActionClientCapabilitiesCodeActionLiteralSupport = parsedCodeActionLiteralSupport
+                                         , codeActionClientCapabilitiesIsPreferredSupport = parsedIsPreferredSupport
+                                         , codeActionClientCapabilitiesDisabledSupport = parsedDisabledSupport
+                                         , codeActionClientCapabilitiesDataSupport = parsedDataSupport
+                                         , codeActionClientCapabilitiesResolveSupport = parsedResolveSupport
+                                         , codeActionClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
       _ -> Left "Unrecognized CodeActionClientCapabilities value"
 
 instance FromJSON CodeLensClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized CodeLensClientCapabilities value"
 
 instance FromJSON DocumentLinkClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedTooltipSupport <- lookupFromJSON "tooltipSupport" vs
+           return
+            DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                           , documentLinkClientCapabilitiesTooltipSupport = parsedTooltipSupport }
       _ -> Left "Unrecognized DocumentLinkClientCapabilities value"
 
 instance FromJSON DocumentColorClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DocumentColorClientCapabilities { documentColorClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized DocumentColorClientCapabilities value"
 
 instance FromJSON DocumentFormattingClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DocumentFormattingClientCapabilities { documentFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized DocumentFormattingClientCapabilities value"
 
 instance FromJSON DocumentRangeFormattingClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized DocumentRangeFormattingClientCapabilities value"
 
 instance FromJSON DocumentOnTypeFormattingClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ ->
         Left "Unrecognized DocumentOnTypeFormattingClientCapabilities value"
 
 instance FromJSON RenameClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedPrepareSupport <- lookupFromJSON "prepareSupport" vs
+           parsedPrepareSupportDefaultBehavior <- lookupFromJSON
+                                                   "prepareSupportDefaultBehavior"
+                                                   vs
+           parsedHonorsChangeAnnotations <- lookupFromJSON
+                                             "honorsChangeAnnotations"
+                                             vs
+           return
+            RenameClientCapabilities { renameClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                     , renameClientCapabilitiesPrepareSupport = parsedPrepareSupport
+                                     , renameClientCapabilitiesPrepareSupportDefaultBehavior = parsedPrepareSupportDefaultBehavior
+                                     , renameClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
       _ -> Left "Unrecognized RenameClientCapabilities value"
 
 instance FromJSON FoldingRangeClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedRangeLimit <- lookupFromJSON "rangeLimit" vs
+           parsedLineFoldingOnly <- lookupFromJSON "lineFoldingOnly" vs
+           parsedFoldingRangeKind <- lookupFromJSON "foldingRangeKind" vs
+           parsedFoldingRange <- lookupFromJSON "foldingRange" vs
+           return
+            FoldingRangeClientCapabilities { foldingRangeClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                           , foldingRangeClientCapabilitiesRangeLimit = parsedRangeLimit
+                                           , foldingRangeClientCapabilitiesLineFoldingOnly = parsedLineFoldingOnly
+                                           , foldingRangeClientCapabilitiesFoldingRangeKind = parsedFoldingRangeKind
+                                           , foldingRangeClientCapabilitiesFoldingRange = parsedFoldingRange }
       _ -> Left "Unrecognized FoldingRangeClientCapabilities value"
 
 instance FromJSON SelectionRangeClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized SelectionRangeClientCapabilities value"
 
 instance FromJSON PublishDiagnosticsClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedRelatedInformation <- lookupFromJSON "relatedInformation" vs
+           parsedTagSupport <- lookupFromJSON "tagSupport" vs
+           parsedVersionSupport <- lookupFromJSON "versionSupport" vs
+           parsedCodeDescriptionSupport <- lookupFromJSON
+                                            "codeDescriptionSupport"
+                                            vs
+           parsedDataSupport <- lookupFromJSON "dataSupport" vs
+           return
+            PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation = parsedRelatedInformation
+                                                 , publishDiagnosticsClientCapabilitiesTagSupport = parsedTagSupport
+                                                 , publishDiagnosticsClientCapabilitiesVersionSupport = parsedVersionSupport
+                                                 , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport = parsedCodeDescriptionSupport
+                                                 , publishDiagnosticsClientCapabilitiesDataSupport = parsedDataSupport }
       _ -> Left "Unrecognized PublishDiagnosticsClientCapabilities value"
 
 instance FromJSON CallHierarchyClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized CallHierarchyClientCapabilities value"
 
 instance FromJSON SemanticTokensClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedRequests <- lookupFromJSON "requests" vs
+           parsedTokenTypes <- lookupFromJSON "tokenTypes" vs
+           parsedTokenModifiers <- lookupFromJSON "tokenModifiers" vs
+           parsedFormats <- lookupFromJSON "formats" vs
+           parsedOverlappingTokenSupport <- lookupFromJSON
+                                             "overlappingTokenSupport"
+                                             vs
+           parsedMultilineTokenSupport <- lookupFromJSON
+                                           "multilineTokenSupport"
+                                           vs
+           parsedServerCancelSupport <- lookupFromJSON "serverCancelSupport"
+                                         vs
+           parsedAugmentsSyntaxTokens <- lookupFromJSON "augmentsSyntaxTokens"
+                                          vs
+           return
+            SemanticTokensClientCapabilities { semanticTokensClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                             , semanticTokensClientCapabilitiesRequests = parsedRequests
+                                             , semanticTokensClientCapabilitiesTokenTypes = parsedTokenTypes
+                                             , semanticTokensClientCapabilitiesTokenModifiers = parsedTokenModifiers
+                                             , semanticTokensClientCapabilitiesFormats = parsedFormats
+                                             , semanticTokensClientCapabilitiesOverlappingTokenSupport = parsedOverlappingTokenSupport
+                                             , semanticTokensClientCapabilitiesMultilineTokenSupport = parsedMultilineTokenSupport
+                                             , semanticTokensClientCapabilitiesServerCancelSupport = parsedServerCancelSupport
+                                             , semanticTokensClientCapabilitiesAugmentsSyntaxTokens = parsedAugmentsSyntaxTokens }
       _ -> Left "Unrecognized SemanticTokensClientCapabilities value"
 
 instance FromJSON LinkedEditingRangeClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            LinkedEditingRangeClientCapabilities { linkedEditingRangeClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized LinkedEditingRangeClientCapabilities value"
 
 instance FromJSON MonikerClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized MonikerClientCapabilities value"
 
 instance FromJSON TypeHierarchyClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            TypeHierarchyClientCapabilities { typeHierarchyClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized TypeHierarchyClientCapabilities value"
 
 instance FromJSON InlineValueClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           return
+            InlineValueClientCapabilities { inlineValueClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left "Unrecognized InlineValueClientCapabilities value"
 
 instance FromJSON InlayHintClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedResolveSupport <- lookupFromJSON "resolveSupport" vs
+           return
+            InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                        , inlayHintClientCapabilitiesResolveSupport = parsedResolveSupport }
       _ -> Left "Unrecognized InlayHintClientCapabilities value"
 
 instance FromJSON DiagnosticClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedRelatedDocumentSupport <- lookupFromJSON
+                                            "relatedDocumentSupport"
+                                            vs
+           return
+            DiagnosticClientCapabilities { diagnosticClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                         , diagnosticClientCapabilitiesRelatedDocumentSupport = parsedRelatedDocumentSupport }
       _ -> Left "Unrecognized DiagnosticClientCapabilities value"
 
 instance FromJSON NotebookDocumentSyncClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupFromJSON "dynamicRegistration"
+                                         vs
+           parsedExecutionSummarySupport <- lookupFromJSON
+                                             "executionSummarySupport"
+                                             vs
+           return
+            NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                                   , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport = parsedExecutionSummarySupport }
       _ -> Left "Unrecognized NotebookDocumentSyncClientCapabilities value"
 
 instance FromJSON ShowMessageRequestClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedMessageActionItem <- lookupFromJSON "messageActionItem" vs
+           return
+            ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem = parsedMessageActionItem }
       _ -> Left "Unrecognized ShowMessageRequestClientCapabilities value"
 
 instance FromJSON ShowDocumentClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedSupport <- lookupFromJSON "support" vs
+           return
+            ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport = parsedSupport }
       _ -> Left "Unrecognized ShowDocumentClientCapabilities value"
 
 instance FromJSON RegularExpressionsClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedEngine <- lookupFromJSON "engine" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           return
+            RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine = parsedEngine
+                                                 , regularExpressionsClientCapabilitiesVersion = parsedVersion }
       _ -> Left "Unrecognized RegularExpressionsClientCapabilities value"
 
 instance FromJSON MarkdownClientCapabilities where
   fromJSON j =
     case j of
-      JObject vs -> error "TODO"
+      JObject vs ->
+        do parsedParser <- lookupFromJSON "parser" vs
+           parsedVersion <- lookupFromJSON "version" vs
+           parsedAllowedTags <- lookupFromJSON "allowedTags" vs
+           return
+            MarkdownClientCapabilities { markdownClientCapabilitiesParser = parsedParser
+                                       , markdownClientCapabilitiesVersion = parsedVersion
+                                       , markdownClientCapabilitiesAllowedTags = parsedAllowedTags }
       _ -> Left "Unrecognized MarkdownClientCapabilities value"
 
 data ImplementationParams = ImplementationParams {  }

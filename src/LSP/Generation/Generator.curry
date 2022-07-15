@@ -75,7 +75,7 @@ metaStructureToType s = do
       vis = AC.Public
   fs <- mapM (metaPropertyToField name) props
   derivs <- gets gsStandardDerivings
-  fromJSONInst <- metaStructureToFromJSONInstance s
+  fromJSONInst <- metaStructureToFromJSONInstance name s
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
@@ -99,21 +99,27 @@ metaEnumerationToType e = do
   return (ty, insts)
 
 -- | Converts a meta structure to a FromJSON instance.
-metaStructureToFromJSONInstance :: MetaStructure -> GM AC.CInstanceDecl
-metaStructureToFromJSONInstance s = do
+metaStructureToFromJSONInstance :: String -> MetaStructure -> GM AC.CInstanceDecl
+metaStructureToFromJSONInstance prefix s = do
   let name = escapeName $ msName s
       qn = mkQName name
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
-      sig = AC.CQualType (AC.CContext []) (fromJSONType (ACB.baseType qn))
+      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
+      fieldNames = mpName <$> msProperties s
+      fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
+      -- TODO: Use different lookupFromJSON methods depending on what we want
+      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF lookupFromJSONQName [ACB.string2ac p, AC.CVar vsVar]) fieldVars fieldNames
+      fields = zip ((mkQName . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
+      stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       arms =
         [ -- Match a JObject
           (AC.CPComb jObjectQName [AC.CPVar vsVar]
-          , AC.CSimpleRhs (ACB.applyF (AC.pre "error") [ACB.string2ac "TODO"]) []
+          , AC.CSimpleRhs (AC.CDoExpr stmts) []
           ) -- FIXME
           -- For any other JValue, return an error message
           -- TODO: Include printed JSON value in error match
