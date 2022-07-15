@@ -113,7 +113,7 @@ metaStructureToFromJSONInstance prefix s = do
       fieldNames = mpName <$> msProperties s
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
       -- TODO: Use different lookupFromJSON methods depending on what we want
-      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF lookupFromJSONQName [ACB.string2ac p, AC.CVar vsVar]) fieldVars fieldNames
+      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
       fields = zip ((mkQName . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       arms =
@@ -132,6 +132,19 @@ metaStructureToFromJSONInstance prefix s = do
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+
+-- | Picks the correct lookupFromJSON method for the given property.
+-- TODO: Handle more complex types like [String]
+lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
+lookupFromJSONForMetaProperty p | not isString && not isOptional = lookupFromJSONQName
+                                |     isString && not isOptional = lookupStringFromJSONQName
+                                | not isString &&     isOptional = lookupMaybeFromJSONQName
+                                | otherwise                      = lookupMaybeStringFromJSONQName
+  where isOptional = fromMaybe False $ mpOptional p
+        isString = case mpType p of
+          MetaTypeBase MetaBaseTypeString -> True
+          MetaTypeStringLiteral _         -> True
+          _                               -> False
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl

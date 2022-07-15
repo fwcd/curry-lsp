@@ -5,6 +5,7 @@ module LSP.Protocol.Support
   ) where
 
 import JSON.Data ( JValue (..) )
+import LSP.Utils.JSON ( FromJSON (..), stringFromJSON )
 
 -- | A document URI.
 newtype DocumentUri = DocumentUri { getDocumentUri :: String }
@@ -12,3 +13,6 @@ newtype DocumentUri = DocumentUri { getDocumentUri :: String }
 
 -- | An arbitrary JSON value.
 type LSPAny = JValue
+
+instance FromJSON DocumentUri where
+  fromJSON = (DocumentUri <$>) . stringFromJSON

@@ -50,6 +50,9 @@ instance FromJSON JValue where
 instance ToJSON JValue where
   toJSON = id
 
+instance FromJSON () where
+  fromJSON _ = Right ()
+
 -- Parses a boolean value from JSON.
 boolFromJSON :: JValue -> Either String Bool
 boolFromJSON j = case j of
