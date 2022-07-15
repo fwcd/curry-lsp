@@ -5,11 +5,12 @@ module LSP.Generation.Generator
 import qualified AbstractCurry.Types as AC
 import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
+import Control.Monad ( join )
 import Control.Monad.Trans.State ( State, evalState, gets )
 import qualified Data.Map as M
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>) )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
@@ -53,14 +54,15 @@ metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
   let imps = []
       funs = []
-  structs <- mapM metaStructureToType (mmStructures m)
-  enums <- mapM metaEnumerationToType (mmEnumerations m)
+  (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
+  (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
   aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
   let tys = structs ++ enums ++ aliases
-  return $ AC.CurryProg name imps Nothing [] [] tys funs []
+      insts = structInsts ++ enumInsts
+  return $ AC.CurryProg name imps Nothing [] insts tys funs []
 
 -- | Converts a meta structure to a Curry type declaration.
-metaStructureToType :: MetaStructure -> GM AC.CTypeDecl
+metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
 metaStructureToType s = do
   let name = escapeName $ msName s
       qn = mkQName name
@@ -69,10 +71,10 @@ metaStructureToType s = do
   fs <- mapM (metaPropertyToField name) props
   derivs <- gets gsStandardDerivings
   let cdecl = AC.CRecord qn vis fs
-  return $ AC.CType qn vis [] [cdecl] derivs
+  return (AC.CType qn vis [] [cdecl] derivs, [])
 
 -- | Converts a meta enumeration to a Curry type declaration.
-metaEnumerationToType :: MetaEnumeration -> GM AC.CTypeDecl
+metaEnumerationToType :: MetaEnumeration -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
 metaEnumerationToType e = do
   let name = escapeName $ meName e
       qn = mkQName name
@@ -84,7 +86,7 @@ metaEnumerationToType e = do
   stdDerivs <- gets gsStandardDerivings
   enumDerivs <- gets gsStandardEnumDerivings
   let derivs = stdDerivs ++ enumDerivs
-  return $ AC.CType qn vis [] cdecls derivs
+  return (AC.CType qn vis [] cdecls derivs, [])
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
