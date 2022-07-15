@@ -7,946 +7,1892 @@ import qualified Data.Map
 import qualified LSP.Protocol.Support
 
 instance LSP.Utils.JSON.FromJSON ImplementationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ImplementationParams value"
 
 instance LSP.Utils.JSON.FromJSON Location where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Location value"
 
 instance LSP.Utils.JSON.FromJSON ImplementationRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ImplementationRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON TypeDefinitionParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeDefinitionParams value"
 
 instance LSP.Utils.JSON.FromJSON TypeDefinitionRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeDefinitionRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceFolder where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceFolder value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeWorkspaceFoldersParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeWorkspaceFoldersParams value"
 
 instance LSP.Utils.JSON.FromJSON ConfigurationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ConfigurationParams value"
 
 instance LSP.Utils.JSON.FromJSON PartialResultParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized PartialResultParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentColorParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentColorParams value"
 
 instance LSP.Utils.JSON.FromJSON ColorInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ColorInformation value"
 
 instance LSP.Utils.JSON.FromJSON DocumentColorRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentColorRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON ColorPresentationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ColorPresentationParams value"
 
 instance LSP.Utils.JSON.FromJSON ColorPresentation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ColorPresentation value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressOptions value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON FoldingRangeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FoldingRangeParams value"
 
 instance LSP.Utils.JSON.FromJSON FoldingRange where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FoldingRange value"
 
 instance LSP.Utils.JSON.FromJSON FoldingRangeRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FoldingRangeRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DeclarationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeclarationParams value"
 
 instance LSP.Utils.JSON.FromJSON DeclarationRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeclarationRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON SelectionRangeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SelectionRangeParams value"
 
 instance LSP.Utils.JSON.FromJSON SelectionRange where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SelectionRange value"
 
 instance LSP.Utils.JSON.FromJSON SelectionRangeRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SelectionRangeRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressCreateParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressCreateParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressCancelParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressCancelParams value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyPrepareParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyPrepareParams value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyItem value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyIncomingCallsParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyIncomingCallsParams value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyIncomingCall where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyIncomingCall value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyOutgoingCallsParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyOutgoingCallsParams value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyOutgoingCall where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyOutgoingCall value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensParams value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokens where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokens value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensPartialResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensPartialResult value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensDeltaParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensDeltaParams value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensDelta where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensDelta value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensDeltaPartialResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensDeltaPartialResult value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensRangeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensRangeParams value"
 
 instance LSP.Utils.JSON.FromJSON ShowDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON ShowDocumentResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowDocumentResult value"
 
 instance LSP.Utils.JSON.FromJSON LinkedEditingRangeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LinkedEditingRangeParams value"
 
 instance LSP.Utils.JSON.FromJSON LinkedEditingRanges where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LinkedEditingRanges value"
 
 instance LSP.Utils.JSON.FromJSON LinkedEditingRangeRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LinkedEditingRangeRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON CreateFilesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CreateFilesParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceEdit value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON RenameFilesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameFilesParams value"
 
 instance LSP.Utils.JSON.FromJSON DeleteFilesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeleteFilesParams value"
 
 instance LSP.Utils.JSON.FromJSON MonikerParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MonikerParams value"
 
 instance LSP.Utils.JSON.FromJSON Moniker where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Moniker value"
 
 instance LSP.Utils.JSON.FromJSON MonikerRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MonikerRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchyPrepareParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchyPrepareParams value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchyItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchyItem value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchyRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchyRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchySupertypesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchySupertypesParams value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchySubtypesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchySubtypesParams value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueParams value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintParams value"
 
 instance LSP.Utils.JSON.FromJSON InlayHint where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHint value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentDiagnosticParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentDiagnosticParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentDiagnosticReportPartialResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentDiagnosticReportPartialResult value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticServerCancellationData where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticServerCancellationData value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceDiagnosticParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticReportPartialResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceDiagnosticReportPartialResult value"
 
 instance LSP.Utils.JSON.FromJSON DidOpenNotebookDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidOpenNotebookDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeNotebookDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeNotebookDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON DidSaveNotebookDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidSaveNotebookDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON DidCloseNotebookDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidCloseNotebookDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON RegistrationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RegistrationParams value"
 
 instance LSP.Utils.JSON.FromJSON UnregistrationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized UnregistrationParams value"
 
 instance LSP.Utils.JSON.FromJSON InitializeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InitializeParams value"
 
 instance LSP.Utils.JSON.FromJSON InitializeResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InitializeResult value"
 
 instance LSP.Utils.JSON.FromJSON InitializeError where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InitializeError value"
 
 instance LSP.Utils.JSON.FromJSON InitializedParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InitializedParams value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeConfigurationParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeConfigurationParams value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeConfigurationRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeConfigurationRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON ShowMessageParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowMessageParams value"
 
 instance LSP.Utils.JSON.FromJSON ShowMessageRequestParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowMessageRequestParams value"
 
 instance LSP.Utils.JSON.FromJSON MessageActionItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MessageActionItem value"
 
 instance LSP.Utils.JSON.FromJSON LogMessageParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LogMessageParams value"
 
 instance LSP.Utils.JSON.FromJSON DidOpenTextDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidOpenTextDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeTextDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeTextDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentChangeRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentChangeRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DidCloseTextDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidCloseTextDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON DidSaveTextDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidSaveTextDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentSaveRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentSaveRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WillSaveTextDocumentParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WillSaveTextDocumentParams value"
 
 instance LSP.Utils.JSON.FromJSON TextEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextEdit value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeWatchedFilesParams value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeWatchedFilesRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON PublishDiagnosticsParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized PublishDiagnosticsParams value"
 
 instance LSP.Utils.JSON.FromJSON CompletionParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionParams value"
 
 instance LSP.Utils.JSON.FromJSON CompletionItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionItem value"
 
 instance LSP.Utils.JSON.FromJSON CompletionList where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionList value"
 
 instance LSP.Utils.JSON.FromJSON CompletionRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON HoverParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized HoverParams value"
 
 instance LSP.Utils.JSON.FromJSON Hover where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Hover value"
 
 instance LSP.Utils.JSON.FromJSON HoverRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized HoverRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelpParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelpParams value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelp where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelp value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelpRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelpRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DefinitionParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DefinitionParams value"
 
 instance LSP.Utils.JSON.FromJSON DefinitionRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DefinitionRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON ReferenceParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ReferenceParams value"
 
 instance LSP.Utils.JSON.FromJSON ReferenceRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ReferenceRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentHighlightParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentHighlightParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentHighlight where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentHighlight value"
 
 instance LSP.Utils.JSON.FromJSON DocumentHighlightRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentHighlightRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentSymbolParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentSymbolParams value"
 
 instance LSP.Utils.JSON.FromJSON SymbolInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SymbolInformation value"
 
 instance LSP.Utils.JSON.FromJSON DocumentSymbol where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentSymbol value"
 
 instance LSP.Utils.JSON.FromJSON DocumentSymbolRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentSymbolRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON CodeActionParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeActionParams value"
 
 instance LSP.Utils.JSON.FromJSON Command where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Command value"
 
 instance LSP.Utils.JSON.FromJSON CodeAction where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeAction value"
 
 instance LSP.Utils.JSON.FromJSON CodeActionRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeActionRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceSymbolParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceSymbolParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceSymbol where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceSymbol value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceSymbolRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceSymbolRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON CodeLensParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLensParams value"
 
 instance LSP.Utils.JSON.FromJSON CodeLens where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLens value"
 
 instance LSP.Utils.JSON.FromJSON CodeLensRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLensRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentLinkParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentLinkParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentLink where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentLink value"
 
 instance LSP.Utils.JSON.FromJSON DocumentLinkRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentLinkRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentFormattingParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentFormattingParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentFormattingRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentFormattingRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentRangeFormattingParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ ->
+        Left "Unrecognized DocumentRangeFormattingRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentOnTypeFormattingParams value"
 
 instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ ->
+        Left "Unrecognized DocumentOnTypeFormattingRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON RenameParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameParams value"
 
 instance LSP.Utils.JSON.FromJSON RenameRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON PrepareRenameParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized PrepareRenameParams value"
 
 instance LSP.Utils.JSON.FromJSON ExecuteCommandParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ExecuteCommandParams value"
 
 instance LSP.Utils.JSON.FromJSON ExecuteCommandRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ExecuteCommandRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON ApplyWorkspaceEditParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ApplyWorkspaceEditParams value"
 
 instance LSP.Utils.JSON.FromJSON ApplyWorkspaceEditResult where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ApplyWorkspaceEditResult value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressBegin where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressBegin value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressReport value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressEnd where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressEnd value"
 
 instance LSP.Utils.JSON.FromJSON SetTraceParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SetTraceParams value"
 
 instance LSP.Utils.JSON.FromJSON LogTraceParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LogTraceParams value"
 
 instance LSP.Utils.JSON.FromJSON CancelParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CancelParams value"
 
 instance LSP.Utils.JSON.FromJSON ProgressParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ProgressParams value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentPositionParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentPositionParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkDoneProgressParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkDoneProgressParams value"
 
 instance LSP.Utils.JSON.FromJSON LocationLink where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LocationLink value"
 
 instance LSP.Utils.JSON.FromJSON Range where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Range value"
 
 instance LSP.Utils.JSON.FromJSON ImplementationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ImplementationOptions value"
 
 instance LSP.Utils.JSON.FromJSON StaticRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized StaticRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON TypeDefinitionOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeDefinitionOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceFoldersChangeEvent where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceFoldersChangeEvent value"
 
 instance LSP.Utils.JSON.FromJSON ConfigurationItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ConfigurationItem value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentIdentifier where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentIdentifier value"
 
 instance LSP.Utils.JSON.FromJSON Color where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Color value"
 
 instance LSP.Utils.JSON.FromJSON DocumentColorOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentColorOptions value"
 
 instance LSP.Utils.JSON.FromJSON FoldingRangeOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FoldingRangeOptions value"
 
 instance LSP.Utils.JSON.FromJSON DeclarationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeclarationOptions value"
 
 instance LSP.Utils.JSON.FromJSON Position where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Position value"
 
 instance LSP.Utils.JSON.FromJSON SelectionRangeOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SelectionRangeOptions value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyOptions value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensOptions value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensEdit value"
 
 instance LSP.Utils.JSON.FromJSON LinkedEditingRangeOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LinkedEditingRangeOptions value"
 
 instance LSP.Utils.JSON.FromJSON FileCreate where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileCreate value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentEdit value"
 
 instance LSP.Utils.JSON.FromJSON CreateFile where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CreateFile value"
 
 instance LSP.Utils.JSON.FromJSON RenameFile where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameFile value"
 
 instance LSP.Utils.JSON.FromJSON DeleteFile where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeleteFile value"
 
 instance LSP.Utils.JSON.FromJSON ChangeAnnotation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ChangeAnnotation value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationFilter where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationFilter value"
 
 instance LSP.Utils.JSON.FromJSON FileRename where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileRename value"
 
 instance LSP.Utils.JSON.FromJSON FileDelete where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileDelete value"
 
 instance LSP.Utils.JSON.FromJSON MonikerOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MonikerOptions value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchyOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchyOptions value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueContext where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueContext value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueText where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueText value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueVariableLookup where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueVariableLookup value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueEvaluatableExpression where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueEvaluatableExpression value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueOptions value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintLabelPart where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintLabelPart value"
 
 instance LSP.Utils.JSON.FromJSON MarkupContent where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MarkupContent value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintOptions value"
 
 instance LSP.Utils.JSON.FromJSON RelatedFullDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RelatedFullDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON RelatedUnchangedDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RelatedUnchangedDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON FullDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FullDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON UnchangedDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized UnchangedDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticOptions value"
 
 instance LSP.Utils.JSON.FromJSON PreviousResultId where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized PreviousResultId value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocument where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocument value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentItem where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentItem value"
 
 instance LSP.Utils.JSON.FromJSON VersionedNotebookDocumentIdentifier where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized VersionedNotebookDocumentIdentifier value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentChangeEvent where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentChangeEvent value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentIdentifier where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentIdentifier value"
 
 instance LSP.Utils.JSON.FromJSON Registration where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Registration value"
 
 instance LSP.Utils.JSON.FromJSON Unregistration where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Unregistration value"
 
 instance LSP.Utils.JSON.FromJSON BaseInitializeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized BaseInitializeParams value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceFoldersInitializeParams where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceFoldersInitializeParams value"
 
 instance LSP.Utils.JSON.FromJSON ServerCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ServerCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON VersionedTextDocumentIdentifier where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized VersionedTextDocumentIdentifier value"
 
 instance LSP.Utils.JSON.FromJSON SaveOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SaveOptions value"
 
 instance LSP.Utils.JSON.FromJSON FileEvent where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileEvent value"
 
 instance LSP.Utils.JSON.FromJSON FileSystemWatcher where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileSystemWatcher value"
 
 instance LSP.Utils.JSON.FromJSON Diagnostic where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized Diagnostic value"
 
 instance LSP.Utils.JSON.FromJSON CompletionContext where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionContext value"
 
 instance LSP.Utils.JSON.FromJSON CompletionItemLabelDetails where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionItemLabelDetails value"
 
 instance LSP.Utils.JSON.FromJSON InsertReplaceEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InsertReplaceEdit value"
 
 instance LSP.Utils.JSON.FromJSON CompletionOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionOptions value"
 
 instance LSP.Utils.JSON.FromJSON HoverOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized HoverOptions value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelpContext where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelpContext value"
 
 instance LSP.Utils.JSON.FromJSON SignatureInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureInformation value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelpOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelpOptions value"
 
 instance LSP.Utils.JSON.FromJSON DefinitionOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DefinitionOptions value"
 
 instance LSP.Utils.JSON.FromJSON ReferenceContext where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ReferenceContext value"
 
 instance LSP.Utils.JSON.FromJSON ReferenceOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ReferenceOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentHighlightOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentHighlightOptions value"
 
 instance LSP.Utils.JSON.FromJSON BaseSymbolInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized BaseSymbolInformation value"
 
 instance LSP.Utils.JSON.FromJSON DocumentSymbolOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentSymbolOptions value"
 
 instance LSP.Utils.JSON.FromJSON CodeActionContext where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeActionContext value"
 
 instance LSP.Utils.JSON.FromJSON CodeActionOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeActionOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceSymbolOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceSymbolOptions value"
 
 instance LSP.Utils.JSON.FromJSON CodeLensOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLensOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentLinkOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentLinkOptions value"
 
 instance LSP.Utils.JSON.FromJSON FormattingOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FormattingOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentFormattingOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentFormattingOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentRangeFormattingOptions value"
 
 instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentOnTypeFormattingOptions value"
 
 instance LSP.Utils.JSON.FromJSON RenameOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameOptions value"
 
 instance LSP.Utils.JSON.FromJSON ExecuteCommandOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ExecuteCommandOptions value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensLegend where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensLegend value"
 
 instance LSP.Utils.JSON.FromJSON OptionalVersionedTextDocumentIdentifier where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized OptionalVersionedTextDocumentIdentifier value"
 
 instance LSP.Utils.JSON.FromJSON AnnotatedTextEdit where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized AnnotatedTextEdit value"
 
 instance LSP.Utils.JSON.FromJSON ResourceOperation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ResourceOperation value"
 
 instance LSP.Utils.JSON.FromJSON CreateFileOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CreateFileOptions value"
 
 instance LSP.Utils.JSON.FromJSON RenameFileOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameFileOptions value"
 
 instance LSP.Utils.JSON.FromJSON DeleteFileOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeleteFileOptions value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationPattern where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationPattern value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceFullDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceFullDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ ->
+        Left "Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value"
 
 instance LSP.Utils.JSON.FromJSON LSPObject where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LSPObject value"
 
 instance LSP.Utils.JSON.FromJSON NotebookCell where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookCell value"
 
 instance LSP.Utils.JSON.FromJSON NotebookCellArrayChange where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookCellArrayChange value"
 
 instance LSP.Utils.JSON.FromJSON ClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentSyncOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentSyncOptions value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentSyncOptions value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncRegistrationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentSyncRegistrationOptions value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceFoldersServerCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceFoldersServerCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationOptions value"
 
 instance LSP.Utils.JSON.FromJSON CodeDescription where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeDescription value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticRelatedInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticRelatedInformation value"
 
 instance LSP.Utils.JSON.FromJSON ParameterInformation where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ParameterInformation value"
 
 instance LSP.Utils.JSON.FromJSON NotebookCellTextDocumentFilter where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookCellTextDocumentFilter value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationPatternOptions where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationPatternOptions value"
 
 instance LSP.Utils.JSON.FromJSON ExecutionSummary where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ExecutionSummary value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON WindowClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WindowClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON GeneralClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized GeneralClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON RelativePattern where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RelativePattern value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceEditClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceEditClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeConfigurationClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeConfigurationClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DidChangeWatchedFilesClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON WorkspaceSymbolClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized WorkspaceSymbolClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON ExecuteCommandClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ExecuteCommandClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensWorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensWorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON CodeLensWorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLensWorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON FileOperationClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FileOperationClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueWorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueWorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintWorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintWorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticWorkspaceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticWorkspaceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON TextDocumentSyncClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TextDocumentSyncClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON CompletionClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CompletionClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON HoverClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized HoverClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON SignatureHelpClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SignatureHelpClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DeclarationClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DeclarationClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DefinitionClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DefinitionClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON TypeDefinitionClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeDefinitionClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON ImplementationClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ImplementationClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON ReferenceClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ReferenceClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentHighlightClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentHighlightClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentSymbolClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentSymbolClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON CodeActionClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeActionClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON CodeLensClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CodeLensClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentLinkClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentLinkClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentColorClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentColorClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentFormattingClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentFormattingClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DocumentRangeFormattingClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ ->
+        Left "Unrecognized DocumentOnTypeFormattingClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON RenameClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RenameClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON FoldingRangeClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized FoldingRangeClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON SelectionRangeClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SelectionRangeClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON PublishDiagnosticsClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized PublishDiagnosticsClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON CallHierarchyClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized CallHierarchyClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON SemanticTokensClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized SemanticTokensClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON LinkedEditingRangeClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized LinkedEditingRangeClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON MonikerClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MonikerClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON TypeHierarchyClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized TypeHierarchyClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON InlineValueClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlineValueClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON InlayHintClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized InlayHintClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON DiagnosticClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized DiagnosticClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized NotebookDocumentSyncClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON ShowMessageRequestClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowMessageRequestClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON ShowDocumentClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized ShowDocumentClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON RegularExpressionsClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized RegularExpressionsClientCapabilities value"
 
 instance LSP.Utils.JSON.FromJSON MarkdownClientCapabilities where
-  fromJSON external
+  LSP.Utils.JSON.fromJSON j =
+    case j of
+      JSON.Data.JValue vs -> error "TODO"
+      _ -> Left "Unrecognized MarkdownClientCapabilities value"
 
 data ImplementationParams = ImplementationParams {  }
  deriving (Show,Eq)

@@ -102,7 +102,23 @@ metaStructureToFromJSONInstance s = do
       vis = AC.Public
       texp = ACB.baseType qn
       sig = AC.CQualType (AC.CContext []) (fromJSONType (ACB.baseType qn))
-      fdecl = AC.CFunc fromJSONQName 1 vis sig []
+      jVar = (0, "j")
+      vsVar = (1, "vs")
+      anonVar = (2, "_")
+      arms =
+        [ -- Match a JObject
+          (AC.CPComb jObjectQName [AC.CPVar vsVar]
+          , AC.CSimpleRhs (ACB.applyF (AC.pre "error") [ACB.string2ac "TODO"]) []
+          ) -- FIXME
+          -- For any other JValue, return an error message
+          -- TODO: Include printed JSON value in error match
+        , (AC.CPVar anonVar
+          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [ACB.string2ac $ "Unrecognized " ++ name ++ " value"]) []
+          )
+        ]
+      expr = AC.CCase AC.CRigid (AC.CVar jVar) arms
+      rule = AC.CRule [AC.CPVar jVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
 
@@ -182,17 +198,25 @@ toJSONClassQName = ("LSP.Utils.JSON", "ToJSON")
 eitherType :: AC.CTypeExpr -> AC.CTypeExpr -> AC.CTypeExpr
 eitherType x y = ACB.applyTC (AC.pre "Either") [x, y]
 
--- | The JValue type expr.
-jValueType :: AC.CTypeExpr
-jValueType = ACB.baseType ("JSON.Data", "JValue")
+-- | The JValue qualified name.
+jValueQName :: AC.QName
+jValueQName = ("JSON.Data", "JValue")
+
+-- | The JObject qualified name.
+jObjectQName :: AC.QName
+jObjectQName = ("JSON.Data", "JValue")
 
 -- | The fromJSON function type expr with the given result type.
 fromJSONType :: AC.CTypeExpr -> AC.CTypeExpr
-fromJSONType ty = AC.CFuncType jValueType (eitherType ACB.stringType ty)
+fromJSONType ty = AC.CFuncType (ACB.baseType jValueQName) (eitherType ACB.stringType ty)
 
 -- | The fromJSON function name.
 fromJSONQName :: AC.QName
 fromJSONQName = ("LSP.Utils.JSON", "fromJSON")
+
+-- | The unqualified fromJSON function name (for the instance method name).
+fromJSONQName' :: AC.QName
+fromJSONQName' = mkQName "fromJSON"
 
 -- | The lookupFromJSON function name.
 lookupFromJSONQName :: AC.QName
