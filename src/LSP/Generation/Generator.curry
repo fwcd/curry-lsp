@@ -45,14 +45,19 @@ initialGeneratorState m = GeneratorState
 
 -- | Converts a meta structure to a prettyprinted Curry program.
 metaModelToPrettyCurry :: String -> MetaModel -> String
-metaModelToPrettyCurry name m = ACP.showCProg $ evalState (metaModelToProg name m) st
+metaModelToPrettyCurry name m = ACP.prettyCurryProg ppOpts $ evalState (metaModelToProg name m) st
   where
     st = initialGeneratorState m
+    -- Disable qualification since instances are not generated correctly
+    -- when using qualified identifiers. We just have to make sure to include
+    -- all of the required imports (and make sure that no LSP identifiers
+    -- conflict with our supporting types).
+    ppOpts = ACP.setNoQualification ACP.defaultOptions
 
 -- | Converts a meta structure to a Curry program.
 metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
-  let imps = ["LSP.Utils.JSON"] -- Explicitly import for the FromJSON/ToJSON classes
+  let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data"]
       funs = []
   (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
   (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
@@ -204,7 +209,7 @@ jValueQName = ("JSON.Data", "JValue")
 
 -- | The JObject qualified name.
 jObjectQName :: AC.QName
-jObjectQName = ("JSON.Data", "JValue")
+jObjectQName = ("JSON.Data", "JObject")
 
 -- | The fromJSON function type expr with the given result type.
 fromJSONType :: AC.CTypeExpr -> AC.CTypeExpr
