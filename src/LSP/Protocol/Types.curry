@@ -1,8 +1,952 @@
 -- NOTE: This file is generated automatically and should not be edited manually!
 module LSP.Protocol.Types where
 
+import qualified LSP.Utils.JSON
+import qualified JSON.Data
 import qualified Data.Map
 import qualified LSP.Protocol.Support
+
+instance LSP.Utils.JSON.FromJSON ImplementationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Location where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ImplementationRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeDefinitionParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeDefinitionRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceFolder where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeWorkspaceFoldersParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ConfigurationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON PartialResultParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentColorParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ColorInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentColorRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ColorPresentationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ColorPresentation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FoldingRangeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FoldingRange where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FoldingRangeRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeclarationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeclarationRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SelectionRangeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SelectionRange where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SelectionRangeRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressCreateParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressCancelParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyPrepareParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyIncomingCallsParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyIncomingCall where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyOutgoingCallsParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyOutgoingCall where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokens where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensPartialResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensDeltaParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensDelta where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensDeltaPartialResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensRangeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowDocumentResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LinkedEditingRangeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LinkedEditingRanges where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LinkedEditingRangeRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CreateFilesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameFilesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeleteFilesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MonikerParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Moniker where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MonikerRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchyPrepareParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchyItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchyRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchySupertypesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchySubtypesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHint where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentDiagnosticParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentDiagnosticReportPartialResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticServerCancellationData where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceDiagnosticReportPartialResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidOpenNotebookDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeNotebookDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidSaveNotebookDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidCloseNotebookDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RegistrationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON UnregistrationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InitializeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InitializeResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InitializeError where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InitializedParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeConfigurationParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeConfigurationRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowMessageParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowMessageRequestParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MessageActionItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LogMessageParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidOpenTextDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeTextDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentChangeRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidCloseTextDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidSaveTextDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentSaveRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WillSaveTextDocumentParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON PublishDiagnosticsParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionList where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON HoverParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Hover where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON HoverRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelpParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelp where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelpRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DefinitionParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DefinitionRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ReferenceParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ReferenceRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentHighlightParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentHighlight where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentHighlightRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentSymbolParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SymbolInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentSymbol where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentSymbolRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeActionParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Command where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeAction where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeActionRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceSymbolParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceSymbol where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceSymbolRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLensParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLens where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLensRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentLinkParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentLink where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentLinkRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentFormattingParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentFormattingRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON PrepareRenameParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ExecuteCommandParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ExecuteCommandRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ApplyWorkspaceEditParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ApplyWorkspaceEditResult where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressBegin where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressEnd where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SetTraceParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LogTraceParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CancelParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ProgressParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentPositionParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkDoneProgressParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LocationLink where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Range where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ImplementationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON StaticRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeDefinitionOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceFoldersChangeEvent where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ConfigurationItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentIdentifier where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Color where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentColorOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FoldingRangeOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeclarationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Position where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SelectionRangeOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LinkedEditingRangeOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileCreate where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CreateFile where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameFile where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeleteFile where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ChangeAnnotation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationFilter where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileRename where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileDelete where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MonikerOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchyOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueContext where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueText where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueVariableLookup where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueEvaluatableExpression where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintLabelPart where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MarkupContent where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RelatedFullDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RelatedUnchangedDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FullDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON UnchangedDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON PreviousResultId where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocument where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentItem where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON VersionedNotebookDocumentIdentifier where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentChangeEvent where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentIdentifier where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Registration where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Unregistration where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON BaseInitializeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceFoldersInitializeParams where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ServerCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON VersionedTextDocumentIdentifier where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SaveOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileEvent where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileSystemWatcher where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON Diagnostic where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionContext where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionItemLabelDetails where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InsertReplaceEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON HoverOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelpContext where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelpOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DefinitionOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ReferenceContext where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ReferenceOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentHighlightOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON BaseSymbolInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentSymbolOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeActionContext where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeActionOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceSymbolOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLensOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentLinkOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FormattingOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentFormattingOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ExecuteCommandOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensLegend where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON OptionalVersionedTextDocumentIdentifier where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON AnnotatedTextEdit where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ResourceOperation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CreateFileOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameFileOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeleteFileOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationPattern where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceFullDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LSPObject where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookCell where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookCellArrayChange where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentSyncOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncRegistrationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceFoldersServerCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeDescription where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticRelatedInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ParameterInformation where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookCellTextDocumentFilter where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationPatternOptions where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ExecutionSummary where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WindowClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON GeneralClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RelativePattern where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceEditClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeConfigurationClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DidChangeWatchedFilesClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON WorkspaceSymbolClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ExecuteCommandClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensWorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLensWorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FileOperationClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueWorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintWorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticWorkspaceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TextDocumentSyncClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CompletionClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON HoverClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SignatureHelpClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DeclarationClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DefinitionClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeDefinitionClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ImplementationClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ReferenceClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentHighlightClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentSymbolClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeActionClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CodeLensClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentLinkClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentColorClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentFormattingClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentRangeFormattingClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DocumentOnTypeFormattingClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RenameClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON FoldingRangeClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SelectionRangeClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON PublishDiagnosticsClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON CallHierarchyClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON SemanticTokensClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON LinkedEditingRangeClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MonikerClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON TypeHierarchyClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlineValueClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON InlayHintClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON DiagnosticClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON NotebookDocumentSyncClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowMessageRequestClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON ShowDocumentClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON RegularExpressionsClientCapabilities where
+  fromJSON external
+
+instance LSP.Utils.JSON.FromJSON MarkdownClientCapabilities where
+  fromJSON external
 
 data ImplementationParams = ImplementationParams {  }
  deriving (Show,Eq)

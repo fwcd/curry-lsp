@@ -52,7 +52,7 @@ metaModelToPrettyCurry name m = ACP.showCProg $ evalState (metaModelToProg name 
 -- | Converts a meta structure to a Curry program.
 metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
-  let imps = []
+  let imps = ["LSP.Utils.JSON"] -- Explicitly import for the FromJSON/ToJSON classes
       funs = []
   (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
   (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
@@ -99,9 +99,12 @@ metaStructureToFromJSONInstance s = do
   let name = escapeName $ msName s
       qn = mkQName name
       ctx = AC.CContext []
+      vis = AC.Public
       texp = ACB.baseType qn
-      fdecls = [] -- TODO
-  return $ AC.CInstance fromJSONClass ctx texp fdecls
+      sig = AC.CQualType (AC.CContext []) (fromJSONType (ACB.baseType qn))
+      fdecl = AC.CFunc fromJSONQName 1 vis sig []
+      fdecls = [fdecl]
+  return $ AC.CInstance fromJSONClassQName ctx texp fdecls
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
@@ -167,13 +170,45 @@ metaBaseTypeToTypeExpr b = case b of
 support :: String -> AC.QName
 support n = ("LSP.Protocol.Support", n)
 
--- | The FromJSON type class.
-fromJSONClass :: AC.QName
-fromJSONClass = ("LSP.Utils.JSON", "FromJSON")
+-- | The FromJSON type class name.
+fromJSONClassQName :: AC.QName
+fromJSONClassQName = ("LSP.Utils.JSON", "FromJSON")
 
--- | The ToJSON type class.
-toJSONClass :: AC.QName
-toJSONClass = ("LSP.Utils.JSON", "ToJSON")
+-- | The ToJSON type class name.
+toJSONClassQName :: AC.QName
+toJSONClassQName = ("LSP.Utils.JSON", "ToJSON")
+
+-- | The Prelude.Either type.
+eitherType :: AC.CTypeExpr -> AC.CTypeExpr -> AC.CTypeExpr
+eitherType x y = ACB.applyTC (AC.pre "Either") [x, y]
+
+-- | The JValue type expr.
+jValueType :: AC.CTypeExpr
+jValueType = ACB.baseType ("JSON.Data", "JValue")
+
+-- | The fromJSON function type expr with the given result type.
+fromJSONType :: AC.CTypeExpr -> AC.CTypeExpr
+fromJSONType ty = AC.CFuncType jValueType (eitherType ACB.stringType ty)
+
+-- | The fromJSON function name.
+fromJSONQName :: AC.QName
+fromJSONQName = ("LSP.Utils.JSON", "fromJSON")
+
+-- | The lookupFromJSON function name.
+lookupFromJSONQName :: AC.QName
+lookupFromJSONQName = ("LSP.Utils.JSON", "lookupFromJSON")
+
+-- | The lookupStringFromJSON function name.
+lookupStringFromJSONQName :: AC.QName
+lookupStringFromJSONQName = ("LSP.Utils.JSON", "lookupStringFromJSON")
+
+-- | The lookupMaybeFromJSON function name.
+lookupMaybeFromJSONQName :: AC.QName
+lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
+
+-- | The lookupMaybeStringFromJSON function name.
+lookupMaybeStringFromJSONQName :: AC.QName
+lookupMaybeStringFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeStringFromJSON")
 
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName
