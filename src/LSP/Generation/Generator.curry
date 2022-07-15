@@ -61,7 +61,7 @@ metaModelToProg name m = do
       insts = structInsts ++ enumInsts
   return $ AC.CurryProg name imps Nothing [] insts tys funs []
 
--- | Converts a meta structure to a Curry type declaration.
+-- | Converts a meta structure to a Curry type declaration (and instances).
 metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
 metaStructureToType s = do
   let name = escapeName $ msName s
@@ -70,10 +70,13 @@ metaStructureToType s = do
       vis = AC.Public
   fs <- mapM (metaPropertyToField name) props
   derivs <- gets gsStandardDerivings
+  fromJSONInst <- metaStructureToFromJSONInstance s
   let cdecl = AC.CRecord qn vis fs
-  return (AC.CType qn vis [] [cdecl] derivs, [])
+      ty = AC.CType qn vis [] [cdecl] derivs
+      insts = [fromJSONInst]
+  return (ty, insts)
 
--- | Converts a meta enumeration to a Curry type declaration.
+-- | Converts a meta enumeration to a Curry type declaration (and instances).
 metaEnumerationToType :: MetaEnumeration -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
 metaEnumerationToType e = do
   let name = escapeName $ meName e
@@ -86,7 +89,19 @@ metaEnumerationToType e = do
   stdDerivs <- gets gsStandardDerivings
   enumDerivs <- gets gsStandardEnumDerivings
   let derivs = stdDerivs ++ enumDerivs
-  return (AC.CType qn vis [] cdecls derivs, [])
+      ty = AC.CType qn vis [] cdecls derivs
+      insts = [] -- TODO
+  return (ty, insts)
+
+-- | Converts a meta structure to a FromJSON instance.
+metaStructureToFromJSONInstance :: MetaStructure -> GM AC.CInstanceDecl
+metaStructureToFromJSONInstance s = do
+  let name = escapeName $ msName s
+      qn = mkQName name
+      ctx = AC.CContext []
+      texp = ACB.baseType qn
+      fdecls = [] -- TODO
+  return $ AC.CInstance fromJSONClass ctx texp fdecls
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
@@ -151,6 +166,14 @@ metaBaseTypeToTypeExpr b = case b of
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName
 support n = ("LSP.Protocol.Support", n)
+
+-- | The FromJSON type class.
+fromJSONClass :: AC.QName
+fromJSONClass = ("LSP.Utils.JSON", "FromJSON")
+
+-- | The ToJSON type class.
+toJSONClass :: AC.QName
+toJSONClass = ("LSP.Utils.JSON", "ToJSON")
 
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName
