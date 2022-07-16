@@ -181,6 +181,7 @@ metaTypeToTypeExpr t = case t of
   MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM metaTypeToTypeExpr [k, e]
   MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
   MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM metaTypeToTypeExpr is
+  MetaTypeAnd is          -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
   -- TODO: Find a better representation for string literal types?
   -- We should probably rewrite or-ed string literal types to algebraic data types!
   MetaTypeStringLiteral _ -> return ACB.stringType
