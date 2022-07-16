@@ -5,7 +5,7 @@ module LSP.Protocol.Message
 
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.JSON ( FromJSON (..), ToJSON (..), lookupFromJSON, lookupStringFromJSON )
+import LSP.Utils.JSON ( FromJSON (..), ToJSON (..), lookupFromJSON )
 
 -- | A JSON-RPC message.
 data Request a = Request
@@ -29,8 +29,8 @@ data Response a = Response
 instance FromJSON a => FromJSON (Request a) where
   fromJSON j = case j of
     JObject vs -> do
-      jrpc   <- lookupStringFromJSON "jsonrpc" vs
-      method <- lookupStringFromJSON "method" vs
+      jrpc   <- lookupFromJSON "jsonrpc" vs
+      method <- lookupFromJSON "method" vs
       params <- lookupFromJSON "params" vs
       id     <- lookupFromJSON "id" vs
       return $ Request
@@ -43,7 +43,7 @@ instance FromJSON a => FromJSON (Request a) where
 
 instance ToJSON a => ToJSON (Response a) where
   toJSON rsp = JObject
-    [ ("jsonrpc", JString (rspJsonrpc rsp))
+    [ ("jsonrpc", toJSON (rspJsonrpc rsp))
     , ("result", toJSON (rspResult rsp))
     -- TODO: Curry's JSON package only supports floating-point representations
     --       could this be an issue if the client relies on integers?
