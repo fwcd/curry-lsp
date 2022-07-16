@@ -15,6 +15,12 @@ class FromJSON a where
   -- | Converts from a JSON value to the type.
   fromJSON :: JValue -> Either String a
 
+  -- | Converts from a JSON value to the list type.
+  -- Useful for providing a separate overload for strings and other arrays,
+  -- similar to how showList and show.
+  listFromJSON :: JValue -> Either String [a]
+  listFromJSON = arrayFromJSON
+
   -- | Parses a JSON string to a value of the type.
   fromJSONString :: String -> Either String a
   fromJSONString s = case parseJSON s of
@@ -24,6 +30,10 @@ class FromJSON a where
 class ToJSON a where
   -- | Converts from the type to JSON.
   toJSON :: a -> JValue
+
+  -- | Converts from the list type to JSON.
+  listToJSON :: [a] -> JValue
+  listToJSON = arrayToJSON
 
   -- | Generates a JSON string from a value of type.
   toJSONString :: a -> String
@@ -39,7 +49,10 @@ instance FromJSON Float where
   fromJSON = fractionalFromJSON
 
 instance FromJSON a => FromJSON [a] where
-  fromJSON = arrayFromJSON
+  fromJSON = listFromJSON
+
+instance ToJSON a => ToJSON [a] where
+  toJSON = listToJSON
 
 instance FromJSON a => FromJSON (Maybe a) where
   fromJSON = Right . maybeFromJSON
@@ -52,6 +65,18 @@ instance ToJSON JValue where
 
 instance FromJSON () where
   fromJSON _ = Right ()
+
+instance FromJSON Char where
+  fromJSON j = case j of
+    JString [c] -> Right c
+    _           -> Left $ "Expected char but was: " ++ ppJSON j
+  
+  listFromJSON = stringFromJSON
+
+instance ToJSON Char where
+  toJSON c = JString [c]
+
+  listToJSON = stringToJSON
 
 -- Parses a boolean value from JSON.
 boolFromJSON :: JValue -> Either String Bool
@@ -78,6 +103,10 @@ stringFromJSON j = case j of
   JString s -> Right s
   _ -> Left $ "Expected string but was: " ++ ppJSON j
 
+-- Converts a string to JSON.
+stringToJSON :: String -> JValue
+stringToJSON = JString
+
 -- Parses an object from JSON.
 objectFromJSON :: FromJSON a => JValue -> Either String [(String, a)]
 objectFromJSON j = case j of
@@ -89,6 +118,10 @@ arrayFromJSON :: FromJSON a => JValue -> Either String [a]
 arrayFromJSON j = case j of
   JArray vs -> mapM fromJSON vs
   _ -> Left $ "Expected array but was: " ++ ppJSON j
+
+-- Converts an array to JSON.
+arrayToJSON :: ToJSON a => [a] -> JValue
+arrayToJSON = JArray . (toJSON <$>)
 
 -- Parses an optional from JSON.
 maybeFromJSON :: FromJSON a => JValue -> Maybe a
