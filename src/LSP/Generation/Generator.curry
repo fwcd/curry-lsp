@@ -9,6 +9,8 @@ import Control.Monad ( join )
 import Control.Monad.Trans.State ( State, evalState, gets )
 import qualified Data.Map as M
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
+import JSON.Data ( JValue (..) )
+import JSON.Pretty ( ppJSON )
 import LSP.Generation.Model
 import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>) )
 
@@ -153,18 +155,18 @@ metaEnumerationToFromJSONInstance prefix e = do
       rawVar = (1, "raw")
       anonVar = (2, "_")
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
-      arms =
-        [ -- TODO
-          -- For any other JValue, return an error message
-          (AC.CPVar anonVar
-          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) []
-          )
-        ]
+      vals = meValues e
+      valLits = metaEnumerationValueToLit . mevValue <$> vals
+      valQNames = mkQName . enumValueName prefix . mevName <$> vals
+      valArms = zipWith (\v q -> (AC.CPLit v, AC.CSimpleRhs (ACB.applyF (AC.pre "Right") [AC.CSymbol q]) [])) valLits valQNames
+      arms = valArms ++ [(AC.CPVar anonVar, AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) [])]
       rawExpr = ACB.applyF fromJSONQName [AC.CVar jVar]
       rawTy = AC.CQualType (AC.CContext []) ty
       caseExpr = AC.CCase AC.CRigid (AC.CTyped (AC.CVar rawVar) rawTy) arms
       stmts =
-        [ AC.CSPat (AC.CPVar rawVar) rawExpr
+        [ -- Parse the base type
+          AC.CSPat (AC.CPVar rawVar) rawExpr
+          -- Match against the enum values
         , AC.CSExpr caseExpr
         ]
       expr = AC.CDoExpr stmts
@@ -172,6 +174,13 @@ metaEnumerationToFromJSONInstance prefix e = do
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+
+-- | Converts a meta enumeration value to a Curry literal.
+metaEnumerationValueToLit :: JValue -> AC.CLiteral
+metaEnumerationValueToLit j = case j of
+  JString s -> AC.CStringc s
+  JNumber f -> AC.CIntc $ round f
+  _         -> error $ "Unrepresentable enum value: " ++ ppJSON j
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
