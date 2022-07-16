@@ -142,6 +142,7 @@ lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
 -- | Converts a meta enumeration to a FromJSON instance.
 metaEnumerationToFromJSONInstance :: String -> MetaEnumeration -> GM AC.CInstanceDecl
 metaEnumerationToFromJSONInstance prefix e = do
+  ty <- metaTypeToTypeExpr $ meType e
   let name = escapeName $ meName e
       qn = mkQName name
       ctx = AC.CContext []
@@ -149,21 +150,24 @@ metaEnumerationToFromJSONInstance prefix e = do
       texp = ACB.baseType qn
       sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
       jVar = (0, "j")
-      vsVar = (1, "vs")
+      rawVar = (1, "raw")
       anonVar = (2, "_")
-      stmts = [] -- TODO
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       arms =
-        [ -- Match a JObject
-          (AC.CPComb jObjectQName [AC.CPVar vsVar]
-          , AC.CSimpleRhs (AC.CDoExpr stmts) []
-          )
+        [ -- TODO
           -- For any other JValue, return an error message
-        , (AC.CPVar anonVar
+          (AC.CPVar anonVar
           , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) []
           )
         ]
-      expr = AC.CCase AC.CRigid (AC.CVar jVar) arms
+      rawExpr = ACB.applyF fromJSONQName [AC.CVar jVar]
+      rawTy = AC.CQualType (AC.CContext []) ty
+      caseExpr = AC.CCase AC.CRigid (AC.CTyped (AC.CVar rawVar) rawTy) arms
+      stmts =
+        [ AC.CSPat (AC.CPVar rawVar) rawExpr
+        , AC.CSExpr caseExpr
+        ]
+      expr = AC.CDoExpr stmts
       rule = AC.CRule [AC.CPVar jVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]

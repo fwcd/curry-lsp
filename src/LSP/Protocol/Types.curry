@@ -3952,215 +3952,217 @@ instance FromJSON MarkdownClientCapabilities where
 
 instance FromJSON SemanticTokenTypes where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized SemanticTokenTypes value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized SemanticTokenTypes value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokenModifiers where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized SemanticTokenModifiers value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized SemanticTokenModifiers value: " ++ ppJSON j)
 
 instance FromJSON ErrorCodes where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized ErrorCodes value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized ErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON LSPErrorCodes where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized LSPErrorCodes value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized LSPErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized FoldingRangeKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized FoldingRangeKind value: " ++ ppJSON j)
 
 instance FromJSON SymbolKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized SymbolKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized SymbolKind value: " ++ ppJSON j)
 
 instance FromJSON SymbolTag where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized SymbolTag value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized SymbolTag value: " ++ ppJSON j)
 
 instance FromJSON UniquenessLevel where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized UniquenessLevel value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized UniquenessLevel value: " ++ ppJSON j)
 
 instance FromJSON MonikerKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized MonikerKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized MonikerKind value: " ++ ppJSON j)
 
 instance FromJSON InlayHintKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized InlayHintKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized InlayHintKind value: " ++ ppJSON j)
 
 instance FromJSON MessageType where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized MessageType value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized MessageType value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized TextDocumentSyncKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized TextDocumentSyncKind value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSaveReason where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized TextDocumentSaveReason value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized TextDocumentSaveReason value: " ++ ppJSON j)
 
 instance FromJSON CompletionItemKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized CompletionItemKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized CompletionItemKind value: " ++ ppJSON j)
 
 instance FromJSON CompletionItemTag where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized CompletionItemTag value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized CompletionItemTag value: " ++ ppJSON j)
 
 instance FromJSON InsertTextFormat where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized InsertTextFormat value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized InsertTextFormat value: " ++ ppJSON j)
 
 instance FromJSON InsertTextMode where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized InsertTextMode value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized InsertTextMode value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized DocumentHighlightKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized DocumentHighlightKind value: " ++ ppJSON j)
 
 instance FromJSON CodeActionKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized CodeActionKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized CodeActionKind value: " ++ ppJSON j)
 
 instance FromJSON TraceValues where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized TraceValues value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized TraceValues value: " ++ ppJSON j)
 
 instance FromJSON MarkupKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized MarkupKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized MarkupKind value: " ++ ppJSON j)
 
 instance FromJSON PositionEncodingKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized PositionEncodingKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized PositionEncodingKind value: " ++ ppJSON j)
 
 instance FromJSON FileChangeType where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized FileChangeType value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized FileChangeType value: " ++ ppJSON j)
 
 instance FromJSON WatchKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized WatchKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized WatchKind value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticSeverity where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized DiagnosticSeverity value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized DiagnosticSeverity value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticTag where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized DiagnosticTag value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized DiagnosticTag value: " ++ ppJSON j)
 
 instance FromJSON CompletionTriggerKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized CompletionTriggerKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized CompletionTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpTriggerKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized SignatureHelpTriggerKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ ->
+           Left ("Unrecognized SignatureHelpTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON CodeActionTriggerKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized CodeActionTriggerKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized CodeActionTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON FileOperationPatternKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized FileOperationPatternKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ ->
+           Left ("Unrecognized FileOperationPatternKind value: " ++ ppJSON j)
 
 instance FromJSON NotebookCellKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized NotebookCellKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ -> Left ("Unrecognized NotebookCellKind value: " ++ ppJSON j)
 
 instance FromJSON ResourceOperationKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized ResourceOperationKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized ResourceOperationKind value: " ++ ppJSON j)
 
 instance FromJSON FailureHandlingKind where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized FailureHandlingKind value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized FailureHandlingKind value: " ++ ppJSON j)
 
 instance FromJSON PrepareSupportDefaultBehavior where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ ->
-        Left
-         ("Unrecognized PrepareSupportDefaultBehavior value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: Int of
+         _ ->
+           Left
+            ("Unrecognized PrepareSupportDefaultBehavior value: " ++ ppJSON j)
 
 instance FromJSON TokenFormat where
   fromJSON j =
-    case j of
-      JObject vs -> do 
-      _ -> Left ("Unrecognized TokenFormat value: " ++ ppJSON j)
+    do raw <- fromJSON j
+       case raw :: String of
+         _ -> Left ("Unrecognized TokenFormat value: " ++ ppJSON j)
 
 data ImplementationParams = ImplementationParams {  }
  deriving (Show,Eq)
