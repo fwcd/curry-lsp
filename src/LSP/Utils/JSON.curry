@@ -6,6 +6,7 @@ module LSP.Utils.JSON
   , lookupPathFromJSON
   ) where
 
+import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 import JSON.Parser ( parseJSON )
 import JSON.Pretty ( ppJSON )
@@ -103,6 +104,11 @@ instance ToJSON Char where
 
   listToJSON = stringToJSON
 
+instance (Ord k, FromJSON k, FromJSON v) => FromJSON (M.Map k v) where
+  fromJSON = (M.fromList <$>) . objectFromJSON
+
+-- TODO: ToJSON instance for Map
+
 -- Parses a boolean value from JSON.
 boolFromJSON :: JValue -> Either String Bool
 boolFromJSON j = case j of
@@ -132,10 +138,10 @@ stringFromJSON j = case j of
 stringToJSON :: String -> JValue
 stringToJSON = JString
 
--- Parses an object from JSON.
-objectFromJSON :: FromJSON a => JValue -> Either String [(String, a)]
+-- Parses an object from JSON. Any key that can be parsed from a JString is supported.
+objectFromJSON :: (FromJSON k, FromJSON v) => JValue -> Either String [(k, v)]
 objectFromJSON j = case j of
-  JObject vs -> mapM (\(k, v) -> (\x -> (k, x)) <$> fromJSON v) vs
+  JObject vs -> mapM (\(k, v) -> (,) <$> fromJSON (JString k) <*> fromJSON v) vs
   _ -> Left $ "Expected object but was: " ++ ppJSON j
 
 -- Parses an array from JSON.
