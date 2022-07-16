@@ -2,7 +2,7 @@ module LSP.Utils.JSON
   ( FromJSON (..)
   , ToJSON (..)
   , stringFromJSON, arrayFromJSON, objectFromJSON, maybeFromJSON, boolFromJSON, integralFromJSON, fractionalFromJSON
-  , lookupFromJSON, lookupStringFromJSON, lookupObjectFromJSON, lookupMaybeStringFromJSON, lookupMaybeFromJSON
+  , lookupFromJSON, lookupObjectFromJSON, lookupMaybeFromJSON
   , lookupPathFromJSON
   ) where
 
@@ -138,14 +138,6 @@ lookupPathFromJSON path vs = case path of
   [k]    -> lookupFromJSON k vs
   (k:ks) -> lookupObjectFromJSON k vs >>= lookupPathFromJSON ks
 
--- Implementation note: The reason why we treat strings specially is
--- that adding an overlapping instance of FromJSON String is currently
--- something the compiler disallows.
-
--- Parses a string lookup on a JSON object's properties.
-lookupStringFromJSON :: String -> [(String, JValue)] -> Either String String
-lookupStringFromJSON k vs = lookup' k vs >>= stringFromJSON
-
 -- Parses an object lookup on a JSON object's properties.
 lookupObjectFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String [(String, a)]
 lookupObjectFromJSON k vs = lookup' k vs >>= objectFromJSON
@@ -154,10 +146,4 @@ lookupObjectFromJSON k vs = lookup' k vs >>= objectFromJSON
 lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String (Maybe a)
 lookupMaybeFromJSON k vs = case lookup k vs of
   Just x  -> fromJSON x
-  Nothing -> Right Nothing
-
--- Parses an optional string lookup on a JSON object's properties.
-lookupMaybeStringFromJSON :: String -> [(String, JValue)] -> Either String (Maybe String)
-lookupMaybeStringFromJSON k vs = case lookup k vs of
-  Just x  -> Just <$> stringFromJSON x
   Nothing -> Right Nothing

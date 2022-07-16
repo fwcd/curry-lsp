@@ -16,8 +16,8 @@ import Data.Maybe ( fromMaybe )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Utils.JSON ( FromJSON (..)
-                      , lookupFromJSON, lookupStringFromJSON, lookupObjectFromJSON
-                      , lookupMaybeStringFromJSON, lookupMaybeFromJSON, lookupPathFromJSON
+                      , lookupFromJSON, lookupFromJSON, lookupObjectFromJSON
+                      , lookupMaybeFromJSON, lookupMaybeFromJSON, lookupPathFromJSON
                       )
 
 data MetaProperty = MetaProperty
@@ -144,14 +144,14 @@ instance FromJSON MetaModel where
 instance FromJSON MetaRequest where
   fromJSON j = case j of
     JObject vs -> do
-      method        <- lookupStringFromJSON "method" vs
+      method        <- lookupFromJSON "method" vs
       result        <- lookupFromJSON "result" vs
       dir           <- lookupFromJSON "messageDirection" vs
       params        <- lookupMaybeFromJSON "params" vs
       partialResult <- lookupMaybeFromJSON "partialResult" vs
-      doc           <- lookupMaybeStringFromJSON "documentation" vs
-      since         <- lookupMaybeStringFromJSON "since" vs
-      regMethod     <- lookupMaybeStringFromJSON "registrationMethod" vs
+      doc           <- lookupMaybeFromJSON "documentation" vs
+      since         <- lookupMaybeFromJSON "since" vs
+      regMethod     <- lookupMaybeFromJSON "registrationMethod" vs
       regOpts       <- lookupMaybeFromJSON "registrationOptions" vs
       errData       <- lookupMaybeFromJSON "errorData" vs
       return $ MetaRequest
@@ -179,15 +179,15 @@ instance FromJSON MetaMessageDirection where
 instance FromJSON MetaType where
   fromJSON j = case j of
     JObject vs -> do
-      kind <- lookupStringFromJSON "kind" vs
+      kind <- lookupFromJSON "kind" vs
       case kind of
-        "reference"     -> MetaTypeReference     <$> lookupStringFromJSON "name" vs
+        "reference"     -> MetaTypeReference     <$> lookupFromJSON "name" vs
         "array"         -> MetaTypeArray         <$> lookupFromJSON "element" vs
         "map"           -> MetaTypeMap           <$> lookupFromJSON "key" vs <*> lookupFromJSON "value" vs
         "base"          -> MetaTypeBase          <$> lookupFromJSON "name" vs
         "or"            -> MetaTypeOr            <$> lookupFromJSON "items" vs
         "literal"       -> MetaTypeLiteral       <$> lookupPathFromJSON ["value", "properties"] vs
-        "stringLiteral" -> MetaTypeStringLiteral <$> lookupStringFromJSON "value" vs
+        "stringLiteral" -> MetaTypeStringLiteral <$> lookupFromJSON "value" vs
         "tuple"         -> MetaTypeTuple         <$> lookupFromJSON "items" vs
         _ -> Left $ "Unrecognized type kind: " ++ kind
     _ -> Left $ "Unrecognized type value: " ++ ppJSON j
@@ -207,10 +207,10 @@ instance FromJSON MetaBaseType where
 instance FromJSON MetaProperty where
   fromJSON j = case j of
     JObject vs -> do
-      name     <- lookupStringFromJSON "name" vs
+      name     <- lookupFromJSON "name" vs
       ty       <- lookupFromJSON "type" vs
       optional <- lookupMaybeFromJSON "optional" vs
-      doc      <- lookupMaybeStringFromJSON "documentation" vs
+      doc      <- lookupMaybeFromJSON "documentation" vs
       return $ MetaProperty
         { mpName = name
         , mpType = ty
@@ -222,12 +222,12 @@ instance FromJSON MetaProperty where
 instance FromJSON MetaNotification where
   fromJSON j = case j of
     JObject vs -> do
-      method        <- lookupStringFromJSON "method" vs
+      method        <- lookupFromJSON "method" vs
       dir           <- lookupFromJSON "messageDirection" vs
       params        <- lookupMaybeFromJSON "params" vs
-      doc           <- lookupMaybeStringFromJSON "documentation" vs
-      since         <- lookupMaybeStringFromJSON "since" vs
-      regMethod     <- lookupMaybeStringFromJSON "registrationMethod" vs
+      doc           <- lookupMaybeFromJSON "documentation" vs
+      since         <- lookupMaybeFromJSON "since" vs
+      regMethod     <- lookupMaybeFromJSON "registrationMethod" vs
       regOpts       <- lookupMaybeFromJSON "registrationOptions" vs
       return $ MetaNotification
         { mnMethod = method
@@ -245,11 +245,11 @@ instance FromJSON MetaNotification where
 instance FromJSON MetaStructure where
   fromJSON j = case j of
     JObject vs -> do
-      name    <- lookupStringFromJSON "name" vs
+      name    <- lookupFromJSON "name" vs
       props   <- lookupFromJSON "properties" vs
       extends <- fromMaybe [] <$> lookupMaybeFromJSON "extends" vs
       mixins  <- fromMaybe [] <$> lookupMaybeFromJSON "mixins" vs
-      doc     <- lookupMaybeStringFromJSON "documentation" vs
+      doc     <- lookupMaybeFromJSON "documentation" vs
       return $ MetaStructure
         { msName = name
         , msProperties = props
@@ -262,12 +262,12 @@ instance FromJSON MetaStructure where
 instance FromJSON MetaEnumeration where
   fromJSON j = case j of
     JObject vs -> do
-      name    <- lookupStringFromJSON "name" vs
+      name    <- lookupFromJSON "name" vs
       ty      <- lookupFromJSON "type" vs
       values  <- lookupFromJSON "values" vs
       customs <- lookupMaybeFromJSON "supportsCustomValues" vs
-      doc     <- lookupMaybeStringFromJSON "documentation" vs
-      since   <- lookupMaybeStringFromJSON "since" vs
+      doc     <- lookupMaybeFromJSON "documentation" vs
+      since   <- lookupMaybeFromJSON "since" vs
       return $ MetaEnumeration
         { meName = name
         , meType = ty
@@ -281,9 +281,9 @@ instance FromJSON MetaEnumeration where
 instance FromJSON MetaEnumerationValue where
   fromJSON j = case j of
     JObject vs -> do
-      name  <- lookupStringFromJSON "name" vs
+      name  <- lookupFromJSON "name" vs
       value <- lookupFromJSON "value" vs
-      doc   <- lookupMaybeStringFromJSON "documentation" vs
+      doc   <- lookupMaybeFromJSON "documentation" vs
       return $ MetaEnumerationValue
         { mevName = name
         , mevValue = value
@@ -294,9 +294,9 @@ instance FromJSON MetaEnumerationValue where
 instance FromJSON MetaTypeAlias where
   fromJSON j = case j of
     JObject vs -> do
-      name <- lookupStringFromJSON "name" vs
+      name <- lookupFromJSON "name" vs
       ty   <- lookupFromJSON "type" vs
-      doc  <- lookupMaybeStringFromJSON "documentation" vs
+      doc  <- lookupMaybeFromJSON "documentation" vs
       return $ MetaTypeAlias
         { mtaName = name
         , mtaType = ty
