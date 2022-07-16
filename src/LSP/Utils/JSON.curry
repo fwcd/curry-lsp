@@ -55,7 +55,16 @@ instance ToJSON a => ToJSON [a] where
   toJSON = listToJSON
 
 instance FromJSON a => FromJSON (Maybe a) where
-  fromJSON = Right . maybeFromJSON
+  fromJSON = maybeFromJSON
+
+instance ToJSON a => ToJSON (Maybe a) where
+  toJSON = maybeToJSON
+
+instance (FromJSON a, FromJSON b) => FromJSON (Either a b) where
+  fromJSON = eitherFromJSON
+
+instance (ToJSON a, ToJSON b) => ToJSON (Either a b) where
+  toJSON = eitherToJSON
 
 instance FromJSON JValue where
   fromJSON = Right
@@ -124,8 +133,28 @@ arrayToJSON :: ToJSON a => [a] -> JValue
 arrayToJSON = JArray . (toJSON <$>)
 
 -- Parses an optional from JSON.
-maybeFromJSON :: FromJSON a => JValue -> Maybe a
-maybeFromJSON = rightToMaybe . fromJSON
+maybeFromJSON :: FromJSON a => JValue -> Either String (Maybe a)
+maybeFromJSON j = case j of
+  JNull -> Right Nothing
+  _     -> Just <$> fromJSON j
+
+-- Converts an optional to JSON.
+maybeToJSON :: ToJSON a => Maybe a -> JValue
+maybeToJSON v = case v of
+  Just x  -> toJSON x
+  Nothing -> JNull
+
+-- Parses an alternative from JSON.
+eitherFromJSON :: (FromJSON a, FromJSON b) => JValue -> Either String (Either a b)
+eitherFromJSON j = case fromJSON j of
+  Right x -> Right $ Left x
+  Left _  -> Right <$> fromJSON j
+
+-- Converts an alternative to JSON.
+eitherToJSON :: (ToJSON a, ToJSON b) => Either a b -> JValue
+eitherToJSON e = case e of
+  Left x  -> toJSON x
+  Right x -> toJSON x
 
 -- Parses a lookup on a JSON object's properties.
 lookupFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either String a
