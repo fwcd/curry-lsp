@@ -134,17 +134,10 @@ metaStructureToFromJSONInstance prefix s = do
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
 
 -- | Picks the correct lookupFromJSON method for the given property.
--- TODO: Handle more complex types like [String]
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
-lookupFromJSONForMetaProperty p | not isString && not isOptional = lookupFromJSONQName
-                                |     isString && not isOptional = lookupStringFromJSONQName
-                                | not isString &&     isOptional = lookupMaybeFromJSONQName
-                                | otherwise                      = lookupMaybeStringFromJSONQName
+lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
+                                | otherwise  = lookupFromJSONQName
   where isOptional = fromMaybe False $ mpOptional p
-        isString = case mpType p of
-          MetaTypeBase MetaBaseTypeString -> True
-          MetaTypeStringLiteral _         -> True
-          _                               -> False
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl

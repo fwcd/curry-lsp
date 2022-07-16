@@ -45,7 +45,7 @@ instance FromJSON WorkspaceFolder where
     case j of
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
-           parsedName <- lookupStringFromJSON "name" vs
+           parsedName <- lookupFromJSON "name" vs
            return
             WorkspaceFolder { workspaceFolderUri = parsedUri
                             , workspaceFolderName = parsedName }
@@ -123,7 +123,7 @@ instance FromJSON ColorPresentation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupStringFromJSON "label" vs
+        do parsedLabel <- lookupFromJSON "label" vs
            parsedTextEdit <- lookupMaybeFromJSON "textEdit" vs
            parsedAdditionalTextEdits <- lookupMaybeFromJSON
                                          "additionalTextEdits"
@@ -170,7 +170,7 @@ instance FromJSON FoldingRange where
            parsedEndLine <- lookupFromJSON "endLine" vs
            parsedEndCharacter <- lookupMaybeFromJSON "endCharacter" vs
            parsedKind <- lookupMaybeFromJSON "kind" vs
-           parsedCollapsedText <- lookupMaybeStringFromJSON "collapsedText" vs
+           parsedCollapsedText <- lookupMaybeFromJSON "collapsedText" vs
            return
             FoldingRange { foldingRangeStartLine = parsedStartLine
                          , foldingRangeStartCharacter = parsedStartCharacter
@@ -254,10 +254,10 @@ instance FromJSON CallHierarchyItem where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedName <- lookupStringFromJSON "name" vs
+        do parsedName <- lookupFromJSON "name" vs
            parsedKind <- lookupFromJSON "kind" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
-           parsedDetail <- lookupMaybeStringFromJSON "detail" vs
+           parsedDetail <- lookupMaybeFromJSON "detail" vs
            parsedUri <- lookupFromJSON "uri" vs
            parsedRange <- lookupFromJSON "range" vs
            parsedSelectionRange <- lookupFromJSON "selectionRange" vs
@@ -332,7 +332,7 @@ instance FromJSON SemanticTokens where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResultId <- lookupMaybeStringFromJSON "resultId" vs
+        do parsedResultId <- lookupMaybeFromJSON "resultId" vs
            parsedData <- lookupFromJSON "data" vs
            return
             SemanticTokens { semanticTokensResultId = parsedResultId
@@ -359,8 +359,7 @@ instance FromJSON SemanticTokensDeltaParams where
     case j of
       JObject vs ->
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
-           parsedPreviousResultId <- lookupStringFromJSON "previousResultId"
-                                      vs
+           parsedPreviousResultId <- lookupFromJSON "previousResultId" vs
            return
             SemanticTokensDeltaParams { semanticTokensDeltaParamsTextDocument = parsedTextDocument
                                       , semanticTokensDeltaParamsPreviousResultId = parsedPreviousResultId }
@@ -370,7 +369,7 @@ instance FromJSON SemanticTokensDelta where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResultId <- lookupMaybeStringFromJSON "resultId" vs
+        do parsedResultId <- lookupMaybeFromJSON "resultId" vs
            parsedEdits <- lookupFromJSON "edits" vs
            return
             SemanticTokensDelta { semanticTokensDeltaResultId = parsedResultId
@@ -432,7 +431,7 @@ instance FromJSON LinkedEditingRanges where
     case j of
       JObject vs ->
         do parsedRanges <- lookupFromJSON "ranges" vs
-           parsedWordPattern <- lookupMaybeStringFromJSON "wordPattern" vs
+           parsedWordPattern <- lookupMaybeFromJSON "wordPattern" vs
            return
             LinkedEditingRanges { linkedEditingRangesRanges = parsedRanges
                                 , linkedEditingRangesWordPattern = parsedWordPattern }
@@ -501,8 +500,8 @@ instance FromJSON Moniker where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedScheme <- lookupStringFromJSON "scheme" vs
-           parsedIdentifier <- lookupStringFromJSON "identifier" vs
+        do parsedScheme <- lookupFromJSON "scheme" vs
+           parsedIdentifier <- lookupFromJSON "identifier" vs
            parsedUnique <- lookupFromJSON "unique" vs
            parsedKind <- lookupMaybeFromJSON "kind" vs
            return
@@ -528,10 +527,10 @@ instance FromJSON TypeHierarchyItem where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedName <- lookupStringFromJSON "name" vs
+        do parsedName <- lookupFromJSON "name" vs
            parsedKind <- lookupFromJSON "kind" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
-           parsedDetail <- lookupMaybeStringFromJSON "detail" vs
+           parsedDetail <- lookupMaybeFromJSON "detail" vs
            parsedUri <- lookupFromJSON "uri" vs
            parsedRange <- lookupFromJSON "range" vs
            parsedSelectionRange <- lookupFromJSON "selectionRange" vs
@@ -635,10 +634,8 @@ instance FromJSON DocumentDiagnosticParams where
     case j of
       JObject vs ->
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
-           parsedIdentifier <- lookupMaybeStringFromJSON "identifier" vs
-           parsedPreviousResultId <- lookupMaybeStringFromJSON
-                                      "previousResultId"
-                                      vs
+           parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
+           parsedPreviousResultId <- lookupMaybeFromJSON "previousResultId" vs
            return
             DocumentDiagnosticParams { documentDiagnosticParamsTextDocument = parsedTextDocument
                                      , documentDiagnosticParamsIdentifier = parsedIdentifier
@@ -673,7 +670,7 @@ instance FromJSON WorkspaceDiagnosticParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedIdentifier <- lookupMaybeStringFromJSON "identifier" vs
+        do parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
            parsedPreviousResultIds <- lookupFromJSON "previousResultIds" vs
            return
             WorkspaceDiagnosticParams { workspaceDiagnosticParamsIdentifier = parsedIdentifier
@@ -812,7 +809,7 @@ instance FromJSON ShowMessageParams where
     case j of
       JObject vs ->
         do parsedType <- lookupFromJSON "type" vs
-           parsedMessage <- lookupStringFromJSON "message" vs
+           parsedMessage <- lookupFromJSON "message" vs
            return
             ShowMessageParams { showMessageParamsType = parsedType
                               , showMessageParamsMessage = parsedMessage }
@@ -823,7 +820,7 @@ instance FromJSON ShowMessageRequestParams where
     case j of
       JObject vs ->
         do parsedType <- lookupFromJSON "type" vs
-           parsedMessage <- lookupStringFromJSON "message" vs
+           parsedMessage <- lookupFromJSON "message" vs
            parsedActions <- lookupMaybeFromJSON "actions" vs
            return
             ShowMessageRequestParams { showMessageRequestParamsType = parsedType
@@ -835,7 +832,7 @@ instance FromJSON MessageActionItem where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTitle <- lookupStringFromJSON "title" vs
+        do parsedTitle <- lookupFromJSON "title" vs
            return MessageActionItem { messageActionItemTitle = parsedTitle }
       _ -> Left "Unrecognized MessageActionItem value"
 
@@ -844,7 +841,7 @@ instance FromJSON LogMessageParams where
     case j of
       JObject vs ->
         do parsedType <- lookupFromJSON "type" vs
-           parsedMessage <- lookupStringFromJSON "message" vs
+           parsedMessage <- lookupFromJSON "message" vs
            return
             LogMessageParams { logMessageParamsType = parsedType
                              , logMessageParamsMessage = parsedMessage }
@@ -893,7 +890,7 @@ instance FromJSON DidSaveTextDocumentParams where
     case j of
       JObject vs ->
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
-           parsedText <- lookupMaybeStringFromJSON "text" vs
+           parsedText <- lookupMaybeFromJSON "text" vs
            return
             DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument = parsedTextDocument
                                       , didSaveTextDocumentParamsText = parsedText }
@@ -921,7 +918,7 @@ instance FromJSON TextEdit where
     case j of
       JObject vs ->
         do parsedRange <- lookupFromJSON "range" vs
-           parsedNewText <- lookupStringFromJSON "newText" vs
+           parsedNewText <- lookupFromJSON "newText" vs
            return
             TextEdit { textEditRange = parsedRange
                      , textEditNewText = parsedNewText }
@@ -970,21 +967,21 @@ instance FromJSON CompletionItem where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupStringFromJSON "label" vs
+        do parsedLabel <- lookupFromJSON "label" vs
            parsedLabelDetails <- lookupMaybeFromJSON "labelDetails" vs
            parsedKind <- lookupMaybeFromJSON "kind" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
-           parsedDetail <- lookupMaybeStringFromJSON "detail" vs
+           parsedDetail <- lookupMaybeFromJSON "detail" vs
            parsedDocumentation <- lookupMaybeFromJSON "documentation" vs
            parsedDeprecated <- lookupMaybeFromJSON "deprecated" vs
            parsedPreselect <- lookupMaybeFromJSON "preselect" vs
-           parsedSortText <- lookupMaybeStringFromJSON "sortText" vs
-           parsedFilterText <- lookupMaybeStringFromJSON "filterText" vs
-           parsedInsertText <- lookupMaybeStringFromJSON "insertText" vs
+           parsedSortText <- lookupMaybeFromJSON "sortText" vs
+           parsedFilterText <- lookupMaybeFromJSON "filterText" vs
+           parsedInsertText <- lookupMaybeFromJSON "insertText" vs
            parsedInsertTextFormat <- lookupMaybeFromJSON "insertTextFormat" vs
            parsedInsertTextMode <- lookupMaybeFromJSON "insertTextMode" vs
            parsedTextEdit <- lookupMaybeFromJSON "textEdit" vs
-           parsedTextEditText <- lookupMaybeStringFromJSON "textEditText" vs
+           parsedTextEditText <- lookupMaybeFromJSON "textEditText" vs
            parsedAdditionalTextEdits <- lookupMaybeFromJSON
                                          "additionalTextEdits"
                                          vs
@@ -1155,8 +1152,8 @@ instance FromJSON DocumentSymbol where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedName <- lookupStringFromJSON "name" vs
-           parsedDetail <- lookupMaybeStringFromJSON "detail" vs
+        do parsedName <- lookupFromJSON "name" vs
+           parsedDetail <- lookupMaybeFromJSON "detail" vs
            parsedKind <- lookupFromJSON "kind" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
            parsedDeprecated <- lookupMaybeFromJSON "deprecated" vs
@@ -1197,8 +1194,8 @@ instance FromJSON Command where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTitle <- lookupStringFromJSON "title" vs
-           parsedCommand <- lookupStringFromJSON "command" vs
+        do parsedTitle <- lookupFromJSON "title" vs
+           parsedCommand <- lookupFromJSON "command" vs
            parsedArguments <- lookupMaybeFromJSON "arguments" vs
            return
             Command { commandTitle = parsedTitle
@@ -1210,7 +1207,7 @@ instance FromJSON CodeAction where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTitle <- lookupStringFromJSON "title" vs
+        do parsedTitle <- lookupFromJSON "title" vs
            parsedKind <- lookupMaybeFromJSON "kind" vs
            parsedDiagnostics <- lookupMaybeFromJSON "diagnostics" vs
            parsedIsPreferred <- lookupMaybeFromJSON "isPreferred" vs
@@ -1239,7 +1236,7 @@ instance FromJSON WorkspaceSymbolParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedQuery <- lookupStringFromJSON "query" vs
+        do parsedQuery <- lookupFromJSON "query" vs
            return
             WorkspaceSymbolParams { workspaceSymbolParamsQuery = parsedQuery }
       _ -> Left "Unrecognized WorkspaceSymbolParams value"
@@ -1303,8 +1300,8 @@ instance FromJSON DocumentLink where
     case j of
       JObject vs ->
         do parsedRange <- lookupFromJSON "range" vs
-           parsedTarget <- lookupMaybeStringFromJSON "target" vs
-           parsedTooltip <- lookupMaybeStringFromJSON "tooltip" vs
+           parsedTarget <- lookupMaybeFromJSON "target" vs
+           parsedTooltip <- lookupMaybeFromJSON "tooltip" vs
            parsedData <- lookupMaybeFromJSON "data" vs
            return
             DocumentLink { documentLinkRange = parsedRange
@@ -1362,7 +1359,7 @@ instance FromJSON DocumentOnTypeFormattingParams where
       JObject vs ->
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            parsedPosition <- lookupFromJSON "position" vs
-           parsedCh <- lookupStringFromJSON "ch" vs
+           parsedCh <- lookupFromJSON "ch" vs
            parsedOptions <- lookupFromJSON "options" vs
            return
             DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument = parsedTextDocument
@@ -1384,7 +1381,7 @@ instance FromJSON RenameParams where
       JObject vs ->
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            parsedPosition <- lookupFromJSON "position" vs
-           parsedNewName <- lookupStringFromJSON "newName" vs
+           parsedNewName <- lookupFromJSON "newName" vs
            return
             RenameParams { renameParamsTextDocument = parsedTextDocument
                          , renameParamsPosition = parsedPosition
@@ -1407,7 +1404,7 @@ instance FromJSON ExecuteCommandParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedCommand <- lookupStringFromJSON "command" vs
+        do parsedCommand <- lookupFromJSON "command" vs
            parsedArguments <- lookupMaybeFromJSON "arguments" vs
            return
             ExecuteCommandParams { executeCommandParamsCommand = parsedCommand
@@ -1424,7 +1421,7 @@ instance FromJSON ApplyWorkspaceEditParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupMaybeStringFromJSON "label" vs
+        do parsedLabel <- lookupMaybeFromJSON "label" vs
            parsedEdit <- lookupFromJSON "edit" vs
            return
             ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel = parsedLabel
@@ -1436,7 +1433,7 @@ instance FromJSON ApplyWorkspaceEditResult where
     case j of
       JObject vs ->
         do parsedApplied <- lookupFromJSON "applied" vs
-           parsedFailureReason <- lookupMaybeStringFromJSON "failureReason" vs
+           parsedFailureReason <- lookupMaybeFromJSON "failureReason" vs
            parsedFailedChange <- lookupMaybeFromJSON "failedChange" vs
            return
             ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied = parsedApplied
@@ -1448,10 +1445,10 @@ instance FromJSON WorkDoneProgressBegin where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
-           parsedTitle <- lookupStringFromJSON "title" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedTitle <- lookupFromJSON "title" vs
            parsedCancellable <- lookupMaybeFromJSON "cancellable" vs
-           parsedMessage <- lookupMaybeStringFromJSON "message" vs
+           parsedMessage <- lookupMaybeFromJSON "message" vs
            parsedPercentage <- lookupMaybeFromJSON "percentage" vs
            return
             WorkDoneProgressBegin { workDoneProgressBeginKind = parsedKind
@@ -1465,9 +1462,9 @@ instance FromJSON WorkDoneProgressReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
+        do parsedKind <- lookupFromJSON "kind" vs
            parsedCancellable <- lookupMaybeFromJSON "cancellable" vs
-           parsedMessage <- lookupMaybeStringFromJSON "message" vs
+           parsedMessage <- lookupMaybeFromJSON "message" vs
            parsedPercentage <- lookupMaybeFromJSON "percentage" vs
            return
             WorkDoneProgressReport { workDoneProgressReportKind = parsedKind
@@ -1480,8 +1477,8 @@ instance FromJSON WorkDoneProgressEnd where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
-           parsedMessage <- lookupMaybeStringFromJSON "message" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedMessage <- lookupMaybeFromJSON "message" vs
            return
             WorkDoneProgressEnd { workDoneProgressEndKind = parsedKind
                                 , workDoneProgressEndMessage = parsedMessage }
@@ -1499,8 +1496,8 @@ instance FromJSON LogTraceParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedMessage <- lookupStringFromJSON "message" vs
-           parsedVerbose <- lookupMaybeStringFromJSON "verbose" vs
+        do parsedMessage <- lookupFromJSON "message" vs
+           parsedVerbose <- lookupMaybeFromJSON "verbose" vs
            return
             LogTraceParams { logTraceParamsMessage = parsedMessage
                            , logTraceParamsVerbose = parsedVerbose }
@@ -1582,7 +1579,7 @@ instance FromJSON StaticRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedId <- lookupMaybeStringFromJSON "id" vs
+        do parsedId <- lookupMaybeFromJSON "id" vs
            return
             StaticRegistrationOptions { staticRegistrationOptionsId = parsedId }
       _ -> Left "Unrecognized StaticRegistrationOptions value"
@@ -1608,8 +1605,8 @@ instance FromJSON ConfigurationItem where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedScopeUri <- lookupMaybeStringFromJSON "scopeUri" vs
-           parsedSection <- lookupMaybeStringFromJSON "section" vs
+        do parsedScopeUri <- lookupMaybeFromJSON "scopeUri" vs
+           parsedSection <- lookupMaybeFromJSON "section" vs
            return
             ConfigurationItem { configurationItemScopeUri = parsedScopeUri
                               , configurationItemSection = parsedSection }
@@ -1716,7 +1713,7 @@ instance FromJSON FileCreate where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedUri <- lookupStringFromJSON "uri" vs
+        do parsedUri <- lookupFromJSON "uri" vs
            return FileCreate { fileCreateUri = parsedUri }
       _ -> Left "Unrecognized FileCreate value"
 
@@ -1735,7 +1732,7 @@ instance FromJSON CreateFile where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
+        do parsedKind <- lookupFromJSON "kind" vs
            parsedUri <- lookupFromJSON "uri" vs
            parsedOptions <- lookupMaybeFromJSON "options" vs
            return
@@ -1748,7 +1745,7 @@ instance FromJSON RenameFile where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
+        do parsedKind <- lookupFromJSON "kind" vs
            parsedOldUri <- lookupFromJSON "oldUri" vs
            parsedNewUri <- lookupFromJSON "newUri" vs
            parsedOptions <- lookupMaybeFromJSON "options" vs
@@ -1763,7 +1760,7 @@ instance FromJSON DeleteFile where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
+        do parsedKind <- lookupFromJSON "kind" vs
            parsedUri <- lookupFromJSON "uri" vs
            parsedOptions <- lookupMaybeFromJSON "options" vs
            return
@@ -1776,10 +1773,10 @@ instance FromJSON ChangeAnnotation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupStringFromJSON "label" vs
+        do parsedLabel <- lookupFromJSON "label" vs
            parsedNeedsConfirmation <- lookupMaybeFromJSON "needsConfirmation"
                                        vs
-           parsedDescription <- lookupMaybeStringFromJSON "description" vs
+           parsedDescription <- lookupMaybeFromJSON "description" vs
            return
             ChangeAnnotation { changeAnnotationLabel = parsedLabel
                              , changeAnnotationNeedsConfirmation = parsedNeedsConfirmation
@@ -1790,7 +1787,7 @@ instance FromJSON FileOperationFilter where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedScheme <- lookupMaybeStringFromJSON "scheme" vs
+        do parsedScheme <- lookupMaybeFromJSON "scheme" vs
            parsedPattern <- lookupFromJSON "pattern" vs
            return
             FileOperationFilter { fileOperationFilterScheme = parsedScheme
@@ -1801,8 +1798,8 @@ instance FromJSON FileRename where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedOldUri <- lookupStringFromJSON "oldUri" vs
-           parsedNewUri <- lookupStringFromJSON "newUri" vs
+        do parsedOldUri <- lookupFromJSON "oldUri" vs
+           parsedNewUri <- lookupFromJSON "newUri" vs
            return
             FileRename { fileRenameOldUri = parsedOldUri
                        , fileRenameNewUri = parsedNewUri }
@@ -1812,7 +1809,7 @@ instance FromJSON FileDelete where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedUri <- lookupStringFromJSON "uri" vs
+        do parsedUri <- lookupFromJSON "uri" vs
            return FileDelete { fileDeleteUri = parsedUri }
       _ -> Left "Unrecognized FileDelete value"
 
@@ -1844,7 +1841,7 @@ instance FromJSON InlineValueText where
     case j of
       JObject vs ->
         do parsedRange <- lookupFromJSON "range" vs
-           parsedText <- lookupStringFromJSON "text" vs
+           parsedText <- lookupFromJSON "text" vs
            return
             InlineValueText { inlineValueTextRange = parsedRange
                             , inlineValueTextText = parsedText }
@@ -1855,7 +1852,7 @@ instance FromJSON InlineValueVariableLookup where
     case j of
       JObject vs ->
         do parsedRange <- lookupFromJSON "range" vs
-           parsedVariableName <- lookupMaybeStringFromJSON "variableName" vs
+           parsedVariableName <- lookupMaybeFromJSON "variableName" vs
            parsedCaseSensitiveLookup <- lookupFromJSON "caseSensitiveLookup"
                                          vs
            return
@@ -1869,7 +1866,7 @@ instance FromJSON InlineValueEvaluatableExpression where
     case j of
       JObject vs ->
         do parsedRange <- lookupFromJSON "range" vs
-           parsedExpression <- lookupMaybeStringFromJSON "expression" vs
+           parsedExpression <- lookupMaybeFromJSON "expression" vs
            return
             InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange = parsedRange
                                              , inlineValueEvaluatableExpressionExpression = parsedExpression }
@@ -1885,7 +1882,7 @@ instance FromJSON InlayHintLabelPart where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedValue <- lookupStringFromJSON "value" vs
+        do parsedValue <- lookupFromJSON "value" vs
            parsedTooltip <- lookupMaybeFromJSON "tooltip" vs
            parsedLocation <- lookupMaybeFromJSON "location" vs
            parsedCommand <- lookupMaybeFromJSON "command" vs
@@ -1901,7 +1898,7 @@ instance FromJSON MarkupContent where
     case j of
       JObject vs ->
         do parsedKind <- lookupFromJSON "kind" vs
-           parsedValue <- lookupStringFromJSON "value" vs
+           parsedValue <- lookupFromJSON "value" vs
            return
             MarkupContent { markupContentKind = parsedKind
                           , markupContentValue = parsedValue }
@@ -1938,8 +1935,8 @@ instance FromJSON FullDocumentDiagnosticReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
-           parsedResultId <- lookupMaybeStringFromJSON "resultId" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupMaybeFromJSON "resultId" vs
            parsedItems <- lookupFromJSON "items" vs
            return
             FullDocumentDiagnosticReport { fullDocumentDiagnosticReportKind = parsedKind
@@ -1951,8 +1948,8 @@ instance FromJSON UnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
-           parsedResultId <- lookupStringFromJSON "resultId" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupFromJSON "resultId" vs
            return
             UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind = parsedKind
                                               , unchangedDocumentDiagnosticReportResultId = parsedResultId }
@@ -1962,7 +1959,7 @@ instance FromJSON DiagnosticOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedIdentifier <- lookupMaybeStringFromJSON "identifier" vs
+        do parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
            parsedInterFileDependencies <- lookupFromJSON
                                            "interFileDependencies"
                                            vs
@@ -1979,7 +1976,7 @@ instance FromJSON PreviousResultId where
     case j of
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
-           parsedValue <- lookupStringFromJSON "value" vs
+           parsedValue <- lookupFromJSON "value" vs
            return
             PreviousResultId { previousResultIdUri = parsedUri
                              , previousResultIdValue = parsedValue }
@@ -1990,7 +1987,7 @@ instance FromJSON NotebookDocument where
     case j of
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
-           parsedNotebookType <- lookupStringFromJSON "notebookType" vs
+           parsedNotebookType <- lookupFromJSON "notebookType" vs
            parsedVersion <- lookupFromJSON "version" vs
            parsedMetadata <- lookupMaybeFromJSON "metadata" vs
            parsedCells <- lookupFromJSON "cells" vs
@@ -2007,9 +2004,9 @@ instance FromJSON TextDocumentItem where
     case j of
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
-           parsedLanguageId <- lookupStringFromJSON "languageId" vs
+           parsedLanguageId <- lookupFromJSON "languageId" vs
            parsedVersion <- lookupFromJSON "version" vs
-           parsedText <- lookupStringFromJSON "text" vs
+           parsedText <- lookupFromJSON "text" vs
            return
             TextDocumentItem { textDocumentItemUri = parsedUri
                              , textDocumentItemLanguageId = parsedLanguageId
@@ -2052,8 +2049,8 @@ instance FromJSON Registration where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedId <- lookupStringFromJSON "id" vs
-           parsedMethod <- lookupStringFromJSON "method" vs
+        do parsedId <- lookupFromJSON "id" vs
+           parsedMethod <- lookupFromJSON "method" vs
            parsedRegisterOptions <- lookupMaybeFromJSON "registerOptions" vs
            return
             Registration { registrationId = parsedId
@@ -2065,8 +2062,8 @@ instance FromJSON Unregistration where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedId <- lookupStringFromJSON "id" vs
-           parsedMethod <- lookupStringFromJSON "method" vs
+        do parsedId <- lookupFromJSON "id" vs
+           parsedMethod <- lookupFromJSON "method" vs
            return
             Unregistration { unregistrationId = parsedId
                            , unregistrationMethod = parsedMethod }
@@ -2078,7 +2075,7 @@ instance FromJSON BaseInitializeParams where
       JObject vs ->
         do parsedProcessId <- lookupFromJSON "processId" vs
            parsedClientInfo <- lookupMaybeFromJSON "clientInfo" vs
-           parsedLocale <- lookupMaybeStringFromJSON "locale" vs
+           parsedLocale <- lookupMaybeFromJSON "locale" vs
            parsedRootPath <- lookupMaybeFromJSON "rootPath" vs
            parsedRootUri <- lookupFromJSON "rootUri" vs
            parsedCapabilities <- lookupFromJSON "capabilities" vs
@@ -2280,8 +2277,8 @@ instance FromJSON Diagnostic where
            parsedSeverity <- lookupMaybeFromJSON "severity" vs
            parsedCode <- lookupMaybeFromJSON "code" vs
            parsedCodeDescription <- lookupMaybeFromJSON "codeDescription" vs
-           parsedSource <- lookupMaybeStringFromJSON "source" vs
-           parsedMessage <- lookupStringFromJSON "message" vs
+           parsedSource <- lookupMaybeFromJSON "source" vs
+           parsedMessage <- lookupFromJSON "message" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
            parsedRelatedInformation <- lookupMaybeFromJSON
                                         "relatedInformation"
@@ -2304,9 +2301,7 @@ instance FromJSON CompletionContext where
     case j of
       JObject vs ->
         do parsedTriggerKind <- lookupFromJSON "triggerKind" vs
-           parsedTriggerCharacter <- lookupMaybeStringFromJSON
-                                      "triggerCharacter"
-                                      vs
+           parsedTriggerCharacter <- lookupMaybeFromJSON "triggerCharacter" vs
            return
             CompletionContext { completionContextTriggerKind = parsedTriggerKind
                               , completionContextTriggerCharacter = parsedTriggerCharacter }
@@ -2316,8 +2311,8 @@ instance FromJSON CompletionItemLabelDetails where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedDetail <- lookupMaybeStringFromJSON "detail" vs
-           parsedDescription <- lookupMaybeStringFromJSON "description" vs
+        do parsedDetail <- lookupMaybeFromJSON "detail" vs
+           parsedDescription <- lookupMaybeFromJSON "description" vs
            return
             CompletionItemLabelDetails { completionItemLabelDetailsDetail = parsedDetail
                                        , completionItemLabelDetailsDescription = parsedDescription }
@@ -2327,7 +2322,7 @@ instance FromJSON InsertReplaceEdit where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedNewText <- lookupStringFromJSON "newText" vs
+        do parsedNewText <- lookupFromJSON "newText" vs
            parsedInsert <- lookupFromJSON "insert" vs
            parsedReplace <- lookupFromJSON "replace" vs
            return
@@ -2365,9 +2360,7 @@ instance FromJSON SignatureHelpContext where
     case j of
       JObject vs ->
         do parsedTriggerKind <- lookupFromJSON "triggerKind" vs
-           parsedTriggerCharacter <- lookupMaybeStringFromJSON
-                                      "triggerCharacter"
-                                      vs
+           parsedTriggerCharacter <- lookupMaybeFromJSON "triggerCharacter" vs
            parsedIsRetrigger <- lookupFromJSON "isRetrigger" vs
            parsedActiveSignatureHelp <- lookupMaybeFromJSON
                                          "activeSignatureHelp"
@@ -2383,7 +2376,7 @@ instance FromJSON SignatureInformation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupStringFromJSON "label" vs
+        do parsedLabel <- lookupFromJSON "label" vs
            parsedDocumentation <- lookupMaybeFromJSON "documentation" vs
            parsedParameters <- lookupMaybeFromJSON "parameters" vs
            parsedActiveParameter <- lookupMaybeFromJSON "activeParameter" vs
@@ -2439,10 +2432,10 @@ instance FromJSON BaseSymbolInformation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedName <- lookupStringFromJSON "name" vs
+        do parsedName <- lookupFromJSON "name" vs
            parsedKind <- lookupFromJSON "kind" vs
            parsedTags <- lookupMaybeFromJSON "tags" vs
-           parsedContainerName <- lookupMaybeStringFromJSON "containerName" vs
+           parsedContainerName <- lookupMaybeFromJSON "containerName" vs
            return
             BaseSymbolInformation { baseSymbolInformationName = parsedName
                                   , baseSymbolInformationKind = parsedKind
@@ -2454,7 +2447,7 @@ instance FromJSON DocumentSymbolOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupMaybeStringFromJSON "label" vs
+        do parsedLabel <- lookupMaybeFromJSON "label" vs
            return
             DocumentSymbolOptions { documentSymbolOptionsLabel = parsedLabel }
       _ -> Left "Unrecognized DocumentSymbolOptions value"
@@ -2548,7 +2541,7 @@ instance FromJSON DocumentOnTypeFormattingOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedFirstTriggerCharacter <- lookupStringFromJSON
+        do parsedFirstTriggerCharacter <- lookupFromJSON
                                            "firstTriggerCharacter"
                                            vs
            parsedMoreTriggerCharacter <- lookupMaybeFromJSON
@@ -2610,7 +2603,7 @@ instance FromJSON ResourceOperation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedKind <- lookupStringFromJSON "kind" vs
+        do parsedKind <- lookupFromJSON "kind" vs
            parsedAnnotationId <- lookupMaybeFromJSON "annotationId" vs
            return
             ResourceOperation { resourceOperationKind = parsedKind
@@ -2655,7 +2648,7 @@ instance FromJSON FileOperationPattern where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedGlob <- lookupStringFromJSON "glob" vs
+        do parsedGlob <- lookupFromJSON "glob" vs
            parsedMatches <- lookupMaybeFromJSON "matches" vs
            parsedOptions <- lookupMaybeFromJSON "options" vs
            return
@@ -2820,7 +2813,7 @@ instance FromJSON DiagnosticRelatedInformation where
     case j of
       JObject vs ->
         do parsedLocation <- lookupFromJSON "location" vs
-           parsedMessage <- lookupStringFromJSON "message" vs
+           parsedMessage <- lookupFromJSON "message" vs
            return
             DiagnosticRelatedInformation { diagnosticRelatedInformationLocation = parsedLocation
                                          , diagnosticRelatedInformationMessage = parsedMessage }
@@ -2842,7 +2835,7 @@ instance FromJSON NotebookCellTextDocumentFilter where
     case j of
       JObject vs ->
         do parsedNotebook <- lookupFromJSON "notebook" vs
-           parsedLanguage <- lookupMaybeStringFromJSON "language" vs
+           parsedLanguage <- lookupMaybeFromJSON "language" vs
            return
             NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook = parsedNotebook
                                            , notebookCellTextDocumentFilterLanguage = parsedLanguage }
@@ -3669,8 +3662,8 @@ instance FromJSON RegularExpressionsClientCapabilities where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedEngine <- lookupStringFromJSON "engine" vs
-           parsedVersion <- lookupMaybeStringFromJSON "version" vs
+        do parsedEngine <- lookupFromJSON "engine" vs
+           parsedVersion <- lookupMaybeFromJSON "version" vs
            return
             RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine = parsedEngine
                                                  , regularExpressionsClientCapabilitiesVersion = parsedVersion }
@@ -3680,8 +3673,8 @@ instance FromJSON MarkdownClientCapabilities where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedParser <- lookupStringFromJSON "parser" vs
-           parsedVersion <- lookupMaybeStringFromJSON "version" vs
+        do parsedParser <- lookupFromJSON "parser" vs
+           parsedVersion <- lookupMaybeFromJSON "version" vs
            parsedAllowedTags <- lookupMaybeFromJSON "allowedTags" vs
            return
             MarkdownClientCapabilities { markdownClientCapabilitiesParser = parsedParser
