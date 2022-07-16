@@ -57,7 +57,7 @@ metaModelToPrettyCurry name m = ACP.prettyCurryProg ppOpts $ evalState (metaMode
 -- | Converts a meta structure to a Curry program.
 metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
 metaModelToProg name m = do
-  let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data"]
+  let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data", "JSON.Pretty"]
       funs = []
   (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
   (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
@@ -113,19 +113,18 @@ metaStructureToFromJSONInstance prefix s = do
       anonVar = (2, "_")
       fieldNames = mpName <$> msProperties s
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
-      -- TODO: Use different lookupFromJSON methods depending on what we want
       fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
       fields = zip ((mkQName . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
+      errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       arms =
         [ -- Match a JObject
           (AC.CPComb jObjectQName [AC.CPVar vsVar]
           , AC.CSimpleRhs (AC.CDoExpr stmts) []
           )
           -- For any other JValue, return an error message
-          -- TODO: Include printed JSON value in error match
         , (AC.CPVar anonVar
-          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [ACB.string2ac $ "Unrecognized " ++ name ++ " value"]) []
+          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) []
           )
         ]
       expr = AC.CCase AC.CRigid (AC.CVar jVar) arms
@@ -152,7 +151,8 @@ metaEnumerationToFromJSONInstance prefix e = do
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
-      stmts = []
+      stmts = [] -- TODO
+      errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       arms =
         [ -- Match a JObject
           (AC.CPComb jObjectQName [AC.CPVar vsVar]
@@ -160,7 +160,7 @@ metaEnumerationToFromJSONInstance prefix e = do
           )
           -- For any other JValue, return an error message
         , (AC.CPVar anonVar
-          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [ACB.string2ac $ "Unrecognized " ++ name ++ " value"]) []
+          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) []
           )
         ]
       expr = AC.CCase AC.CRigid (AC.CVar jVar) arms
@@ -261,25 +261,17 @@ fromJSONType ty = AC.CFuncType (ACB.baseType jValueQName) (eitherType ACB.string
 fromJSONQName :: AC.QName
 fromJSONQName = ("LSP.Utils.JSON", "fromJSON")
 
--- | The unqualified fromJSON function name (for the instance method name).
-fromJSONQName' :: AC.QName
-fromJSONQName' = mkQName "fromJSON"
-
 -- | The lookupFromJSON function name.
 lookupFromJSONQName :: AC.QName
 lookupFromJSONQName = ("LSP.Utils.JSON", "lookupFromJSON")
-
--- | The lookupStringFromJSON function name.
-lookupStringFromJSONQName :: AC.QName
-lookupStringFromJSONQName = ("LSP.Utils.JSON", "lookupStringFromJSON")
 
 -- | The lookupMaybeFromJSON function name.
 lookupMaybeFromJSONQName :: AC.QName
 lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
 
--- | The lookupMaybeStringFromJSON function name.
-lookupMaybeStringFromJSONQName :: AC.QName
-lookupMaybeStringFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeStringFromJSON")
+-- | The ppJSON function name.
+ppJSONQName :: AC.QName
+ppJSONQName = ("JSON.Pretty", "ppJSON")
 
 -- | Creates a QName with an empty module name.
 mkQName :: String -> AC.QName
