@@ -5,12 +5,13 @@ import LSP.Utils.JSON
 import LSP.Protocol.Support
 import Data.Map
 import JSON.Data
+import JSON.Pretty
 
 instance FromJSON ImplementationParams where
   fromJSON j =
     case j of
       JObject vs -> do return ImplementationParams {  }
-      _ -> Left "Unrecognized ImplementationParams value"
+      _ -> Left ("Unrecognized ImplementationParams value: " ++ ppJSON j)
 
 instance FromJSON Location where
   fromJSON j =
@@ -20,25 +21,31 @@ instance FromJSON Location where
            parsedRange <- lookupFromJSON "range" vs
            return
             Location { locationUri = parsedUri, locationRange = parsedRange }
-      _ -> Left "Unrecognized Location value"
+      _ -> Left ("Unrecognized Location value: " ++ ppJSON j)
 
 instance FromJSON ImplementationRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return ImplementationRegistrationOptions {  }
-      _ -> Left "Unrecognized ImplementationRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized ImplementationRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON TypeDefinitionParams where
   fromJSON j =
     case j of
       JObject vs -> do return TypeDefinitionParams {  }
-      _ -> Left "Unrecognized TypeDefinitionParams value"
+      _ -> Left ("Unrecognized TypeDefinitionParams value: " ++ ppJSON j)
 
 instance FromJSON TypeDefinitionRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return TypeDefinitionRegistrationOptions {  }
-      _ -> Left "Unrecognized TypeDefinitionRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized TypeDefinitionRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON WorkspaceFolder where
   fromJSON j =
@@ -49,7 +56,7 @@ instance FromJSON WorkspaceFolder where
            return
             WorkspaceFolder { workspaceFolderUri = parsedUri
                             , workspaceFolderName = parsedName }
-      _ -> Left "Unrecognized WorkspaceFolder value"
+      _ -> Left ("Unrecognized WorkspaceFolder value: " ++ ppJSON j)
 
 instance FromJSON DidChangeWorkspaceFoldersParams where
   fromJSON j =
@@ -58,7 +65,9 @@ instance FromJSON DidChangeWorkspaceFoldersParams where
         do parsedEvent <- lookupFromJSON "event" vs
            return
             DidChangeWorkspaceFoldersParams { didChangeWorkspaceFoldersParamsEvent = parsedEvent }
-      _ -> Left "Unrecognized DidChangeWorkspaceFoldersParams value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeWorkspaceFoldersParams value: " ++ ppJSON j)
 
 instance FromJSON ConfigurationParams where
   fromJSON j =
@@ -67,7 +76,7 @@ instance FromJSON ConfigurationParams where
         do parsedItems <- lookupFromJSON "items" vs
            return
             ConfigurationParams { configurationParamsItems = parsedItems }
-      _ -> Left "Unrecognized ConfigurationParams value"
+      _ -> Left ("Unrecognized ConfigurationParams value: " ++ ppJSON j)
 
 instance FromJSON PartialResultParams where
   fromJSON j =
@@ -78,7 +87,7 @@ instance FromJSON PartialResultParams where
                                         vs
            return
             PartialResultParams { partialResultParamsPartialResultToken = parsedPartialResultToken }
-      _ -> Left "Unrecognized PartialResultParams value"
+      _ -> Left ("Unrecognized PartialResultParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentColorParams where
   fromJSON j =
@@ -87,7 +96,7 @@ instance FromJSON DocumentColorParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             DocumentColorParams { documentColorParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized DocumentColorParams value"
+      _ -> Left ("Unrecognized DocumentColorParams value: " ++ ppJSON j)
 
 instance FromJSON ColorInformation where
   fromJSON j =
@@ -98,13 +107,15 @@ instance FromJSON ColorInformation where
            return
             ColorInformation { colorInformationRange = parsedRange
                              , colorInformationColor = parsedColor }
-      _ -> Left "Unrecognized ColorInformation value"
+      _ -> Left ("Unrecognized ColorInformation value: " ++ ppJSON j)
 
 instance FromJSON DocumentColorRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentColorRegistrationOptions {  }
-      _ -> Left "Unrecognized DocumentColorRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentColorRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON ColorPresentationParams where
   fromJSON j =
@@ -117,7 +128,7 @@ instance FromJSON ColorPresentationParams where
             ColorPresentationParams { colorPresentationParamsTextDocument = parsedTextDocument
                                     , colorPresentationParamsColor = parsedColor
                                     , colorPresentationParamsRange = parsedRange }
-      _ -> Left "Unrecognized ColorPresentationParams value"
+      _ -> Left ("Unrecognized ColorPresentationParams value: " ++ ppJSON j)
 
 instance FromJSON ColorPresentation where
   fromJSON j =
@@ -132,7 +143,7 @@ instance FromJSON ColorPresentation where
             ColorPresentation { colorPresentationLabel = parsedLabel
                               , colorPresentationTextEdit = parsedTextEdit
                               , colorPresentationAdditionalTextEdits = parsedAdditionalTextEdits }
-      _ -> Left "Unrecognized ColorPresentation value"
+      _ -> Left ("Unrecognized ColorPresentation value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressOptions where
   fromJSON j =
@@ -141,7 +152,7 @@ instance FromJSON WorkDoneProgressOptions where
         do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
            return
             WorkDoneProgressOptions { workDoneProgressOptionsWorkDoneProgress = parsedWorkDoneProgress }
-      _ -> Left "Unrecognized WorkDoneProgressOptions value"
+      _ -> Left ("Unrecognized WorkDoneProgressOptions value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentRegistrationOptions where
   fromJSON j =
@@ -150,7 +161,9 @@ instance FromJSON TextDocumentRegistrationOptions where
         do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
            return
             TextDocumentRegistrationOptions { textDocumentRegistrationOptionsDocumentSelector = parsedDocumentSelector }
-      _ -> Left "Unrecognized TextDocumentRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized TextDocumentRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeParams where
   fromJSON j =
@@ -159,7 +172,7 @@ instance FromJSON FoldingRangeParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             FoldingRangeParams { foldingRangeParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized FoldingRangeParams value"
+      _ -> Left ("Unrecognized FoldingRangeParams value: " ++ ppJSON j)
 
 instance FromJSON FoldingRange where
   fromJSON j =
@@ -178,25 +191,29 @@ instance FromJSON FoldingRange where
                          , foldingRangeEndCharacter = parsedEndCharacter
                          , foldingRangeKind = parsedKind
                          , foldingRangeCollapsedText = parsedCollapsedText }
-      _ -> Left "Unrecognized FoldingRange value"
+      _ -> Left ("Unrecognized FoldingRange value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return FoldingRangeRegistrationOptions {  }
-      _ -> Left "Unrecognized FoldingRangeRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized FoldingRangeRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DeclarationParams where
   fromJSON j =
     case j of
       JObject vs -> do return DeclarationParams {  }
-      _ -> Left "Unrecognized DeclarationParams value"
+      _ -> Left ("Unrecognized DeclarationParams value: " ++ ppJSON j)
 
 instance FromJSON DeclarationRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DeclarationRegistrationOptions {  }
-      _ -> Left "Unrecognized DeclarationRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DeclarationRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON SelectionRangeParams where
   fromJSON j =
@@ -207,7 +224,7 @@ instance FromJSON SelectionRangeParams where
            return
             SelectionRangeParams { selectionRangeParamsTextDocument = parsedTextDocument
                                  , selectionRangeParamsPositions = parsedPositions }
-      _ -> Left "Unrecognized SelectionRangeParams value"
+      _ -> Left ("Unrecognized SelectionRangeParams value: " ++ ppJSON j)
 
 instance FromJSON SelectionRange where
   fromJSON j =
@@ -218,13 +235,16 @@ instance FromJSON SelectionRange where
            return
             SelectionRange { selectionRangeRange = parsedRange
                            , selectionRangeParent = parsedParent }
-      _ -> Left "Unrecognized SelectionRange value"
+      _ -> Left ("Unrecognized SelectionRange value: " ++ ppJSON j)
 
 instance FromJSON SelectionRangeRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return SelectionRangeRegistrationOptions {  }
-      _ -> Left "Unrecognized SelectionRangeRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized SelectionRangeRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressCreateParams where
   fromJSON j =
@@ -233,7 +253,8 @@ instance FromJSON WorkDoneProgressCreateParams where
         do parsedToken <- lookupFromJSON "token" vs
            return
             WorkDoneProgressCreateParams { workDoneProgressCreateParamsToken = parsedToken }
-      _ -> Left "Unrecognized WorkDoneProgressCreateParams value"
+      _ ->
+        Left ("Unrecognized WorkDoneProgressCreateParams value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressCancelParams where
   fromJSON j =
@@ -242,13 +263,15 @@ instance FromJSON WorkDoneProgressCancelParams where
         do parsedToken <- lookupFromJSON "token" vs
            return
             WorkDoneProgressCancelParams { workDoneProgressCancelParamsToken = parsedToken }
-      _ -> Left "Unrecognized WorkDoneProgressCancelParams value"
+      _ ->
+        Left ("Unrecognized WorkDoneProgressCancelParams value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyPrepareParams where
   fromJSON j =
     case j of
       JObject vs -> do return CallHierarchyPrepareParams {  }
-      _ -> Left "Unrecognized CallHierarchyPrepareParams value"
+      _ ->
+        Left ("Unrecognized CallHierarchyPrepareParams value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyItem where
   fromJSON j =
@@ -271,13 +294,15 @@ instance FromJSON CallHierarchyItem where
                               , callHierarchyItemRange = parsedRange
                               , callHierarchyItemSelectionRange = parsedSelectionRange
                               , callHierarchyItemData = parsedData }
-      _ -> Left "Unrecognized CallHierarchyItem value"
+      _ -> Left ("Unrecognized CallHierarchyItem value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return CallHierarchyRegistrationOptions {  }
-      _ -> Left "Unrecognized CallHierarchyRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized CallHierarchyRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyIncomingCallsParams where
   fromJSON j =
@@ -286,7 +311,9 @@ instance FromJSON CallHierarchyIncomingCallsParams where
         do parsedItem <- lookupFromJSON "item" vs
            return
             CallHierarchyIncomingCallsParams { callHierarchyIncomingCallsParamsItem = parsedItem }
-      _ -> Left "Unrecognized CallHierarchyIncomingCallsParams value"
+      _ ->
+        Left
+         ("Unrecognized CallHierarchyIncomingCallsParams value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyIncomingCall where
   fromJSON j =
@@ -297,7 +324,7 @@ instance FromJSON CallHierarchyIncomingCall where
            return
             CallHierarchyIncomingCall { callHierarchyIncomingCallFrom = parsedFrom
                                       , callHierarchyIncomingCallFromRanges = parsedFromRanges }
-      _ -> Left "Unrecognized CallHierarchyIncomingCall value"
+      _ -> Left ("Unrecognized CallHierarchyIncomingCall value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyOutgoingCallsParams where
   fromJSON j =
@@ -306,7 +333,9 @@ instance FromJSON CallHierarchyOutgoingCallsParams where
         do parsedItem <- lookupFromJSON "item" vs
            return
             CallHierarchyOutgoingCallsParams { callHierarchyOutgoingCallsParamsItem = parsedItem }
-      _ -> Left "Unrecognized CallHierarchyOutgoingCallsParams value"
+      _ ->
+        Left
+         ("Unrecognized CallHierarchyOutgoingCallsParams value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyOutgoingCall where
   fromJSON j =
@@ -317,7 +346,7 @@ instance FromJSON CallHierarchyOutgoingCall where
            return
             CallHierarchyOutgoingCall { callHierarchyOutgoingCallTo = parsedTo
                                       , callHierarchyOutgoingCallFromRanges = parsedFromRanges }
-      _ -> Left "Unrecognized CallHierarchyOutgoingCall value"
+      _ -> Left ("Unrecognized CallHierarchyOutgoingCall value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensParams where
   fromJSON j =
@@ -326,7 +355,7 @@ instance FromJSON SemanticTokensParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             SemanticTokensParams { semanticTokensParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized SemanticTokensParams value"
+      _ -> Left ("Unrecognized SemanticTokensParams value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokens where
   fromJSON j =
@@ -337,7 +366,7 @@ instance FromJSON SemanticTokens where
            return
             SemanticTokens { semanticTokensResultId = parsedResultId
                            , semanticTokensData = parsedData }
-      _ -> Left "Unrecognized SemanticTokens value"
+      _ -> Left ("Unrecognized SemanticTokens value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensPartialResult where
   fromJSON j =
@@ -346,13 +375,17 @@ instance FromJSON SemanticTokensPartialResult where
         do parsedData <- lookupFromJSON "data" vs
            return
             SemanticTokensPartialResult { semanticTokensPartialResultData = parsedData }
-      _ -> Left "Unrecognized SemanticTokensPartialResult value"
+      _ ->
+        Left ("Unrecognized SemanticTokensPartialResult value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return SemanticTokensRegistrationOptions {  }
-      _ -> Left "Unrecognized SemanticTokensRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized SemanticTokensRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON SemanticTokensDeltaParams where
   fromJSON j =
@@ -363,7 +396,7 @@ instance FromJSON SemanticTokensDeltaParams where
            return
             SemanticTokensDeltaParams { semanticTokensDeltaParamsTextDocument = parsedTextDocument
                                       , semanticTokensDeltaParamsPreviousResultId = parsedPreviousResultId }
-      _ -> Left "Unrecognized SemanticTokensDeltaParams value"
+      _ -> Left ("Unrecognized SemanticTokensDeltaParams value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensDelta where
   fromJSON j =
@@ -374,7 +407,7 @@ instance FromJSON SemanticTokensDelta where
            return
             SemanticTokensDelta { semanticTokensDeltaResultId = parsedResultId
                                 , semanticTokensDeltaEdits = parsedEdits }
-      _ -> Left "Unrecognized SemanticTokensDelta value"
+      _ -> Left ("Unrecognized SemanticTokensDelta value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensDeltaPartialResult where
   fromJSON j =
@@ -383,7 +416,9 @@ instance FromJSON SemanticTokensDeltaPartialResult where
         do parsedEdits <- lookupFromJSON "edits" vs
            return
             SemanticTokensDeltaPartialResult { semanticTokensDeltaPartialResultEdits = parsedEdits }
-      _ -> Left "Unrecognized SemanticTokensDeltaPartialResult value"
+      _ ->
+        Left
+         ("Unrecognized SemanticTokensDeltaPartialResult value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensRangeParams where
   fromJSON j =
@@ -394,7 +429,7 @@ instance FromJSON SemanticTokensRangeParams where
            return
             SemanticTokensRangeParams { semanticTokensRangeParamsTextDocument = parsedTextDocument
                                       , semanticTokensRangeParamsRange = parsedRange }
-      _ -> Left "Unrecognized SemanticTokensRangeParams value"
+      _ -> Left ("Unrecognized SemanticTokensRangeParams value: " ++ ppJSON j)
 
 instance FromJSON ShowDocumentParams where
   fromJSON j =
@@ -409,7 +444,7 @@ instance FromJSON ShowDocumentParams where
                                , showDocumentParamsExternal = parsedExternal
                                , showDocumentParamsTakeFocus = parsedTakeFocus
                                , showDocumentParamsSelection = parsedSelection }
-      _ -> Left "Unrecognized ShowDocumentParams value"
+      _ -> Left ("Unrecognized ShowDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON ShowDocumentResult where
   fromJSON j =
@@ -418,13 +453,13 @@ instance FromJSON ShowDocumentResult where
         do parsedSuccess <- lookupFromJSON "success" vs
            return
             ShowDocumentResult { showDocumentResultSuccess = parsedSuccess }
-      _ -> Left "Unrecognized ShowDocumentResult value"
+      _ -> Left ("Unrecognized ShowDocumentResult value: " ++ ppJSON j)
 
 instance FromJSON LinkedEditingRangeParams where
   fromJSON j =
     case j of
       JObject vs -> do return LinkedEditingRangeParams {  }
-      _ -> Left "Unrecognized LinkedEditingRangeParams value"
+      _ -> Left ("Unrecognized LinkedEditingRangeParams value: " ++ ppJSON j)
 
 instance FromJSON LinkedEditingRanges where
   fromJSON j =
@@ -435,13 +470,16 @@ instance FromJSON LinkedEditingRanges where
            return
             LinkedEditingRanges { linkedEditingRangesRanges = parsedRanges
                                 , linkedEditingRangesWordPattern = parsedWordPattern }
-      _ -> Left "Unrecognized LinkedEditingRanges value"
+      _ -> Left ("Unrecognized LinkedEditingRanges value: " ++ ppJSON j)
 
 instance FromJSON LinkedEditingRangeRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return LinkedEditingRangeRegistrationOptions {  }
-      _ -> Left "Unrecognized LinkedEditingRangeRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized LinkedEditingRangeRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON CreateFilesParams where
   fromJSON j =
@@ -449,7 +487,7 @@ instance FromJSON CreateFilesParams where
       JObject vs ->
         do parsedFiles <- lookupFromJSON "files" vs
            return CreateFilesParams { createFilesParamsFiles = parsedFiles }
-      _ -> Left "Unrecognized CreateFilesParams value"
+      _ -> Left ("Unrecognized CreateFilesParams value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceEdit where
   fromJSON j =
@@ -463,7 +501,7 @@ instance FromJSON WorkspaceEdit where
             WorkspaceEdit { workspaceEditChanges = parsedChanges
                           , workspaceEditDocumentChanges = parsedDocumentChanges
                           , workspaceEditChangeAnnotations = parsedChangeAnnotations }
-      _ -> Left "Unrecognized WorkspaceEdit value"
+      _ -> Left ("Unrecognized WorkspaceEdit value: " ++ ppJSON j)
 
 instance FromJSON FileOperationRegistrationOptions where
   fromJSON j =
@@ -472,7 +510,9 @@ instance FromJSON FileOperationRegistrationOptions where
         do parsedFilters <- lookupFromJSON "filters" vs
            return
             FileOperationRegistrationOptions { fileOperationRegistrationOptionsFilters = parsedFilters }
-      _ -> Left "Unrecognized FileOperationRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized FileOperationRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON RenameFilesParams where
   fromJSON j =
@@ -480,7 +520,7 @@ instance FromJSON RenameFilesParams where
       JObject vs ->
         do parsedFiles <- lookupFromJSON "files" vs
            return RenameFilesParams { renameFilesParamsFiles = parsedFiles }
-      _ -> Left "Unrecognized RenameFilesParams value"
+      _ -> Left ("Unrecognized RenameFilesParams value: " ++ ppJSON j)
 
 instance FromJSON DeleteFilesParams where
   fromJSON j =
@@ -488,13 +528,13 @@ instance FromJSON DeleteFilesParams where
       JObject vs ->
         do parsedFiles <- lookupFromJSON "files" vs
            return DeleteFilesParams { deleteFilesParamsFiles = parsedFiles }
-      _ -> Left "Unrecognized DeleteFilesParams value"
+      _ -> Left ("Unrecognized DeleteFilesParams value: " ++ ppJSON j)
 
 instance FromJSON MonikerParams where
   fromJSON j =
     case j of
       JObject vs -> do return MonikerParams {  }
-      _ -> Left "Unrecognized MonikerParams value"
+      _ -> Left ("Unrecognized MonikerParams value: " ++ ppJSON j)
 
 instance FromJSON Moniker where
   fromJSON j =
@@ -509,19 +549,21 @@ instance FromJSON Moniker where
                     , monikerIdentifier = parsedIdentifier
                     , monikerUnique = parsedUnique
                     , monikerKind = parsedKind }
-      _ -> Left "Unrecognized Moniker value"
+      _ -> Left ("Unrecognized Moniker value: " ++ ppJSON j)
 
 instance FromJSON MonikerRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return MonikerRegistrationOptions {  }
-      _ -> Left "Unrecognized MonikerRegistrationOptions value"
+      _ ->
+        Left ("Unrecognized MonikerRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchyPrepareParams where
   fromJSON j =
     case j of
       JObject vs -> do return TypeHierarchyPrepareParams {  }
-      _ -> Left "Unrecognized TypeHierarchyPrepareParams value"
+      _ ->
+        Left ("Unrecognized TypeHierarchyPrepareParams value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchyItem where
   fromJSON j =
@@ -544,13 +586,15 @@ instance FromJSON TypeHierarchyItem where
                               , typeHierarchyItemRange = parsedRange
                               , typeHierarchyItemSelectionRange = parsedSelectionRange
                               , typeHierarchyItemData = parsedData }
-      _ -> Left "Unrecognized TypeHierarchyItem value"
+      _ -> Left ("Unrecognized TypeHierarchyItem value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchyRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return TypeHierarchyRegistrationOptions {  }
-      _ -> Left "Unrecognized TypeHierarchyRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized TypeHierarchyRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchySupertypesParams where
   fromJSON j =
@@ -559,7 +603,9 @@ instance FromJSON TypeHierarchySupertypesParams where
         do parsedItem <- lookupFromJSON "item" vs
            return
             TypeHierarchySupertypesParams { typeHierarchySupertypesParamsItem = parsedItem }
-      _ -> Left "Unrecognized TypeHierarchySupertypesParams value"
+      _ ->
+        Left
+         ("Unrecognized TypeHierarchySupertypesParams value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchySubtypesParams where
   fromJSON j =
@@ -568,7 +614,8 @@ instance FromJSON TypeHierarchySubtypesParams where
         do parsedItem <- lookupFromJSON "item" vs
            return
             TypeHierarchySubtypesParams { typeHierarchySubtypesParamsItem = parsedItem }
-      _ -> Left "Unrecognized TypeHierarchySubtypesParams value"
+      _ ->
+        Left ("Unrecognized TypeHierarchySubtypesParams value: " ++ ppJSON j)
 
 instance FromJSON InlineValueParams where
   fromJSON j =
@@ -581,13 +628,15 @@ instance FromJSON InlineValueParams where
             InlineValueParams { inlineValueParamsTextDocument = parsedTextDocument
                               , inlineValueParamsRange = parsedRange
                               , inlineValueParamsContext = parsedContext }
-      _ -> Left "Unrecognized InlineValueParams value"
+      _ -> Left ("Unrecognized InlineValueParams value: " ++ ppJSON j)
 
 instance FromJSON InlineValueRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return InlineValueRegistrationOptions {  }
-      _ -> Left "Unrecognized InlineValueRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized InlineValueRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON InlayHintParams where
   fromJSON j =
@@ -598,7 +647,7 @@ instance FromJSON InlayHintParams where
            return
             InlayHintParams { inlayHintParamsTextDocument = parsedTextDocument
                             , inlayHintParamsRange = parsedRange }
-      _ -> Left "Unrecognized InlayHintParams value"
+      _ -> Left ("Unrecognized InlayHintParams value: " ++ ppJSON j)
 
 instance FromJSON InlayHint where
   fromJSON j =
@@ -621,13 +670,14 @@ instance FromJSON InlayHint where
                       , inlayHintPaddingLeft = parsedPaddingLeft
                       , inlayHintPaddingRight = parsedPaddingRight
                       , inlayHintData = parsedData }
-      _ -> Left "Unrecognized InlayHint value"
+      _ -> Left ("Unrecognized InlayHint value: " ++ ppJSON j)
 
 instance FromJSON InlayHintRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return InlayHintRegistrationOptions {  }
-      _ -> Left "Unrecognized InlayHintRegistrationOptions value"
+      _ ->
+        Left ("Unrecognized InlayHintRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentDiagnosticParams where
   fromJSON j =
@@ -640,7 +690,7 @@ instance FromJSON DocumentDiagnosticParams where
             DocumentDiagnosticParams { documentDiagnosticParamsTextDocument = parsedTextDocument
                                      , documentDiagnosticParamsIdentifier = parsedIdentifier
                                      , documentDiagnosticParamsPreviousResultId = parsedPreviousResultId }
-      _ -> Left "Unrecognized DocumentDiagnosticParams value"
+      _ -> Left ("Unrecognized DocumentDiagnosticParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentDiagnosticReportPartialResult where
   fromJSON j =
@@ -649,7 +699,10 @@ instance FromJSON DocumentDiagnosticReportPartialResult where
         do parsedRelatedDocuments <- lookupFromJSON "relatedDocuments" vs
            return
             DocumentDiagnosticReportPartialResult { documentDiagnosticReportPartialResultRelatedDocuments = parsedRelatedDocuments }
-      _ -> Left "Unrecognized DocumentDiagnosticReportPartialResult value"
+      _ ->
+        Left
+         ("Unrecognized DocumentDiagnosticReportPartialResult value: "
+           ++ ppJSON j)
 
 instance FromJSON DiagnosticServerCancellationData where
   fromJSON j =
@@ -658,13 +711,17 @@ instance FromJSON DiagnosticServerCancellationData where
         do parsedRetriggerRequest <- lookupFromJSON "retriggerRequest" vs
            return
             DiagnosticServerCancellationData { diagnosticServerCancellationDataRetriggerRequest = parsedRetriggerRequest }
-      _ -> Left "Unrecognized DiagnosticServerCancellationData value"
+      _ ->
+        Left
+         ("Unrecognized DiagnosticServerCancellationData value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DiagnosticRegistrationOptions {  }
-      _ -> Left "Unrecognized DiagnosticRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DiagnosticRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceDiagnosticParams where
   fromJSON j =
@@ -675,7 +732,7 @@ instance FromJSON WorkspaceDiagnosticParams where
            return
             WorkspaceDiagnosticParams { workspaceDiagnosticParamsIdentifier = parsedIdentifier
                                       , workspaceDiagnosticParamsPreviousResultIds = parsedPreviousResultIds }
-      _ -> Left "Unrecognized WorkspaceDiagnosticParams value"
+      _ -> Left ("Unrecognized WorkspaceDiagnosticParams value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceDiagnosticReport where
   fromJSON j =
@@ -684,7 +741,7 @@ instance FromJSON WorkspaceDiagnosticReport where
         do parsedItems <- lookupFromJSON "items" vs
            return
             WorkspaceDiagnosticReport { workspaceDiagnosticReportItems = parsedItems }
-      _ -> Left "Unrecognized WorkspaceDiagnosticReport value"
+      _ -> Left ("Unrecognized WorkspaceDiagnosticReport value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceDiagnosticReportPartialResult where
   fromJSON j =
@@ -693,7 +750,10 @@ instance FromJSON WorkspaceDiagnosticReportPartialResult where
         do parsedItems <- lookupFromJSON "items" vs
            return
             WorkspaceDiagnosticReportPartialResult { workspaceDiagnosticReportPartialResultItems = parsedItems }
-      _ -> Left "Unrecognized WorkspaceDiagnosticReportPartialResult value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceDiagnosticReportPartialResult value: "
+           ++ ppJSON j)
 
 instance FromJSON DidOpenNotebookDocumentParams where
   fromJSON j =
@@ -704,7 +764,9 @@ instance FromJSON DidOpenNotebookDocumentParams where
            return
             DidOpenNotebookDocumentParams { didOpenNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
                                           , didOpenNotebookDocumentParamsCellTextDocuments = parsedCellTextDocuments }
-      _ -> Left "Unrecognized DidOpenNotebookDocumentParams value"
+      _ ->
+        Left
+         ("Unrecognized DidOpenNotebookDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON DidChangeNotebookDocumentParams where
   fromJSON j =
@@ -715,7 +777,9 @@ instance FromJSON DidChangeNotebookDocumentParams where
            return
             DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
                                             , didChangeNotebookDocumentParamsChange = parsedChange }
-      _ -> Left "Unrecognized DidChangeNotebookDocumentParams value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeNotebookDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON DidSaveNotebookDocumentParams where
   fromJSON j =
@@ -724,7 +788,9 @@ instance FromJSON DidSaveNotebookDocumentParams where
         do parsedNotebookDocument <- lookupFromJSON "notebookDocument" vs
            return
             DidSaveNotebookDocumentParams { didSaveNotebookDocumentParamsNotebookDocument = parsedNotebookDocument }
-      _ -> Left "Unrecognized DidSaveNotebookDocumentParams value"
+      _ ->
+        Left
+         ("Unrecognized DidSaveNotebookDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON DidCloseNotebookDocumentParams where
   fromJSON j =
@@ -735,7 +801,9 @@ instance FromJSON DidCloseNotebookDocumentParams where
            return
             DidCloseNotebookDocumentParams { didCloseNotebookDocumentParamsNotebookDocument = parsedNotebookDocument
                                            , didCloseNotebookDocumentParamsCellTextDocuments = parsedCellTextDocuments }
-      _ -> Left "Unrecognized DidCloseNotebookDocumentParams value"
+      _ ->
+        Left
+         ("Unrecognized DidCloseNotebookDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON RegistrationParams where
   fromJSON j =
@@ -744,7 +812,7 @@ instance FromJSON RegistrationParams where
         do parsedRegistrations <- lookupFromJSON "registrations" vs
            return
             RegistrationParams { registrationParamsRegistrations = parsedRegistrations }
-      _ -> Left "Unrecognized RegistrationParams value"
+      _ -> Left ("Unrecognized RegistrationParams value: " ++ ppJSON j)
 
 instance FromJSON UnregistrationParams where
   fromJSON j =
@@ -753,13 +821,13 @@ instance FromJSON UnregistrationParams where
         do parsedUnregisterations <- lookupFromJSON "unregisterations" vs
            return
             UnregistrationParams { unregistrationParamsUnregisterations = parsedUnregisterations }
-      _ -> Left "Unrecognized UnregistrationParams value"
+      _ -> Left ("Unrecognized UnregistrationParams value: " ++ ppJSON j)
 
 instance FromJSON InitializeParams where
   fromJSON j =
     case j of
       JObject vs -> do return InitializeParams {  }
-      _ -> Left "Unrecognized InitializeParams value"
+      _ -> Left ("Unrecognized InitializeParams value: " ++ ppJSON j)
 
 instance FromJSON InitializeResult where
   fromJSON j =
@@ -770,7 +838,7 @@ instance FromJSON InitializeResult where
            return
             InitializeResult { initializeResultCapabilities = parsedCapabilities
                              , initializeResultServerInfo = parsedServerInfo }
-      _ -> Left "Unrecognized InitializeResult value"
+      _ -> Left ("Unrecognized InitializeResult value: " ++ ppJSON j)
 
 instance FromJSON InitializeError where
   fromJSON j =
@@ -778,13 +846,13 @@ instance FromJSON InitializeError where
       JObject vs ->
         do parsedRetry <- lookupFromJSON "retry" vs
            return InitializeError { initializeErrorRetry = parsedRetry }
-      _ -> Left "Unrecognized InitializeError value"
+      _ -> Left ("Unrecognized InitializeError value: " ++ ppJSON j)
 
 instance FromJSON InitializedParams where
   fromJSON j =
     case j of
       JObject vs -> do return InitializedParams {  }
-      _ -> Left "Unrecognized InitializedParams value"
+      _ -> Left ("Unrecognized InitializedParams value: " ++ ppJSON j)
 
 instance FromJSON DidChangeConfigurationParams where
   fromJSON j =
@@ -793,7 +861,8 @@ instance FromJSON DidChangeConfigurationParams where
         do parsedSettings <- lookupFromJSON "settings" vs
            return
             DidChangeConfigurationParams { didChangeConfigurationParamsSettings = parsedSettings }
-      _ -> Left "Unrecognized DidChangeConfigurationParams value"
+      _ ->
+        Left ("Unrecognized DidChangeConfigurationParams value: " ++ ppJSON j)
 
 instance FromJSON DidChangeConfigurationRegistrationOptions where
   fromJSON j =
@@ -802,7 +871,10 @@ instance FromJSON DidChangeConfigurationRegistrationOptions where
         do parsedSection <- lookupMaybeFromJSON "section" vs
            return
             DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection = parsedSection }
-      _ -> Left "Unrecognized DidChangeConfigurationRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeConfigurationRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON ShowMessageParams where
   fromJSON j =
@@ -813,7 +885,7 @@ instance FromJSON ShowMessageParams where
            return
             ShowMessageParams { showMessageParamsType = parsedType
                               , showMessageParamsMessage = parsedMessage }
-      _ -> Left "Unrecognized ShowMessageParams value"
+      _ -> Left ("Unrecognized ShowMessageParams value: " ++ ppJSON j)
 
 instance FromJSON ShowMessageRequestParams where
   fromJSON j =
@@ -826,7 +898,7 @@ instance FromJSON ShowMessageRequestParams where
             ShowMessageRequestParams { showMessageRequestParamsType = parsedType
                                      , showMessageRequestParamsMessage = parsedMessage
                                      , showMessageRequestParamsActions = parsedActions }
-      _ -> Left "Unrecognized ShowMessageRequestParams value"
+      _ -> Left ("Unrecognized ShowMessageRequestParams value: " ++ ppJSON j)
 
 instance FromJSON MessageActionItem where
   fromJSON j =
@@ -834,7 +906,7 @@ instance FromJSON MessageActionItem where
       JObject vs ->
         do parsedTitle <- lookupFromJSON "title" vs
            return MessageActionItem { messageActionItemTitle = parsedTitle }
-      _ -> Left "Unrecognized MessageActionItem value"
+      _ -> Left ("Unrecognized MessageActionItem value: " ++ ppJSON j)
 
 instance FromJSON LogMessageParams where
   fromJSON j =
@@ -845,7 +917,7 @@ instance FromJSON LogMessageParams where
            return
             LogMessageParams { logMessageParamsType = parsedType
                              , logMessageParamsMessage = parsedMessage }
-      _ -> Left "Unrecognized LogMessageParams value"
+      _ -> Left ("Unrecognized LogMessageParams value: " ++ ppJSON j)
 
 instance FromJSON DidOpenTextDocumentParams where
   fromJSON j =
@@ -854,7 +926,7 @@ instance FromJSON DidOpenTextDocumentParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             DidOpenTextDocumentParams { didOpenTextDocumentParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized DidOpenTextDocumentParams value"
+      _ -> Left ("Unrecognized DidOpenTextDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON DidChangeTextDocumentParams where
   fromJSON j =
@@ -865,7 +937,8 @@ instance FromJSON DidChangeTextDocumentParams where
            return
             DidChangeTextDocumentParams { didChangeTextDocumentParamsTextDocument = parsedTextDocument
                                         , didChangeTextDocumentParamsContentChanges = parsedContentChanges }
-      _ -> Left "Unrecognized DidChangeTextDocumentParams value"
+      _ ->
+        Left ("Unrecognized DidChangeTextDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentChangeRegistrationOptions where
   fromJSON j =
@@ -874,7 +947,10 @@ instance FromJSON TextDocumentChangeRegistrationOptions where
         do parsedSyncKind <- lookupFromJSON "syncKind" vs
            return
             TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsSyncKind = parsedSyncKind }
-      _ -> Left "Unrecognized TextDocumentChangeRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized TextDocumentChangeRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON DidCloseTextDocumentParams where
   fromJSON j =
@@ -883,7 +959,8 @@ instance FromJSON DidCloseTextDocumentParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             DidCloseTextDocumentParams { didCloseTextDocumentParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized DidCloseTextDocumentParams value"
+      _ ->
+        Left ("Unrecognized DidCloseTextDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON DidSaveTextDocumentParams where
   fromJSON j =
@@ -894,13 +971,16 @@ instance FromJSON DidSaveTextDocumentParams where
            return
             DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument = parsedTextDocument
                                       , didSaveTextDocumentParamsText = parsedText }
-      _ -> Left "Unrecognized DidSaveTextDocumentParams value"
+      _ -> Left ("Unrecognized DidSaveTextDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSaveRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return TextDocumentSaveRegistrationOptions {  }
-      _ -> Left "Unrecognized TextDocumentSaveRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized TextDocumentSaveRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON WillSaveTextDocumentParams where
   fromJSON j =
@@ -911,7 +991,8 @@ instance FromJSON WillSaveTextDocumentParams where
            return
             WillSaveTextDocumentParams { willSaveTextDocumentParamsTextDocument = parsedTextDocument
                                        , willSaveTextDocumentParamsReason = parsedReason }
-      _ -> Left "Unrecognized WillSaveTextDocumentParams value"
+      _ ->
+        Left ("Unrecognized WillSaveTextDocumentParams value: " ++ ppJSON j)
 
 instance FromJSON TextEdit where
   fromJSON j =
@@ -922,7 +1003,7 @@ instance FromJSON TextEdit where
            return
             TextEdit { textEditRange = parsedRange
                      , textEditNewText = parsedNewText }
-      _ -> Left "Unrecognized TextEdit value"
+      _ -> Left ("Unrecognized TextEdit value: " ++ ppJSON j)
 
 instance FromJSON DidChangeWatchedFilesParams where
   fromJSON j =
@@ -931,7 +1012,8 @@ instance FromJSON DidChangeWatchedFilesParams where
         do parsedChanges <- lookupFromJSON "changes" vs
            return
             DidChangeWatchedFilesParams { didChangeWatchedFilesParamsChanges = parsedChanges }
-      _ -> Left "Unrecognized DidChangeWatchedFilesParams value"
+      _ ->
+        Left ("Unrecognized DidChangeWatchedFilesParams value: " ++ ppJSON j)
 
 instance FromJSON DidChangeWatchedFilesRegistrationOptions where
   fromJSON j =
@@ -940,7 +1022,10 @@ instance FromJSON DidChangeWatchedFilesRegistrationOptions where
         do parsedWatchers <- lookupFromJSON "watchers" vs
            return
             DidChangeWatchedFilesRegistrationOptions { didChangeWatchedFilesRegistrationOptionsWatchers = parsedWatchers }
-      _ -> Left "Unrecognized DidChangeWatchedFilesRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeWatchedFilesRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON PublishDiagnosticsParams where
   fromJSON j =
@@ -953,7 +1038,7 @@ instance FromJSON PublishDiagnosticsParams where
             PublishDiagnosticsParams { publishDiagnosticsParamsUri = parsedUri
                                      , publishDiagnosticsParamsVersion = parsedVersion
                                      , publishDiagnosticsParamsDiagnostics = parsedDiagnostics }
-      _ -> Left "Unrecognized PublishDiagnosticsParams value"
+      _ -> Left ("Unrecognized PublishDiagnosticsParams value: " ++ ppJSON j)
 
 instance FromJSON CompletionParams where
   fromJSON j =
@@ -961,7 +1046,7 @@ instance FromJSON CompletionParams where
       JObject vs ->
         do parsedContext <- lookupMaybeFromJSON "context" vs
            return CompletionParams { completionParamsContext = parsedContext }
-      _ -> Left "Unrecognized CompletionParams value"
+      _ -> Left ("Unrecognized CompletionParams value: " ++ ppJSON j)
 
 instance FromJSON CompletionItem where
   fromJSON j =
@@ -1008,7 +1093,7 @@ instance FromJSON CompletionItem where
                            , completionItemCommitCharacters = parsedCommitCharacters
                            , completionItemCommand = parsedCommand
                            , completionItemData = parsedData }
-      _ -> Left "Unrecognized CompletionItem value"
+      _ -> Left ("Unrecognized CompletionItem value: " ++ ppJSON j)
 
 instance FromJSON CompletionList where
   fromJSON j =
@@ -1021,19 +1106,21 @@ instance FromJSON CompletionList where
             CompletionList { completionListIsIncomplete = parsedIsIncomplete
                            , completionListItemDefaults = parsedItemDefaults
                            , completionListItems = parsedItems }
-      _ -> Left "Unrecognized CompletionList value"
+      _ -> Left ("Unrecognized CompletionList value: " ++ ppJSON j)
 
 instance FromJSON CompletionRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return CompletionRegistrationOptions {  }
-      _ -> Left "Unrecognized CompletionRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized CompletionRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON HoverParams where
   fromJSON j =
     case j of
       JObject vs -> do return HoverParams {  }
-      _ -> Left "Unrecognized HoverParams value"
+      _ -> Left ("Unrecognized HoverParams value: " ++ ppJSON j)
 
 instance FromJSON Hover where
   fromJSON j =
@@ -1043,13 +1130,13 @@ instance FromJSON Hover where
            parsedRange <- lookupMaybeFromJSON "range" vs
            return
             Hover { hoverContents = parsedContents, hoverRange = parsedRange }
-      _ -> Left "Unrecognized Hover value"
+      _ -> Left ("Unrecognized Hover value: " ++ ppJSON j)
 
 instance FromJSON HoverRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return HoverRegistrationOptions {  }
-      _ -> Left "Unrecognized HoverRegistrationOptions value"
+      _ -> Left ("Unrecognized HoverRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpParams where
   fromJSON j =
@@ -1058,7 +1145,7 @@ instance FromJSON SignatureHelpParams where
         do parsedContext <- lookupMaybeFromJSON "context" vs
            return
             SignatureHelpParams { signatureHelpParamsContext = parsedContext }
-      _ -> Left "Unrecognized SignatureHelpParams value"
+      _ -> Left ("Unrecognized SignatureHelpParams value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelp where
   fromJSON j =
@@ -1071,25 +1158,29 @@ instance FromJSON SignatureHelp where
             SignatureHelp { signatureHelpSignatures = parsedSignatures
                           , signatureHelpActiveSignature = parsedActiveSignature
                           , signatureHelpActiveParameter = parsedActiveParameter }
-      _ -> Left "Unrecognized SignatureHelp value"
+      _ -> Left ("Unrecognized SignatureHelp value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return SignatureHelpRegistrationOptions {  }
-      _ -> Left "Unrecognized SignatureHelpRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized SignatureHelpRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DefinitionParams where
   fromJSON j =
     case j of
       JObject vs -> do return DefinitionParams {  }
-      _ -> Left "Unrecognized DefinitionParams value"
+      _ -> Left ("Unrecognized DefinitionParams value: " ++ ppJSON j)
 
 instance FromJSON DefinitionRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DefinitionRegistrationOptions {  }
-      _ -> Left "Unrecognized DefinitionRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DefinitionRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON ReferenceParams where
   fromJSON j =
@@ -1097,19 +1188,20 @@ instance FromJSON ReferenceParams where
       JObject vs ->
         do parsedContext <- lookupFromJSON "context" vs
            return ReferenceParams { referenceParamsContext = parsedContext }
-      _ -> Left "Unrecognized ReferenceParams value"
+      _ -> Left ("Unrecognized ReferenceParams value: " ++ ppJSON j)
 
 instance FromJSON ReferenceRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return ReferenceRegistrationOptions {  }
-      _ -> Left "Unrecognized ReferenceRegistrationOptions value"
+      _ ->
+        Left ("Unrecognized ReferenceRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightParams where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentHighlightParams {  }
-      _ -> Left "Unrecognized DocumentHighlightParams value"
+      _ -> Left ("Unrecognized DocumentHighlightParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlight where
   fromJSON j =
@@ -1120,13 +1212,16 @@ instance FromJSON DocumentHighlight where
            return
             DocumentHighlight { documentHighlightRange = parsedRange
                               , documentHighlightKind = parsedKind }
-      _ -> Left "Unrecognized DocumentHighlight value"
+      _ -> Left ("Unrecognized DocumentHighlight value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentHighlightRegistrationOptions {  }
-      _ -> Left "Unrecognized DocumentHighlightRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentHighlightRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentSymbolParams where
   fromJSON j =
@@ -1135,7 +1230,7 @@ instance FromJSON DocumentSymbolParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             DocumentSymbolParams { documentSymbolParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized DocumentSymbolParams value"
+      _ -> Left ("Unrecognized DocumentSymbolParams value: " ++ ppJSON j)
 
 instance FromJSON SymbolInformation where
   fromJSON j =
@@ -1146,7 +1241,7 @@ instance FromJSON SymbolInformation where
            return
             SymbolInformation { symbolInformationDeprecated = parsedDeprecated
                               , symbolInformationLocation = parsedLocation }
-      _ -> Left "Unrecognized SymbolInformation value"
+      _ -> Left ("Unrecognized SymbolInformation value: " ++ ppJSON j)
 
 instance FromJSON DocumentSymbol where
   fromJSON j =
@@ -1169,13 +1264,16 @@ instance FromJSON DocumentSymbol where
                            , documentSymbolRange = parsedRange
                            , documentSymbolSelectionRange = parsedSelectionRange
                            , documentSymbolChildren = parsedChildren }
-      _ -> Left "Unrecognized DocumentSymbol value"
+      _ -> Left ("Unrecognized DocumentSymbol value: " ++ ppJSON j)
 
 instance FromJSON DocumentSymbolRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentSymbolRegistrationOptions {  }
-      _ -> Left "Unrecognized DocumentSymbolRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentSymbolRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON CodeActionParams where
   fromJSON j =
@@ -1188,7 +1286,7 @@ instance FromJSON CodeActionParams where
             CodeActionParams { codeActionParamsTextDocument = parsedTextDocument
                              , codeActionParamsRange = parsedRange
                              , codeActionParamsContext = parsedContext }
-      _ -> Left "Unrecognized CodeActionParams value"
+      _ -> Left ("Unrecognized CodeActionParams value: " ++ ppJSON j)
 
 instance FromJSON Command where
   fromJSON j =
@@ -1201,7 +1299,7 @@ instance FromJSON Command where
             Command { commandTitle = parsedTitle
                     , commandCommand = parsedCommand
                     , commandArguments = parsedArguments }
-      _ -> Left "Unrecognized Command value"
+      _ -> Left ("Unrecognized Command value: " ++ ppJSON j)
 
 instance FromJSON CodeAction where
   fromJSON j =
@@ -1224,13 +1322,15 @@ instance FromJSON CodeAction where
                        , codeActionEdit = parsedEdit
                        , codeActionCommand = parsedCommand
                        , codeActionData = parsedData }
-      _ -> Left "Unrecognized CodeAction value"
+      _ -> Left ("Unrecognized CodeAction value: " ++ ppJSON j)
 
 instance FromJSON CodeActionRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return CodeActionRegistrationOptions {  }
-      _ -> Left "Unrecognized CodeActionRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized CodeActionRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbolParams where
   fromJSON j =
@@ -1239,7 +1339,7 @@ instance FromJSON WorkspaceSymbolParams where
         do parsedQuery <- lookupFromJSON "query" vs
            return
             WorkspaceSymbolParams { workspaceSymbolParamsQuery = parsedQuery }
-      _ -> Left "Unrecognized WorkspaceSymbolParams value"
+      _ -> Left ("Unrecognized WorkspaceSymbolParams value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbol where
   fromJSON j =
@@ -1250,13 +1350,16 @@ instance FromJSON WorkspaceSymbol where
            return
             WorkspaceSymbol { workspaceSymbolLocation = parsedLocation
                             , workspaceSymbolData = parsedData }
-      _ -> Left "Unrecognized WorkspaceSymbol value"
+      _ -> Left ("Unrecognized WorkspaceSymbol value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbolRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return WorkspaceSymbolRegistrationOptions {  }
-      _ -> Left "Unrecognized WorkspaceSymbolRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceSymbolRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON CodeLensParams where
   fromJSON j =
@@ -1265,7 +1368,7 @@ instance FromJSON CodeLensParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             CodeLensParams { codeLensParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized CodeLensParams value"
+      _ -> Left ("Unrecognized CodeLensParams value: " ++ ppJSON j)
 
 instance FromJSON CodeLens where
   fromJSON j =
@@ -1278,13 +1381,14 @@ instance FromJSON CodeLens where
             CodeLens { codeLensRange = parsedRange
                      , codeLensCommand = parsedCommand
                      , codeLensData = parsedData }
-      _ -> Left "Unrecognized CodeLens value"
+      _ -> Left ("Unrecognized CodeLens value: " ++ ppJSON j)
 
 instance FromJSON CodeLensRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return CodeLensRegistrationOptions {  }
-      _ -> Left "Unrecognized CodeLensRegistrationOptions value"
+      _ ->
+        Left ("Unrecognized CodeLensRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentLinkParams where
   fromJSON j =
@@ -1293,7 +1397,7 @@ instance FromJSON DocumentLinkParams where
         do parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
             DocumentLinkParams { documentLinkParamsTextDocument = parsedTextDocument }
-      _ -> Left "Unrecognized DocumentLinkParams value"
+      _ -> Left ("Unrecognized DocumentLinkParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentLink where
   fromJSON j =
@@ -1308,13 +1412,15 @@ instance FromJSON DocumentLink where
                          , documentLinkTarget = parsedTarget
                          , documentLinkTooltip = parsedTooltip
                          , documentLinkData = parsedData }
-      _ -> Left "Unrecognized DocumentLink value"
+      _ -> Left ("Unrecognized DocumentLink value: " ++ ppJSON j)
 
 instance FromJSON DocumentLinkRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentLinkRegistrationOptions {  }
-      _ -> Left "Unrecognized DocumentLinkRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentLinkRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentFormattingParams where
   fromJSON j =
@@ -1325,13 +1431,16 @@ instance FromJSON DocumentFormattingParams where
            return
             DocumentFormattingParams { documentFormattingParamsTextDocument = parsedTextDocument
                                      , documentFormattingParamsOptions = parsedOptions }
-      _ -> Left "Unrecognized DocumentFormattingParams value"
+      _ -> Left ("Unrecognized DocumentFormattingParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentFormattingRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentFormattingRegistrationOptions {  }
-      _ -> Left "Unrecognized DocumentFormattingRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentFormattingRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentRangeFormattingParams where
   fromJSON j =
@@ -1344,14 +1453,18 @@ instance FromJSON DocumentRangeFormattingParams where
             DocumentRangeFormattingParams { documentRangeFormattingParamsTextDocument = parsedTextDocument
                                           , documentRangeFormattingParamsRange = parsedRange
                                           , documentRangeFormattingParamsOptions = parsedOptions }
-      _ -> Left "Unrecognized DocumentRangeFormattingParams value"
+      _ ->
+        Left
+         ("Unrecognized DocumentRangeFormattingParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentRangeFormattingRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentRangeFormattingRegistrationOptions {  }
       _ ->
-        Left "Unrecognized DocumentRangeFormattingRegistrationOptions value"
+        Left
+         ("Unrecognized DocumentRangeFormattingRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentOnTypeFormattingParams where
   fromJSON j =
@@ -1366,14 +1479,18 @@ instance FromJSON DocumentOnTypeFormattingParams where
                                            , documentOnTypeFormattingParamsPosition = parsedPosition
                                            , documentOnTypeFormattingParamsCh = parsedCh
                                            , documentOnTypeFormattingParamsOptions = parsedOptions }
-      _ -> Left "Unrecognized DocumentOnTypeFormattingParams value"
+      _ ->
+        Left
+         ("Unrecognized DocumentOnTypeFormattingParams value: " ++ ppJSON j)
 
 instance FromJSON DocumentOnTypeFormattingRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentOnTypeFormattingRegistrationOptions {  }
       _ ->
-        Left "Unrecognized DocumentOnTypeFormattingRegistrationOptions value"
+        Left
+         ("Unrecognized DocumentOnTypeFormattingRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON RenameParams where
   fromJSON j =
@@ -1386,19 +1503,19 @@ instance FromJSON RenameParams where
             RenameParams { renameParamsTextDocument = parsedTextDocument
                          , renameParamsPosition = parsedPosition
                          , renameParamsNewName = parsedNewName }
-      _ -> Left "Unrecognized RenameParams value"
+      _ -> Left ("Unrecognized RenameParams value: " ++ ppJSON j)
 
 instance FromJSON RenameRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return RenameRegistrationOptions {  }
-      _ -> Left "Unrecognized RenameRegistrationOptions value"
+      _ -> Left ("Unrecognized RenameRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON PrepareRenameParams where
   fromJSON j =
     case j of
       JObject vs -> do return PrepareRenameParams {  }
-      _ -> Left "Unrecognized PrepareRenameParams value"
+      _ -> Left ("Unrecognized PrepareRenameParams value: " ++ ppJSON j)
 
 instance FromJSON ExecuteCommandParams where
   fromJSON j =
@@ -1409,13 +1526,16 @@ instance FromJSON ExecuteCommandParams where
            return
             ExecuteCommandParams { executeCommandParamsCommand = parsedCommand
                                  , executeCommandParamsArguments = parsedArguments }
-      _ -> Left "Unrecognized ExecuteCommandParams value"
+      _ -> Left ("Unrecognized ExecuteCommandParams value: " ++ ppJSON j)
 
 instance FromJSON ExecuteCommandRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return ExecuteCommandRegistrationOptions {  }
-      _ -> Left "Unrecognized ExecuteCommandRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized ExecuteCommandRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON ApplyWorkspaceEditParams where
   fromJSON j =
@@ -1426,7 +1546,7 @@ instance FromJSON ApplyWorkspaceEditParams where
            return
             ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel = parsedLabel
                                      , applyWorkspaceEditParamsEdit = parsedEdit }
-      _ -> Left "Unrecognized ApplyWorkspaceEditParams value"
+      _ -> Left ("Unrecognized ApplyWorkspaceEditParams value: " ++ ppJSON j)
 
 instance FromJSON ApplyWorkspaceEditResult where
   fromJSON j =
@@ -1439,7 +1559,7 @@ instance FromJSON ApplyWorkspaceEditResult where
             ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied = parsedApplied
                                      , applyWorkspaceEditResultFailureReason = parsedFailureReason
                                      , applyWorkspaceEditResultFailedChange = parsedFailedChange }
-      _ -> Left "Unrecognized ApplyWorkspaceEditResult value"
+      _ -> Left ("Unrecognized ApplyWorkspaceEditResult value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressBegin where
   fromJSON j =
@@ -1456,7 +1576,7 @@ instance FromJSON WorkDoneProgressBegin where
                                   , workDoneProgressBeginCancellable = parsedCancellable
                                   , workDoneProgressBeginMessage = parsedMessage
                                   , workDoneProgressBeginPercentage = parsedPercentage }
-      _ -> Left "Unrecognized WorkDoneProgressBegin value"
+      _ -> Left ("Unrecognized WorkDoneProgressBegin value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressReport where
   fromJSON j =
@@ -1471,7 +1591,7 @@ instance FromJSON WorkDoneProgressReport where
                                    , workDoneProgressReportCancellable = parsedCancellable
                                    , workDoneProgressReportMessage = parsedMessage
                                    , workDoneProgressReportPercentage = parsedPercentage }
-      _ -> Left "Unrecognized WorkDoneProgressReport value"
+      _ -> Left ("Unrecognized WorkDoneProgressReport value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressEnd where
   fromJSON j =
@@ -1482,7 +1602,7 @@ instance FromJSON WorkDoneProgressEnd where
            return
             WorkDoneProgressEnd { workDoneProgressEndKind = parsedKind
                                 , workDoneProgressEndMessage = parsedMessage }
-      _ -> Left "Unrecognized WorkDoneProgressEnd value"
+      _ -> Left ("Unrecognized WorkDoneProgressEnd value: " ++ ppJSON j)
 
 instance FromJSON SetTraceParams where
   fromJSON j =
@@ -1490,7 +1610,7 @@ instance FromJSON SetTraceParams where
       JObject vs ->
         do parsedValue <- lookupFromJSON "value" vs
            return SetTraceParams { setTraceParamsValue = parsedValue }
-      _ -> Left "Unrecognized SetTraceParams value"
+      _ -> Left ("Unrecognized SetTraceParams value: " ++ ppJSON j)
 
 instance FromJSON LogTraceParams where
   fromJSON j =
@@ -1501,7 +1621,7 @@ instance FromJSON LogTraceParams where
            return
             LogTraceParams { logTraceParamsMessage = parsedMessage
                            , logTraceParamsVerbose = parsedVerbose }
-      _ -> Left "Unrecognized LogTraceParams value"
+      _ -> Left ("Unrecognized LogTraceParams value: " ++ ppJSON j)
 
 instance FromJSON CancelParams where
   fromJSON j =
@@ -1509,7 +1629,7 @@ instance FromJSON CancelParams where
       JObject vs ->
         do parsedId <- lookupFromJSON "id" vs
            return CancelParams { cancelParamsId = parsedId }
-      _ -> Left "Unrecognized CancelParams value"
+      _ -> Left ("Unrecognized CancelParams value: " ++ ppJSON j)
 
 instance FromJSON ProgressParams where
   fromJSON j =
@@ -1520,7 +1640,7 @@ instance FromJSON ProgressParams where
            return
             ProgressParams { progressParamsToken = parsedToken
                            , progressParamsValue = parsedValue }
-      _ -> Left "Unrecognized ProgressParams value"
+      _ -> Left ("Unrecognized ProgressParams value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentPositionParams where
   fromJSON j =
@@ -1531,7 +1651,8 @@ instance FromJSON TextDocumentPositionParams where
            return
             TextDocumentPositionParams { textDocumentPositionParamsTextDocument = parsedTextDocument
                                        , textDocumentPositionParamsPosition = parsedPosition }
-      _ -> Left "Unrecognized TextDocumentPositionParams value"
+      _ ->
+        Left ("Unrecognized TextDocumentPositionParams value: " ++ ppJSON j)
 
 instance FromJSON WorkDoneProgressParams where
   fromJSON j =
@@ -1540,7 +1661,7 @@ instance FromJSON WorkDoneProgressParams where
         do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
            return
             WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken = parsedWorkDoneToken }
-      _ -> Left "Unrecognized WorkDoneProgressParams value"
+      _ -> Left ("Unrecognized WorkDoneProgressParams value: " ++ ppJSON j)
 
 instance FromJSON LocationLink where
   fromJSON j =
@@ -1558,7 +1679,7 @@ instance FromJSON LocationLink where
                          , locationLinkTargetUri = parsedTargetUri
                          , locationLinkTargetRange = parsedTargetRange
                          , locationLinkTargetSelectionRange = parsedTargetSelectionRange }
-      _ -> Left "Unrecognized LocationLink value"
+      _ -> Left ("Unrecognized LocationLink value: " ++ ppJSON j)
 
 instance FromJSON Range where
   fromJSON j =
@@ -1567,13 +1688,13 @@ instance FromJSON Range where
         do parsedStart <- lookupFromJSON "start" vs
            parsedEnd <- lookupFromJSON "end" vs
            return Range { rangeStart = parsedStart, rangeEnd = parsedEnd }
-      _ -> Left "Unrecognized Range value"
+      _ -> Left ("Unrecognized Range value: " ++ ppJSON j)
 
 instance FromJSON ImplementationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return ImplementationOptions {  }
-      _ -> Left "Unrecognized ImplementationOptions value"
+      _ -> Left ("Unrecognized ImplementationOptions value: " ++ ppJSON j)
 
 instance FromJSON StaticRegistrationOptions where
   fromJSON j =
@@ -1582,13 +1703,13 @@ instance FromJSON StaticRegistrationOptions where
         do parsedId <- lookupMaybeFromJSON "id" vs
            return
             StaticRegistrationOptions { staticRegistrationOptionsId = parsedId }
-      _ -> Left "Unrecognized StaticRegistrationOptions value"
+      _ -> Left ("Unrecognized StaticRegistrationOptions value: " ++ ppJSON j)
 
 instance FromJSON TypeDefinitionOptions where
   fromJSON j =
     case j of
       JObject vs -> do return TypeDefinitionOptions {  }
-      _ -> Left "Unrecognized TypeDefinitionOptions value"
+      _ -> Left ("Unrecognized TypeDefinitionOptions value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceFoldersChangeEvent where
   fromJSON j =
@@ -1599,7 +1720,8 @@ instance FromJSON WorkspaceFoldersChangeEvent where
            return
             WorkspaceFoldersChangeEvent { workspaceFoldersChangeEventAdded = parsedAdded
                                         , workspaceFoldersChangeEventRemoved = parsedRemoved }
-      _ -> Left "Unrecognized WorkspaceFoldersChangeEvent value"
+      _ ->
+        Left ("Unrecognized WorkspaceFoldersChangeEvent value: " ++ ppJSON j)
 
 instance FromJSON ConfigurationItem where
   fromJSON j =
@@ -1610,7 +1732,7 @@ instance FromJSON ConfigurationItem where
            return
             ConfigurationItem { configurationItemScopeUri = parsedScopeUri
                               , configurationItemSection = parsedSection }
-      _ -> Left "Unrecognized ConfigurationItem value"
+      _ -> Left ("Unrecognized ConfigurationItem value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentIdentifier where
   fromJSON j =
@@ -1619,7 +1741,7 @@ instance FromJSON TextDocumentIdentifier where
         do parsedUri <- lookupFromJSON "uri" vs
            return
             TextDocumentIdentifier { textDocumentIdentifierUri = parsedUri }
-      _ -> Left "Unrecognized TextDocumentIdentifier value"
+      _ -> Left ("Unrecognized TextDocumentIdentifier value: " ++ ppJSON j)
 
 instance FromJSON Color where
   fromJSON j =
@@ -1634,25 +1756,25 @@ instance FromJSON Color where
                   , colorGreen = parsedGreen
                   , colorBlue = parsedBlue
                   , colorAlpha = parsedAlpha }
-      _ -> Left "Unrecognized Color value"
+      _ -> Left ("Unrecognized Color value: " ++ ppJSON j)
 
 instance FromJSON DocumentColorOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentColorOptions {  }
-      _ -> Left "Unrecognized DocumentColorOptions value"
+      _ -> Left ("Unrecognized DocumentColorOptions value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeOptions where
   fromJSON j =
     case j of
       JObject vs -> do return FoldingRangeOptions {  }
-      _ -> Left "Unrecognized FoldingRangeOptions value"
+      _ -> Left ("Unrecognized FoldingRangeOptions value: " ++ ppJSON j)
 
 instance FromJSON DeclarationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DeclarationOptions {  }
-      _ -> Left "Unrecognized DeclarationOptions value"
+      _ -> Left ("Unrecognized DeclarationOptions value: " ++ ppJSON j)
 
 instance FromJSON Position where
   fromJSON j =
@@ -1663,19 +1785,19 @@ instance FromJSON Position where
            return
             Position { positionLine = parsedLine
                      , positionCharacter = parsedCharacter }
-      _ -> Left "Unrecognized Position value"
+      _ -> Left ("Unrecognized Position value: " ++ ppJSON j)
 
 instance FromJSON SelectionRangeOptions where
   fromJSON j =
     case j of
       JObject vs -> do return SelectionRangeOptions {  }
-      _ -> Left "Unrecognized SelectionRangeOptions value"
+      _ -> Left ("Unrecognized SelectionRangeOptions value: " ++ ppJSON j)
 
 instance FromJSON CallHierarchyOptions where
   fromJSON j =
     case j of
       JObject vs -> do return CallHierarchyOptions {  }
-      _ -> Left "Unrecognized CallHierarchyOptions value"
+      _ -> Left ("Unrecognized CallHierarchyOptions value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensOptions where
   fromJSON j =
@@ -1688,7 +1810,7 @@ instance FromJSON SemanticTokensOptions where
             SemanticTokensOptions { semanticTokensOptionsLegend = parsedLegend
                                   , semanticTokensOptionsRange = parsedRange
                                   , semanticTokensOptionsFull = parsedFull }
-      _ -> Left "Unrecognized SemanticTokensOptions value"
+      _ -> Left ("Unrecognized SemanticTokensOptions value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensEdit where
   fromJSON j =
@@ -1701,13 +1823,13 @@ instance FromJSON SemanticTokensEdit where
             SemanticTokensEdit { semanticTokensEditStart = parsedStart
                                , semanticTokensEditDeleteCount = parsedDeleteCount
                                , semanticTokensEditData = parsedData }
-      _ -> Left "Unrecognized SemanticTokensEdit value"
+      _ -> Left ("Unrecognized SemanticTokensEdit value: " ++ ppJSON j)
 
 instance FromJSON LinkedEditingRangeOptions where
   fromJSON j =
     case j of
       JObject vs -> do return LinkedEditingRangeOptions {  }
-      _ -> Left "Unrecognized LinkedEditingRangeOptions value"
+      _ -> Left ("Unrecognized LinkedEditingRangeOptions value: " ++ ppJSON j)
 
 instance FromJSON FileCreate where
   fromJSON j =
@@ -1715,7 +1837,7 @@ instance FromJSON FileCreate where
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
            return FileCreate { fileCreateUri = parsedUri }
-      _ -> Left "Unrecognized FileCreate value"
+      _ -> Left ("Unrecognized FileCreate value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentEdit where
   fromJSON j =
@@ -1726,7 +1848,7 @@ instance FromJSON TextDocumentEdit where
            return
             TextDocumentEdit { textDocumentEditTextDocument = parsedTextDocument
                              , textDocumentEditEdits = parsedEdits }
-      _ -> Left "Unrecognized TextDocumentEdit value"
+      _ -> Left ("Unrecognized TextDocumentEdit value: " ++ ppJSON j)
 
 instance FromJSON CreateFile where
   fromJSON j =
@@ -1739,7 +1861,7 @@ instance FromJSON CreateFile where
             CreateFile { createFileKind = parsedKind
                        , createFileUri = parsedUri
                        , createFileOptions = parsedOptions }
-      _ -> Left "Unrecognized CreateFile value"
+      _ -> Left ("Unrecognized CreateFile value: " ++ ppJSON j)
 
 instance FromJSON RenameFile where
   fromJSON j =
@@ -1754,7 +1876,7 @@ instance FromJSON RenameFile where
                        , renameFileOldUri = parsedOldUri
                        , renameFileNewUri = parsedNewUri
                        , renameFileOptions = parsedOptions }
-      _ -> Left "Unrecognized RenameFile value"
+      _ -> Left ("Unrecognized RenameFile value: " ++ ppJSON j)
 
 instance FromJSON DeleteFile where
   fromJSON j =
@@ -1767,7 +1889,7 @@ instance FromJSON DeleteFile where
             DeleteFile { deleteFileKind = parsedKind
                        , deleteFileUri = parsedUri
                        , deleteFileOptions = parsedOptions }
-      _ -> Left "Unrecognized DeleteFile value"
+      _ -> Left ("Unrecognized DeleteFile value: " ++ ppJSON j)
 
 instance FromJSON ChangeAnnotation where
   fromJSON j =
@@ -1781,7 +1903,7 @@ instance FromJSON ChangeAnnotation where
             ChangeAnnotation { changeAnnotationLabel = parsedLabel
                              , changeAnnotationNeedsConfirmation = parsedNeedsConfirmation
                              , changeAnnotationDescription = parsedDescription }
-      _ -> Left "Unrecognized ChangeAnnotation value"
+      _ -> Left ("Unrecognized ChangeAnnotation value: " ++ ppJSON j)
 
 instance FromJSON FileOperationFilter where
   fromJSON j =
@@ -1792,7 +1914,7 @@ instance FromJSON FileOperationFilter where
            return
             FileOperationFilter { fileOperationFilterScheme = parsedScheme
                                 , fileOperationFilterPattern = parsedPattern }
-      _ -> Left "Unrecognized FileOperationFilter value"
+      _ -> Left ("Unrecognized FileOperationFilter value: " ++ ppJSON j)
 
 instance FromJSON FileRename where
   fromJSON j =
@@ -1803,7 +1925,7 @@ instance FromJSON FileRename where
            return
             FileRename { fileRenameOldUri = parsedOldUri
                        , fileRenameNewUri = parsedNewUri }
-      _ -> Left "Unrecognized FileRename value"
+      _ -> Left ("Unrecognized FileRename value: " ++ ppJSON j)
 
 instance FromJSON FileDelete where
   fromJSON j =
@@ -1811,19 +1933,19 @@ instance FromJSON FileDelete where
       JObject vs ->
         do parsedUri <- lookupFromJSON "uri" vs
            return FileDelete { fileDeleteUri = parsedUri }
-      _ -> Left "Unrecognized FileDelete value"
+      _ -> Left ("Unrecognized FileDelete value: " ++ ppJSON j)
 
 instance FromJSON MonikerOptions where
   fromJSON j =
     case j of
       JObject vs -> do return MonikerOptions {  }
-      _ -> Left "Unrecognized MonikerOptions value"
+      _ -> Left ("Unrecognized MonikerOptions value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchyOptions where
   fromJSON j =
     case j of
       JObject vs -> do return TypeHierarchyOptions {  }
-      _ -> Left "Unrecognized TypeHierarchyOptions value"
+      _ -> Left ("Unrecognized TypeHierarchyOptions value: " ++ ppJSON j)
 
 instance FromJSON InlineValueContext where
   fromJSON j =
@@ -1834,7 +1956,7 @@ instance FromJSON InlineValueContext where
            return
             InlineValueContext { inlineValueContextFrameId = parsedFrameId
                                , inlineValueContextStoppedLocation = parsedStoppedLocation }
-      _ -> Left "Unrecognized InlineValueContext value"
+      _ -> Left ("Unrecognized InlineValueContext value: " ++ ppJSON j)
 
 instance FromJSON InlineValueText where
   fromJSON j =
@@ -1845,7 +1967,7 @@ instance FromJSON InlineValueText where
            return
             InlineValueText { inlineValueTextRange = parsedRange
                             , inlineValueTextText = parsedText }
-      _ -> Left "Unrecognized InlineValueText value"
+      _ -> Left ("Unrecognized InlineValueText value: " ++ ppJSON j)
 
 instance FromJSON InlineValueVariableLookup where
   fromJSON j =
@@ -1859,7 +1981,7 @@ instance FromJSON InlineValueVariableLookup where
             InlineValueVariableLookup { inlineValueVariableLookupRange = parsedRange
                                       , inlineValueVariableLookupVariableName = parsedVariableName
                                       , inlineValueVariableLookupCaseSensitiveLookup = parsedCaseSensitiveLookup }
-      _ -> Left "Unrecognized InlineValueVariableLookup value"
+      _ -> Left ("Unrecognized InlineValueVariableLookup value: " ++ ppJSON j)
 
 instance FromJSON InlineValueEvaluatableExpression where
   fromJSON j =
@@ -1870,13 +1992,15 @@ instance FromJSON InlineValueEvaluatableExpression where
            return
             InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange = parsedRange
                                              , inlineValueEvaluatableExpressionExpression = parsedExpression }
-      _ -> Left "Unrecognized InlineValueEvaluatableExpression value"
+      _ ->
+        Left
+         ("Unrecognized InlineValueEvaluatableExpression value: " ++ ppJSON j)
 
 instance FromJSON InlineValueOptions where
   fromJSON j =
     case j of
       JObject vs -> do return InlineValueOptions {  }
-      _ -> Left "Unrecognized InlineValueOptions value"
+      _ -> Left ("Unrecognized InlineValueOptions value: " ++ ppJSON j)
 
 instance FromJSON InlayHintLabelPart where
   fromJSON j =
@@ -1891,7 +2015,7 @@ instance FromJSON InlayHintLabelPart where
                                , inlayHintLabelPartTooltip = parsedTooltip
                                , inlayHintLabelPartLocation = parsedLocation
                                , inlayHintLabelPartCommand = parsedCommand }
-      _ -> Left "Unrecognized InlayHintLabelPart value"
+      _ -> Left ("Unrecognized InlayHintLabelPart value: " ++ ppJSON j)
 
 instance FromJSON MarkupContent where
   fromJSON j =
@@ -1902,7 +2026,7 @@ instance FromJSON MarkupContent where
            return
             MarkupContent { markupContentKind = parsedKind
                           , markupContentValue = parsedValue }
-      _ -> Left "Unrecognized MarkupContent value"
+      _ -> Left ("Unrecognized MarkupContent value: " ++ ppJSON j)
 
 instance FromJSON InlayHintOptions where
   fromJSON j =
@@ -1911,7 +2035,7 @@ instance FromJSON InlayHintOptions where
         do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
             InlayHintOptions { inlayHintOptionsResolveProvider = parsedResolveProvider }
-      _ -> Left "Unrecognized InlayHintOptions value"
+      _ -> Left ("Unrecognized InlayHintOptions value: " ++ ppJSON j)
 
 instance FromJSON RelatedFullDocumentDiagnosticReport where
   fromJSON j =
@@ -1920,7 +2044,10 @@ instance FromJSON RelatedFullDocumentDiagnosticReport where
         do parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
            return
             RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
-      _ -> Left "Unrecognized RelatedFullDocumentDiagnosticReport value"
+      _ ->
+        Left
+         ("Unrecognized RelatedFullDocumentDiagnosticReport value: "
+           ++ ppJSON j)
 
 instance FromJSON RelatedUnchangedDocumentDiagnosticReport where
   fromJSON j =
@@ -1929,7 +2056,10 @@ instance FromJSON RelatedUnchangedDocumentDiagnosticReport where
         do parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
            return
             RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
-      _ -> Left "Unrecognized RelatedUnchangedDocumentDiagnosticReport value"
+      _ ->
+        Left
+         ("Unrecognized RelatedUnchangedDocumentDiagnosticReport value: "
+           ++ ppJSON j)
 
 instance FromJSON FullDocumentDiagnosticReport where
   fromJSON j =
@@ -1942,7 +2072,8 @@ instance FromJSON FullDocumentDiagnosticReport where
             FullDocumentDiagnosticReport { fullDocumentDiagnosticReportKind = parsedKind
                                          , fullDocumentDiagnosticReportResultId = parsedResultId
                                          , fullDocumentDiagnosticReportItems = parsedItems }
-      _ -> Left "Unrecognized FullDocumentDiagnosticReport value"
+      _ ->
+        Left ("Unrecognized FullDocumentDiagnosticReport value: " ++ ppJSON j)
 
 instance FromJSON UnchangedDocumentDiagnosticReport where
   fromJSON j =
@@ -1953,7 +2084,10 @@ instance FromJSON UnchangedDocumentDiagnosticReport where
            return
             UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind = parsedKind
                                               , unchangedDocumentDiagnosticReportResultId = parsedResultId }
-      _ -> Left "Unrecognized UnchangedDocumentDiagnosticReport value"
+      _ ->
+        Left
+         ("Unrecognized UnchangedDocumentDiagnosticReport value: "
+           ++ ppJSON j)
 
 instance FromJSON DiagnosticOptions where
   fromJSON j =
@@ -1969,7 +2103,7 @@ instance FromJSON DiagnosticOptions where
             DiagnosticOptions { diagnosticOptionsIdentifier = parsedIdentifier
                               , diagnosticOptionsInterFileDependencies = parsedInterFileDependencies
                               , diagnosticOptionsWorkspaceDiagnostics = parsedWorkspaceDiagnostics }
-      _ -> Left "Unrecognized DiagnosticOptions value"
+      _ -> Left ("Unrecognized DiagnosticOptions value: " ++ ppJSON j)
 
 instance FromJSON PreviousResultId where
   fromJSON j =
@@ -1980,7 +2114,7 @@ instance FromJSON PreviousResultId where
            return
             PreviousResultId { previousResultIdUri = parsedUri
                              , previousResultIdValue = parsedValue }
-      _ -> Left "Unrecognized PreviousResultId value"
+      _ -> Left ("Unrecognized PreviousResultId value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocument where
   fromJSON j =
@@ -1997,7 +2131,7 @@ instance FromJSON NotebookDocument where
                              , notebookDocumentVersion = parsedVersion
                              , notebookDocumentMetadata = parsedMetadata
                              , notebookDocumentCells = parsedCells }
-      _ -> Left "Unrecognized NotebookDocument value"
+      _ -> Left ("Unrecognized NotebookDocument value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentItem where
   fromJSON j =
@@ -2012,7 +2146,7 @@ instance FromJSON TextDocumentItem where
                              , textDocumentItemLanguageId = parsedLanguageId
                              , textDocumentItemVersion = parsedVersion
                              , textDocumentItemText = parsedText }
-      _ -> Left "Unrecognized TextDocumentItem value"
+      _ -> Left ("Unrecognized TextDocumentItem value: " ++ ppJSON j)
 
 instance FromJSON VersionedNotebookDocumentIdentifier where
   fromJSON j =
@@ -2023,7 +2157,10 @@ instance FromJSON VersionedNotebookDocumentIdentifier where
            return
             VersionedNotebookDocumentIdentifier { versionedNotebookDocumentIdentifierVersion = parsedVersion
                                                 , versionedNotebookDocumentIdentifierUri = parsedUri }
-      _ -> Left "Unrecognized VersionedNotebookDocumentIdentifier value"
+      _ ->
+        Left
+         ("Unrecognized VersionedNotebookDocumentIdentifier value: "
+           ++ ppJSON j)
 
 instance FromJSON NotebookDocumentChangeEvent where
   fromJSON j =
@@ -2034,7 +2171,8 @@ instance FromJSON NotebookDocumentChangeEvent where
            return
             NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata = parsedMetadata
                                         , notebookDocumentChangeEventCells = parsedCells }
-      _ -> Left "Unrecognized NotebookDocumentChangeEvent value"
+      _ ->
+        Left ("Unrecognized NotebookDocumentChangeEvent value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocumentIdentifier where
   fromJSON j =
@@ -2043,7 +2181,8 @@ instance FromJSON NotebookDocumentIdentifier where
         do parsedUri <- lookupFromJSON "uri" vs
            return
             NotebookDocumentIdentifier { notebookDocumentIdentifierUri = parsedUri }
-      _ -> Left "Unrecognized NotebookDocumentIdentifier value"
+      _ ->
+        Left ("Unrecognized NotebookDocumentIdentifier value: " ++ ppJSON j)
 
 instance FromJSON Registration where
   fromJSON j =
@@ -2056,7 +2195,7 @@ instance FromJSON Registration where
             Registration { registrationId = parsedId
                          , registrationMethod = parsedMethod
                          , registrationRegisterOptions = parsedRegisterOptions }
-      _ -> Left "Unrecognized Registration value"
+      _ -> Left ("Unrecognized Registration value: " ++ ppJSON j)
 
 instance FromJSON Unregistration where
   fromJSON j =
@@ -2067,7 +2206,7 @@ instance FromJSON Unregistration where
            return
             Unregistration { unregistrationId = parsedId
                            , unregistrationMethod = parsedMethod }
-      _ -> Left "Unrecognized Unregistration value"
+      _ -> Left ("Unrecognized Unregistration value: " ++ ppJSON j)
 
 instance FromJSON BaseInitializeParams where
   fromJSON j =
@@ -2092,7 +2231,7 @@ instance FromJSON BaseInitializeParams where
                                  , baseInitializeParamsCapabilities = parsedCapabilities
                                  , baseInitializeParamsInitializationOptions = parsedInitializationOptions
                                  , baseInitializeParamsTrace = parsedTrace }
-      _ -> Left "Unrecognized BaseInitializeParams value"
+      _ -> Left ("Unrecognized BaseInitializeParams value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceFoldersInitializeParams where
   fromJSON j =
@@ -2101,7 +2240,9 @@ instance FromJSON WorkspaceFoldersInitializeParams where
         do parsedWorkspaceFolders <- lookupMaybeFromJSON "workspaceFolders" vs
            return
             WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders = parsedWorkspaceFolders }
-      _ -> Left "Unrecognized WorkspaceFoldersInitializeParams value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceFoldersInitializeParams value: " ++ ppJSON j)
 
 instance FromJSON ServerCapabilities where
   fromJSON j =
@@ -2229,7 +2370,7 @@ instance FromJSON ServerCapabilities where
                                , serverCapabilitiesDiagnosticProvider = parsedDiagnosticProvider
                                , serverCapabilitiesWorkspace = parsedWorkspace
                                , serverCapabilitiesExperimental = parsedExperimental }
-      _ -> Left "Unrecognized ServerCapabilities value"
+      _ -> Left ("Unrecognized ServerCapabilities value: " ++ ppJSON j)
 
 instance FromJSON VersionedTextDocumentIdentifier where
   fromJSON j =
@@ -2238,7 +2379,9 @@ instance FromJSON VersionedTextDocumentIdentifier where
         do parsedVersion <- lookupFromJSON "version" vs
            return
             VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion = parsedVersion }
-      _ -> Left "Unrecognized VersionedTextDocumentIdentifier value"
+      _ ->
+        Left
+         ("Unrecognized VersionedTextDocumentIdentifier value: " ++ ppJSON j)
 
 instance FromJSON SaveOptions where
   fromJSON j =
@@ -2246,7 +2389,7 @@ instance FromJSON SaveOptions where
       JObject vs ->
         do parsedIncludeText <- lookupMaybeFromJSON "includeText" vs
            return SaveOptions { saveOptionsIncludeText = parsedIncludeText }
-      _ -> Left "Unrecognized SaveOptions value"
+      _ -> Left ("Unrecognized SaveOptions value: " ++ ppJSON j)
 
 instance FromJSON FileEvent where
   fromJSON j =
@@ -2256,7 +2399,7 @@ instance FromJSON FileEvent where
            parsedType <- lookupFromJSON "type" vs
            return
             FileEvent { fileEventUri = parsedUri, fileEventType = parsedType }
-      _ -> Left "Unrecognized FileEvent value"
+      _ -> Left ("Unrecognized FileEvent value: " ++ ppJSON j)
 
 instance FromJSON FileSystemWatcher where
   fromJSON j =
@@ -2267,7 +2410,7 @@ instance FromJSON FileSystemWatcher where
            return
             FileSystemWatcher { fileSystemWatcherGlobPattern = parsedGlobPattern
                               , fileSystemWatcherKind = parsedKind }
-      _ -> Left "Unrecognized FileSystemWatcher value"
+      _ -> Left ("Unrecognized FileSystemWatcher value: " ++ ppJSON j)
 
 instance FromJSON Diagnostic where
   fromJSON j =
@@ -2294,7 +2437,7 @@ instance FromJSON Diagnostic where
                        , diagnosticTags = parsedTags
                        , diagnosticRelatedInformation = parsedRelatedInformation
                        , diagnosticData = parsedData }
-      _ -> Left "Unrecognized Diagnostic value"
+      _ -> Left ("Unrecognized Diagnostic value: " ++ ppJSON j)
 
 instance FromJSON CompletionContext where
   fromJSON j =
@@ -2305,7 +2448,7 @@ instance FromJSON CompletionContext where
            return
             CompletionContext { completionContextTriggerKind = parsedTriggerKind
                               , completionContextTriggerCharacter = parsedTriggerCharacter }
-      _ -> Left "Unrecognized CompletionContext value"
+      _ -> Left ("Unrecognized CompletionContext value: " ++ ppJSON j)
 
 instance FromJSON CompletionItemLabelDetails where
   fromJSON j =
@@ -2316,7 +2459,8 @@ instance FromJSON CompletionItemLabelDetails where
            return
             CompletionItemLabelDetails { completionItemLabelDetailsDetail = parsedDetail
                                        , completionItemLabelDetailsDescription = parsedDescription }
-      _ -> Left "Unrecognized CompletionItemLabelDetails value"
+      _ ->
+        Left ("Unrecognized CompletionItemLabelDetails value: " ++ ppJSON j)
 
 instance FromJSON InsertReplaceEdit where
   fromJSON j =
@@ -2329,7 +2473,7 @@ instance FromJSON InsertReplaceEdit where
             InsertReplaceEdit { insertReplaceEditNewText = parsedNewText
                               , insertReplaceEditInsert = parsedInsert
                               , insertReplaceEditReplace = parsedReplace }
-      _ -> Left "Unrecognized InsertReplaceEdit value"
+      _ -> Left ("Unrecognized InsertReplaceEdit value: " ++ ppJSON j)
 
 instance FromJSON CompletionOptions where
   fromJSON j =
@@ -2347,13 +2491,13 @@ instance FromJSON CompletionOptions where
                               , completionOptionsAllCommitCharacters = parsedAllCommitCharacters
                               , completionOptionsResolveProvider = parsedResolveProvider
                               , completionOptionsCompletionItem = parsedCompletionItem }
-      _ -> Left "Unrecognized CompletionOptions value"
+      _ -> Left ("Unrecognized CompletionOptions value: " ++ ppJSON j)
 
 instance FromJSON HoverOptions where
   fromJSON j =
     case j of
       JObject vs -> do return HoverOptions {  }
-      _ -> Left "Unrecognized HoverOptions value"
+      _ -> Left ("Unrecognized HoverOptions value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpContext where
   fromJSON j =
@@ -2370,7 +2514,7 @@ instance FromJSON SignatureHelpContext where
                                  , signatureHelpContextTriggerCharacter = parsedTriggerCharacter
                                  , signatureHelpContextIsRetrigger = parsedIsRetrigger
                                  , signatureHelpContextActiveSignatureHelp = parsedActiveSignatureHelp }
-      _ -> Left "Unrecognized SignatureHelpContext value"
+      _ -> Left ("Unrecognized SignatureHelpContext value: " ++ ppJSON j)
 
 instance FromJSON SignatureInformation where
   fromJSON j =
@@ -2385,7 +2529,7 @@ instance FromJSON SignatureInformation where
                                  , signatureInformationDocumentation = parsedDocumentation
                                  , signatureInformationParameters = parsedParameters
                                  , signatureInformationActiveParameter = parsedActiveParameter }
-      _ -> Left "Unrecognized SignatureInformation value"
+      _ -> Left ("Unrecognized SignatureInformation value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpOptions where
   fromJSON j =
@@ -2399,13 +2543,13 @@ instance FromJSON SignatureHelpOptions where
            return
             SignatureHelpOptions { signatureHelpOptionsTriggerCharacters = parsedTriggerCharacters
                                  , signatureHelpOptionsRetriggerCharacters = parsedRetriggerCharacters }
-      _ -> Left "Unrecognized SignatureHelpOptions value"
+      _ -> Left ("Unrecognized SignatureHelpOptions value: " ++ ppJSON j)
 
 instance FromJSON DefinitionOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DefinitionOptions {  }
-      _ -> Left "Unrecognized DefinitionOptions value"
+      _ -> Left ("Unrecognized DefinitionOptions value: " ++ ppJSON j)
 
 instance FromJSON ReferenceContext where
   fromJSON j =
@@ -2414,19 +2558,19 @@ instance FromJSON ReferenceContext where
         do parsedIncludeDeclaration <- lookupFromJSON "includeDeclaration" vs
            return
             ReferenceContext { referenceContextIncludeDeclaration = parsedIncludeDeclaration }
-      _ -> Left "Unrecognized ReferenceContext value"
+      _ -> Left ("Unrecognized ReferenceContext value: " ++ ppJSON j)
 
 instance FromJSON ReferenceOptions where
   fromJSON j =
     case j of
       JObject vs -> do return ReferenceOptions {  }
-      _ -> Left "Unrecognized ReferenceOptions value"
+      _ -> Left ("Unrecognized ReferenceOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentHighlightOptions {  }
-      _ -> Left "Unrecognized DocumentHighlightOptions value"
+      _ -> Left ("Unrecognized DocumentHighlightOptions value: " ++ ppJSON j)
 
 instance FromJSON BaseSymbolInformation where
   fromJSON j =
@@ -2441,7 +2585,7 @@ instance FromJSON BaseSymbolInformation where
                                   , baseSymbolInformationKind = parsedKind
                                   , baseSymbolInformationTags = parsedTags
                                   , baseSymbolInformationContainerName = parsedContainerName }
-      _ -> Left "Unrecognized BaseSymbolInformation value"
+      _ -> Left ("Unrecognized BaseSymbolInformation value: " ++ ppJSON j)
 
 instance FromJSON DocumentSymbolOptions where
   fromJSON j =
@@ -2450,7 +2594,7 @@ instance FromJSON DocumentSymbolOptions where
         do parsedLabel <- lookupMaybeFromJSON "label" vs
            return
             DocumentSymbolOptions { documentSymbolOptionsLabel = parsedLabel }
-      _ -> Left "Unrecognized DocumentSymbolOptions value"
+      _ -> Left ("Unrecognized DocumentSymbolOptions value: " ++ ppJSON j)
 
 instance FromJSON CodeActionContext where
   fromJSON j =
@@ -2463,7 +2607,7 @@ instance FromJSON CodeActionContext where
             CodeActionContext { codeActionContextDiagnostics = parsedDiagnostics
                               , codeActionContextOnly = parsedOnly
                               , codeActionContextTriggerKind = parsedTriggerKind }
-      _ -> Left "Unrecognized CodeActionContext value"
+      _ -> Left ("Unrecognized CodeActionContext value: " ++ ppJSON j)
 
 instance FromJSON CodeActionOptions where
   fromJSON j =
@@ -2474,7 +2618,7 @@ instance FromJSON CodeActionOptions where
            return
             CodeActionOptions { codeActionOptionsCodeActionKinds = parsedCodeActionKinds
                               , codeActionOptionsResolveProvider = parsedResolveProvider }
-      _ -> Left "Unrecognized CodeActionOptions value"
+      _ -> Left ("Unrecognized CodeActionOptions value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbolOptions where
   fromJSON j =
@@ -2483,7 +2627,7 @@ instance FromJSON WorkspaceSymbolOptions where
         do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
             WorkspaceSymbolOptions { workspaceSymbolOptionsResolveProvider = parsedResolveProvider }
-      _ -> Left "Unrecognized WorkspaceSymbolOptions value"
+      _ -> Left ("Unrecognized WorkspaceSymbolOptions value: " ++ ppJSON j)
 
 instance FromJSON CodeLensOptions where
   fromJSON j =
@@ -2492,7 +2636,7 @@ instance FromJSON CodeLensOptions where
         do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
             CodeLensOptions { codeLensOptionsResolveProvider = parsedResolveProvider }
-      _ -> Left "Unrecognized CodeLensOptions value"
+      _ -> Left ("Unrecognized CodeLensOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentLinkOptions where
   fromJSON j =
@@ -2501,7 +2645,7 @@ instance FromJSON DocumentLinkOptions where
         do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
             DocumentLinkOptions { documentLinkOptionsResolveProvider = parsedResolveProvider }
-      _ -> Left "Unrecognized DocumentLinkOptions value"
+      _ -> Left ("Unrecognized DocumentLinkOptions value: " ++ ppJSON j)
 
 instance FromJSON FormattingOptions where
   fromJSON j =
@@ -2523,19 +2667,21 @@ instance FromJSON FormattingOptions where
                               , formattingOptionsTrimTrailingWhitespace = parsedTrimTrailingWhitespace
                               , formattingOptionsInsertFinalNewline = parsedInsertFinalNewline
                               , formattingOptionsTrimFinalNewlines = parsedTrimFinalNewlines }
-      _ -> Left "Unrecognized FormattingOptions value"
+      _ -> Left ("Unrecognized FormattingOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentFormattingOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentFormattingOptions {  }
-      _ -> Left "Unrecognized DocumentFormattingOptions value"
+      _ -> Left ("Unrecognized DocumentFormattingOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentRangeFormattingOptions where
   fromJSON j =
     case j of
       JObject vs -> do return DocumentRangeFormattingOptions {  }
-      _ -> Left "Unrecognized DocumentRangeFormattingOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentRangeFormattingOptions value: " ++ ppJSON j)
 
 instance FromJSON DocumentOnTypeFormattingOptions where
   fromJSON j =
@@ -2550,7 +2696,9 @@ instance FromJSON DocumentOnTypeFormattingOptions where
            return
             DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter = parsedFirstTriggerCharacter
                                             , documentOnTypeFormattingOptionsMoreTriggerCharacter = parsedMoreTriggerCharacter }
-      _ -> Left "Unrecognized DocumentOnTypeFormattingOptions value"
+      _ ->
+        Left
+         ("Unrecognized DocumentOnTypeFormattingOptions value: " ++ ppJSON j)
 
 instance FromJSON RenameOptions where
   fromJSON j =
@@ -2559,7 +2707,7 @@ instance FromJSON RenameOptions where
         do parsedPrepareProvider <- lookupMaybeFromJSON "prepareProvider" vs
            return
             RenameOptions { renameOptionsPrepareProvider = parsedPrepareProvider }
-      _ -> Left "Unrecognized RenameOptions value"
+      _ -> Left ("Unrecognized RenameOptions value: " ++ ppJSON j)
 
 instance FromJSON ExecuteCommandOptions where
   fromJSON j =
@@ -2568,7 +2716,7 @@ instance FromJSON ExecuteCommandOptions where
         do parsedCommands <- lookupFromJSON "commands" vs
            return
             ExecuteCommandOptions { executeCommandOptionsCommands = parsedCommands }
-      _ -> Left "Unrecognized ExecuteCommandOptions value"
+      _ -> Left ("Unrecognized ExecuteCommandOptions value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensLegend where
   fromJSON j =
@@ -2579,7 +2727,7 @@ instance FromJSON SemanticTokensLegend where
            return
             SemanticTokensLegend { semanticTokensLegendTokenTypes = parsedTokenTypes
                                  , semanticTokensLegendTokenModifiers = parsedTokenModifiers }
-      _ -> Left "Unrecognized SemanticTokensLegend value"
+      _ -> Left ("Unrecognized SemanticTokensLegend value: " ++ ppJSON j)
 
 instance FromJSON OptionalVersionedTextDocumentIdentifier where
   fromJSON j =
@@ -2588,7 +2736,10 @@ instance FromJSON OptionalVersionedTextDocumentIdentifier where
         do parsedVersion <- lookupFromJSON "version" vs
            return
             OptionalVersionedTextDocumentIdentifier { optionalVersionedTextDocumentIdentifierVersion = parsedVersion }
-      _ -> Left "Unrecognized OptionalVersionedTextDocumentIdentifier value"
+      _ ->
+        Left
+         ("Unrecognized OptionalVersionedTextDocumentIdentifier value: "
+           ++ ppJSON j)
 
 instance FromJSON AnnotatedTextEdit where
   fromJSON j =
@@ -2597,7 +2748,7 @@ instance FromJSON AnnotatedTextEdit where
         do parsedAnnotationId <- lookupFromJSON "annotationId" vs
            return
             AnnotatedTextEdit { annotatedTextEditAnnotationId = parsedAnnotationId }
-      _ -> Left "Unrecognized AnnotatedTextEdit value"
+      _ -> Left ("Unrecognized AnnotatedTextEdit value: " ++ ppJSON j)
 
 instance FromJSON ResourceOperation where
   fromJSON j =
@@ -2608,7 +2759,7 @@ instance FromJSON ResourceOperation where
            return
             ResourceOperation { resourceOperationKind = parsedKind
                               , resourceOperationAnnotationId = parsedAnnotationId }
-      _ -> Left "Unrecognized ResourceOperation value"
+      _ -> Left ("Unrecognized ResourceOperation value: " ++ ppJSON j)
 
 instance FromJSON CreateFileOptions where
   fromJSON j =
@@ -2619,7 +2770,7 @@ instance FromJSON CreateFileOptions where
            return
             CreateFileOptions { createFileOptionsOverwrite = parsedOverwrite
                               , createFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
-      _ -> Left "Unrecognized CreateFileOptions value"
+      _ -> Left ("Unrecognized CreateFileOptions value: " ++ ppJSON j)
 
 instance FromJSON RenameFileOptions where
   fromJSON j =
@@ -2630,7 +2781,7 @@ instance FromJSON RenameFileOptions where
            return
             RenameFileOptions { renameFileOptionsOverwrite = parsedOverwrite
                               , renameFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
-      _ -> Left "Unrecognized RenameFileOptions value"
+      _ -> Left ("Unrecognized RenameFileOptions value: " ++ ppJSON j)
 
 instance FromJSON DeleteFileOptions where
   fromJSON j =
@@ -2642,7 +2793,7 @@ instance FromJSON DeleteFileOptions where
            return
             DeleteFileOptions { deleteFileOptionsRecursive = parsedRecursive
                               , deleteFileOptionsIgnoreIfNotExists = parsedIgnoreIfNotExists }
-      _ -> Left "Unrecognized DeleteFileOptions value"
+      _ -> Left ("Unrecognized DeleteFileOptions value: " ++ ppJSON j)
 
 instance FromJSON FileOperationPattern where
   fromJSON j =
@@ -2655,7 +2806,7 @@ instance FromJSON FileOperationPattern where
             FileOperationPattern { fileOperationPatternGlob = parsedGlob
                                  , fileOperationPatternMatches = parsedMatches
                                  , fileOperationPatternOptions = parsedOptions }
-      _ -> Left "Unrecognized FileOperationPattern value"
+      _ -> Left ("Unrecognized FileOperationPattern value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceFullDocumentDiagnosticReport where
   fromJSON j =
@@ -2666,7 +2817,10 @@ instance FromJSON WorkspaceFullDocumentDiagnosticReport where
            return
             WorkspaceFullDocumentDiagnosticReport { workspaceFullDocumentDiagnosticReportUri = parsedUri
                                                   , workspaceFullDocumentDiagnosticReportVersion = parsedVersion }
-      _ -> Left "Unrecognized WorkspaceFullDocumentDiagnosticReport value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceFullDocumentDiagnosticReport value: "
+           ++ ppJSON j)
 
 instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
   fromJSON j =
@@ -2678,13 +2832,15 @@ instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
             WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportUri = parsedUri
                                                        , workspaceUnchangedDocumentDiagnosticReportVersion = parsedVersion }
       _ ->
-        Left "Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value"
+        Left
+         ("Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value: "
+           ++ ppJSON j)
 
 instance FromJSON LSPObject where
   fromJSON j =
     case j of
       JObject vs -> do return LSPObject {  }
-      _ -> Left "Unrecognized LSPObject value"
+      _ -> Left ("Unrecognized LSPObject value: " ++ ppJSON j)
 
 instance FromJSON NotebookCell where
   fromJSON j =
@@ -2699,7 +2855,7 @@ instance FromJSON NotebookCell where
                          , notebookCellDocument = parsedDocument
                          , notebookCellMetadata = parsedMetadata
                          , notebookCellExecutionSummary = parsedExecutionSummary }
-      _ -> Left "Unrecognized NotebookCell value"
+      _ -> Left ("Unrecognized NotebookCell value: " ++ ppJSON j)
 
 instance FromJSON NotebookCellArrayChange where
   fromJSON j =
@@ -2712,7 +2868,7 @@ instance FromJSON NotebookCellArrayChange where
             NotebookCellArrayChange { notebookCellArrayChangeStart = parsedStart
                                     , notebookCellArrayChangeDeleteCount = parsedDeleteCount
                                     , notebookCellArrayChangeCells = parsedCells }
-      _ -> Left "Unrecognized NotebookCellArrayChange value"
+      _ -> Left ("Unrecognized NotebookCellArrayChange value: " ++ ppJSON j)
 
 instance FromJSON ClientCapabilities where
   fromJSON j =
@@ -2731,7 +2887,7 @@ instance FromJSON ClientCapabilities where
                                , clientCapabilitiesWindow = parsedWindow
                                , clientCapabilitiesGeneral = parsedGeneral
                                , clientCapabilitiesExperimental = parsedExperimental }
-      _ -> Left "Unrecognized ClientCapabilities value"
+      _ -> Left ("Unrecognized ClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncOptions where
   fromJSON j =
@@ -2749,7 +2905,7 @@ instance FromJSON TextDocumentSyncOptions where
                                     , textDocumentSyncOptionsWillSave = parsedWillSave
                                     , textDocumentSyncOptionsWillSaveWaitUntil = parsedWillSaveWaitUntil
                                     , textDocumentSyncOptionsSave = parsedSave }
-      _ -> Left "Unrecognized TextDocumentSyncOptions value"
+      _ -> Left ("Unrecognized TextDocumentSyncOptions value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocumentSyncOptions where
   fromJSON j =
@@ -2760,13 +2916,17 @@ instance FromJSON NotebookDocumentSyncOptions where
            return
             NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector = parsedNotebookSelector
                                         , notebookDocumentSyncOptionsSave = parsedSave }
-      _ -> Left "Unrecognized NotebookDocumentSyncOptions value"
+      _ ->
+        Left ("Unrecognized NotebookDocumentSyncOptions value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocumentSyncRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs -> do return NotebookDocumentSyncRegistrationOptions {  }
-      _ -> Left "Unrecognized NotebookDocumentSyncRegistrationOptions value"
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentSyncRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON WorkspaceFoldersServerCapabilities where
   fromJSON j =
@@ -2779,7 +2939,10 @@ instance FromJSON WorkspaceFoldersServerCapabilities where
            return
             WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported = parsedSupported
                                                , workspaceFoldersServerCapabilitiesChangeNotifications = parsedChangeNotifications }
-      _ -> Left "Unrecognized WorkspaceFoldersServerCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceFoldersServerCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON FileOperationOptions where
   fromJSON j =
@@ -2798,7 +2961,7 @@ instance FromJSON FileOperationOptions where
                                  , fileOperationOptionsWillRename = parsedWillRename
                                  , fileOperationOptionsDidDelete = parsedDidDelete
                                  , fileOperationOptionsWillDelete = parsedWillDelete }
-      _ -> Left "Unrecognized FileOperationOptions value"
+      _ -> Left ("Unrecognized FileOperationOptions value: " ++ ppJSON j)
 
 instance FromJSON CodeDescription where
   fromJSON j =
@@ -2806,7 +2969,7 @@ instance FromJSON CodeDescription where
       JObject vs ->
         do parsedHref <- lookupFromJSON "href" vs
            return CodeDescription { codeDescriptionHref = parsedHref }
-      _ -> Left "Unrecognized CodeDescription value"
+      _ -> Left ("Unrecognized CodeDescription value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticRelatedInformation where
   fromJSON j =
@@ -2817,7 +2980,8 @@ instance FromJSON DiagnosticRelatedInformation where
            return
             DiagnosticRelatedInformation { diagnosticRelatedInformationLocation = parsedLocation
                                          , diagnosticRelatedInformationMessage = parsedMessage }
-      _ -> Left "Unrecognized DiagnosticRelatedInformation value"
+      _ ->
+        Left ("Unrecognized DiagnosticRelatedInformation value: " ++ ppJSON j)
 
 instance FromJSON ParameterInformation where
   fromJSON j =
@@ -2828,7 +2992,7 @@ instance FromJSON ParameterInformation where
            return
             ParameterInformation { parameterInformationLabel = parsedLabel
                                  , parameterInformationDocumentation = parsedDocumentation }
-      _ -> Left "Unrecognized ParameterInformation value"
+      _ -> Left ("Unrecognized ParameterInformation value: " ++ ppJSON j)
 
 instance FromJSON NotebookCellTextDocumentFilter where
   fromJSON j =
@@ -2839,7 +3003,9 @@ instance FromJSON NotebookCellTextDocumentFilter where
            return
             NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook = parsedNotebook
                                            , notebookCellTextDocumentFilterLanguage = parsedLanguage }
-      _ -> Left "Unrecognized NotebookCellTextDocumentFilter value"
+      _ ->
+        Left
+         ("Unrecognized NotebookCellTextDocumentFilter value: " ++ ppJSON j)
 
 instance FromJSON FileOperationPatternOptions where
   fromJSON j =
@@ -2848,7 +3014,8 @@ instance FromJSON FileOperationPatternOptions where
         do parsedIgnoreCase <- lookupMaybeFromJSON "ignoreCase" vs
            return
             FileOperationPatternOptions { fileOperationPatternOptionsIgnoreCase = parsedIgnoreCase }
-      _ -> Left "Unrecognized FileOperationPatternOptions value"
+      _ ->
+        Left ("Unrecognized FileOperationPatternOptions value: " ++ ppJSON j)
 
 instance FromJSON ExecutionSummary where
   fromJSON j =
@@ -2859,7 +3026,7 @@ instance FromJSON ExecutionSummary where
            return
             ExecutionSummary { executionSummaryExecutionOrder = parsedExecutionOrder
                              , executionSummarySuccess = parsedSuccess }
-      _ -> Left "Unrecognized ExecutionSummary value"
+      _ -> Left ("Unrecognized ExecutionSummary value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceClientCapabilities where
   fromJSON j =
@@ -2898,7 +3065,8 @@ instance FromJSON WorkspaceClientCapabilities where
                                         , workspaceClientCapabilitiesInlineValue = parsedInlineValue
                                         , workspaceClientCapabilitiesInlayHint = parsedInlayHint
                                         , workspaceClientCapabilitiesDiagnostics = parsedDiagnostics }
-      _ -> Left "Unrecognized WorkspaceClientCapabilities value"
+      _ ->
+        Left ("Unrecognized WorkspaceClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentClientCapabilities where
   fromJSON j =
@@ -2970,7 +3138,9 @@ instance FromJSON TextDocumentClientCapabilities where
                                            , textDocumentClientCapabilitiesInlineValue = parsedInlineValue
                                            , textDocumentClientCapabilitiesInlayHint = parsedInlayHint
                                            , textDocumentClientCapabilitiesDiagnostic = parsedDiagnostic }
-      _ -> Left "Unrecognized TextDocumentClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized TextDocumentClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocumentClientCapabilities where
   fromJSON j =
@@ -2979,7 +3149,10 @@ instance FromJSON NotebookDocumentClientCapabilities where
         do parsedSynchronization <- lookupFromJSON "synchronization" vs
            return
             NotebookDocumentClientCapabilities { notebookDocumentClientCapabilitiesSynchronization = parsedSynchronization }
-      _ -> Left "Unrecognized NotebookDocumentClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON WindowClientCapabilities where
   fromJSON j =
@@ -2992,7 +3165,7 @@ instance FromJSON WindowClientCapabilities where
             WindowClientCapabilities { windowClientCapabilitiesWorkDoneProgress = parsedWorkDoneProgress
                                      , windowClientCapabilitiesShowMessage = parsedShowMessage
                                      , windowClientCapabilitiesShowDocument = parsedShowDocument }
-      _ -> Left "Unrecognized WindowClientCapabilities value"
+      _ -> Left ("Unrecognized WindowClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON GeneralClientCapabilities where
   fromJSON j =
@@ -3012,7 +3185,7 @@ instance FromJSON GeneralClientCapabilities where
                                       , generalClientCapabilitiesRegularExpressions = parsedRegularExpressions
                                       , generalClientCapabilitiesMarkdown = parsedMarkdown
                                       , generalClientCapabilitiesPositionEncodings = parsedPositionEncodings }
-      _ -> Left "Unrecognized GeneralClientCapabilities value"
+      _ -> Left ("Unrecognized GeneralClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON RelativePattern where
   fromJSON j =
@@ -3023,7 +3196,7 @@ instance FromJSON RelativePattern where
            return
             RelativePattern { relativePatternBaseUri = parsedBaseUri
                             , relativePatternPattern = parsedPattern }
-      _ -> Left "Unrecognized RelativePattern value"
+      _ -> Left ("Unrecognized RelativePattern value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceEditClientCapabilities where
   fromJSON j =
@@ -3046,7 +3219,9 @@ instance FromJSON WorkspaceEditClientCapabilities where
                                             , workspaceEditClientCapabilitiesFailureHandling = parsedFailureHandling
                                             , workspaceEditClientCapabilitiesNormalizesLineEndings = parsedNormalizesLineEndings
                                             , workspaceEditClientCapabilitiesChangeAnnotationSupport = parsedChangeAnnotationSupport }
-      _ -> Left "Unrecognized WorkspaceEditClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceEditClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DidChangeConfigurationClientCapabilities where
   fromJSON j =
@@ -3057,7 +3232,10 @@ instance FromJSON DidChangeConfigurationClientCapabilities where
                                          vs
            return
             DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized DidChangeConfigurationClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeConfigurationClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON DidChangeWatchedFilesClientCapabilities where
   fromJSON j =
@@ -3072,7 +3250,10 @@ instance FromJSON DidChangeWatchedFilesClientCapabilities where
            return
             DidChangeWatchedFilesClientCapabilities { didChangeWatchedFilesClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                                     , didChangeWatchedFilesClientCapabilitiesRelativePatternSupport = parsedRelativePatternSupport }
-      _ -> Left "Unrecognized DidChangeWatchedFilesClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DidChangeWatchedFilesClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbolClientCapabilities where
   fromJSON j =
@@ -3089,7 +3270,10 @@ instance FromJSON WorkspaceSymbolClientCapabilities where
                                               , workspaceSymbolClientCapabilitiesSymbolKind = parsedSymbolKind
                                               , workspaceSymbolClientCapabilitiesTagSupport = parsedTagSupport
                                               , workspaceSymbolClientCapabilitiesResolveSupport = parsedResolveSupport }
-      _ -> Left "Unrecognized WorkspaceSymbolClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized WorkspaceSymbolClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON ExecuteCommandClientCapabilities where
   fromJSON j =
@@ -3100,7 +3284,9 @@ instance FromJSON ExecuteCommandClientCapabilities where
                                          vs
            return
             ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized ExecuteCommandClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized ExecuteCommandClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensWorkspaceClientCapabilities where
   fromJSON j =
@@ -3109,7 +3295,10 @@ instance FromJSON SemanticTokensWorkspaceClientCapabilities where
         do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
            return
             SemanticTokensWorkspaceClientCapabilities { semanticTokensWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
-      _ -> Left "Unrecognized SemanticTokensWorkspaceClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized SemanticTokensWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON CodeLensWorkspaceClientCapabilities where
   fromJSON j =
@@ -3118,7 +3307,10 @@ instance FromJSON CodeLensWorkspaceClientCapabilities where
         do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
            return
             CodeLensWorkspaceClientCapabilities { codeLensWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
-      _ -> Left "Unrecognized CodeLensWorkspaceClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized CodeLensWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON FileOperationClientCapabilities where
   fromJSON j =
@@ -3141,7 +3333,9 @@ instance FromJSON FileOperationClientCapabilities where
                                             , fileOperationClientCapabilitiesWillRename = parsedWillRename
                                             , fileOperationClientCapabilitiesDidDelete = parsedDidDelete
                                             , fileOperationClientCapabilitiesWillDelete = parsedWillDelete }
-      _ -> Left "Unrecognized FileOperationClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized FileOperationClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON InlineValueWorkspaceClientCapabilities where
   fromJSON j =
@@ -3150,7 +3344,10 @@ instance FromJSON InlineValueWorkspaceClientCapabilities where
         do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
            return
             InlineValueWorkspaceClientCapabilities { inlineValueWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
-      _ -> Left "Unrecognized InlineValueWorkspaceClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized InlineValueWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON InlayHintWorkspaceClientCapabilities where
   fromJSON j =
@@ -3159,7 +3356,10 @@ instance FromJSON InlayHintWorkspaceClientCapabilities where
         do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
            return
             InlayHintWorkspaceClientCapabilities { inlayHintWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
-      _ -> Left "Unrecognized InlayHintWorkspaceClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized InlayHintWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON DiagnosticWorkspaceClientCapabilities where
   fromJSON j =
@@ -3168,7 +3368,10 @@ instance FromJSON DiagnosticWorkspaceClientCapabilities where
         do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
            return
             DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
-      _ -> Left "Unrecognized DiagnosticWorkspaceClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DiagnosticWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncClientCapabilities where
   fromJSON j =
@@ -3186,7 +3389,10 @@ instance FromJSON TextDocumentSyncClientCapabilities where
                                                , textDocumentSyncClientCapabilitiesWillSave = parsedWillSave
                                                , textDocumentSyncClientCapabilitiesWillSaveWaitUntil = parsedWillSaveWaitUntil
                                                , textDocumentSyncClientCapabilitiesDidSave = parsedDidSave }
-      _ -> Left "Unrecognized TextDocumentSyncClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized TextDocumentSyncClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON CompletionClientCapabilities where
   fromJSON j =
@@ -3209,7 +3415,8 @@ instance FromJSON CompletionClientCapabilities where
                                          , completionClientCapabilitiesInsertTextMode = parsedInsertTextMode
                                          , completionClientCapabilitiesContextSupport = parsedContextSupport
                                          , completionClientCapabilitiesCompletionList = parsedCompletionList }
-      _ -> Left "Unrecognized CompletionClientCapabilities value"
+      _ ->
+        Left ("Unrecognized CompletionClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON HoverClientCapabilities where
   fromJSON j =
@@ -3222,7 +3429,7 @@ instance FromJSON HoverClientCapabilities where
            return
             HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                     , hoverClientCapabilitiesContentFormat = parsedContentFormat }
-      _ -> Left "Unrecognized HoverClientCapabilities value"
+      _ -> Left ("Unrecognized HoverClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpClientCapabilities where
   fromJSON j =
@@ -3239,7 +3446,9 @@ instance FromJSON SignatureHelpClientCapabilities where
             SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                             , signatureHelpClientCapabilitiesSignatureInformation = parsedSignatureInformation
                                             , signatureHelpClientCapabilitiesContextSupport = parsedContextSupport }
-      _ -> Left "Unrecognized SignatureHelpClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized SignatureHelpClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DeclarationClientCapabilities where
   fromJSON j =
@@ -3252,7 +3461,9 @@ instance FromJSON DeclarationClientCapabilities where
            return
             DeclarationClientCapabilities { declarationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                           , declarationClientCapabilitiesLinkSupport = parsedLinkSupport }
-      _ -> Left "Unrecognized DeclarationClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DeclarationClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DefinitionClientCapabilities where
   fromJSON j =
@@ -3265,7 +3476,8 @@ instance FromJSON DefinitionClientCapabilities where
            return
             DefinitionClientCapabilities { definitionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                          , definitionClientCapabilitiesLinkSupport = parsedLinkSupport }
-      _ -> Left "Unrecognized DefinitionClientCapabilities value"
+      _ ->
+        Left ("Unrecognized DefinitionClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON TypeDefinitionClientCapabilities where
   fromJSON j =
@@ -3278,7 +3490,9 @@ instance FromJSON TypeDefinitionClientCapabilities where
            return
             TypeDefinitionClientCapabilities { typeDefinitionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                              , typeDefinitionClientCapabilitiesLinkSupport = parsedLinkSupport }
-      _ -> Left "Unrecognized TypeDefinitionClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized TypeDefinitionClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON ImplementationClientCapabilities where
   fromJSON j =
@@ -3291,7 +3505,9 @@ instance FromJSON ImplementationClientCapabilities where
            return
             ImplementationClientCapabilities { implementationClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                              , implementationClientCapabilitiesLinkSupport = parsedLinkSupport }
-      _ -> Left "Unrecognized ImplementationClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized ImplementationClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON ReferenceClientCapabilities where
   fromJSON j =
@@ -3302,7 +3518,8 @@ instance FromJSON ReferenceClientCapabilities where
                                          vs
            return
             ReferenceClientCapabilities { referenceClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized ReferenceClientCapabilities value"
+      _ ->
+        Left ("Unrecognized ReferenceClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightClientCapabilities where
   fromJSON j =
@@ -3313,7 +3530,10 @@ instance FromJSON DocumentHighlightClientCapabilities where
                                          vs
            return
             DocumentHighlightClientCapabilities { documentHighlightClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized DocumentHighlightClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentHighlightClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentSymbolClientCapabilities where
   fromJSON j =
@@ -3334,7 +3554,9 @@ instance FromJSON DocumentSymbolClientCapabilities where
                                              , documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport = parsedHierarchicalDocumentSymbolSupport
                                              , documentSymbolClientCapabilitiesTagSupport = parsedTagSupport
                                              , documentSymbolClientCapabilitiesLabelSupport = parsedLabelSupport }
-      _ -> Left "Unrecognized DocumentSymbolClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentSymbolClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON CodeActionClientCapabilities where
   fromJSON j =
@@ -3363,7 +3585,8 @@ instance FromJSON CodeActionClientCapabilities where
                                          , codeActionClientCapabilitiesDataSupport = parsedDataSupport
                                          , codeActionClientCapabilitiesResolveSupport = parsedResolveSupport
                                          , codeActionClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
-      _ -> Left "Unrecognized CodeActionClientCapabilities value"
+      _ ->
+        Left ("Unrecognized CodeActionClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON CodeLensClientCapabilities where
   fromJSON j =
@@ -3374,7 +3597,8 @@ instance FromJSON CodeLensClientCapabilities where
                                          vs
            return
             CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized CodeLensClientCapabilities value"
+      _ ->
+        Left ("Unrecognized CodeLensClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DocumentLinkClientCapabilities where
   fromJSON j =
@@ -3387,7 +3611,9 @@ instance FromJSON DocumentLinkClientCapabilities where
            return
             DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                            , documentLinkClientCapabilitiesTooltipSupport = parsedTooltipSupport }
-      _ -> Left "Unrecognized DocumentLinkClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentLinkClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DocumentColorClientCapabilities where
   fromJSON j =
@@ -3398,7 +3624,9 @@ instance FromJSON DocumentColorClientCapabilities where
                                          vs
            return
             DocumentColorClientCapabilities { documentColorClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized DocumentColorClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentColorClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DocumentFormattingClientCapabilities where
   fromJSON j =
@@ -3409,7 +3637,10 @@ instance FromJSON DocumentFormattingClientCapabilities where
                                          vs
            return
             DocumentFormattingClientCapabilities { documentFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized DocumentFormattingClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentFormattingClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentRangeFormattingClientCapabilities where
   fromJSON j =
@@ -3420,7 +3651,10 @@ instance FromJSON DocumentRangeFormattingClientCapabilities where
                                          vs
            return
             DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized DocumentRangeFormattingClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized DocumentRangeFormattingClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON DocumentOnTypeFormattingClientCapabilities where
   fromJSON j =
@@ -3432,7 +3666,9 @@ instance FromJSON DocumentOnTypeFormattingClientCapabilities where
            return
             DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ ->
-        Left "Unrecognized DocumentOnTypeFormattingClientCapabilities value"
+        Left
+         ("Unrecognized DocumentOnTypeFormattingClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON RenameClientCapabilities where
   fromJSON j =
@@ -3453,7 +3689,7 @@ instance FromJSON RenameClientCapabilities where
                                      , renameClientCapabilitiesPrepareSupport = parsedPrepareSupport
                                      , renameClientCapabilitiesPrepareSupportDefaultBehavior = parsedPrepareSupportDefaultBehavior
                                      , renameClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
-      _ -> Left "Unrecognized RenameClientCapabilities value"
+      _ -> Left ("Unrecognized RenameClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeClientCapabilities where
   fromJSON j =
@@ -3472,7 +3708,9 @@ instance FromJSON FoldingRangeClientCapabilities where
                                            , foldingRangeClientCapabilitiesLineFoldingOnly = parsedLineFoldingOnly
                                            , foldingRangeClientCapabilitiesFoldingRangeKind = parsedFoldingRangeKind
                                            , foldingRangeClientCapabilitiesFoldingRange = parsedFoldingRange }
-      _ -> Left "Unrecognized FoldingRangeClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized FoldingRangeClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON SelectionRangeClientCapabilities where
   fromJSON j =
@@ -3483,7 +3721,9 @@ instance FromJSON SelectionRangeClientCapabilities where
                                          vs
            return
             SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized SelectionRangeClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized SelectionRangeClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON PublishDiagnosticsClientCapabilities where
   fromJSON j =
@@ -3504,7 +3744,10 @@ instance FromJSON PublishDiagnosticsClientCapabilities where
                                                  , publishDiagnosticsClientCapabilitiesVersionSupport = parsedVersionSupport
                                                  , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport = parsedCodeDescriptionSupport
                                                  , publishDiagnosticsClientCapabilitiesDataSupport = parsedDataSupport }
-      _ -> Left "Unrecognized PublishDiagnosticsClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized PublishDiagnosticsClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON CallHierarchyClientCapabilities where
   fromJSON j =
@@ -3515,7 +3758,9 @@ instance FromJSON CallHierarchyClientCapabilities where
                                          vs
            return
             CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized CallHierarchyClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized CallHierarchyClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensClientCapabilities where
   fromJSON j =
@@ -3550,7 +3795,9 @@ instance FromJSON SemanticTokensClientCapabilities where
                                              , semanticTokensClientCapabilitiesMultilineTokenSupport = parsedMultilineTokenSupport
                                              , semanticTokensClientCapabilitiesServerCancelSupport = parsedServerCancelSupport
                                              , semanticTokensClientCapabilitiesAugmentsSyntaxTokens = parsedAugmentsSyntaxTokens }
-      _ -> Left "Unrecognized SemanticTokensClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized SemanticTokensClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON LinkedEditingRangeClientCapabilities where
   fromJSON j =
@@ -3561,7 +3808,10 @@ instance FromJSON LinkedEditingRangeClientCapabilities where
                                          vs
            return
             LinkedEditingRangeClientCapabilities { linkedEditingRangeClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized LinkedEditingRangeClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized LinkedEditingRangeClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON MonikerClientCapabilities where
   fromJSON j =
@@ -3572,7 +3822,7 @@ instance FromJSON MonikerClientCapabilities where
                                          vs
            return
             MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized MonikerClientCapabilities value"
+      _ -> Left ("Unrecognized MonikerClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON TypeHierarchyClientCapabilities where
   fromJSON j =
@@ -3583,7 +3833,9 @@ instance FromJSON TypeHierarchyClientCapabilities where
                                          vs
            return
             TypeHierarchyClientCapabilities { typeHierarchyClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized TypeHierarchyClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized TypeHierarchyClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON InlineValueClientCapabilities where
   fromJSON j =
@@ -3594,7 +3846,9 @@ instance FromJSON InlineValueClientCapabilities where
                                          vs
            return
             InlineValueClientCapabilities { inlineValueClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
-      _ -> Left "Unrecognized InlineValueClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized InlineValueClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON InlayHintClientCapabilities where
   fromJSON j =
@@ -3607,7 +3861,8 @@ instance FromJSON InlayHintClientCapabilities where
            return
             InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                         , inlayHintClientCapabilitiesResolveSupport = parsedResolveSupport }
-      _ -> Left "Unrecognized InlayHintClientCapabilities value"
+      _ ->
+        Left ("Unrecognized InlayHintClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticClientCapabilities where
   fromJSON j =
@@ -3622,7 +3877,8 @@ instance FromJSON DiagnosticClientCapabilities where
            return
             DiagnosticClientCapabilities { diagnosticClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                          , diagnosticClientCapabilitiesRelatedDocumentSupport = parsedRelatedDocumentSupport }
-      _ -> Left "Unrecognized DiagnosticClientCapabilities value"
+      _ ->
+        Left ("Unrecognized DiagnosticClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON NotebookDocumentSyncClientCapabilities where
   fromJSON j =
@@ -3637,7 +3893,10 @@ instance FromJSON NotebookDocumentSyncClientCapabilities where
            return
             NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                                    , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport = parsedExecutionSummarySupport }
-      _ -> Left "Unrecognized NotebookDocumentSyncClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentSyncClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON ShowMessageRequestClientCapabilities where
   fromJSON j =
@@ -3647,7 +3906,10 @@ instance FromJSON ShowMessageRequestClientCapabilities where
                                        vs
            return
             ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem = parsedMessageActionItem }
-      _ -> Left "Unrecognized ShowMessageRequestClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized ShowMessageRequestClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON ShowDocumentClientCapabilities where
   fromJSON j =
@@ -3656,7 +3918,9 @@ instance FromJSON ShowDocumentClientCapabilities where
         do parsedSupport <- lookupFromJSON "support" vs
            return
             ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport = parsedSupport }
-      _ -> Left "Unrecognized ShowDocumentClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized ShowDocumentClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON RegularExpressionsClientCapabilities where
   fromJSON j =
@@ -3667,7 +3931,10 @@ instance FromJSON RegularExpressionsClientCapabilities where
            return
             RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine = parsedEngine
                                                  , regularExpressionsClientCapabilitiesVersion = parsedVersion }
-      _ -> Left "Unrecognized RegularExpressionsClientCapabilities value"
+      _ ->
+        Left
+         ("Unrecognized RegularExpressionsClientCapabilities value: "
+           ++ ppJSON j)
 
 instance FromJSON MarkdownClientCapabilities where
   fromJSON j =
@@ -3680,217 +3947,220 @@ instance FromJSON MarkdownClientCapabilities where
             MarkdownClientCapabilities { markdownClientCapabilitiesParser = parsedParser
                                        , markdownClientCapabilitiesVersion = parsedVersion
                                        , markdownClientCapabilitiesAllowedTags = parsedAllowedTags }
-      _ -> Left "Unrecognized MarkdownClientCapabilities value"
+      _ ->
+        Left ("Unrecognized MarkdownClientCapabilities value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokenTypes where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized SemanticTokenTypes value"
+      _ -> Left ("Unrecognized SemanticTokenTypes value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokenModifiers where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized SemanticTokenModifiers value"
+      _ -> Left ("Unrecognized SemanticTokenModifiers value: " ++ ppJSON j)
 
 instance FromJSON ErrorCodes where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized ErrorCodes value"
+      _ -> Left ("Unrecognized ErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON LSPErrorCodes where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized LSPErrorCodes value"
+      _ -> Left ("Unrecognized LSPErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized FoldingRangeKind value"
+      _ -> Left ("Unrecognized FoldingRangeKind value: " ++ ppJSON j)
 
 instance FromJSON SymbolKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized SymbolKind value"
+      _ -> Left ("Unrecognized SymbolKind value: " ++ ppJSON j)
 
 instance FromJSON SymbolTag where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized SymbolTag value"
+      _ -> Left ("Unrecognized SymbolTag value: " ++ ppJSON j)
 
 instance FromJSON UniquenessLevel where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized UniquenessLevel value"
+      _ -> Left ("Unrecognized UniquenessLevel value: " ++ ppJSON j)
 
 instance FromJSON MonikerKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized MonikerKind value"
+      _ -> Left ("Unrecognized MonikerKind value: " ++ ppJSON j)
 
 instance FromJSON InlayHintKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized InlayHintKind value"
+      _ -> Left ("Unrecognized InlayHintKind value: " ++ ppJSON j)
 
 instance FromJSON MessageType where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized MessageType value"
+      _ -> Left ("Unrecognized MessageType value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized TextDocumentSyncKind value"
+      _ -> Left ("Unrecognized TextDocumentSyncKind value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSaveReason where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized TextDocumentSaveReason value"
+      _ -> Left ("Unrecognized TextDocumentSaveReason value: " ++ ppJSON j)
 
 instance FromJSON CompletionItemKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized CompletionItemKind value"
+      _ -> Left ("Unrecognized CompletionItemKind value: " ++ ppJSON j)
 
 instance FromJSON CompletionItemTag where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized CompletionItemTag value"
+      _ -> Left ("Unrecognized CompletionItemTag value: " ++ ppJSON j)
 
 instance FromJSON InsertTextFormat where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized InsertTextFormat value"
+      _ -> Left ("Unrecognized InsertTextFormat value: " ++ ppJSON j)
 
 instance FromJSON InsertTextMode where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized InsertTextMode value"
+      _ -> Left ("Unrecognized InsertTextMode value: " ++ ppJSON j)
 
 instance FromJSON DocumentHighlightKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized DocumentHighlightKind value"
+      _ -> Left ("Unrecognized DocumentHighlightKind value: " ++ ppJSON j)
 
 instance FromJSON CodeActionKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized CodeActionKind value"
+      _ -> Left ("Unrecognized CodeActionKind value: " ++ ppJSON j)
 
 instance FromJSON TraceValues where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized TraceValues value"
+      _ -> Left ("Unrecognized TraceValues value: " ++ ppJSON j)
 
 instance FromJSON MarkupKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized MarkupKind value"
+      _ -> Left ("Unrecognized MarkupKind value: " ++ ppJSON j)
 
 instance FromJSON PositionEncodingKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized PositionEncodingKind value"
+      _ -> Left ("Unrecognized PositionEncodingKind value: " ++ ppJSON j)
 
 instance FromJSON FileChangeType where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized FileChangeType value"
+      _ -> Left ("Unrecognized FileChangeType value: " ++ ppJSON j)
 
 instance FromJSON WatchKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized WatchKind value"
+      _ -> Left ("Unrecognized WatchKind value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticSeverity where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized DiagnosticSeverity value"
+      _ -> Left ("Unrecognized DiagnosticSeverity value: " ++ ppJSON j)
 
 instance FromJSON DiagnosticTag where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized DiagnosticTag value"
+      _ -> Left ("Unrecognized DiagnosticTag value: " ++ ppJSON j)
 
 instance FromJSON CompletionTriggerKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized CompletionTriggerKind value"
+      _ -> Left ("Unrecognized CompletionTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON SignatureHelpTriggerKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized SignatureHelpTriggerKind value"
+      _ -> Left ("Unrecognized SignatureHelpTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON CodeActionTriggerKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized CodeActionTriggerKind value"
+      _ -> Left ("Unrecognized CodeActionTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON FileOperationPatternKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized FileOperationPatternKind value"
+      _ -> Left ("Unrecognized FileOperationPatternKind value: " ++ ppJSON j)
 
 instance FromJSON NotebookCellKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized NotebookCellKind value"
+      _ -> Left ("Unrecognized NotebookCellKind value: " ++ ppJSON j)
 
 instance FromJSON ResourceOperationKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized ResourceOperationKind value"
+      _ -> Left ("Unrecognized ResourceOperationKind value: " ++ ppJSON j)
 
 instance FromJSON FailureHandlingKind where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized FailureHandlingKind value"
+      _ -> Left ("Unrecognized FailureHandlingKind value: " ++ ppJSON j)
 
 instance FromJSON PrepareSupportDefaultBehavior where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized PrepareSupportDefaultBehavior value"
+      _ ->
+        Left
+         ("Unrecognized PrepareSupportDefaultBehavior value: " ++ ppJSON j)
 
 instance FromJSON TokenFormat where
   fromJSON j =
     case j of
       JObject vs -> do 
-      _ -> Left "Unrecognized TokenFormat value"
+      _ -> Left ("Unrecognized TokenFormat value: " ++ ppJSON j)
 
 data ImplementationParams = ImplementationParams {  }
  deriving (Show,Eq)
