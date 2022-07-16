@@ -18,7 +18,7 @@ class FromJSON a where
 
   -- | Converts from a JSON value to the list type.
   -- Useful for providing a separate overload for strings and other arrays,
-  -- similar to how showList and show.
+  -- similar to showList and show.
   listFromJSON :: JValue -> Either String [a]
   listFromJSON = arrayFromJSON
 
