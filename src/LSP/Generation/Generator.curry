@@ -93,9 +93,10 @@ metaEnumerationToType e = do
   -- derivs <- liftA2 (++) (gets gsStandardDerivings) (gets gsStandardEnumDerivings)
   stdDerivs <- gets gsStandardDerivings
   enumDerivs <- gets gsStandardEnumDerivings
+  fromJSONInst <- metaEnumerationToFromJSONInstance name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
-      insts = [] -- TODO
+      insts = [fromJSONInst]
   return (ty, insts)
 
 -- | Converts a meta structure to a FromJSON instance.
@@ -120,7 +121,7 @@ metaStructureToFromJSONInstance prefix s = do
         [ -- Match a JObject
           (AC.CPComb jObjectQName [AC.CPVar vsVar]
           , AC.CSimpleRhs (AC.CDoExpr stmts) []
-          ) -- FIXME
+          )
           -- For any other JValue, return an error message
           -- TODO: Include printed JSON value in error match
         , (AC.CPVar anonVar
@@ -138,6 +139,35 @@ lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
 lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
                                 | otherwise  = lookupFromJSONQName
   where isOptional = fromMaybe False $ mpOptional p
+
+-- | Converts a meta enumeration to a FromJSON instance.
+metaEnumerationToFromJSONInstance :: String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToFromJSONInstance prefix e = do
+  let name = escapeName $ meName e
+      qn = mkQName name
+      ctx = AC.CContext []
+      vis = AC.Public
+      texp = ACB.baseType qn
+      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
+      jVar = (0, "j")
+      vsVar = (1, "vs")
+      anonVar = (2, "_")
+      stmts = []
+      arms =
+        [ -- Match a JObject
+          (AC.CPComb jObjectQName [AC.CPVar vsVar]
+          , AC.CSimpleRhs (AC.CDoExpr stmts) []
+          )
+          -- For any other JValue, return an error message
+        , (AC.CPVar anonVar
+          , AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [ACB.string2ac $ "Unrecognized " ++ name ++ " value"]) []
+          )
+        ]
+      expr = AC.CCase AC.CRigid (AC.CVar jVar) arms
+      rule = AC.CRule [AC.CPVar jVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
+      fdecls = [fdecl]
+  return $ AC.CInstance fromJSONClassQName ctx texp fdecls
 
 -- | Converts a meta enumeration value to a Curry constructor.
 metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl

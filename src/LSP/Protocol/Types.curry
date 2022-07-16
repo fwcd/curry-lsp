@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 -- NOTE: This file is generated automatically and should not be edited manually!
 module LSP.Protocol.Types where
 
@@ -5320,3 +5321,8 @@ type TextDocumentFilter = Either (Either () ()) ()
 type NotebookDocumentFilter = Either (Either () ()) ()
 
 type Pattern = String
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
