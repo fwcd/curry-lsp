@@ -44,6 +44,7 @@ data MetaType =
   | MetaTypeMap           { mtKey :: MetaType, mtElement :: MetaType }
   | MetaTypeBase          { mtBaseType :: MetaBaseType }
   | MetaTypeOr            { mtItems :: [MetaType] }
+  | MetaTypeAnd           { mtItems :: [MetaType] }
   | MetaTypeLiteral       { mtProperties :: [MetaProperty] }
   | MetaTypeStringLiteral { mtValue :: String }
   | MetaTypeTuple         { mtItems :: [MetaType] }
@@ -139,7 +140,7 @@ instance FromJSON MetaModel where
         , mmEnumerations = enums
         , mmTypeAliases = aliases
         }
-    _ -> Left $ "Unrecognized top-level value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaModel (top-level) value: " ++ ppJSON j
 
 instance FromJSON MetaRequest where
   fromJSON j = case j of
@@ -166,7 +167,7 @@ instance FromJSON MetaRequest where
         , mrRegistrationOptions = regOpts
         , mrErrorData = errData
         }
-    _ -> Left $ "Unrecognized request value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaRequest value: " ++ ppJSON j
 
 instance FromJSON MetaMessageDirection where
   fromJSON j = case j of
@@ -174,7 +175,7 @@ instance FromJSON MetaMessageDirection where
     JString "clientToServer" -> Right MetaMessageDirectionClientToServer
     JString "both"           -> Right MetaMessageDirectionBoth
     JString d                -> Left $ "Unknown message direction: " ++ d
-    _                        -> Left $ "Unrecognized message direction value: " ++ ppJSON j
+    _                        -> Left $ "Unrecognized MetaMessageDirection value: " ++ ppJSON j
 
 instance FromJSON MetaType where
   fromJSON j = case j of
@@ -186,11 +187,12 @@ instance FromJSON MetaType where
         "map"           -> MetaTypeMap           <$> lookupFromJSON "key" vs <*> lookupFromJSON "value" vs
         "base"          -> MetaTypeBase          <$> lookupFromJSON "name" vs
         "or"            -> MetaTypeOr            <$> lookupFromJSON "items" vs
+        "and"           -> MetaTypeAnd           <$> lookupFromJSON "items" vs
         "literal"       -> MetaTypeLiteral       <$> lookupPathFromJSON ["value", "properties"] vs
         "stringLiteral" -> MetaTypeStringLiteral <$> lookupFromJSON "value" vs
         "tuple"         -> MetaTypeTuple         <$> lookupFromJSON "items" vs
-        _ -> Left $ "Unrecognized type kind: " ++ kind
-    _ -> Left $ "Unrecognized type value: " ++ ppJSON j
+        _ -> Left $ "Unrecognized MetaType kind: " ++ kind
+    _ -> Left $ "Unrecognized MetaType value: " ++ ppJSON j
 
 instance FromJSON MetaBaseType where
   fromJSON j = case j of
@@ -217,7 +219,7 @@ instance FromJSON MetaProperty where
         , mpOptional = optional
         , mpDocumentation = doc
         }
-    _ -> Left $ "Unrecognized property value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaProperty value: " ++ ppJSON j
 
 instance FromJSON MetaNotification where
   fromJSON j = case j of
@@ -238,7 +240,7 @@ instance FromJSON MetaNotification where
         , mnRegistrationMethod = regMethod
         , mnRegistrationOptions = regOpts
         }
-    _ -> Left $ "Unrecognized notification value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaNotification value: " ++ ppJSON j
 
 
 
@@ -257,7 +259,7 @@ instance FromJSON MetaStructure where
         , msMixins = mixins
         , msDocumentation = doc
         }
-    _ -> Left $ "Unrecognized structure value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaStructure value: " ++ ppJSON j
 
 instance FromJSON MetaEnumeration where
   fromJSON j = case j of
@@ -276,7 +278,7 @@ instance FromJSON MetaEnumeration where
         , meDocumentation = doc
         , meSince = since
         }
-    _ -> Left $ "Unrecognized enumeration value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaEnumeration value: " ++ ppJSON j
 
 instance FromJSON MetaEnumerationValue where
   fromJSON j = case j of
@@ -289,7 +291,7 @@ instance FromJSON MetaEnumerationValue where
         , mevValue = value
         , mevDocumentation = doc
         }
-    _ -> Left $ "Unrecognized enumeration value value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaEnumerationValue value: " ++ ppJSON j
 
 instance FromJSON MetaTypeAlias where
   fromJSON j = case j of
@@ -302,5 +304,5 @@ instance FromJSON MetaTypeAlias where
         , mtaType = ty
         , mtaDocumentation = doc
         }
-    _ -> Left $ "Unrecognized type alias value: " ++ ppJSON j
+    _ -> Left $ "Unrecognized MetaTypeAlias value: " ++ ppJSON j
 

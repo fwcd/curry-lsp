@@ -75,6 +75,22 @@ instance ToJSON JValue where
 instance FromJSON () where
   fromJSON _ = Right ()
 
+instance ToJSON () where
+  toJSON _ = JObject []
+
+-- NOTE: Tuples assume a 'flat' representation where all properties are merged
+-- This is useful for LSP's 'and' types but may be surprising for other applications (a
+-- more standard representation would e.g. be heterogeneous JSON arrays).
+
+instance (FromJSON a, FromJSON b) => FromJSON (a, b) where
+  fromJSON j = (,) <$> fromJSON j <*> fromJSON j
+
+instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (a, b, c) where
+  fromJSON j = (,,) <$> fromJSON j <*> fromJSON j <*> fromJSON j
+
+instance (FromJSON a, FromJSON b, FromJSON c, FromJSON d) => FromJSON (a, b, c, d) where
+  fromJSON j = (,,,) <$> fromJSON j <*> fromJSON j <*> fromJSON j <*> fromJSON j
+
 instance FromJSON Char where
   fromJSON j = case j of
     JString [c] -> Right c
