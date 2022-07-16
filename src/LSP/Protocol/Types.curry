@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 -- NOTE: This file is generated automatically and should not be edited manually!
 module LSP.Protocol.Types where
 
@@ -3683,6 +3682,216 @@ instance FromJSON MarkdownClientCapabilities where
                                        , markdownClientCapabilitiesAllowedTags = parsedAllowedTags }
       _ -> Left "Unrecognized MarkdownClientCapabilities value"
 
+instance FromJSON SemanticTokenTypes where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized SemanticTokenTypes value"
+
+instance FromJSON SemanticTokenModifiers where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized SemanticTokenModifiers value"
+
+instance FromJSON ErrorCodes where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized ErrorCodes value"
+
+instance FromJSON LSPErrorCodes where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized LSPErrorCodes value"
+
+instance FromJSON FoldingRangeKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized FoldingRangeKind value"
+
+instance FromJSON SymbolKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized SymbolKind value"
+
+instance FromJSON SymbolTag where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized SymbolTag value"
+
+instance FromJSON UniquenessLevel where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized UniquenessLevel value"
+
+instance FromJSON MonikerKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized MonikerKind value"
+
+instance FromJSON InlayHintKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized InlayHintKind value"
+
+instance FromJSON MessageType where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized MessageType value"
+
+instance FromJSON TextDocumentSyncKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized TextDocumentSyncKind value"
+
+instance FromJSON TextDocumentSaveReason where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized TextDocumentSaveReason value"
+
+instance FromJSON CompletionItemKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized CompletionItemKind value"
+
+instance FromJSON CompletionItemTag where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized CompletionItemTag value"
+
+instance FromJSON InsertTextFormat where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized InsertTextFormat value"
+
+instance FromJSON InsertTextMode where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized InsertTextMode value"
+
+instance FromJSON DocumentHighlightKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized DocumentHighlightKind value"
+
+instance FromJSON CodeActionKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized CodeActionKind value"
+
+instance FromJSON TraceValues where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized TraceValues value"
+
+instance FromJSON MarkupKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized MarkupKind value"
+
+instance FromJSON PositionEncodingKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized PositionEncodingKind value"
+
+instance FromJSON FileChangeType where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized FileChangeType value"
+
+instance FromJSON WatchKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized WatchKind value"
+
+instance FromJSON DiagnosticSeverity where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized DiagnosticSeverity value"
+
+instance FromJSON DiagnosticTag where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized DiagnosticTag value"
+
+instance FromJSON CompletionTriggerKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized CompletionTriggerKind value"
+
+instance FromJSON SignatureHelpTriggerKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized SignatureHelpTriggerKind value"
+
+instance FromJSON CodeActionTriggerKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized CodeActionTriggerKind value"
+
+instance FromJSON FileOperationPatternKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized FileOperationPatternKind value"
+
+instance FromJSON NotebookCellKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized NotebookCellKind value"
+
+instance FromJSON ResourceOperationKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized ResourceOperationKind value"
+
+instance FromJSON FailureHandlingKind where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized FailureHandlingKind value"
+
+instance FromJSON PrepareSupportDefaultBehavior where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized PrepareSupportDefaultBehavior value"
+
+instance FromJSON TokenFormat where
+  fromJSON j =
+    case j of
+      JObject vs -> do 
+      _ -> Left "Unrecognized TokenFormat value"
+
 data ImplementationParams = ImplementationParams {  }
  deriving (Show,Eq)
 
@@ -5321,8 +5530,3 @@ type TextDocumentFilter = Either (Either () ()) ()
 type NotebookDocumentFilter = Either (Either () ()) ()
 
 type Pattern = String
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
