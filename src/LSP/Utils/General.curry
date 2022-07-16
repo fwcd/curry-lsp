@@ -3,6 +3,7 @@ module LSP.Utils.General
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
   , replaceSingle
+  , (<.$>), (<$.>)
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -50,3 +51,11 @@ replaceSingle :: Eq a => a -> [a] -> [a] -> [a]
 replaceSingle _ _ [] = []
 replaceSingle y ys (x:xs) | x == y    = ys ++ xs
                           | otherwise = x : replaceSingle y ys xs
+
+-- | Maps over the first element of a tuple.
+(<.$>) :: Functor f => (a -> c) -> f (a, b) -> f (c, b)
+(<.$>) f = ((\(x, y) -> (f x, y)) <$>)
+
+-- | Maps over the second element of a tuple.
+(<$.>) :: Functor f => (b -> c) -> f (a, b) -> f (a, c)
+(<$.>) f = ((\(x, y) -> (x, f y)) <$>)
