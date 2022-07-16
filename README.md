@@ -11,3 +11,5 @@ The package currently includes
 - [x] Support for encoding and decoding JSON-RPC calls
 - [x] A framework for writing language servers (partially implemented)
 - [ ] A framework for writing language clients
+
+> **Note:** The auto-generated types are currently around 6k lines of Curry code, which compiles to a ~280k line Haskell file. This means that compilation may take considerable time and memory.
