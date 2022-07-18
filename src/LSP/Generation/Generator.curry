@@ -47,7 +47,15 @@ initialGeneratorState m = GeneratorState
 
 -- | Converts a meta structure to a prettyprinted Curry program.
 metaModelToPrettyCurry :: String -> MetaModel -> String
-metaModelToPrettyCurry name m = ACP.prettyCurryProg ppOpts $ evalState (metaModelToProg name m) st
+metaModelToPrettyCurry name m = unlines
+  -- TODO: We currently disable overlapping pattern warnings since some
+  --       LSP error codes cannot be parsed unambiguously currently. A
+  --       better solution would be to explicitly only generate one of
+  --       the cases or add a more specific flag to the frontend for only
+  --       disabling unreachable pattern warnings (not overlapping).
+  [ "{-# OPTIONS_FRONTEND -Wno-unused-bindings -Wno-overlapping #-}"
+  , ACP.prettyCurryProg ppOpts $ evalState (metaModelToProg name m) st
+  ]
   where
     st = initialGeneratorState m
     -- Disable qualification since instances are not generated correctly
