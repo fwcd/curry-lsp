@@ -71,10 +71,11 @@ metaModelToProgs prefix m = do
   (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
   (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
   aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
+  let tys = structs ++ enums ++ aliases
+      insts = structInsts ++ enumInsts
   return
-    [ AC.CurryProg (prefix ++ ".Structures") imps Nothing [] structInsts structs [] []
-    , AC.CurryProg (prefix ++ ".Enumerations") imps Nothing [] enumInsts enums [] []
-    , AC.CurryProg (prefix ++ ".Aliases") imps Nothing [] [] aliases [] []
+    [ AC.CurryProg (prefix ++ ".Data") imps Nothing [] [] tys [] []
+    , AC.CurryProg (prefix ++ ".Instances") ((prefix ++ ".Data") : imps) Nothing [] insts [] [] []
     ]
 
 -- | Converts a meta structure to a Curry type declaration (and instances).
