@@ -7,9 +7,12 @@ module LSP.Protocol.Support
 import JSON.Data ( JValue (..) )
 import LSP.Utils.JSON ( FromJSON (..), stringFromJSON )
 
--- | A document URI.
-newtype DocumentUri = DocumentUri { getDocumentUri :: String }
+-- | A uniform resource identifier (URI).
+newtype Uri = Uri { getUri :: String }
   deriving (Show, Eq, Ord)
+
+-- | A URI pointing to a document.
+type DocumentUri = Uri
 
 -- | An arbitrary JSON value.
 type LSPAny = JValue
