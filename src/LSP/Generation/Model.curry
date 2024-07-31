@@ -36,6 +36,7 @@ data MetaBaseType =
   | MetaBaseTypeDecimal
   | MetaBaseTypeNull
   | MetaBaseTypeDocumentUri
+  | MetaBaseTypeUri
   deriving (Show, Eq)
 
 data MetaType =
@@ -203,6 +204,7 @@ instance FromJSON MetaBaseType where
     JString "decimal"     -> Right MetaBaseTypeDecimal
     JString "null"        -> Right MetaBaseTypeNull
     JString "DocumentUri" -> Right MetaBaseTypeDocumentUri
+    JString "URI"         -> Right MetaBaseTypeUri
     JString t             -> Left $ "Unknown base type: " ++ t
     _                     -> Left $ "Unrecognized base type value: " ++ ppJSON j
 

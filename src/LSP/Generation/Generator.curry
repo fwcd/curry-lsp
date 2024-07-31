@@ -250,6 +250,7 @@ metaBaseTypeToTypeExpr b = case b of
   -- TODO: We should probably be clever about this and rewrite e.g. 'or-null' types to maybes
   MetaBaseTypeNull        -> ACB.unitType
   MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
+  MetaBaseTypeUri         -> ACB.baseType $ support "Uri"
 
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName

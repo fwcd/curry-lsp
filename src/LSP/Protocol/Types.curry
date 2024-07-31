@@ -79,17 +79,6 @@ instance FromJSON ConfigurationParams where
             ConfigurationParams { configurationParamsItems = parsedItems }
       _ -> Left ("Unrecognized ConfigurationParams value: " ++ ppJSON j)
 
-instance FromJSON PartialResultParams where
-  fromJSON j =
-    case j of
-      JObject vs ->
-        do parsedPartialResultToken <- lookupMaybeFromJSON
-                                        "partialResultToken"
-                                        vs
-           return
-            PartialResultParams { partialResultParamsPartialResultToken = parsedPartialResultToken }
-      _ -> Left ("Unrecognized PartialResultParams value: " ++ ppJSON j)
-
 instance FromJSON DocumentColorParams where
   fromJSON j =
     case j of
@@ -769,6 +758,15 @@ instance FromJSON DidOpenNotebookDocumentParams where
         Left
          ("Unrecognized DidOpenNotebookDocumentParams value: " ++ ppJSON j)
 
+instance FromJSON NotebookDocumentSyncRegistrationOptions where
+  fromJSON j =
+    case j of
+      JObject vs -> do return NotebookDocumentSyncRegistrationOptions {  }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentSyncRegistrationOptions value: "
+           ++ ppJSON j)
+
 instance FromJSON DidChangeNotebookDocumentParams where
   fromJSON j =
     case j of
@@ -805,6 +803,48 @@ instance FromJSON DidCloseNotebookDocumentParams where
       _ ->
         Left
          ("Unrecognized DidCloseNotebookDocumentParams value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionParams where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedContext <- lookupFromJSON "context" vs
+           return
+            InlineCompletionParams { inlineCompletionParamsContext = parsedContext }
+      _ -> Left ("Unrecognized InlineCompletionParams value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionList where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedItems <- lookupFromJSON "items" vs
+           return
+            InlineCompletionList { inlineCompletionListItems = parsedItems }
+      _ -> Left ("Unrecognized InlineCompletionList value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionItem where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedInsertText <- lookupFromJSON "insertText" vs
+           parsedFilterText <- lookupMaybeFromJSON "filterText" vs
+           parsedRange <- lookupMaybeFromJSON "range" vs
+           parsedCommand <- lookupMaybeFromJSON "command" vs
+           return
+            InlineCompletionItem { inlineCompletionItemInsertText = parsedInsertText
+                                 , inlineCompletionItemFilterText = parsedFilterText
+                                 , inlineCompletionItemRange = parsedRange
+                                 , inlineCompletionItemCommand = parsedCommand }
+      _ -> Left ("Unrecognized InlineCompletionItem value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionRegistrationOptions where
+  fromJSON j =
+    case j of
+      JObject vs -> do return InlineCompletionRegistrationOptions {  }
+      _ ->
+        Left
+         ("Unrecognized InlineCompletionRegistrationOptions value: "
+           ++ ppJSON j)
 
 instance FromJSON RegistrationParams where
   fromJSON j =
@@ -1294,10 +1334,12 @@ instance FromJSON Command where
     case j of
       JObject vs ->
         do parsedTitle <- lookupFromJSON "title" vs
+           parsedTooltip <- lookupMaybeFromJSON "tooltip" vs
            parsedCommand <- lookupFromJSON "command" vs
            parsedArguments <- lookupMaybeFromJSON "arguments" vs
            return
             Command { commandTitle = parsedTitle
+                    , commandTooltip = parsedTooltip
                     , commandCommand = parsedCommand
                     , commandArguments = parsedArguments }
       _ -> Left ("Unrecognized Command value: " ++ ppJSON j)
@@ -1467,6 +1509,21 @@ instance FromJSON DocumentRangeFormattingRegistrationOptions where
          ("Unrecognized DocumentRangeFormattingRegistrationOptions value: "
            ++ ppJSON j)
 
+instance FromJSON DocumentRangesFormattingParams where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedRanges <- lookupFromJSON "ranges" vs
+           parsedOptions <- lookupFromJSON "options" vs
+           return
+            DocumentRangesFormattingParams { documentRangesFormattingParamsTextDocument = parsedTextDocument
+                                           , documentRangesFormattingParamsRanges = parsedRanges
+                                           , documentRangesFormattingParamsOptions = parsedOptions }
+      _ ->
+        Left
+         ("Unrecognized DocumentRangesFormattingParams value: " ++ ppJSON j)
+
 instance FromJSON DocumentOnTypeFormattingParams where
   fromJSON j =
     case j of
@@ -1544,9 +1601,11 @@ instance FromJSON ApplyWorkspaceEditParams where
       JObject vs ->
         do parsedLabel <- lookupMaybeFromJSON "label" vs
            parsedEdit <- lookupFromJSON "edit" vs
+           parsedMetadata <- lookupMaybeFromJSON "metadata" vs
            return
             ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel = parsedLabel
-                                     , applyWorkspaceEditParamsEdit = parsedEdit }
+                                     , applyWorkspaceEditParamsEdit = parsedEdit
+                                     , applyWorkspaceEditParamsMetadata = parsedMetadata }
       _ -> Left ("Unrecognized ApplyWorkspaceEditParams value: " ++ ppJSON j)
 
 instance FromJSON ApplyWorkspaceEditResult where
@@ -1663,6 +1722,17 @@ instance FromJSON WorkDoneProgressParams where
            return
             WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized WorkDoneProgressParams value: " ++ ppJSON j)
+
+instance FromJSON PartialResultParams where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           return
+            PartialResultParams { partialResultParamsPartialResultToken = parsedPartialResultToken }
+      _ -> Left ("Unrecognized PartialResultParams value: " ++ ppJSON j)
 
 instance FromJSON LocationLink where
   fromJSON j =
@@ -2149,6 +2219,18 @@ instance FromJSON TextDocumentItem where
                              , textDocumentItemText = parsedText }
       _ -> Left ("Unrecognized TextDocumentItem value: " ++ ppJSON j)
 
+instance FromJSON NotebookDocumentSyncOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedNotebookSelector <- lookupFromJSON "notebookSelector" vs
+           parsedSave <- lookupMaybeFromJSON "save" vs
+           return
+            NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector = parsedNotebookSelector
+                                        , notebookDocumentSyncOptionsSave = parsedSave }
+      _ ->
+        Left ("Unrecognized NotebookDocumentSyncOptions value: " ++ ppJSON j)
+
 instance FromJSON VersionedNotebookDocumentIdentifier where
   fromJSON j =
     case j of
@@ -2184,6 +2266,36 @@ instance FromJSON NotebookDocumentIdentifier where
             NotebookDocumentIdentifier { notebookDocumentIdentifierUri = parsedUri }
       _ ->
         Left ("Unrecognized NotebookDocumentIdentifier value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionContext where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedTriggerKind <- lookupFromJSON "triggerKind" vs
+           parsedSelectedCompletionInfo <- lookupMaybeFromJSON
+                                            "selectedCompletionInfo"
+                                            vs
+           return
+            InlineCompletionContext { inlineCompletionContextTriggerKind = parsedTriggerKind
+                                    , inlineCompletionContextSelectedCompletionInfo = parsedSelectedCompletionInfo }
+      _ -> Left ("Unrecognized InlineCompletionContext value: " ++ ppJSON j)
+
+instance FromJSON StringValue where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedValue <- lookupFromJSON "value" vs
+           return
+            StringValue { stringValueKind = parsedKind
+                        , stringValueValue = parsedValue }
+      _ -> Left ("Unrecognized StringValue value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionOptions where
+  fromJSON j =
+    case j of
+      JObject vs -> do return InlineCompletionOptions {  }
+      _ -> Left ("Unrecognized InlineCompletionOptions value: " ++ ppJSON j)
 
 instance FromJSON Registration where
   fromJSON j =
@@ -2333,6 +2445,9 @@ instance FromJSON ServerCapabilities where
            parsedDiagnosticProvider <- lookupMaybeFromJSON
                                         "diagnosticProvider"
                                         vs
+           parsedInlineCompletionProvider <- lookupMaybeFromJSON
+                                              "inlineCompletionProvider"
+                                              vs
            parsedWorkspace <- lookupMaybeFromJSON "workspace" vs
            parsedExperimental <- lookupMaybeFromJSON "experimental" vs
            return
@@ -2369,9 +2484,21 @@ instance FromJSON ServerCapabilities where
                                , serverCapabilitiesInlineValueProvider = parsedInlineValueProvider
                                , serverCapabilitiesInlayHintProvider = parsedInlayHintProvider
                                , serverCapabilitiesDiagnosticProvider = parsedDiagnosticProvider
+                               , serverCapabilitiesInlineCompletionProvider = parsedInlineCompletionProvider
                                , serverCapabilitiesWorkspace = parsedWorkspace
                                , serverCapabilitiesExperimental = parsedExperimental }
       _ -> Left ("Unrecognized ServerCapabilities value: " ++ ppJSON j)
+
+instance FromJSON ServerInfo where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedVersion <- lookupMaybeFromJSON "version" vs
+           return
+            ServerInfo { serverInfoName = parsedName
+                       , serverInfoVersion = parsedVersion }
+      _ -> Left ("Unrecognized ServerInfo value: " ++ ppJSON j)
 
 instance FromJSON VersionedTextDocumentIdentifier where
   fromJSON j =
@@ -2475,6 +2602,23 @@ instance FromJSON InsertReplaceEdit where
                               , insertReplaceEditInsert = parsedInsert
                               , insertReplaceEditReplace = parsedReplace }
       _ -> Left ("Unrecognized InsertReplaceEdit value: " ++ ppJSON j)
+
+instance FromJSON CompletionItemDefaults where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedCommitCharacters <- lookupMaybeFromJSON "commitCharacters" vs
+           parsedEditRange <- lookupMaybeFromJSON "editRange" vs
+           parsedInsertTextFormat <- lookupMaybeFromJSON "insertTextFormat" vs
+           parsedInsertTextMode <- lookupMaybeFromJSON "insertTextMode" vs
+           parsedData <- lookupMaybeFromJSON "data" vs
+           return
+            CompletionItemDefaults { completionItemDefaultsCommitCharacters = parsedCommitCharacters
+                                   , completionItemDefaultsEditRange = parsedEditRange
+                                   , completionItemDefaultsInsertTextFormat = parsedInsertTextFormat
+                                   , completionItemDefaultsInsertTextMode = parsedInsertTextMode
+                                   , completionItemDefaultsData = parsedData }
+      _ -> Left ("Unrecognized CompletionItemDefaults value: " ++ ppJSON j)
 
 instance FromJSON CompletionOptions where
   fromJSON j =
@@ -2610,16 +2754,35 @@ instance FromJSON CodeActionContext where
                               , codeActionContextTriggerKind = parsedTriggerKind }
       _ -> Left ("Unrecognized CodeActionContext value: " ++ ppJSON j)
 
+instance FromJSON CodeActionDisabled where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedReason <- lookupFromJSON "reason" vs
+           return
+            CodeActionDisabled { codeActionDisabledReason = parsedReason }
+      _ -> Left ("Unrecognized CodeActionDisabled value: " ++ ppJSON j)
+
 instance FromJSON CodeActionOptions where
   fromJSON j =
     case j of
       JObject vs ->
         do parsedCodeActionKinds <- lookupMaybeFromJSON "codeActionKinds" vs
+           parsedDocumentation <- lookupMaybeFromJSON "documentation" vs
            parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
             CodeActionOptions { codeActionOptionsCodeActionKinds = parsedCodeActionKinds
+                              , codeActionOptionsDocumentation = parsedDocumentation
                               , codeActionOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized CodeActionOptions value: " ++ ppJSON j)
+
+instance FromJSON LocationUriOnly where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedUri <- lookupFromJSON "uri" vs
+           return LocationUriOnly { locationUriOnlyUri = parsedUri }
+      _ -> Left ("Unrecognized LocationUriOnly value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceSymbolOptions where
   fromJSON j =
@@ -2679,7 +2842,10 @@ instance FromJSON DocumentFormattingOptions where
 instance FromJSON DocumentRangeFormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentRangeFormattingOptions {  }
+      JObject vs ->
+        do parsedRangesSupport <- lookupMaybeFromJSON "rangesSupport" vs
+           return
+            DocumentRangeFormattingOptions { documentRangeFormattingOptionsRangesSupport = parsedRangesSupport }
       _ ->
         Left
          ("Unrecognized DocumentRangeFormattingOptions value: " ++ ppJSON j)
@@ -2710,6 +2876,27 @@ instance FromJSON RenameOptions where
             RenameOptions { renameOptionsPrepareProvider = parsedPrepareProvider }
       _ -> Left ("Unrecognized RenameOptions value: " ++ ppJSON j)
 
+instance FromJSON PrepareRenamePlaceholder where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedPlaceholder <- lookupFromJSON "placeholder" vs
+           return
+            PrepareRenamePlaceholder { prepareRenamePlaceholderRange = parsedRange
+                                     , prepareRenamePlaceholderPlaceholder = parsedPlaceholder }
+      _ -> Left ("Unrecognized PrepareRenamePlaceholder value: " ++ ppJSON j)
+
+instance FromJSON PrepareRenameDefaultBehavior where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDefaultBehavior <- lookupFromJSON "defaultBehavior" vs
+           return
+            PrepareRenameDefaultBehavior { prepareRenameDefaultBehaviorDefaultBehavior = parsedDefaultBehavior }
+      _ ->
+        Left ("Unrecognized PrepareRenameDefaultBehavior value: " ++ ppJSON j)
+
 instance FromJSON ExecuteCommandOptions where
   fromJSON j =
     case j of
@@ -2718,6 +2905,15 @@ instance FromJSON ExecuteCommandOptions where
            return
             ExecuteCommandOptions { executeCommandOptionsCommands = parsedCommands }
       _ -> Left ("Unrecognized ExecuteCommandOptions value: " ++ ppJSON j)
+
+instance FromJSON WorkspaceEditMetadata where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedIsRefactoring <- lookupMaybeFromJSON "isRefactoring" vs
+           return
+            WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring = parsedIsRefactoring }
+      _ -> Left ("Unrecognized WorkspaceEditMetadata value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokensLegend where
   fromJSON j =
@@ -2729,6 +2925,15 @@ instance FromJSON SemanticTokensLegend where
             SemanticTokensLegend { semanticTokensLegendTokenTypes = parsedTokenTypes
                                  , semanticTokensLegendTokenModifiers = parsedTokenModifiers }
       _ -> Left ("Unrecognized SemanticTokensLegend value: " ++ ppJSON j)
+
+instance FromJSON SemanticTokensFullDelta where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDelta <- lookupMaybeFromJSON "delta" vs
+           return
+            SemanticTokensFullDelta { semanticTokensFullDeltaDelta = parsedDelta }
+      _ -> Left ("Unrecognized SemanticTokensFullDelta value: " ++ ppJSON j)
 
 instance FromJSON OptionalVersionedTextDocumentIdentifier where
   fromJSON j =
@@ -2750,6 +2955,19 @@ instance FromJSON AnnotatedTextEdit where
            return
             AnnotatedTextEdit { annotatedTextEditAnnotationId = parsedAnnotationId }
       _ -> Left ("Unrecognized AnnotatedTextEdit value: " ++ ppJSON j)
+
+instance FromJSON SnippetTextEdit where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedSnippet <- lookupFromJSON "snippet" vs
+           parsedAnnotationId <- lookupMaybeFromJSON "annotationId" vs
+           return
+            SnippetTextEdit { snippetTextEditRange = parsedRange
+                            , snippetTextEditSnippet = parsedSnippet
+                            , snippetTextEditAnnotationId = parsedAnnotationId }
+      _ -> Left ("Unrecognized SnippetTextEdit value: " ++ ppJSON j)
 
 instance FromJSON ResourceOperation where
   fromJSON j =
@@ -2837,12 +3055,6 @@ instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
          ("Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
-instance FromJSON LSPObject where
-  fromJSON j =
-    case j of
-      JObject vs -> do return LSPObject {  }
-      _ -> Left ("Unrecognized LSPObject value: " ++ ppJSON j)
-
 instance FromJSON NotebookCell where
   fromJSON j =
     case j of
@@ -2858,18 +3070,68 @@ instance FromJSON NotebookCell where
                          , notebookCellExecutionSummary = parsedExecutionSummary }
       _ -> Left ("Unrecognized NotebookCell value: " ++ ppJSON j)
 
-instance FromJSON NotebookCellArrayChange where
+instance FromJSON NotebookDocumentFilterWithNotebook where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedStart <- lookupFromJSON "start" vs
-           parsedDeleteCount <- lookupFromJSON "deleteCount" vs
+        do parsedNotebook <- lookupFromJSON "notebook" vs
            parsedCells <- lookupMaybeFromJSON "cells" vs
            return
-            NotebookCellArrayChange { notebookCellArrayChangeStart = parsedStart
-                                    , notebookCellArrayChangeDeleteCount = parsedDeleteCount
-                                    , notebookCellArrayChangeCells = parsedCells }
-      _ -> Left ("Unrecognized NotebookCellArrayChange value: " ++ ppJSON j)
+            NotebookDocumentFilterWithNotebook { notebookDocumentFilterWithNotebookNotebook = parsedNotebook
+                                               , notebookDocumentFilterWithNotebookCells = parsedCells }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentFilterWithNotebook value: "
+           ++ ppJSON j)
+
+instance FromJSON NotebookDocumentFilterWithCells where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedNotebook <- lookupMaybeFromJSON "notebook" vs
+           parsedCells <- lookupFromJSON "cells" vs
+           return
+            NotebookDocumentFilterWithCells { notebookDocumentFilterWithCellsNotebook = parsedNotebook
+                                            , notebookDocumentFilterWithCellsCells = parsedCells }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentFilterWithCells value: " ++ ppJSON j)
+
+instance FromJSON NotebookDocumentCellChanges where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedStructure <- lookupMaybeFromJSON "structure" vs
+           parsedData <- lookupMaybeFromJSON "data" vs
+           parsedTextContent <- lookupMaybeFromJSON "textContent" vs
+           return
+            NotebookDocumentCellChanges { notebookDocumentCellChangesStructure = parsedStructure
+                                        , notebookDocumentCellChangesData = parsedData
+                                        , notebookDocumentCellChangesTextContent = parsedTextContent }
+      _ ->
+        Left ("Unrecognized NotebookDocumentCellChanges value: " ++ ppJSON j)
+
+instance FromJSON SelectedCompletionInfo where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedText <- lookupFromJSON "text" vs
+           return
+            SelectedCompletionInfo { selectedCompletionInfoRange = parsedRange
+                                   , selectedCompletionInfoText = parsedText }
+      _ -> Left ("Unrecognized SelectedCompletionInfo value: " ++ ppJSON j)
+
+instance FromJSON ClientInfo where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedName <- lookupFromJSON "name" vs
+           parsedVersion <- lookupMaybeFromJSON "version" vs
+           return
+            ClientInfo { clientInfoName = parsedName
+                       , clientInfoVersion = parsedVersion }
+      _ -> Left ("Unrecognized ClientInfo value: " ++ ppJSON j)
 
 instance FromJSON ClientCapabilities where
   fromJSON j =
@@ -2908,61 +3170,43 @@ instance FromJSON TextDocumentSyncOptions where
                                     , textDocumentSyncOptionsSave = parsedSave }
       _ -> Left ("Unrecognized TextDocumentSyncOptions value: " ++ ppJSON j)
 
-instance FromJSON NotebookDocumentSyncOptions where
+instance FromJSON WorkspaceOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedNotebookSelector <- lookupFromJSON "notebookSelector" vs
-           parsedSave <- lookupMaybeFromJSON "save" vs
+        do parsedWorkspaceFolders <- lookupMaybeFromJSON "workspaceFolders" vs
+           parsedFileOperations <- lookupMaybeFromJSON "fileOperations" vs
            return
-            NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector = parsedNotebookSelector
-                                        , notebookDocumentSyncOptionsSave = parsedSave }
-      _ ->
-        Left ("Unrecognized NotebookDocumentSyncOptions value: " ++ ppJSON j)
+            WorkspaceOptions { workspaceOptionsWorkspaceFolders = parsedWorkspaceFolders
+                             , workspaceOptionsFileOperations = parsedFileOperations }
+      _ -> Left ("Unrecognized WorkspaceOptions value: " ++ ppJSON j)
 
-instance FromJSON NotebookDocumentSyncRegistrationOptions where
-  fromJSON j =
-    case j of
-      JObject vs -> do return NotebookDocumentSyncRegistrationOptions {  }
-      _ ->
-        Left
-         ("Unrecognized NotebookDocumentSyncRegistrationOptions value: "
-           ++ ppJSON j)
-
-instance FromJSON WorkspaceFoldersServerCapabilities where
+instance FromJSON TextDocumentContentChangePartial where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedSupported <- lookupMaybeFromJSON "supported" vs
-           parsedChangeNotifications <- lookupMaybeFromJSON
-                                         "changeNotifications"
-                                         vs
+        do parsedRange <- lookupFromJSON "range" vs
+           parsedRangeLength <- lookupMaybeFromJSON "rangeLength" vs
+           parsedText <- lookupFromJSON "text" vs
            return
-            WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported = parsedSupported
-                                               , workspaceFoldersServerCapabilitiesChangeNotifications = parsedChangeNotifications }
+            TextDocumentContentChangePartial { textDocumentContentChangePartialRange = parsedRange
+                                             , textDocumentContentChangePartialRangeLength = parsedRangeLength
+                                             , textDocumentContentChangePartialText = parsedText }
       _ ->
         Left
-         ("Unrecognized WorkspaceFoldersServerCapabilities value: "
-           ++ ppJSON j)
+         ("Unrecognized TextDocumentContentChangePartial value: " ++ ppJSON j)
 
-instance FromJSON FileOperationOptions where
+instance FromJSON TextDocumentContentChangeWholeDocument where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedDidCreate <- lookupMaybeFromJSON "didCreate" vs
-           parsedWillCreate <- lookupMaybeFromJSON "willCreate" vs
-           parsedDidRename <- lookupMaybeFromJSON "didRename" vs
-           parsedWillRename <- lookupMaybeFromJSON "willRename" vs
-           parsedDidDelete <- lookupMaybeFromJSON "didDelete" vs
-           parsedWillDelete <- lookupMaybeFromJSON "willDelete" vs
+        do parsedText <- lookupFromJSON "text" vs
            return
-            FileOperationOptions { fileOperationOptionsDidCreate = parsedDidCreate
-                                 , fileOperationOptionsWillCreate = parsedWillCreate
-                                 , fileOperationOptionsDidRename = parsedDidRename
-                                 , fileOperationOptionsWillRename = parsedWillRename
-                                 , fileOperationOptionsDidDelete = parsedDidDelete
-                                 , fileOperationOptionsWillDelete = parsedWillDelete }
-      _ -> Left ("Unrecognized FileOperationOptions value: " ++ ppJSON j)
+            TextDocumentContentChangeWholeDocument { textDocumentContentChangeWholeDocumentText = parsedText }
+      _ ->
+        Left
+         ("Unrecognized TextDocumentContentChangeWholeDocument value: "
+           ++ ppJSON j)
 
 instance FromJSON CodeDescription where
   fromJSON j =
@@ -2984,6 +3228,41 @@ instance FromJSON DiagnosticRelatedInformation where
       _ ->
         Left ("Unrecognized DiagnosticRelatedInformation value: " ++ ppJSON j)
 
+instance FromJSON EditRangeWithInsertReplace where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedInsert <- lookupFromJSON "insert" vs
+           parsedReplace <- lookupFromJSON "replace" vs
+           return
+            EditRangeWithInsertReplace { editRangeWithInsertReplaceInsert = parsedInsert
+                                       , editRangeWithInsertReplaceReplace = parsedReplace }
+      _ ->
+        Left ("Unrecognized EditRangeWithInsertReplace value: " ++ ppJSON j)
+
+instance FromJSON ServerCompletionItemOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLabelDetailsSupport <- lookupMaybeFromJSON
+                                         "labelDetailsSupport"
+                                         vs
+           return
+            ServerCompletionItemOptions { serverCompletionItemOptionsLabelDetailsSupport = parsedLabelDetailsSupport }
+      _ ->
+        Left ("Unrecognized ServerCompletionItemOptions value: " ++ ppJSON j)
+
+instance FromJSON MarkedStringWithLanguage where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLanguage <- lookupFromJSON "language" vs
+           parsedValue <- lookupFromJSON "value" vs
+           return
+            MarkedStringWithLanguage { markedStringWithLanguageLanguage = parsedLanguage
+                                     , markedStringWithLanguageValue = parsedValue }
+      _ -> Left ("Unrecognized MarkedStringWithLanguage value: " ++ ppJSON j)
+
 instance FromJSON ParameterInformation where
   fromJSON j =
     case j of
@@ -2994,6 +3273,18 @@ instance FromJSON ParameterInformation where
             ParameterInformation { parameterInformationLabel = parsedLabel
                                  , parameterInformationDocumentation = parsedDocumentation }
       _ -> Left ("Unrecognized ParameterInformation value: " ++ ppJSON j)
+
+instance FromJSON CodeActionKindDocumentation where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedCommand <- lookupFromJSON "command" vs
+           return
+            CodeActionKindDocumentation { codeActionKindDocumentationKind = parsedKind
+                                        , codeActionKindDocumentationCommand = parsedCommand }
+      _ ->
+        Left ("Unrecognized CodeActionKindDocumentation value: " ++ ppJSON j)
 
 instance FromJSON NotebookCellTextDocumentFilter where
   fromJSON j =
@@ -3029,6 +3320,45 @@ instance FromJSON ExecutionSummary where
                              , executionSummarySuccess = parsedSuccess }
       _ -> Left ("Unrecognized ExecutionSummary value: " ++ ppJSON j)
 
+instance FromJSON NotebookCellLanguage where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLanguage <- lookupFromJSON "language" vs
+           return
+            NotebookCellLanguage { notebookCellLanguageLanguage = parsedLanguage }
+      _ -> Left ("Unrecognized NotebookCellLanguage value: " ++ ppJSON j)
+
+instance FromJSON NotebookDocumentCellChangeStructure where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedArray <- lookupFromJSON "array" vs
+           parsedDidOpen <- lookupMaybeFromJSON "didOpen" vs
+           parsedDidClose <- lookupMaybeFromJSON "didClose" vs
+           return
+            NotebookDocumentCellChangeStructure { notebookDocumentCellChangeStructureArray = parsedArray
+                                                , notebookDocumentCellChangeStructureDidOpen = parsedDidOpen
+                                                , notebookDocumentCellChangeStructureDidClose = parsedDidClose }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentCellChangeStructure value: "
+           ++ ppJSON j)
+
+instance FromJSON NotebookDocumentCellContentChanges where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDocument <- lookupFromJSON "document" vs
+           parsedChanges <- lookupFromJSON "changes" vs
+           return
+            NotebookDocumentCellContentChanges { notebookDocumentCellContentChangesDocument = parsedDocument
+                                               , notebookDocumentCellContentChangesChanges = parsedChanges }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentCellContentChanges value: "
+           ++ ppJSON j)
+
 instance FromJSON WorkspaceClientCapabilities where
   fromJSON j =
     case j of
@@ -3051,6 +3381,7 @@ instance FromJSON WorkspaceClientCapabilities where
            parsedInlineValue <- lookupMaybeFromJSON "inlineValue" vs
            parsedInlayHint <- lookupMaybeFromJSON "inlayHint" vs
            parsedDiagnostics <- lookupMaybeFromJSON "diagnostics" vs
+           parsedFoldingRange <- lookupMaybeFromJSON "foldingRange" vs
            return
             WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit = parsedApplyEdit
                                         , workspaceClientCapabilitiesWorkspaceEdit = parsedWorkspaceEdit
@@ -3065,7 +3396,8 @@ instance FromJSON WorkspaceClientCapabilities where
                                         , workspaceClientCapabilitiesFileOperations = parsedFileOperations
                                         , workspaceClientCapabilitiesInlineValue = parsedInlineValue
                                         , workspaceClientCapabilitiesInlayHint = parsedInlayHint
-                                        , workspaceClientCapabilitiesDiagnostics = parsedDiagnostics }
+                                        , workspaceClientCapabilitiesDiagnostics = parsedDiagnostics
+                                        , workspaceClientCapabilitiesFoldingRange = parsedFoldingRange }
       _ ->
         Left ("Unrecognized WorkspaceClientCapabilities value: " ++ ppJSON j)
 
@@ -3108,6 +3440,7 @@ instance FromJSON TextDocumentClientCapabilities where
            parsedInlineValue <- lookupMaybeFromJSON "inlineValue" vs
            parsedInlayHint <- lookupMaybeFromJSON "inlayHint" vs
            parsedDiagnostic <- lookupMaybeFromJSON "diagnostic" vs
+           parsedInlineCompletion <- lookupMaybeFromJSON "inlineCompletion" vs
            return
             TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization = parsedSynchronization
                                            , textDocumentClientCapabilitiesCompletion = parsedCompletion
@@ -3138,7 +3471,8 @@ instance FromJSON TextDocumentClientCapabilities where
                                            , textDocumentClientCapabilitiesTypeHierarchy = parsedTypeHierarchy
                                            , textDocumentClientCapabilitiesInlineValue = parsedInlineValue
                                            , textDocumentClientCapabilitiesInlayHint = parsedInlayHint
-                                           , textDocumentClientCapabilitiesDiagnostic = parsedDiagnostic }
+                                           , textDocumentClientCapabilitiesDiagnostic = parsedDiagnostic
+                                           , textDocumentClientCapabilitiesInlineCompletion = parsedInlineCompletion }
       _ ->
         Left
          ("Unrecognized TextDocumentClientCapabilities value: " ++ ppJSON j)
@@ -3188,6 +3522,41 @@ instance FromJSON GeneralClientCapabilities where
                                       , generalClientCapabilitiesPositionEncodings = parsedPositionEncodings }
       _ -> Left ("Unrecognized GeneralClientCapabilities value: " ++ ppJSON j)
 
+instance FromJSON WorkspaceFoldersServerCapabilities where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedSupported <- lookupMaybeFromJSON "supported" vs
+           parsedChangeNotifications <- lookupMaybeFromJSON
+                                         "changeNotifications"
+                                         vs
+           return
+            WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported = parsedSupported
+                                               , workspaceFoldersServerCapabilitiesChangeNotifications = parsedChangeNotifications }
+      _ ->
+        Left
+         ("Unrecognized WorkspaceFoldersServerCapabilities value: "
+           ++ ppJSON j)
+
+instance FromJSON FileOperationOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDidCreate <- lookupMaybeFromJSON "didCreate" vs
+           parsedWillCreate <- lookupMaybeFromJSON "willCreate" vs
+           parsedDidRename <- lookupMaybeFromJSON "didRename" vs
+           parsedWillRename <- lookupMaybeFromJSON "willRename" vs
+           parsedDidDelete <- lookupMaybeFromJSON "didDelete" vs
+           parsedWillDelete <- lookupMaybeFromJSON "willDelete" vs
+           return
+            FileOperationOptions { fileOperationOptionsDidCreate = parsedDidCreate
+                                 , fileOperationOptionsWillCreate = parsedWillCreate
+                                 , fileOperationOptionsDidRename = parsedDidRename
+                                 , fileOperationOptionsWillRename = parsedWillRename
+                                 , fileOperationOptionsDidDelete = parsedDidDelete
+                                 , fileOperationOptionsWillDelete = parsedWillDelete }
+      _ -> Left ("Unrecognized FileOperationOptions value: " ++ ppJSON j)
+
 instance FromJSON RelativePattern where
   fromJSON j =
     case j of
@@ -3198,6 +3567,104 @@ instance FromJSON RelativePattern where
             RelativePattern { relativePatternBaseUri = parsedBaseUri
                             , relativePatternPattern = parsedPattern }
       _ -> Left ("Unrecognized RelativePattern value: " ++ ppJSON j)
+
+instance FromJSON TextDocumentFilterLanguage where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLanguage <- lookupFromJSON "language" vs
+           parsedScheme <- lookupMaybeFromJSON "scheme" vs
+           parsedPattern <- lookupMaybeFromJSON "pattern" vs
+           return
+            TextDocumentFilterLanguage { textDocumentFilterLanguageLanguage = parsedLanguage
+                                       , textDocumentFilterLanguageScheme = parsedScheme
+                                       , textDocumentFilterLanguagePattern = parsedPattern }
+      _ ->
+        Left ("Unrecognized TextDocumentFilterLanguage value: " ++ ppJSON j)
+
+instance FromJSON TextDocumentFilterScheme where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLanguage <- lookupMaybeFromJSON "language" vs
+           parsedScheme <- lookupFromJSON "scheme" vs
+           parsedPattern <- lookupMaybeFromJSON "pattern" vs
+           return
+            TextDocumentFilterScheme { textDocumentFilterSchemeLanguage = parsedLanguage
+                                     , textDocumentFilterSchemeScheme = parsedScheme
+                                     , textDocumentFilterSchemePattern = parsedPattern }
+      _ -> Left ("Unrecognized TextDocumentFilterScheme value: " ++ ppJSON j)
+
+instance FromJSON TextDocumentFilterPattern where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLanguage <- lookupMaybeFromJSON "language" vs
+           parsedScheme <- lookupMaybeFromJSON "scheme" vs
+           parsedPattern <- lookupFromJSON "pattern" vs
+           return
+            TextDocumentFilterPattern { textDocumentFilterPatternLanguage = parsedLanguage
+                                      , textDocumentFilterPatternScheme = parsedScheme
+                                      , textDocumentFilterPatternPattern = parsedPattern }
+      _ -> Left ("Unrecognized TextDocumentFilterPattern value: " ++ ppJSON j)
+
+instance FromJSON NotebookDocumentFilterNotebookType where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedNotebookType <- lookupFromJSON "notebookType" vs
+           parsedScheme <- lookupMaybeFromJSON "scheme" vs
+           parsedPattern <- lookupMaybeFromJSON "pattern" vs
+           return
+            NotebookDocumentFilterNotebookType { notebookDocumentFilterNotebookTypeNotebookType = parsedNotebookType
+                                               , notebookDocumentFilterNotebookTypeScheme = parsedScheme
+                                               , notebookDocumentFilterNotebookTypePattern = parsedPattern }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentFilterNotebookType value: "
+           ++ ppJSON j)
+
+instance FromJSON NotebookDocumentFilterScheme where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedNotebookType <- lookupMaybeFromJSON "notebookType" vs
+           parsedScheme <- lookupFromJSON "scheme" vs
+           parsedPattern <- lookupMaybeFromJSON "pattern" vs
+           return
+            NotebookDocumentFilterScheme { notebookDocumentFilterSchemeNotebookType = parsedNotebookType
+                                         , notebookDocumentFilterSchemeScheme = parsedScheme
+                                         , notebookDocumentFilterSchemePattern = parsedPattern }
+      _ ->
+        Left ("Unrecognized NotebookDocumentFilterScheme value: " ++ ppJSON j)
+
+instance FromJSON NotebookDocumentFilterPattern where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedNotebookType <- lookupMaybeFromJSON "notebookType" vs
+           parsedScheme <- lookupMaybeFromJSON "scheme" vs
+           parsedPattern <- lookupFromJSON "pattern" vs
+           return
+            NotebookDocumentFilterPattern { notebookDocumentFilterPatternNotebookType = parsedNotebookType
+                                          , notebookDocumentFilterPatternScheme = parsedScheme
+                                          , notebookDocumentFilterPatternPattern = parsedPattern }
+      _ ->
+        Left
+         ("Unrecognized NotebookDocumentFilterPattern value: " ++ ppJSON j)
+
+instance FromJSON NotebookCellArrayChange where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedStart <- lookupFromJSON "start" vs
+           parsedDeleteCount <- lookupFromJSON "deleteCount" vs
+           parsedCells <- lookupMaybeFromJSON "cells" vs
+           return
+            NotebookCellArrayChange { notebookCellArrayChangeStart = parsedStart
+                                    , notebookCellArrayChangeDeleteCount = parsedDeleteCount
+                                    , notebookCellArrayChangeCells = parsedCells }
+      _ -> Left ("Unrecognized NotebookCellArrayChange value: " ++ ppJSON j)
 
 instance FromJSON WorkspaceEditClientCapabilities where
   fromJSON j =
@@ -3214,12 +3681,18 @@ instance FromJSON WorkspaceEditClientCapabilities where
            parsedChangeAnnotationSupport <- lookupMaybeFromJSON
                                              "changeAnnotationSupport"
                                              vs
+           parsedMetadataSupport <- lookupMaybeFromJSON "metadataSupport" vs
+           parsedSnippetEditSupport <- lookupMaybeFromJSON
+                                        "snippetEditSupport"
+                                        vs
            return
             WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges = parsedDocumentChanges
                                             , workspaceEditClientCapabilitiesResourceOperations = parsedResourceOperations
                                             , workspaceEditClientCapabilitiesFailureHandling = parsedFailureHandling
                                             , workspaceEditClientCapabilitiesNormalizesLineEndings = parsedNormalizesLineEndings
-                                            , workspaceEditClientCapabilitiesChangeAnnotationSupport = parsedChangeAnnotationSupport }
+                                            , workspaceEditClientCapabilitiesChangeAnnotationSupport = parsedChangeAnnotationSupport
+                                            , workspaceEditClientCapabilitiesMetadataSupport = parsedMetadataSupport
+                                            , workspaceEditClientCapabilitiesSnippetEditSupport = parsedSnippetEditSupport }
       _ ->
         Left
          ("Unrecognized WorkspaceEditClientCapabilities value: " ++ ppJSON j)
@@ -3372,6 +3845,18 @@ instance FromJSON DiagnosticWorkspaceClientCapabilities where
       _ ->
         Left
          ("Unrecognized DiagnosticWorkspaceClientCapabilities value: "
+           ++ ppJSON j)
+
+instance FromJSON FoldingRangeWorkspaceClientCapabilities where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRefreshSupport <- lookupMaybeFromJSON "refreshSupport" vs
+           return
+            FoldingRangeWorkspaceClientCapabilities { foldingRangeWorkspaceClientCapabilitiesRefreshSupport = parsedRefreshSupport }
+      _ ->
+        Left
+         ("Unrecognized FoldingRangeWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncClientCapabilities where
@@ -3578,6 +4063,9 @@ instance FromJSON CodeActionClientCapabilities where
            parsedHonorsChangeAnnotations <- lookupMaybeFromJSON
                                              "honorsChangeAnnotations"
                                              vs
+           parsedDocumentationSupport <- lookupMaybeFromJSON
+                                          "documentationSupport"
+                                          vs
            return
             CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                          , codeActionClientCapabilitiesCodeActionLiteralSupport = parsedCodeActionLiteralSupport
@@ -3585,7 +4073,8 @@ instance FromJSON CodeActionClientCapabilities where
                                          , codeActionClientCapabilitiesDisabledSupport = parsedDisabledSupport
                                          , codeActionClientCapabilitiesDataSupport = parsedDataSupport
                                          , codeActionClientCapabilitiesResolveSupport = parsedResolveSupport
-                                         , codeActionClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
+                                         , codeActionClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations
+                                         , codeActionClientCapabilitiesDocumentationSupport = parsedDocumentationSupport }
       _ ->
         Left ("Unrecognized CodeActionClientCapabilities value: " ++ ppJSON j)
 
@@ -3596,8 +4085,10 @@ instance FromJSON CodeLensClientCapabilities where
         do parsedDynamicRegistration <- lookupMaybeFromJSON
                                          "dynamicRegistration"
                                          vs
+           parsedResolveSupport <- lookupMaybeFromJSON "resolveSupport" vs
            return
-            CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
+            CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                       , codeLensClientCapabilitiesResolveSupport = parsedResolveSupport }
       _ ->
         Left ("Unrecognized CodeLensClientCapabilities value: " ++ ppJSON j)
 
@@ -3650,8 +4141,10 @@ instance FromJSON DocumentRangeFormattingClientCapabilities where
         do parsedDynamicRegistration <- lookupMaybeFromJSON
                                          "dynamicRegistration"
                                          vs
+           parsedRangesSupport <- lookupMaybeFromJSON "rangesSupport" vs
            return
-            DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
+            DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+                                                      , documentRangeFormattingClientCapabilitiesRangesSupport = parsedRangesSupport }
       _ ->
         Left
          ("Unrecognized DocumentRangeFormattingClientCapabilities value: "
@@ -3730,21 +4223,9 @@ instance FromJSON PublishDiagnosticsClientCapabilities where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedRelatedInformation <- lookupMaybeFromJSON
-                                        "relatedInformation"
-                                        vs
-           parsedTagSupport <- lookupMaybeFromJSON "tagSupport" vs
-           parsedVersionSupport <- lookupMaybeFromJSON "versionSupport" vs
-           parsedCodeDescriptionSupport <- lookupMaybeFromJSON
-                                            "codeDescriptionSupport"
-                                            vs
-           parsedDataSupport <- lookupMaybeFromJSON "dataSupport" vs
+        do parsedVersionSupport <- lookupMaybeFromJSON "versionSupport" vs
            return
-            PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation = parsedRelatedInformation
-                                                 , publishDiagnosticsClientCapabilitiesTagSupport = parsedTagSupport
-                                                 , publishDiagnosticsClientCapabilitiesVersionSupport = parsedVersionSupport
-                                                 , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport = parsedCodeDescriptionSupport
-                                                 , publishDiagnosticsClientCapabilitiesDataSupport = parsedDataSupport }
+            PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesVersionSupport = parsedVersionSupport }
       _ ->
         Left
          ("Unrecognized PublishDiagnosticsClientCapabilities value: "
@@ -3881,6 +4362,20 @@ instance FromJSON DiagnosticClientCapabilities where
       _ ->
         Left ("Unrecognized DiagnosticClientCapabilities value: " ++ ppJSON j)
 
+instance FromJSON InlineCompletionClientCapabilities where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDynamicRegistration <- lookupMaybeFromJSON
+                                         "dynamicRegistration"
+                                         vs
+           return
+            InlineCompletionClientCapabilities { inlineCompletionClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
+      _ ->
+        Left
+         ("Unrecognized InlineCompletionClientCapabilities value: "
+           ++ ppJSON j)
+
 instance FromJSON NotebookDocumentSyncClientCapabilities where
   fromJSON j =
     case j of
@@ -3923,6 +4418,20 @@ instance FromJSON ShowDocumentClientCapabilities where
         Left
          ("Unrecognized ShowDocumentClientCapabilities value: " ++ ppJSON j)
 
+instance FromJSON StaleRequestSupportOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedCancel <- lookupFromJSON "cancel" vs
+           parsedRetryOnContentModified <- lookupFromJSON
+                                            "retryOnContentModified"
+                                            vs
+           return
+            StaleRequestSupportOptions { staleRequestSupportOptionsCancel = parsedCancel
+                                       , staleRequestSupportOptionsRetryOnContentModified = parsedRetryOnContentModified }
+      _ ->
+        Left ("Unrecognized StaleRequestSupportOptions value: " ++ ppJSON j)
+
 instance FromJSON RegularExpressionsClientCapabilities where
   fromJSON j =
     case j of
@@ -3951,6 +4460,320 @@ instance FromJSON MarkdownClientCapabilities where
       _ ->
         Left ("Unrecognized MarkdownClientCapabilities value: " ++ ppJSON j)
 
+instance FromJSON ChangeAnnotationsSupportOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedGroupsOnLabel <- lookupMaybeFromJSON "groupsOnLabel" vs
+           return
+            ChangeAnnotationsSupportOptions { changeAnnotationsSupportOptionsGroupsOnLabel = parsedGroupsOnLabel }
+      _ ->
+        Left
+         ("Unrecognized ChangeAnnotationsSupportOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientSymbolKindOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupMaybeFromJSON "valueSet" vs
+           return
+            ClientSymbolKindOptions { clientSymbolKindOptionsValueSet = parsedValueSet }
+      _ -> Left ("Unrecognized ClientSymbolKindOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientSymbolTagOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupFromJSON "valueSet" vs
+           return
+            ClientSymbolTagOptions { clientSymbolTagOptionsValueSet = parsedValueSet }
+      _ -> Left ("Unrecognized ClientSymbolTagOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientSymbolResolveOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedProperties <- lookupFromJSON "properties" vs
+           return
+            ClientSymbolResolveOptions { clientSymbolResolveOptionsProperties = parsedProperties }
+      _ ->
+        Left ("Unrecognized ClientSymbolResolveOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientCompletionItemOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedSnippetSupport <- lookupMaybeFromJSON "snippetSupport" vs
+           parsedCommitCharactersSupport <- lookupMaybeFromJSON
+                                             "commitCharactersSupport"
+                                             vs
+           parsedDocumentationFormat <- lookupMaybeFromJSON
+                                         "documentationFormat"
+                                         vs
+           parsedDeprecatedSupport <- lookupMaybeFromJSON "deprecatedSupport"
+                                       vs
+           parsedPreselectSupport <- lookupMaybeFromJSON "preselectSupport" vs
+           parsedTagSupport <- lookupMaybeFromJSON "tagSupport" vs
+           parsedInsertReplaceSupport <- lookupMaybeFromJSON
+                                          "insertReplaceSupport"
+                                          vs
+           parsedResolveSupport <- lookupMaybeFromJSON "resolveSupport" vs
+           parsedInsertTextModeSupport <- lookupMaybeFromJSON
+                                           "insertTextModeSupport"
+                                           vs
+           parsedLabelDetailsSupport <- lookupMaybeFromJSON
+                                         "labelDetailsSupport"
+                                         vs
+           return
+            ClientCompletionItemOptions { clientCompletionItemOptionsSnippetSupport = parsedSnippetSupport
+                                        , clientCompletionItemOptionsCommitCharactersSupport = parsedCommitCharactersSupport
+                                        , clientCompletionItemOptionsDocumentationFormat = parsedDocumentationFormat
+                                        , clientCompletionItemOptionsDeprecatedSupport = parsedDeprecatedSupport
+                                        , clientCompletionItemOptionsPreselectSupport = parsedPreselectSupport
+                                        , clientCompletionItemOptionsTagSupport = parsedTagSupport
+                                        , clientCompletionItemOptionsInsertReplaceSupport = parsedInsertReplaceSupport
+                                        , clientCompletionItemOptionsResolveSupport = parsedResolveSupport
+                                        , clientCompletionItemOptionsInsertTextModeSupport = parsedInsertTextModeSupport
+                                        , clientCompletionItemOptionsLabelDetailsSupport = parsedLabelDetailsSupport }
+      _ ->
+        Left ("Unrecognized ClientCompletionItemOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientCompletionItemOptionsKind where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupMaybeFromJSON "valueSet" vs
+           return
+            ClientCompletionItemOptionsKind { clientCompletionItemOptionsKindValueSet = parsedValueSet }
+      _ ->
+        Left
+         ("Unrecognized ClientCompletionItemOptionsKind value: " ++ ppJSON j)
+
+instance FromJSON CompletionListCapabilities where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedItemDefaults <- lookupMaybeFromJSON "itemDefaults" vs
+           return
+            CompletionListCapabilities { completionListCapabilitiesItemDefaults = parsedItemDefaults }
+      _ ->
+        Left ("Unrecognized CompletionListCapabilities value: " ++ ppJSON j)
+
+instance FromJSON ClientSignatureInformationOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDocumentationFormat <- lookupMaybeFromJSON
+                                         "documentationFormat"
+                                         vs
+           parsedParameterInformation <- lookupMaybeFromJSON
+                                          "parameterInformation"
+                                          vs
+           parsedActiveParameterSupport <- lookupMaybeFromJSON
+                                            "activeParameterSupport"
+                                            vs
+           parsedNoActiveParameterSupport <- lookupMaybeFromJSON
+                                              "noActiveParameterSupport"
+                                              vs
+           return
+            ClientSignatureInformationOptions { clientSignatureInformationOptionsDocumentationFormat = parsedDocumentationFormat
+                                              , clientSignatureInformationOptionsParameterInformation = parsedParameterInformation
+                                              , clientSignatureInformationOptionsActiveParameterSupport = parsedActiveParameterSupport
+                                              , clientSignatureInformationOptionsNoActiveParameterSupport = parsedNoActiveParameterSupport }
+      _ ->
+        Left
+         ("Unrecognized ClientSignatureInformationOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON ClientCodeActionLiteralOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedCodeActionKind <- lookupFromJSON "codeActionKind" vs
+           return
+            ClientCodeActionLiteralOptions { clientCodeActionLiteralOptionsCodeActionKind = parsedCodeActionKind }
+      _ ->
+        Left
+         ("Unrecognized ClientCodeActionLiteralOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientCodeActionResolveOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedProperties <- lookupFromJSON "properties" vs
+           return
+            ClientCodeActionResolveOptions { clientCodeActionResolveOptionsProperties = parsedProperties }
+      _ ->
+        Left
+         ("Unrecognized ClientCodeActionResolveOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientCodeLensResolveOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedProperties <- lookupFromJSON "properties" vs
+           return
+            ClientCodeLensResolveOptions { clientCodeLensResolveOptionsProperties = parsedProperties }
+      _ ->
+        Left ("Unrecognized ClientCodeLensResolveOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientFoldingRangeKindOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupMaybeFromJSON "valueSet" vs
+           return
+            ClientFoldingRangeKindOptions { clientFoldingRangeKindOptionsValueSet = parsedValueSet }
+      _ ->
+        Left
+         ("Unrecognized ClientFoldingRangeKindOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientFoldingRangeOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedCollapsedText <- lookupMaybeFromJSON "collapsedText" vs
+           return
+            ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText = parsedCollapsedText }
+      _ -> Left ("Unrecognized ClientFoldingRangeOptions value: " ++ ppJSON j)
+
+instance FromJSON DiagnosticsCapabilities where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRelatedInformation <- lookupMaybeFromJSON
+                                        "relatedInformation"
+                                        vs
+           parsedTagSupport <- lookupMaybeFromJSON "tagSupport" vs
+           parsedCodeDescriptionSupport <- lookupMaybeFromJSON
+                                            "codeDescriptionSupport"
+                                            vs
+           parsedDataSupport <- lookupMaybeFromJSON "dataSupport" vs
+           return
+            DiagnosticsCapabilities { diagnosticsCapabilitiesRelatedInformation = parsedRelatedInformation
+                                    , diagnosticsCapabilitiesTagSupport = parsedTagSupport
+                                    , diagnosticsCapabilitiesCodeDescriptionSupport = parsedCodeDescriptionSupport
+                                    , diagnosticsCapabilitiesDataSupport = parsedDataSupport }
+      _ -> Left ("Unrecognized DiagnosticsCapabilities value: " ++ ppJSON j)
+
+instance FromJSON ClientSemanticTokensRequestOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedRange <- lookupMaybeFromJSON "range" vs
+           parsedFull <- lookupMaybeFromJSON "full" vs
+           return
+            ClientSemanticTokensRequestOptions { clientSemanticTokensRequestOptionsRange = parsedRange
+                                               , clientSemanticTokensRequestOptionsFull = parsedFull }
+      _ ->
+        Left
+         ("Unrecognized ClientSemanticTokensRequestOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON ClientInlayHintResolveOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedProperties <- lookupFromJSON "properties" vs
+           return
+            ClientInlayHintResolveOptions { clientInlayHintResolveOptionsProperties = parsedProperties }
+      _ ->
+        Left
+         ("Unrecognized ClientInlayHintResolveOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientShowMessageActionItemOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedAdditionalPropertiesSupport <- lookupMaybeFromJSON
+                                                 "additionalPropertiesSupport"
+                                                 vs
+           return
+            ClientShowMessageActionItemOptions { clientShowMessageActionItemOptionsAdditionalPropertiesSupport = parsedAdditionalPropertiesSupport }
+      _ ->
+        Left
+         ("Unrecognized ClientShowMessageActionItemOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON CompletionItemTagOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupFromJSON "valueSet" vs
+           return
+            CompletionItemTagOptions { completionItemTagOptionsValueSet = parsedValueSet }
+      _ -> Left ("Unrecognized CompletionItemTagOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientCompletionItemResolveOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedProperties <- lookupFromJSON "properties" vs
+           return
+            ClientCompletionItemResolveOptions { clientCompletionItemResolveOptionsProperties = parsedProperties }
+      _ ->
+        Left
+         ("Unrecognized ClientCompletionItemResolveOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON ClientCompletionItemInsertTextModeOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupFromJSON "valueSet" vs
+           return
+            ClientCompletionItemInsertTextModeOptions { clientCompletionItemInsertTextModeOptionsValueSet = parsedValueSet }
+      _ ->
+        Left
+         ("Unrecognized ClientCompletionItemInsertTextModeOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON ClientSignatureParameterInformationOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedLabelOffsetSupport <- lookupMaybeFromJSON
+                                        "labelOffsetSupport"
+                                        vs
+           return
+            ClientSignatureParameterInformationOptions { clientSignatureParameterInformationOptionsLabelOffsetSupport = parsedLabelOffsetSupport }
+      _ ->
+        Left
+         ("Unrecognized ClientSignatureParameterInformationOptions value: "
+           ++ ppJSON j)
+
+instance FromJSON ClientCodeActionKindOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupFromJSON "valueSet" vs
+           return
+            ClientCodeActionKindOptions { clientCodeActionKindOptionsValueSet = parsedValueSet }
+      _ ->
+        Left ("Unrecognized ClientCodeActionKindOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientDiagnosticsTagOptions where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedValueSet <- lookupFromJSON "valueSet" vs
+           return
+            ClientDiagnosticsTagOptions { clientDiagnosticsTagOptionsValueSet = parsedValueSet }
+      _ ->
+        Left ("Unrecognized ClientDiagnosticsTagOptions value: " ++ ppJSON j)
+
+instance FromJSON ClientSemanticTokensRequestFullDelta where
+  fromJSON j =
+    case j of
+      JObject vs ->
+        do parsedDelta <- lookupMaybeFromJSON "delta" vs
+           return
+            ClientSemanticTokensRequestFullDelta { clientSemanticTokensRequestFullDeltaDelta = parsedDelta }
+      _ ->
+        Left
+         ("Unrecognized ClientSemanticTokensRequestFullDelta value: "
+           ++ ppJSON j)
+
 instance FromJSON SemanticTokenTypes where
   fromJSON j =
     do raw <- fromJSON j
@@ -3978,6 +4801,7 @@ instance FromJSON SemanticTokenTypes where
          "regexp" -> Right SemanticTokenTypesRegexp
          "operator" -> Right SemanticTokenTypesOperator
          "decorator" -> Right SemanticTokenTypesDecorator
+         "label" -> Right SemanticTokenTypesLabel
          _ -> Left ("Unrecognized SemanticTokenTypes value: " ++ ppJSON j)
 
 instance FromJSON SemanticTokenModifiers where
@@ -3996,6 +4820,16 @@ instance FromJSON SemanticTokenModifiers where
          "defaultLibrary" -> Right SemanticTokenModifiersDefaultLibrary
          _ -> Left ("Unrecognized SemanticTokenModifiers value: " ++ ppJSON j)
 
+instance FromJSON DocumentDiagnosticReportKind where
+  fromJSON j =
+    do raw <- fromJSON j
+       case raw :: String of
+         "full" -> Right DocumentDiagnosticReportKindFull
+         "unchanged" -> Right DocumentDiagnosticReportKindUnchanged
+         _ ->
+           Left
+            ("Unrecognized DocumentDiagnosticReportKind value: " ++ ppJSON j)
+
 instance FromJSON ErrorCodes where
   fromJSON j =
     do raw <- fromJSON j
@@ -4005,24 +4839,18 @@ instance FromJSON ErrorCodes where
          -32601 -> Right ErrorCodesMethodNotFound
          -32602 -> Right ErrorCodesInvalidParams
          -32603 -> Right ErrorCodesInternalError
-         -32099 -> Right ErrorCodesJsonrpcReservedErrorRangeStart
-         -32099 -> Right ErrorCodesServerErrorStart
          -32002 -> Right ErrorCodesServerNotInitialized
          -32001 -> Right ErrorCodesUnknownErrorCode
-         -32000 -> Right ErrorCodesJsonrpcReservedErrorRangeEnd
-         -32000 -> Right ErrorCodesServerErrorEnd
          _ -> Left ("Unrecognized ErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON LSPErrorCodes where
   fromJSON j =
     do raw <- fromJSON j
        case raw :: Int of
-         -32899 -> Right LSPErrorCodesLspReservedErrorRangeStart
          -32803 -> Right LSPErrorCodesRequestFailed
          -32802 -> Right LSPErrorCodesServerCancelled
          -32801 -> Right LSPErrorCodesContentModified
          -32800 -> Right LSPErrorCodesRequestCancelled
-         -32800 -> Right LSPErrorCodesLspReservedErrorRangeEnd
          _ -> Left ("Unrecognized LSPErrorCodes value: " ++ ppJSON j)
 
 instance FromJSON FoldingRangeKind where
@@ -4109,6 +4937,7 @@ instance FromJSON MessageType where
          2 -> Right MessageTypeWarning
          3 -> Right MessageTypeInfo
          4 -> Right MessageTypeLog
+         5 -> Right MessageTypeDebug
          _ -> Left ("Unrecognized MessageType value: " ++ ppJSON j)
 
 instance FromJSON TextDocumentSyncKind where
@@ -4201,20 +5030,22 @@ instance FromJSON CodeActionKind where
          "refactor" -> Right CodeActionKindRefactor
          "refactor.extract" -> Right CodeActionKindRefactorExtract
          "refactor.inline" -> Right CodeActionKindRefactorInline
+         "refactor.move" -> Right CodeActionKindRefactorMove
          "refactor.rewrite" -> Right CodeActionKindRefactorRewrite
          "source" -> Right CodeActionKindSource
          "source.organizeImports" -> Right CodeActionKindSourceOrganizeImports
          "source.fixAll" -> Right CodeActionKindSourceFixAll
+         "notebook" -> Right CodeActionKindNotebook
          _ -> Left ("Unrecognized CodeActionKind value: " ++ ppJSON j)
 
-instance FromJSON TraceValues where
+instance FromJSON TraceValue where
   fromJSON j =
     do raw <- fromJSON j
        case raw :: String of
-         "off" -> Right TraceValuesOff
-         "messages" -> Right TraceValuesMessages
-         "verbose" -> Right TraceValuesVerbose
-         _ -> Left ("Unrecognized TraceValues value: " ++ ppJSON j)
+         "off" -> Right TraceValueOff
+         "messages" -> Right TraceValueMessages
+         "verbose" -> Right TraceValueVerbose
+         _ -> Left ("Unrecognized TraceValue value: " ++ ppJSON j)
 
 instance FromJSON MarkupKind where
   fromJSON j =
@@ -4223,6 +5054,83 @@ instance FromJSON MarkupKind where
          "plaintext" -> Right MarkupKindPlainText
          "markdown" -> Right MarkupKindMarkdown
          _ -> Left ("Unrecognized MarkupKind value: " ++ ppJSON j)
+
+instance FromJSON LanguageKind where
+  fromJSON j =
+    do raw <- fromJSON j
+       case raw :: String of
+         "abap" -> Right LanguageKindABAP
+         "bat" -> Right LanguageKindWindowsBat
+         "bibtex" -> Right LanguageKindBibTeX
+         "clojure" -> Right LanguageKindClojure
+         "coffeescript" -> Right LanguageKindCoffeescript
+         "c" -> Right LanguageKindC
+         "cpp" -> Right LanguageKindCPP
+         "csharp" -> Right LanguageKindCSharp
+         "css" -> Right LanguageKindCSS
+         "d" -> Right LanguageKindD
+         "pascal" -> Right LanguageKindDelphi
+         "diff" -> Right LanguageKindDiff
+         "dart" -> Right LanguageKindDart
+         "dockerfile" -> Right LanguageKindDockerfile
+         "elixir" -> Right LanguageKindElixir
+         "erlang" -> Right LanguageKindErlang
+         "fsharp" -> Right LanguageKindFSharp
+         "git-commit" -> Right LanguageKindGitCommit
+         "rebase" -> Right LanguageKindGitRebase
+         "go" -> Right LanguageKindGo
+         "groovy" -> Right LanguageKindGroovy
+         "handlebars" -> Right LanguageKindHandlebars
+         "haskell" -> Right LanguageKindHaskell
+         "html" -> Right LanguageKindHTML
+         "ini" -> Right LanguageKindIni
+         "java" -> Right LanguageKindJava
+         "javascript" -> Right LanguageKindJavaScript
+         "javascriptreact" -> Right LanguageKindJavaScriptReact
+         "json" -> Right LanguageKindJSON
+         "latex" -> Right LanguageKindLaTeX
+         "less" -> Right LanguageKindLess
+         "lua" -> Right LanguageKindLua
+         "makefile" -> Right LanguageKindMakefile
+         "markdown" -> Right LanguageKindMarkdown
+         "objective-c" -> Right LanguageKindObjectiveC
+         "objective-cpp" -> Right LanguageKindObjectiveCPP
+         "pascal" -> Right LanguageKindPascal
+         "perl" -> Right LanguageKindPerl
+         "perl6" -> Right LanguageKindPerl6
+         "php" -> Right LanguageKindPHP
+         "powershell" -> Right LanguageKindPowershell
+         "jade" -> Right LanguageKindPug
+         "python" -> Right LanguageKindPython
+         "r" -> Right LanguageKindR
+         "razor" -> Right LanguageKindRazor
+         "ruby" -> Right LanguageKindRuby
+         "rust" -> Right LanguageKindRust
+         "scss" -> Right LanguageKindSCSS
+         "sass" -> Right LanguageKindSASS
+         "scala" -> Right LanguageKindScala
+         "shaderlab" -> Right LanguageKindShaderLab
+         "shellscript" -> Right LanguageKindShellScript
+         "sql" -> Right LanguageKindSQL
+         "swift" -> Right LanguageKindSwift
+         "typescript" -> Right LanguageKindTypeScript
+         "typescriptreact" -> Right LanguageKindTypeScriptReact
+         "tex" -> Right LanguageKindTeX
+         "vb" -> Right LanguageKindVisualBasic
+         "xml" -> Right LanguageKindXML
+         "xsl" -> Right LanguageKindXSL
+         "yaml" -> Right LanguageKindYAML
+         _ -> Left ("Unrecognized LanguageKind value: " ++ ppJSON j)
+
+instance FromJSON InlineCompletionTriggerKind where
+  fromJSON j =
+    do raw <- fromJSON j
+       case raw :: Int of
+         1 -> Right InlineCompletionTriggerKindInvoked
+         2 -> Right InlineCompletionTriggerKindAutomatic
+         _ ->
+           Left
+            ("Unrecognized InlineCompletionTriggerKind value: " ++ ppJSON j)
 
 instance FromJSON PositionEncodingKind where
   fromJSON j =
@@ -4365,7 +5273,7 @@ data TypeDefinitionParams = TypeDefinitionParams {  }
 data TypeDefinitionRegistrationOptions = TypeDefinitionRegistrationOptions {  }
  deriving (Show,Eq)
 
-data WorkspaceFolder = WorkspaceFolder { workspaceFolderUri :: URI
+data WorkspaceFolder = WorkspaceFolder { workspaceFolderUri :: Uri
                                        , workspaceFolderName :: String }
  deriving (Show,Eq)
 
@@ -4373,9 +5281,6 @@ data DidChangeWorkspaceFoldersParams = DidChangeWorkspaceFoldersParams { didChan
  deriving (Show,Eq)
 
 data ConfigurationParams = ConfigurationParams { configurationParamsItems :: [ConfigurationItem] }
- deriving (Show,Eq)
-
-data PartialResultParams = PartialResultParams { partialResultParamsPartialResultToken :: Maybe ProgressToken }
  deriving (Show,Eq)
 
 data DocumentColorParams = DocumentColorParams { documentColorParamsTextDocument :: TextDocumentIdentifier }
@@ -4499,7 +5404,7 @@ data SemanticTokensRangeParams = SemanticTokensRangeParams { semanticTokensRange
                                                            , semanticTokensRangeParamsRange :: Range }
  deriving (Show,Eq)
 
-data ShowDocumentParams = ShowDocumentParams { showDocumentParamsUri :: URI
+data ShowDocumentParams = ShowDocumentParams { showDocumentParamsUri :: Uri
                                              , showDocumentParamsExternal :: Maybe Bool
                                              , showDocumentParamsTakeFocus :: Maybe Bool
                                              , showDocumentParamsSelection :: Maybe Range }
@@ -4622,6 +5527,9 @@ data DidOpenNotebookDocumentParams = DidOpenNotebookDocumentParams { didOpenNote
                                                                    , didOpenNotebookDocumentParamsCellTextDocuments :: [TextDocumentItem] }
  deriving (Show,Eq)
 
+data NotebookDocumentSyncRegistrationOptions = NotebookDocumentSyncRegistrationOptions {  }
+ deriving (Show,Eq)
+
 data DidChangeNotebookDocumentParams = DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument :: VersionedNotebookDocumentIdentifier
                                                                        , didChangeNotebookDocumentParamsChange :: NotebookDocumentChangeEvent }
  deriving (Show,Eq)
@@ -4631,6 +5539,21 @@ data DidSaveNotebookDocumentParams = DidSaveNotebookDocumentParams { didSaveNote
 
 data DidCloseNotebookDocumentParams = DidCloseNotebookDocumentParams { didCloseNotebookDocumentParamsNotebookDocument :: NotebookDocumentIdentifier
                                                                      , didCloseNotebookDocumentParamsCellTextDocuments :: [TextDocumentIdentifier] }
+ deriving (Show,Eq)
+
+data InlineCompletionParams = InlineCompletionParams { inlineCompletionParamsContext :: InlineCompletionContext }
+ deriving (Show,Eq)
+
+data InlineCompletionList = InlineCompletionList { inlineCompletionListItems :: [InlineCompletionItem] }
+ deriving (Show,Eq)
+
+data InlineCompletionItem = InlineCompletionItem { inlineCompletionItemInsertText :: Either String StringValue
+                                                 , inlineCompletionItemFilterText :: Maybe String
+                                                 , inlineCompletionItemRange :: Maybe Range
+                                                 , inlineCompletionItemCommand :: Maybe Command }
+ deriving (Show,Eq)
+
+data InlineCompletionRegistrationOptions = InlineCompletionRegistrationOptions {  }
  deriving (Show,Eq)
 
 data RegistrationParams = RegistrationParams { registrationParamsRegistrations :: [Registration] }
@@ -4643,7 +5566,7 @@ data InitializeParams = InitializeParams {  }
  deriving (Show,Eq)
 
 data InitializeResult = InitializeResult { initializeResultCapabilities :: ServerCapabilities
-                                         , initializeResultServerInfo :: Maybe () }
+                                         , initializeResultServerInfo :: Maybe ServerInfo }
  deriving (Show,Eq)
 
 data InitializeError = InitializeError { initializeErrorRetry :: Bool }
@@ -4737,7 +5660,7 @@ data CompletionItem = CompletionItem { completionItemLabel :: String
  deriving (Show,Eq)
 
 data CompletionList = CompletionList { completionListIsIncomplete :: Bool
-                                     , completionListItemDefaults :: Maybe ()
+                                     , completionListItemDefaults :: Maybe CompletionItemDefaults
                                      , completionListItems :: [CompletionItem] }
  deriving (Show,Eq)
 
@@ -4759,7 +5682,7 @@ data SignatureHelpParams = SignatureHelpParams { signatureHelpParamsContext :: M
 
 data SignatureHelp = SignatureHelp { signatureHelpSignatures :: [SignatureInformation]
                                    , signatureHelpActiveSignature :: Maybe Int
-                                   , signatureHelpActiveParameter :: Maybe Int }
+                                   , signatureHelpActiveParameter :: Maybe (Either Int ()) }
  deriving (Show,Eq)
 
 data SignatureHelpRegistrationOptions = SignatureHelpRegistrationOptions {  }
@@ -4813,6 +5736,7 @@ data CodeActionParams = CodeActionParams { codeActionParamsTextDocument :: TextD
  deriving (Show,Eq)
 
 data Command = Command { commandTitle :: String
+                       , commandTooltip :: Maybe String
                        , commandCommand :: String
                        , commandArguments :: Maybe [LSPAny] }
  deriving (Show,Eq)
@@ -4821,7 +5745,7 @@ data CodeAction = CodeAction { codeActionTitle :: String
                              , codeActionKind :: Maybe CodeActionKind
                              , codeActionDiagnostics :: Maybe [Diagnostic]
                              , codeActionIsPreferred :: Maybe Bool
-                             , codeActionDisabled :: Maybe ()
+                             , codeActionDisabled :: Maybe CodeActionDisabled
                              , codeActionEdit :: Maybe WorkspaceEdit
                              , codeActionCommand :: Maybe Command
                              , codeActionData :: Maybe LSPAny }
@@ -4833,7 +5757,7 @@ data CodeActionRegistrationOptions = CodeActionRegistrationOptions {  }
 data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsQuery :: String }
  deriving (Show,Eq)
 
-data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolLocation :: Either Location ()
+data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolLocation :: Either Location LocationUriOnly
                                        , workspaceSymbolData :: Maybe LSPAny }
  deriving (Show,Eq)
 
@@ -4855,7 +5779,7 @@ data DocumentLinkParams = DocumentLinkParams { documentLinkParamsTextDocument ::
  deriving (Show,Eq)
 
 data DocumentLink = DocumentLink { documentLinkRange :: Range
-                                 , documentLinkTarget :: Maybe String
+                                 , documentLinkTarget :: Maybe Uri
                                  , documentLinkTooltip :: Maybe String
                                  , documentLinkData :: Maybe LSPAny }
  deriving (Show,Eq)
@@ -4876,6 +5800,11 @@ data DocumentRangeFormattingParams = DocumentRangeFormattingParams { documentRan
  deriving (Show,Eq)
 
 data DocumentRangeFormattingRegistrationOptions = DocumentRangeFormattingRegistrationOptions {  }
+ deriving (Show,Eq)
+
+data DocumentRangesFormattingParams = DocumentRangesFormattingParams { documentRangesFormattingParamsTextDocument :: TextDocumentIdentifier
+                                                                     , documentRangesFormattingParamsRanges :: [Range]
+                                                                     , documentRangesFormattingParamsOptions :: FormattingOptions }
  deriving (Show,Eq)
 
 data DocumentOnTypeFormattingParams = DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument :: TextDocumentIdentifier
@@ -4906,7 +5835,8 @@ data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions {  }
  deriving (Show,Eq)
 
 data ApplyWorkspaceEditParams = ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel :: Maybe String
-                                                         , applyWorkspaceEditParamsEdit :: WorkspaceEdit }
+                                                         , applyWorkspaceEditParamsEdit :: WorkspaceEdit
+                                                         , applyWorkspaceEditParamsMetadata :: Maybe WorkspaceEditMetadata }
  deriving (Show,Eq)
 
 data ApplyWorkspaceEditResult = ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied :: Bool
@@ -4931,7 +5861,7 @@ data WorkDoneProgressEnd = WorkDoneProgressEnd { workDoneProgressEndKind :: Stri
                                                , workDoneProgressEndMessage :: Maybe String }
  deriving (Show,Eq)
 
-data SetTraceParams = SetTraceParams { setTraceParamsValue :: TraceValues }
+data SetTraceParams = SetTraceParams { setTraceParamsValue :: TraceValue }
  deriving (Show,Eq)
 
 data LogTraceParams = LogTraceParams { logTraceParamsMessage :: String
@@ -4950,6 +5880,9 @@ data TextDocumentPositionParams = TextDocumentPositionParams { textDocumentPosit
  deriving (Show,Eq)
 
 data WorkDoneProgressParams = WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken :: Maybe ProgressToken }
+ deriving (Show,Eq)
+
+data PartialResultParams = PartialResultParams { partialResultParamsPartialResultToken :: Maybe ProgressToken }
  deriving (Show,Eq)
 
 data LocationLink = LocationLink { locationLinkOriginSelectionRange :: Maybe Range
@@ -4974,7 +5907,7 @@ data WorkspaceFoldersChangeEvent = WorkspaceFoldersChangeEvent { workspaceFolder
                                                                , workspaceFoldersChangeEventRemoved :: [WorkspaceFolder] }
  deriving (Show,Eq)
 
-data ConfigurationItem = ConfigurationItem { configurationItemScopeUri :: Maybe String
+data ConfigurationItem = ConfigurationItem { configurationItemScopeUri :: Maybe Uri
                                            , configurationItemSection :: Maybe String }
  deriving (Show,Eq)
 
@@ -5007,7 +5940,7 @@ data CallHierarchyOptions = CallHierarchyOptions {  }
 
 data SemanticTokensOptions = SemanticTokensOptions { semanticTokensOptionsLegend :: SemanticTokensLegend
                                                    , semanticTokensOptionsRange :: Maybe (Either Bool ())
-                                                   , semanticTokensOptionsFull :: Maybe (Either Bool ()) }
+                                                   , semanticTokensOptionsFull :: Maybe (Either Bool SemanticTokensFullDelta) }
  deriving (Show,Eq)
 
 data SemanticTokensEdit = SemanticTokensEdit { semanticTokensEditStart :: Int
@@ -5022,7 +5955,7 @@ data FileCreate = FileCreate { fileCreateUri :: String }
  deriving (Show,Eq)
 
 data TextDocumentEdit = TextDocumentEdit { textDocumentEditTextDocument :: OptionalVersionedTextDocumentIdentifier
-                                         , textDocumentEditEdits :: [Either TextEdit AnnotatedTextEdit] }
+                                         , textDocumentEditEdits :: [Either (Either TextEdit AnnotatedTextEdit) SnippetTextEdit] }
  deriving (Show,Eq)
 
 data CreateFile = CreateFile { createFileKind :: String
@@ -5120,7 +6053,7 @@ data PreviousResultId = PreviousResultId { previousResultIdUri :: DocumentUri
                                          , previousResultIdValue :: String }
  deriving (Show,Eq)
 
-data NotebookDocument = NotebookDocument { notebookDocumentUri :: URI
+data NotebookDocument = NotebookDocument { notebookDocumentUri :: Uri
                                          , notebookDocumentNotebookType :: String
                                          , notebookDocumentVersion :: Int
                                          , notebookDocumentMetadata :: Maybe LSPObject
@@ -5128,20 +6061,35 @@ data NotebookDocument = NotebookDocument { notebookDocumentUri :: URI
  deriving (Show,Eq)
 
 data TextDocumentItem = TextDocumentItem { textDocumentItemUri :: DocumentUri
-                                         , textDocumentItemLanguageId :: String
+                                         , textDocumentItemLanguageId :: LanguageKind
                                          , textDocumentItemVersion :: Int
                                          , textDocumentItemText :: String }
  deriving (Show,Eq)
 
+data NotebookDocumentSyncOptions = NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector :: [Either NotebookDocumentFilterWithNotebook NotebookDocumentFilterWithCells]
+                                                               , notebookDocumentSyncOptionsSave :: Maybe Bool }
+ deriving (Show,Eq)
+
 data VersionedNotebookDocumentIdentifier = VersionedNotebookDocumentIdentifier { versionedNotebookDocumentIdentifierVersion :: Int
-                                                                               , versionedNotebookDocumentIdentifierUri :: URI }
+                                                                               , versionedNotebookDocumentIdentifierUri :: Uri }
  deriving (Show,Eq)
 
 data NotebookDocumentChangeEvent = NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata :: Maybe LSPObject
-                                                               , notebookDocumentChangeEventCells :: Maybe () }
+                                                               , notebookDocumentChangeEventCells :: Maybe NotebookDocumentCellChanges }
  deriving (Show,Eq)
 
-data NotebookDocumentIdentifier = NotebookDocumentIdentifier { notebookDocumentIdentifierUri :: URI }
+data NotebookDocumentIdentifier = NotebookDocumentIdentifier { notebookDocumentIdentifierUri :: Uri }
+ deriving (Show,Eq)
+
+data InlineCompletionContext = InlineCompletionContext { inlineCompletionContextTriggerKind :: InlineCompletionTriggerKind
+                                                       , inlineCompletionContextSelectedCompletionInfo :: Maybe SelectedCompletionInfo }
+ deriving (Show,Eq)
+
+data StringValue = StringValue { stringValueKind :: String
+                               , stringValueValue :: String }
+ deriving (Show,Eq)
+
+data InlineCompletionOptions = InlineCompletionOptions {  }
  deriving (Show,Eq)
 
 data Registration = Registration { registrationId :: String
@@ -5154,13 +6102,13 @@ data Unregistration = Unregistration { unregistrationId :: String
  deriving (Show,Eq)
 
 data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsProcessId :: Either Int ()
-                                                 , baseInitializeParamsClientInfo :: Maybe ()
+                                                 , baseInitializeParamsClientInfo :: Maybe ClientInfo
                                                  , baseInitializeParamsLocale :: Maybe String
                                                  , baseInitializeParamsRootPath :: Maybe (Either String ())
                                                  , baseInitializeParamsRootUri :: Either DocumentUri ()
                                                  , baseInitializeParamsCapabilities :: ClientCapabilities
                                                  , baseInitializeParamsInitializationOptions :: Maybe LSPAny
-                                                 , baseInitializeParamsTrace :: Maybe (Either (Either (Either String String) String) String) }
+                                                 , baseInitializeParamsTrace :: Maybe TraceValue }
  deriving (Show,Eq)
 
 data WorkspaceFoldersInitializeParams = WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders :: Maybe (Either [WorkspaceFolder] ()) }
@@ -5199,8 +6147,13 @@ data ServerCapabilities = ServerCapabilities { serverCapabilitiesPositionEncodin
                                              , serverCapabilitiesInlineValueProvider :: Maybe (Either (Either Bool InlineValueOptions) InlineValueRegistrationOptions)
                                              , serverCapabilitiesInlayHintProvider :: Maybe (Either (Either Bool InlayHintOptions) InlayHintRegistrationOptions)
                                              , serverCapabilitiesDiagnosticProvider :: Maybe (Either DiagnosticOptions DiagnosticRegistrationOptions)
-                                             , serverCapabilitiesWorkspace :: Maybe ()
+                                             , serverCapabilitiesInlineCompletionProvider :: Maybe (Either Bool InlineCompletionOptions)
+                                             , serverCapabilitiesWorkspace :: Maybe WorkspaceOptions
                                              , serverCapabilitiesExperimental :: Maybe LSPAny }
+ deriving (Show,Eq)
+
+data ServerInfo = ServerInfo { serverInfoName :: String
+                             , serverInfoVersion :: Maybe String }
  deriving (Show,Eq)
 
 data VersionedTextDocumentIdentifier = VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion :: Int }
@@ -5241,10 +6194,17 @@ data InsertReplaceEdit = InsertReplaceEdit { insertReplaceEditNewText :: String
                                            , insertReplaceEditReplace :: Range }
  deriving (Show,Eq)
 
+data CompletionItemDefaults = CompletionItemDefaults { completionItemDefaultsCommitCharacters :: Maybe [String]
+                                                     , completionItemDefaultsEditRange :: Maybe (Either Range EditRangeWithInsertReplace)
+                                                     , completionItemDefaultsInsertTextFormat :: Maybe InsertTextFormat
+                                                     , completionItemDefaultsInsertTextMode :: Maybe InsertTextMode
+                                                     , completionItemDefaultsData :: Maybe LSPAny }
+ deriving (Show,Eq)
+
 data CompletionOptions = CompletionOptions { completionOptionsTriggerCharacters :: Maybe [String]
                                            , completionOptionsAllCommitCharacters :: Maybe [String]
                                            , completionOptionsResolveProvider :: Maybe Bool
-                                           , completionOptionsCompletionItem :: Maybe () }
+                                           , completionOptionsCompletionItem :: Maybe ServerCompletionItemOptions }
  deriving (Show,Eq)
 
 data HoverOptions = HoverOptions {  }
@@ -5259,7 +6219,7 @@ data SignatureHelpContext = SignatureHelpContext { signatureHelpContextTriggerKi
 data SignatureInformation = SignatureInformation { signatureInformationLabel :: String
                                                  , signatureInformationDocumentation :: Maybe (Either String MarkupContent)
                                                  , signatureInformationParameters :: Maybe [ParameterInformation]
-                                                 , signatureInformationActiveParameter :: Maybe Int }
+                                                 , signatureInformationActiveParameter :: Maybe (Either Int ()) }
  deriving (Show,Eq)
 
 data SignatureHelpOptions = SignatureHelpOptions { signatureHelpOptionsTriggerCharacters :: Maybe [String]
@@ -5292,8 +6252,15 @@ data CodeActionContext = CodeActionContext { codeActionContextDiagnostics :: [Di
                                            , codeActionContextTriggerKind :: Maybe CodeActionTriggerKind }
  deriving (Show,Eq)
 
+data CodeActionDisabled = CodeActionDisabled { codeActionDisabledReason :: String }
+ deriving (Show,Eq)
+
 data CodeActionOptions = CodeActionOptions { codeActionOptionsCodeActionKinds :: Maybe [CodeActionKind]
+                                           , codeActionOptionsDocumentation :: Maybe [CodeActionKindDocumentation]
                                            , codeActionOptionsResolveProvider :: Maybe Bool }
+ deriving (Show,Eq)
+
+data LocationUriOnly = LocationUriOnly { locationUriOnlyUri :: DocumentUri }
  deriving (Show,Eq)
 
 data WorkspaceSymbolOptions = WorkspaceSymbolOptions { workspaceSymbolOptionsResolveProvider :: Maybe Bool }
@@ -5315,7 +6282,7 @@ data FormattingOptions = FormattingOptions { formattingOptionsTabSize :: Int
 data DocumentFormattingOptions = DocumentFormattingOptions {  }
  deriving (Show,Eq)
 
-data DocumentRangeFormattingOptions = DocumentRangeFormattingOptions {  }
+data DocumentRangeFormattingOptions = DocumentRangeFormattingOptions { documentRangeFormattingOptionsRangesSupport :: Maybe Bool }
  deriving (Show,Eq)
 
 data DocumentOnTypeFormattingOptions = DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter :: String
@@ -5325,17 +6292,35 @@ data DocumentOnTypeFormattingOptions = DocumentOnTypeFormattingOptions { documen
 data RenameOptions = RenameOptions { renameOptionsPrepareProvider :: Maybe Bool }
  deriving (Show,Eq)
 
+data PrepareRenamePlaceholder = PrepareRenamePlaceholder { prepareRenamePlaceholderRange :: Range
+                                                         , prepareRenamePlaceholderPlaceholder :: String }
+ deriving (Show,Eq)
+
+data PrepareRenameDefaultBehavior = PrepareRenameDefaultBehavior { prepareRenameDefaultBehaviorDefaultBehavior :: Bool }
+ deriving (Show,Eq)
+
 data ExecuteCommandOptions = ExecuteCommandOptions { executeCommandOptionsCommands :: [String] }
+ deriving (Show,Eq)
+
+data WorkspaceEditMetadata = WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring :: Maybe Bool }
  deriving (Show,Eq)
 
 data SemanticTokensLegend = SemanticTokensLegend { semanticTokensLegendTokenTypes :: [String]
                                                  , semanticTokensLegendTokenModifiers :: [String] }
  deriving (Show,Eq)
 
+data SemanticTokensFullDelta = SemanticTokensFullDelta { semanticTokensFullDeltaDelta :: Maybe Bool }
+ deriving (Show,Eq)
+
 data OptionalVersionedTextDocumentIdentifier = OptionalVersionedTextDocumentIdentifier { optionalVersionedTextDocumentIdentifierVersion :: Either Int () }
  deriving (Show,Eq)
 
 data AnnotatedTextEdit = AnnotatedTextEdit { annotatedTextEditAnnotationId :: ChangeAnnotationIdentifier }
+ deriving (Show,Eq)
+
+data SnippetTextEdit = SnippetTextEdit { snippetTextEditRange :: Range
+                                       , snippetTextEditSnippet :: StringValue
+                                       , snippetTextEditAnnotationId :: Maybe ChangeAnnotationIdentifier }
  deriving (Show,Eq)
 
 data ResourceOperation = ResourceOperation { resourceOperationKind :: String
@@ -5367,18 +6352,31 @@ data WorkspaceUnchangedDocumentDiagnosticReport = WorkspaceUnchangedDocumentDiag
                                                                                              , workspaceUnchangedDocumentDiagnosticReportVersion :: Either Int () }
  deriving (Show,Eq)
 
-data LSPObject = LSPObject {  }
- deriving (Show,Eq)
-
 data NotebookCell = NotebookCell { notebookCellKind :: NotebookCellKind
                                  , notebookCellDocument :: DocumentUri
                                  , notebookCellMetadata :: Maybe LSPObject
                                  , notebookCellExecutionSummary :: Maybe ExecutionSummary }
  deriving (Show,Eq)
 
-data NotebookCellArrayChange = NotebookCellArrayChange { notebookCellArrayChangeStart :: Int
-                                                       , notebookCellArrayChangeDeleteCount :: Int
-                                                       , notebookCellArrayChangeCells :: Maybe [NotebookCell] }
+data NotebookDocumentFilterWithNotebook = NotebookDocumentFilterWithNotebook { notebookDocumentFilterWithNotebookNotebook :: Either String NotebookDocumentFilter
+                                                                             , notebookDocumentFilterWithNotebookCells :: Maybe [NotebookCellLanguage] }
+ deriving (Show,Eq)
+
+data NotebookDocumentFilterWithCells = NotebookDocumentFilterWithCells { notebookDocumentFilterWithCellsNotebook :: Maybe (Either String NotebookDocumentFilter)
+                                                                       , notebookDocumentFilterWithCellsCells :: [NotebookCellLanguage] }
+ deriving (Show,Eq)
+
+data NotebookDocumentCellChanges = NotebookDocumentCellChanges { notebookDocumentCellChangesStructure :: Maybe NotebookDocumentCellChangeStructure
+                                                               , notebookDocumentCellChangesData :: Maybe [NotebookCell]
+                                                               , notebookDocumentCellChangesTextContent :: Maybe [NotebookDocumentCellContentChanges] }
+ deriving (Show,Eq)
+
+data SelectedCompletionInfo = SelectedCompletionInfo { selectedCompletionInfoRange :: Range
+                                                     , selectedCompletionInfoText :: String }
+ deriving (Show,Eq)
+
+data ClientInfo = ClientInfo { clientInfoName :: String
+                             , clientInfoVersion :: Maybe String }
  deriving (Show,Eq)
 
 data ClientCapabilities = ClientCapabilities { clientCapabilitiesWorkspace :: Maybe WorkspaceClientCapabilities
@@ -5396,35 +6394,43 @@ data TextDocumentSyncOptions = TextDocumentSyncOptions { textDocumentSyncOptions
                                                        , textDocumentSyncOptionsSave :: Maybe (Either Bool SaveOptions) }
  deriving (Show,Eq)
 
-data NotebookDocumentSyncOptions = NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector :: [Either () ()]
-                                                               , notebookDocumentSyncOptionsSave :: Maybe Bool }
+data WorkspaceOptions = WorkspaceOptions { workspaceOptionsWorkspaceFolders :: Maybe WorkspaceFoldersServerCapabilities
+                                         , workspaceOptionsFileOperations :: Maybe FileOperationOptions }
  deriving (Show,Eq)
 
-data NotebookDocumentSyncRegistrationOptions = NotebookDocumentSyncRegistrationOptions {  }
+data TextDocumentContentChangePartial = TextDocumentContentChangePartial { textDocumentContentChangePartialRange :: Range
+                                                                         , textDocumentContentChangePartialRangeLength :: Maybe Int
+                                                                         , textDocumentContentChangePartialText :: String }
  deriving (Show,Eq)
 
-data WorkspaceFoldersServerCapabilities = WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported :: Maybe Bool
-                                                                             , workspaceFoldersServerCapabilitiesChangeNotifications :: Maybe (Either String Bool) }
+data TextDocumentContentChangeWholeDocument = TextDocumentContentChangeWholeDocument { textDocumentContentChangeWholeDocumentText :: String }
  deriving (Show,Eq)
 
-data FileOperationOptions = FileOperationOptions { fileOperationOptionsDidCreate :: Maybe FileOperationRegistrationOptions
-                                                 , fileOperationOptionsWillCreate :: Maybe FileOperationRegistrationOptions
-                                                 , fileOperationOptionsDidRename :: Maybe FileOperationRegistrationOptions
-                                                 , fileOperationOptionsWillRename :: Maybe FileOperationRegistrationOptions
-                                                 , fileOperationOptionsDidDelete :: Maybe FileOperationRegistrationOptions
-                                                 , fileOperationOptionsWillDelete :: Maybe FileOperationRegistrationOptions }
- deriving (Show,Eq)
-
-data CodeDescription = CodeDescription { codeDescriptionHref :: URI }
+data CodeDescription = CodeDescription { codeDescriptionHref :: Uri }
  deriving (Show,Eq)
 
 data DiagnosticRelatedInformation = DiagnosticRelatedInformation { diagnosticRelatedInformationLocation :: Location
                                                                  , diagnosticRelatedInformationMessage :: String }
  deriving (Show,Eq)
 
+data EditRangeWithInsertReplace = EditRangeWithInsertReplace { editRangeWithInsertReplaceInsert :: Range
+                                                             , editRangeWithInsertReplaceReplace :: Range }
+ deriving (Show,Eq)
+
+data ServerCompletionItemOptions = ServerCompletionItemOptions { serverCompletionItemOptionsLabelDetailsSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data MarkedStringWithLanguage = MarkedStringWithLanguage { markedStringWithLanguageLanguage :: String
+                                                         , markedStringWithLanguageValue :: String }
+ deriving (Show,Eq)
+
 data ParameterInformation = ParameterInformation { parameterInformationLabel :: Either String (Int
                                                                                               ,Int)
                                                  , parameterInformationDocumentation :: Maybe (Either String MarkupContent) }
+ deriving (Show,Eq)
+
+data CodeActionKindDocumentation = CodeActionKindDocumentation { codeActionKindDocumentationKind :: CodeActionKind
+                                                               , codeActionKindDocumentationCommand :: Command }
  deriving (Show,Eq)
 
 data NotebookCellTextDocumentFilter = NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook :: Either String NotebookDocumentFilter
@@ -5436,6 +6442,18 @@ data FileOperationPatternOptions = FileOperationPatternOptions { fileOperationPa
 
 data ExecutionSummary = ExecutionSummary { executionSummaryExecutionOrder :: Int
                                          , executionSummarySuccess :: Maybe Bool }
+ deriving (Show,Eq)
+
+data NotebookCellLanguage = NotebookCellLanguage { notebookCellLanguageLanguage :: String }
+ deriving (Show,Eq)
+
+data NotebookDocumentCellChangeStructure = NotebookDocumentCellChangeStructure { notebookDocumentCellChangeStructureArray :: NotebookCellArrayChange
+                                                                               , notebookDocumentCellChangeStructureDidOpen :: Maybe [TextDocumentItem]
+                                                                               , notebookDocumentCellChangeStructureDidClose :: Maybe [TextDocumentIdentifier] }
+ deriving (Show,Eq)
+
+data NotebookDocumentCellContentChanges = NotebookDocumentCellContentChanges { notebookDocumentCellContentChangesDocument :: VersionedTextDocumentIdentifier
+                                                                             , notebookDocumentCellContentChangesChanges :: [TextDocumentContentChangeEvent] }
  deriving (Show,Eq)
 
 data WorkspaceClientCapabilities = WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit :: Maybe Bool
@@ -5451,7 +6469,8 @@ data WorkspaceClientCapabilities = WorkspaceClientCapabilities { workspaceClient
                                                                , workspaceClientCapabilitiesFileOperations :: Maybe FileOperationClientCapabilities
                                                                , workspaceClientCapabilitiesInlineValue :: Maybe InlineValueWorkspaceClientCapabilities
                                                                , workspaceClientCapabilitiesInlayHint :: Maybe InlayHintWorkspaceClientCapabilities
-                                                               , workspaceClientCapabilitiesDiagnostics :: Maybe DiagnosticWorkspaceClientCapabilities }
+                                                               , workspaceClientCapabilitiesDiagnostics :: Maybe DiagnosticWorkspaceClientCapabilities
+                                                               , workspaceClientCapabilitiesFoldingRange :: Maybe FoldingRangeWorkspaceClientCapabilities }
  deriving (Show,Eq)
 
 data TextDocumentClientCapabilities = TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization :: Maybe TextDocumentSyncClientCapabilities
@@ -5483,7 +6502,8 @@ data TextDocumentClientCapabilities = TextDocumentClientCapabilities { textDocum
                                                                      , textDocumentClientCapabilitiesTypeHierarchy :: Maybe TypeHierarchyClientCapabilities
                                                                      , textDocumentClientCapabilitiesInlineValue :: Maybe InlineValueClientCapabilities
                                                                      , textDocumentClientCapabilitiesInlayHint :: Maybe InlayHintClientCapabilities
-                                                                     , textDocumentClientCapabilitiesDiagnostic :: Maybe DiagnosticClientCapabilities }
+                                                                     , textDocumentClientCapabilitiesDiagnostic :: Maybe DiagnosticClientCapabilities
+                                                                     , textDocumentClientCapabilitiesInlineCompletion :: Maybe InlineCompletionClientCapabilities }
  deriving (Show,Eq)
 
 data NotebookDocumentClientCapabilities = NotebookDocumentClientCapabilities { notebookDocumentClientCapabilitiesSynchronization :: NotebookDocumentSyncClientCapabilities }
@@ -5494,21 +6514,70 @@ data WindowClientCapabilities = WindowClientCapabilities { windowClientCapabilit
                                                          , windowClientCapabilitiesShowDocument :: Maybe ShowDocumentClientCapabilities }
  deriving (Show,Eq)
 
-data GeneralClientCapabilities = GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport :: Maybe ()
+data GeneralClientCapabilities = GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport :: Maybe StaleRequestSupportOptions
                                                            , generalClientCapabilitiesRegularExpressions :: Maybe RegularExpressionsClientCapabilities
                                                            , generalClientCapabilitiesMarkdown :: Maybe MarkdownClientCapabilities
                                                            , generalClientCapabilitiesPositionEncodings :: Maybe [PositionEncodingKind] }
  deriving (Show,Eq)
 
-data RelativePattern = RelativePattern { relativePatternBaseUri :: Either WorkspaceFolder URI
+data WorkspaceFoldersServerCapabilities = WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported :: Maybe Bool
+                                                                             , workspaceFoldersServerCapabilitiesChangeNotifications :: Maybe (Either String Bool) }
+ deriving (Show,Eq)
+
+data FileOperationOptions = FileOperationOptions { fileOperationOptionsDidCreate :: Maybe FileOperationRegistrationOptions
+                                                 , fileOperationOptionsWillCreate :: Maybe FileOperationRegistrationOptions
+                                                 , fileOperationOptionsDidRename :: Maybe FileOperationRegistrationOptions
+                                                 , fileOperationOptionsWillRename :: Maybe FileOperationRegistrationOptions
+                                                 , fileOperationOptionsDidDelete :: Maybe FileOperationRegistrationOptions
+                                                 , fileOperationOptionsWillDelete :: Maybe FileOperationRegistrationOptions }
+ deriving (Show,Eq)
+
+data RelativePattern = RelativePattern { relativePatternBaseUri :: Either WorkspaceFolder Uri
                                        , relativePatternPattern :: Pattern }
+ deriving (Show,Eq)
+
+data TextDocumentFilterLanguage = TextDocumentFilterLanguage { textDocumentFilterLanguageLanguage :: String
+                                                             , textDocumentFilterLanguageScheme :: Maybe String
+                                                             , textDocumentFilterLanguagePattern :: Maybe GlobPattern }
+ deriving (Show,Eq)
+
+data TextDocumentFilterScheme = TextDocumentFilterScheme { textDocumentFilterSchemeLanguage :: Maybe String
+                                                         , textDocumentFilterSchemeScheme :: String
+                                                         , textDocumentFilterSchemePattern :: Maybe GlobPattern }
+ deriving (Show,Eq)
+
+data TextDocumentFilterPattern = TextDocumentFilterPattern { textDocumentFilterPatternLanguage :: Maybe String
+                                                           , textDocumentFilterPatternScheme :: Maybe String
+                                                           , textDocumentFilterPatternPattern :: GlobPattern }
+ deriving (Show,Eq)
+
+data NotebookDocumentFilterNotebookType = NotebookDocumentFilterNotebookType { notebookDocumentFilterNotebookTypeNotebookType :: String
+                                                                             , notebookDocumentFilterNotebookTypeScheme :: Maybe String
+                                                                             , notebookDocumentFilterNotebookTypePattern :: Maybe GlobPattern }
+ deriving (Show,Eq)
+
+data NotebookDocumentFilterScheme = NotebookDocumentFilterScheme { notebookDocumentFilterSchemeNotebookType :: Maybe String
+                                                                 , notebookDocumentFilterSchemeScheme :: String
+                                                                 , notebookDocumentFilterSchemePattern :: Maybe GlobPattern }
+ deriving (Show,Eq)
+
+data NotebookDocumentFilterPattern = NotebookDocumentFilterPattern { notebookDocumentFilterPatternNotebookType :: Maybe String
+                                                                   , notebookDocumentFilterPatternScheme :: Maybe String
+                                                                   , notebookDocumentFilterPatternPattern :: GlobPattern }
+ deriving (Show,Eq)
+
+data NotebookCellArrayChange = NotebookCellArrayChange { notebookCellArrayChangeStart :: Int
+                                                       , notebookCellArrayChangeDeleteCount :: Int
+                                                       , notebookCellArrayChangeCells :: Maybe [NotebookCell] }
  deriving (Show,Eq)
 
 data WorkspaceEditClientCapabilities = WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges :: Maybe Bool
                                                                        , workspaceEditClientCapabilitiesResourceOperations :: Maybe [ResourceOperationKind]
                                                                        , workspaceEditClientCapabilitiesFailureHandling :: Maybe FailureHandlingKind
                                                                        , workspaceEditClientCapabilitiesNormalizesLineEndings :: Maybe Bool
-                                                                       , workspaceEditClientCapabilitiesChangeAnnotationSupport :: Maybe () }
+                                                                       , workspaceEditClientCapabilitiesChangeAnnotationSupport :: Maybe ChangeAnnotationsSupportOptions
+                                                                       , workspaceEditClientCapabilitiesMetadataSupport :: Maybe Bool
+                                                                       , workspaceEditClientCapabilitiesSnippetEditSupport :: Maybe Bool }
  deriving (Show,Eq)
 
 data DidChangeConfigurationClientCapabilities = DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration :: Maybe Bool }
@@ -5519,9 +6588,9 @@ data DidChangeWatchedFilesClientCapabilities = DidChangeWatchedFilesClientCapabi
  deriving (Show,Eq)
 
 data WorkspaceSymbolClientCapabilities = WorkspaceSymbolClientCapabilities { workspaceSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                           , workspaceSymbolClientCapabilitiesSymbolKind :: Maybe ()
-                                                                           , workspaceSymbolClientCapabilitiesTagSupport :: Maybe ()
-                                                                           , workspaceSymbolClientCapabilitiesResolveSupport :: Maybe () }
+                                                                           , workspaceSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions
+                                                                           , workspaceSymbolClientCapabilitiesTagSupport :: Maybe ClientSymbolTagOptions
+                                                                           , workspaceSymbolClientCapabilitiesResolveSupport :: Maybe ClientSymbolResolveOptions }
  deriving (Show,Eq)
 
 data ExecuteCommandClientCapabilities = ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration :: Maybe Bool }
@@ -5551,6 +6620,9 @@ data InlayHintWorkspaceClientCapabilities = InlayHintWorkspaceClientCapabilities
 data DiagnosticWorkspaceClientCapabilities = DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 
+data FoldingRangeWorkspaceClientCapabilities = FoldingRangeWorkspaceClientCapabilities { foldingRangeWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
 data TextDocumentSyncClientCapabilities = TextDocumentSyncClientCapabilities { textDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                              , textDocumentSyncClientCapabilitiesWillSave :: Maybe Bool
                                                                              , textDocumentSyncClientCapabilitiesWillSaveWaitUntil :: Maybe Bool
@@ -5558,11 +6630,11 @@ data TextDocumentSyncClientCapabilities = TextDocumentSyncClientCapabilities { t
  deriving (Show,Eq)
 
 data CompletionClientCapabilities = CompletionClientCapabilities { completionClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                 , completionClientCapabilitiesCompletionItem :: Maybe ()
-                                                                 , completionClientCapabilitiesCompletionItemKind :: Maybe ()
+                                                                 , completionClientCapabilitiesCompletionItem :: Maybe ClientCompletionItemOptions
+                                                                 , completionClientCapabilitiesCompletionItemKind :: Maybe ClientCompletionItemOptionsKind
                                                                  , completionClientCapabilitiesInsertTextMode :: Maybe InsertTextMode
                                                                  , completionClientCapabilitiesContextSupport :: Maybe Bool
-                                                                 , completionClientCapabilitiesCompletionList :: Maybe () }
+                                                                 , completionClientCapabilitiesCompletionList :: Maybe CompletionListCapabilities }
  deriving (Show,Eq)
 
 data HoverClientCapabilities = HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration :: Maybe Bool
@@ -5570,7 +6642,7 @@ data HoverClientCapabilities = HoverClientCapabilities { hoverClientCapabilities
  deriving (Show,Eq)
 
 data SignatureHelpClientCapabilities = SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                       , signatureHelpClientCapabilitiesSignatureInformation :: Maybe ()
+                                                                       , signatureHelpClientCapabilitiesSignatureInformation :: Maybe ClientSignatureInformationOptions
                                                                        , signatureHelpClientCapabilitiesContextSupport :: Maybe Bool }
  deriving (Show,Eq)
 
@@ -5597,22 +6669,24 @@ data DocumentHighlightClientCapabilities = DocumentHighlightClientCapabilities {
  deriving (Show,Eq)
 
 data DocumentSymbolClientCapabilities = DocumentSymbolClientCapabilities { documentSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                         , documentSymbolClientCapabilitiesSymbolKind :: Maybe ()
+                                                                         , documentSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions
                                                                          , documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport :: Maybe Bool
-                                                                         , documentSymbolClientCapabilitiesTagSupport :: Maybe ()
+                                                                         , documentSymbolClientCapabilitiesTagSupport :: Maybe ClientSymbolTagOptions
                                                                          , documentSymbolClientCapabilitiesLabelSupport :: Maybe Bool }
  deriving (Show,Eq)
 
 data CodeActionClientCapabilities = CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                 , codeActionClientCapabilitiesCodeActionLiteralSupport :: Maybe ()
+                                                                 , codeActionClientCapabilitiesCodeActionLiteralSupport :: Maybe ClientCodeActionLiteralOptions
                                                                  , codeActionClientCapabilitiesIsPreferredSupport :: Maybe Bool
                                                                  , codeActionClientCapabilitiesDisabledSupport :: Maybe Bool
                                                                  , codeActionClientCapabilitiesDataSupport :: Maybe Bool
-                                                                 , codeActionClientCapabilitiesResolveSupport :: Maybe ()
-                                                                 , codeActionClientCapabilitiesHonorsChangeAnnotations :: Maybe Bool }
+                                                                 , codeActionClientCapabilitiesResolveSupport :: Maybe ClientCodeActionResolveOptions
+                                                                 , codeActionClientCapabilitiesHonorsChangeAnnotations :: Maybe Bool
+                                                                 , codeActionClientCapabilitiesDocumentationSupport :: Maybe Bool }
  deriving (Show,Eq)
 
-data CodeLensClientCapabilities = CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration :: Maybe Bool }
+data CodeLensClientCapabilities = CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration :: Maybe Bool
+                                                             , codeLensClientCapabilitiesResolveSupport :: Maybe ClientCodeLensResolveOptions }
  deriving (Show,Eq)
 
 data DocumentLinkClientCapabilities = DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration :: Maybe Bool
@@ -5625,7 +6699,8 @@ data DocumentColorClientCapabilities = DocumentColorClientCapabilities { documen
 data DocumentFormattingClientCapabilities = DocumentFormattingClientCapabilities { documentFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 
-data DocumentRangeFormattingClientCapabilities = DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool }
+data DocumentRangeFormattingClientCapabilities = DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool
+                                                                                           , documentRangeFormattingClientCapabilitiesRangesSupport :: Maybe Bool }
  deriving (Show,Eq)
 
 data DocumentOnTypeFormattingClientCapabilities = DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool }
@@ -5640,25 +6715,21 @@ data RenameClientCapabilities = RenameClientCapabilities { renameClientCapabilit
 data FoldingRangeClientCapabilities = FoldingRangeClientCapabilities { foldingRangeClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                      , foldingRangeClientCapabilitiesRangeLimit :: Maybe Int
                                                                      , foldingRangeClientCapabilitiesLineFoldingOnly :: Maybe Bool
-                                                                     , foldingRangeClientCapabilitiesFoldingRangeKind :: Maybe ()
-                                                                     , foldingRangeClientCapabilitiesFoldingRange :: Maybe () }
+                                                                     , foldingRangeClientCapabilitiesFoldingRangeKind :: Maybe ClientFoldingRangeKindOptions
+                                                                     , foldingRangeClientCapabilitiesFoldingRange :: Maybe ClientFoldingRangeOptions }
  deriving (Show,Eq)
 
 data SelectionRangeClientCapabilities = SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 
-data PublishDiagnosticsClientCapabilities = PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation :: Maybe Bool
-                                                                                 , publishDiagnosticsClientCapabilitiesTagSupport :: Maybe ()
-                                                                                 , publishDiagnosticsClientCapabilitiesVersionSupport :: Maybe Bool
-                                                                                 , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport :: Maybe Bool
-                                                                                 , publishDiagnosticsClientCapabilitiesDataSupport :: Maybe Bool }
+data PublishDiagnosticsClientCapabilities = PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesVersionSupport :: Maybe Bool }
  deriving (Show,Eq)
 
 data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 
 data SemanticTokensClientCapabilities = SemanticTokensClientCapabilities { semanticTokensClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                                         , semanticTokensClientCapabilitiesRequests :: ()
+                                                                         , semanticTokensClientCapabilitiesRequests :: ClientSemanticTokensRequestOptions
                                                                          , semanticTokensClientCapabilitiesTokenTypes :: [String]
                                                                          , semanticTokensClientCapabilitiesTokenModifiers :: [String]
                                                                          , semanticTokensClientCapabilitiesFormats :: [TokenFormat]
@@ -5681,30 +6752,125 @@ data InlineValueClientCapabilities = InlineValueClientCapabilities { inlineValue
  deriving (Show,Eq)
 
 data InlayHintClientCapabilities = InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration :: Maybe Bool
-                                                               , inlayHintClientCapabilitiesResolveSupport :: Maybe () }
+                                                               , inlayHintClientCapabilitiesResolveSupport :: Maybe ClientInlayHintResolveOptions }
  deriving (Show,Eq)
 
 data DiagnosticClientCapabilities = DiagnosticClientCapabilities { diagnosticClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , diagnosticClientCapabilitiesRelatedDocumentSupport :: Maybe Bool }
  deriving (Show,Eq)
 
+data InlineCompletionClientCapabilities = InlineCompletionClientCapabilities { inlineCompletionClientCapabilitiesDynamicRegistration :: Maybe Bool }
+ deriving (Show,Eq)
+
 data NotebookDocumentSyncClientCapabilities = NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                      , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport :: Maybe Bool }
  deriving (Show,Eq)
 
-data ShowMessageRequestClientCapabilities = ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem :: Maybe () }
+data ShowMessageRequestClientCapabilities = ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem :: Maybe ClientShowMessageActionItemOptions }
  deriving (Show,Eq)
 
 data ShowDocumentClientCapabilities = ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport :: Bool }
  deriving (Show,Eq)
 
-data RegularExpressionsClientCapabilities = RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine :: String
+data StaleRequestSupportOptions = StaleRequestSupportOptions { staleRequestSupportOptionsCancel :: Bool
+                                                             , staleRequestSupportOptionsRetryOnContentModified :: [String] }
+ deriving (Show,Eq)
+
+data RegularExpressionsClientCapabilities = RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine :: RegularExpressionEngineKind
                                                                                  , regularExpressionsClientCapabilitiesVersion :: Maybe String }
  deriving (Show,Eq)
 
 data MarkdownClientCapabilities = MarkdownClientCapabilities { markdownClientCapabilitiesParser :: String
                                                              , markdownClientCapabilitiesVersion :: Maybe String
                                                              , markdownClientCapabilitiesAllowedTags :: Maybe [String] }
+ deriving (Show,Eq)
+
+data ChangeAnnotationsSupportOptions = ChangeAnnotationsSupportOptions { changeAnnotationsSupportOptionsGroupsOnLabel :: Maybe Bool }
+ deriving (Show,Eq)
+
+data ClientSymbolKindOptions = ClientSymbolKindOptions { clientSymbolKindOptionsValueSet :: Maybe [SymbolKind] }
+ deriving (Show,Eq)
+
+data ClientSymbolTagOptions = ClientSymbolTagOptions { clientSymbolTagOptionsValueSet :: [SymbolTag] }
+ deriving (Show,Eq)
+
+data ClientSymbolResolveOptions = ClientSymbolResolveOptions { clientSymbolResolveOptionsProperties :: [String] }
+ deriving (Show,Eq)
+
+data ClientCompletionItemOptions = ClientCompletionItemOptions { clientCompletionItemOptionsSnippetSupport :: Maybe Bool
+                                                               , clientCompletionItemOptionsCommitCharactersSupport :: Maybe Bool
+                                                               , clientCompletionItemOptionsDocumentationFormat :: Maybe [MarkupKind]
+                                                               , clientCompletionItemOptionsDeprecatedSupport :: Maybe Bool
+                                                               , clientCompletionItemOptionsPreselectSupport :: Maybe Bool
+                                                               , clientCompletionItemOptionsTagSupport :: Maybe CompletionItemTagOptions
+                                                               , clientCompletionItemOptionsInsertReplaceSupport :: Maybe Bool
+                                                               , clientCompletionItemOptionsResolveSupport :: Maybe ClientCompletionItemResolveOptions
+                                                               , clientCompletionItemOptionsInsertTextModeSupport :: Maybe ClientCompletionItemInsertTextModeOptions
+                                                               , clientCompletionItemOptionsLabelDetailsSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data ClientCompletionItemOptionsKind = ClientCompletionItemOptionsKind { clientCompletionItemOptionsKindValueSet :: Maybe [CompletionItemKind] }
+ deriving (Show,Eq)
+
+data CompletionListCapabilities = CompletionListCapabilities { completionListCapabilitiesItemDefaults :: Maybe [String] }
+ deriving (Show,Eq)
+
+data ClientSignatureInformationOptions = ClientSignatureInformationOptions { clientSignatureInformationOptionsDocumentationFormat :: Maybe [MarkupKind]
+                                                                           , clientSignatureInformationOptionsParameterInformation :: Maybe ClientSignatureParameterInformationOptions
+                                                                           , clientSignatureInformationOptionsActiveParameterSupport :: Maybe Bool
+                                                                           , clientSignatureInformationOptionsNoActiveParameterSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data ClientCodeActionLiteralOptions = ClientCodeActionLiteralOptions { clientCodeActionLiteralOptionsCodeActionKind :: ClientCodeActionKindOptions }
+ deriving (Show,Eq)
+
+data ClientCodeActionResolveOptions = ClientCodeActionResolveOptions { clientCodeActionResolveOptionsProperties :: [String] }
+ deriving (Show,Eq)
+
+data ClientCodeLensResolveOptions = ClientCodeLensResolveOptions { clientCodeLensResolveOptionsProperties :: [String] }
+ deriving (Show,Eq)
+
+data ClientFoldingRangeKindOptions = ClientFoldingRangeKindOptions { clientFoldingRangeKindOptionsValueSet :: Maybe [FoldingRangeKind] }
+ deriving (Show,Eq)
+
+data ClientFoldingRangeOptions = ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText :: Maybe Bool }
+ deriving (Show,Eq)
+
+data DiagnosticsCapabilities = DiagnosticsCapabilities { diagnosticsCapabilitiesRelatedInformation :: Maybe Bool
+                                                       , diagnosticsCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions
+                                                       , diagnosticsCapabilitiesCodeDescriptionSupport :: Maybe Bool
+                                                       , diagnosticsCapabilitiesDataSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data ClientSemanticTokensRequestOptions = ClientSemanticTokensRequestOptions { clientSemanticTokensRequestOptionsRange :: Maybe (Either Bool ())
+                                                                             , clientSemanticTokensRequestOptionsFull :: Maybe (Either Bool ClientSemanticTokensRequestFullDelta) }
+ deriving (Show,Eq)
+
+data ClientInlayHintResolveOptions = ClientInlayHintResolveOptions { clientInlayHintResolveOptionsProperties :: [String] }
+ deriving (Show,Eq)
+
+data ClientShowMessageActionItemOptions = ClientShowMessageActionItemOptions { clientShowMessageActionItemOptionsAdditionalPropertiesSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data CompletionItemTagOptions = CompletionItemTagOptions { completionItemTagOptionsValueSet :: [CompletionItemTag] }
+ deriving (Show,Eq)
+
+data ClientCompletionItemResolveOptions = ClientCompletionItemResolveOptions { clientCompletionItemResolveOptionsProperties :: [String] }
+ deriving (Show,Eq)
+
+data ClientCompletionItemInsertTextModeOptions = ClientCompletionItemInsertTextModeOptions { clientCompletionItemInsertTextModeOptionsValueSet :: [InsertTextMode] }
+ deriving (Show,Eq)
+
+data ClientSignatureParameterInformationOptions = ClientSignatureParameterInformationOptions { clientSignatureParameterInformationOptionsLabelOffsetSupport :: Maybe Bool }
+ deriving (Show,Eq)
+
+data ClientCodeActionKindOptions = ClientCodeActionKindOptions { clientCodeActionKindOptionsValueSet :: [CodeActionKind] }
+ deriving (Show,Eq)
+
+data ClientDiagnosticsTagOptions = ClientDiagnosticsTagOptions { clientDiagnosticsTagOptionsValueSet :: [DiagnosticTag] }
+ deriving (Show,Eq)
+
+data ClientSemanticTokensRequestFullDelta = ClientSemanticTokensRequestFullDelta { clientSemanticTokensRequestFullDeltaDelta :: Maybe Bool }
  deriving (Show,Eq)
 
 data SemanticTokenTypes = SemanticTokenTypesNamespace
@@ -5730,6 +6896,7 @@ data SemanticTokenTypes = SemanticTokenTypesNamespace
                         | SemanticTokenTypesRegexp
                         | SemanticTokenTypesOperator
                         | SemanticTokenTypesDecorator
+                        | SemanticTokenTypesLabel
  deriving (Show,Eq,Enum,Bounded,Ord)
 
 data SemanticTokenModifiers = SemanticTokenModifiersDeclaration
@@ -5744,25 +6911,23 @@ data SemanticTokenModifiers = SemanticTokenModifiersDeclaration
                             | SemanticTokenModifiersDefaultLibrary
  deriving (Show,Eq,Enum,Bounded,Ord)
 
+data DocumentDiagnosticReportKind = DocumentDiagnosticReportKindFull
+                                  | DocumentDiagnosticReportKindUnchanged
+ deriving (Show,Eq,Enum,Bounded,Ord)
+
 data ErrorCodes = ErrorCodesParseError
                 | ErrorCodesInvalidRequest
                 | ErrorCodesMethodNotFound
                 | ErrorCodesInvalidParams
                 | ErrorCodesInternalError
-                | ErrorCodesJsonrpcReservedErrorRangeStart
-                | ErrorCodesServerErrorStart
                 | ErrorCodesServerNotInitialized
                 | ErrorCodesUnknownErrorCode
-                | ErrorCodesJsonrpcReservedErrorRangeEnd
-                | ErrorCodesServerErrorEnd
  deriving (Show,Eq,Enum,Bounded,Ord)
 
-data LSPErrorCodes = LSPErrorCodesLspReservedErrorRangeStart
-                   | LSPErrorCodesRequestFailed
+data LSPErrorCodes = LSPErrorCodesRequestFailed
                    | LSPErrorCodesServerCancelled
                    | LSPErrorCodesContentModified
                    | LSPErrorCodesRequestCancelled
-                   | LSPErrorCodesLspReservedErrorRangeEnd
  deriving (Show,Eq,Enum,Bounded,Ord)
 
 data FoldingRangeKind = FoldingRangeKindComment
@@ -5818,6 +6983,7 @@ data MessageType = MessageTypeError
                  | MessageTypeWarning
                  | MessageTypeInfo
                  | MessageTypeLog
+                 | MessageTypeDebug
  deriving (Show,Eq,Enum,Bounded,Ord)
 
 data TextDocumentSyncKind = TextDocumentSyncKindNone
@@ -5876,16 +7042,85 @@ data CodeActionKind = CodeActionKindEmpty
                     | CodeActionKindRefactor
                     | CodeActionKindRefactorExtract
                     | CodeActionKindRefactorInline
+                    | CodeActionKindRefactorMove
                     | CodeActionKindRefactorRewrite
                     | CodeActionKindSource
                     | CodeActionKindSourceOrganizeImports
                     | CodeActionKindSourceFixAll
+                    | CodeActionKindNotebook
  deriving (Show,Eq,Enum,Bounded,Ord)
 
-data TraceValues = TraceValuesOff | TraceValuesMessages | TraceValuesVerbose
+data TraceValue = TraceValueOff | TraceValueMessages | TraceValueVerbose
  deriving (Show,Eq,Enum,Bounded,Ord)
 
 data MarkupKind = MarkupKindPlainText | MarkupKindMarkdown
+ deriving (Show,Eq,Enum,Bounded,Ord)
+
+data LanguageKind = LanguageKindABAP
+                  | LanguageKindWindowsBat
+                  | LanguageKindBibTeX
+                  | LanguageKindClojure
+                  | LanguageKindCoffeescript
+                  | LanguageKindC
+                  | LanguageKindCPP
+                  | LanguageKindCSharp
+                  | LanguageKindCSS
+                  | LanguageKindD
+                  | LanguageKindDelphi
+                  | LanguageKindDiff
+                  | LanguageKindDart
+                  | LanguageKindDockerfile
+                  | LanguageKindElixir
+                  | LanguageKindErlang
+                  | LanguageKindFSharp
+                  | LanguageKindGitCommit
+                  | LanguageKindGitRebase
+                  | LanguageKindGo
+                  | LanguageKindGroovy
+                  | LanguageKindHandlebars
+                  | LanguageKindHaskell
+                  | LanguageKindHTML
+                  | LanguageKindIni
+                  | LanguageKindJava
+                  | LanguageKindJavaScript
+                  | LanguageKindJavaScriptReact
+                  | LanguageKindJSON
+                  | LanguageKindLaTeX
+                  | LanguageKindLess
+                  | LanguageKindLua
+                  | LanguageKindMakefile
+                  | LanguageKindMarkdown
+                  | LanguageKindObjectiveC
+                  | LanguageKindObjectiveCPP
+                  | LanguageKindPascal
+                  | LanguageKindPerl
+                  | LanguageKindPerl6
+                  | LanguageKindPHP
+                  | LanguageKindPowershell
+                  | LanguageKindPug
+                  | LanguageKindPython
+                  | LanguageKindR
+                  | LanguageKindRazor
+                  | LanguageKindRuby
+                  | LanguageKindRust
+                  | LanguageKindSCSS
+                  | LanguageKindSASS
+                  | LanguageKindScala
+                  | LanguageKindShaderLab
+                  | LanguageKindShellScript
+                  | LanguageKindSQL
+                  | LanguageKindSwift
+                  | LanguageKindTypeScript
+                  | LanguageKindTypeScriptReact
+                  | LanguageKindTeX
+                  | LanguageKindVisualBasic
+                  | LanguageKindXML
+                  | LanguageKindXSL
+                  | LanguageKindYAML
+ deriving (Show,Eq,Enum,Bounded,Ord)
+
+data InlineCompletionTriggerKind = InlineCompletionTriggerKindInvoked
+                                 | InlineCompletionTriggerKindAutomatic
  deriving (Show,Eq,Enum,Bounded,Ord)
 
 data PositionEncodingKind = PositionEncodingKindUTF8
@@ -5962,28 +7197,30 @@ type InlineValue = Either (Either InlineValueText InlineValueVariableLookup) Inl
 
 type DocumentDiagnosticReport = Either RelatedFullDocumentDiagnosticReport RelatedUnchangedDocumentDiagnosticReport
 
-type PrepareRenameResult = Either (Either Range ()) ()
+type PrepareRenameResult = Either (Either Range PrepareRenamePlaceholder) PrepareRenameDefaultBehavior
 
-type URI = String
+type DocumentSelector = [DocumentFilter]
 
 type ProgressToken = Either Int String
-
-type DocumentSelector = [Either String DocumentFilter]
 
 type ChangeAnnotationIdentifier = String
 
 type WorkspaceDocumentDiagnosticReport = Either WorkspaceFullDocumentDiagnosticReport WorkspaceUnchangedDocumentDiagnosticReport
 
-type TextDocumentContentChangeEvent = Either () ()
+type TextDocumentContentChangeEvent = Either TextDocumentContentChangePartial TextDocumentContentChangeWholeDocument
 
-type MarkedString = Either String ()
+type MarkedString = Either String MarkedStringWithLanguage
 
 type DocumentFilter = Either TextDocumentFilter NotebookCellTextDocumentFilter
 
+type LSPObject = Map String LSPAny
+
 type GlobPattern = Either Pattern RelativePattern
 
-type TextDocumentFilter = Either (Either () ()) ()
+type TextDocumentFilter = Either (Either TextDocumentFilterLanguage TextDocumentFilterScheme) TextDocumentFilterPattern
 
-type NotebookDocumentFilter = Either (Either () ()) ()
+type NotebookDocumentFilter = Either (Either NotebookDocumentFilterNotebookType NotebookDocumentFilterScheme) NotebookDocumentFilterPattern
 
 type Pattern = String
+
+type RegularExpressionEngineKind = String
