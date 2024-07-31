@@ -1,5 +1,5 @@
 module LSP.Generation.Generator
-  ( metaModelToPrettyCurry
+  ( metaModelToPrettyProgs
   ) where
 
 import qualified AbstractCurry.Types as AC
@@ -45,28 +45,30 @@ initialGeneratorState m = GeneratorState
     ]
   }
 
--- | Converts a meta structure to a prettyprinted Curry program.
-metaModelToPrettyCurry :: String -> MetaModel -> String
-metaModelToPrettyCurry name m = unlines
-  -- TODO: We currently disable overlapping pattern warnings since some
-  --       LSP error codes cannot be parsed unambiguously currently. A
-  --       better solution would be to explicitly only generate one of
-  --       the cases or add a more specific flag to the frontend for only
-  --       disabling unreachable pattern warnings (not overlapping).
-  [ "{-# OPTIONS_FRONTEND -Wno-unused-bindings -Wno-overlapping #-}"
-  , ACP.prettyCurryProg ppOpts $ evalState (metaModelToProg name m) st
-  ]
+-- | Converts a meta structure to prettyprinted Curry programs, keyed by module.
+metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
+metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
   where
     st = initialGeneratorState m
-    -- Disable qualification since instances are not generated correctly
-    -- when using qualified identifiers. We just have to make sure to include
-    -- all of the required imports (and make sure that no LSP identifiers
-    -- conflict with our supporting types).
-    ppOpts = ACP.setNoQualification ACP.defaultOptions
+    progs = evalState (metaModelToProgs prefix m) st
+    prettyWithModuleName prog@(AC.CurryProg name _ _ _ _ _ _ _) = (name, unlines [pragmas, body])
+      where
+        -- Disable qualification since instances are not generated correctly
+        -- when using qualified identifiers. We just have to make sure to include
+        -- all of the required imports (and make sure that no LSP identifiers
+        -- conflict with our supporting types).
+        ppOpts = ACP.setNoQualification ACP.defaultOptions
+        -- TODO: We currently disable overlapping pattern warnings since some
+        --       LSP error codes cannot be parsed unambiguously currently. A
+        --       better solution would be to explicitly only generate one of
+        --       the cases or add a more specific flag to the frontend for only
+        --       disabling unreachable pattern warnings (not overlapping).
+        pragmas = "{-# OPTIONS_FRONTEND -Wno-unused-bindings -Wno-overlapping #-}"
+        body = ACP.prettyCurryProg ppOpts prog
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
-metaModelToProg name m = do
+metaModelToProgs :: String -> MetaModel -> GM [AC.CurryProg]
+metaModelToProgs prefix m = do
   let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data", "JSON.Pretty"]
       funs = []
   (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
@@ -74,7 +76,7 @@ metaModelToProg name m = do
   aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
   let tys = structs ++ enums ++ aliases
       insts = structInsts ++ enumInsts
-  return $ AC.CurryProg name imps Nothing [] insts tys funs []
+  return $ [AC.CurryProg prefix imps Nothing [] insts tys funs []]
 
 -- | Converts a meta structure to a Curry type declaration (and instances).
 metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])

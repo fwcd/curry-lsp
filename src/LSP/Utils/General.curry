@@ -1,12 +1,17 @@
 module LSP.Utils.General
-  ( lookup', fromJust', fromRight'
+  ( forM_
+  , lookup', fromJust', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
-  , replaceSingle
+  , replace, replaceSingle
   , (<.$>), (<$.>)
   ) where
 
 import Data.Char ( toUpper, toLower )
+
+-- | Flipped version of mapM_.
+forM_ :: Monad m => [a] -> (a -> m b) -> m ()
+forM_ = flip mapM_
 
 -- | A version of fromJust that throws a descriptive error message.
 fromJust' :: String -> Maybe a -> a
@@ -45,6 +50,10 @@ capitalize (c:cs) = toUpper c : cs
 uncapitalize :: String -> String
 uncapitalize [] = []
 uncapitalize (c:cs) = toLower c : cs
+
+-- | Replaces an element with another.
+replace :: Eq a => a -> a -> [a] -> [a]
+replace x y = fmap $ \x' -> if x == x' then y else x'
 
 -- | Replaces an element with a list.
 replaceSingle :: Eq a => a -> [a] -> [a] -> [a]
