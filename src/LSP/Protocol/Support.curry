@@ -1,5 +1,6 @@
 module LSP.Protocol.Support
-  ( DocumentUri (..)
+  ( Uri (..)
+  , DocumentUri
   , LSPAny
   , JValue (..)
   ) where
@@ -17,5 +18,5 @@ type DocumentUri = Uri
 -- | An arbitrary JSON value.
 type LSPAny = JValue
 
-instance FromJSON DocumentUri where
-  fromJSON = (DocumentUri <$>) . stringFromJSON
+instance FromJSON Uri where
+  fromJSON = (Uri <$>) . stringFromJSON
