@@ -3,11 +3,12 @@ module LSP.Utils.General
   , lookup', fromJust', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
-  , replace, replaceSingle
+  , replace, replaceSingle, unions
   , (<.$>), (<$.>)
   ) where
 
 import Data.Char ( toUpper, toLower )
+import qualified Data.Set as S
 
 -- | Flipped version of mapM_.
 forM_ :: Monad m => [a] -> (a -> m b) -> m ()
@@ -60,6 +61,10 @@ replaceSingle :: Eq a => a -> [a] -> [a] -> [a]
 replaceSingle _ _ [] = []
 replaceSingle y ys (x:xs) | x == y    = ys ++ xs
                           | otherwise = x : replaceSingle y ys xs
+
+-- | The union over all sets.
+unions :: Ord a => [S.Set a] -> S.Set a
+unions = foldr S.union S.empty
 
 -- | Maps over the first element of a tuple.
 (<.$>) :: Functor f => (a -> c) -> f (a, b) -> f (c, b)

@@ -8,11 +8,12 @@ import qualified AbstractCurry.Pretty as ACP
 import Control.Monad ( join )
 import Control.Monad.Trans.State ( State, evalState, gets )
 import qualified Data.Map as M
+import qualified Data.Set as S
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>) )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
@@ -35,6 +36,7 @@ initialGeneratorState m = GeneratorState
   , gsBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
+    -- TODO: Remove these since if we can generate the needed imports?
   , gsStandardImports =
     [ "LSP.Utils.JSON"
     , "LSP.Protocol.Support"
@@ -95,8 +97,7 @@ metaStructureToProg prefix s = do
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-  -- TODO: Compute custom imports
-  imps <- gets gsStandardImports
+      imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
   return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
@@ -115,8 +116,7 @@ metaEnumerationToProg prefix e = do
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-  -- TODO: Compute custom imports
-  imps <- gets gsStandardImports
+      imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
   return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
@@ -268,6 +268,37 @@ metaBaseTypeToTypeExpr b = case b of
   MetaBaseTypeNull        -> ACB.unitType
   MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
   MetaBaseTypeUri         -> ACB.baseType $ support "Uri"
+
+-- | Extracts the required imports from the given type declaration.
+typeDeclToImports :: AC.CTypeDecl -> S.Set String
+typeDeclToImports ty = case ty of
+  AC.CType    _ _ _ cdecls _ -> unions $ consDeclToImports <$> cdecls
+  AC.CTypeSyn _ _ _ texp     -> typeExprToImports texp
+  AC.CNewType _ _ _ cdecl _  -> consDeclToImports cdecl
+
+-- | Extracts the required imports from the given type expression.
+typeExprToImports :: AC.CTypeExpr -> S.Set String
+typeExprToImports texp = case texp of
+  AC.CTVar _        -> S.empty
+  AC.CFuncType t t' -> S.union (typeExprToImports t) (typeExprToImports t')
+  AC.CTCons qn      -> qNameToImports qn
+  AC.CTApply t t'   -> S.union (typeExprToImports t) (typeExprToImports t')
+
+-- | Extracts the required imports from the given constructor declaration.
+consDeclToImports :: AC.CConsDecl -> S.Set String
+consDeclToImports cdecl = case cdecl of
+  AC.CCons _ _ texps    -> unions $ typeExprToImports <$> texps
+  AC.CRecord _ _ fdecls -> unions $ fieldDeclToImports <$> fdecls
+
+-- | Extracts the required imports from the given field declaration.
+fieldDeclToImports :: AC.CFieldDecl -> S.Set String
+fieldDeclToImports fdecl = case fdecl of
+  AC.CField _ _ texp -> typeExprToImports texp
+
+-- | Extracts the required imports from the given qualified name.
+qNameToImports :: AC.QName -> S.Set String
+qNameToImports (mname, _) | mname == AC.preludeName = S.empty
+                          | otherwise               = S.fromList [mname] -- TODO: Use S.singleton once https://github.com/curry-packages/containers/pull/1 is merged
 
 -- | Extracts the name from a type declaration.
 typeName :: AC.CTypeDecl -> String
