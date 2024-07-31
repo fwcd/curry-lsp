@@ -21,6 +21,7 @@ import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>) )
 data GeneratorState = GeneratorState
   { gsStructMap :: M.Map String MetaStructure
   , gsBuiltInTypeAliases :: M.Map String AC.QName
+  , gsStandardImports :: [String]
   , gsStandardDerivings :: [AC.QName]
   , gsStandardEnumDerivings :: [AC.QName]
   }
@@ -33,6 +34,13 @@ initialGeneratorState m = GeneratorState
   { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
   , gsBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
+    ]
+  , gsStandardImports =
+    [ "LSP.Utils.JSON"
+    , "LSP.Protocol.Support"
+    , "Data.Map"
+    , "JSON.Data"
+    , "JSON.Pretty"
     ]
   , gsStandardDerivings =
     [ AC.pre "Show"
@@ -69,22 +77,14 @@ metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
 -- | Converts a meta structure to a Curry program.
 metaModelToProgs :: String -> MetaModel -> GM [AC.CurryProg]
 metaModelToProgs prefix m = do
-  let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data", "JSON.Pretty"]
-  structs <- mapM metaStructureToType (mmStructures m)
-  enums <- mapM metaEnumerationToType (mmEnumerations m)
-  aliases <- map (\a -> (a, [])) . catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
-  let tysWithInsts = structs ++ enums ++ aliases
-  return $ (\(ty, insts) -> AC.CurryProg (prefix ++ "." ++ tyName ty) imps Nothing [] insts [ty] [] []) <$> tysWithInsts
-  where
-    tyName :: AC.CTypeDecl -> String
-    tyName t = snd $ case t of
-      AC.CType n _ _ _ _    -> n
-      AC.CTypeSyn n _ _ _   -> n
-      AC.CNewType n _ _ _ _ -> n
+  structs <- mapM (metaStructureToProg prefix) (mmStructures m)
+  enums <- mapM (metaEnumerationToProg prefix) (mmEnumerations m)
+  aliases <- catMaybes <$> mapM (metaAliasToProg prefix) (mmTypeAliases m)
+  return $ structs ++ enums ++ aliases
 
--- | Converts a meta structure to a Curry type declaration (and instances).
-metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
-metaStructureToType s = do
+-- | Converts a meta structure to a Curry program.
+metaStructureToProg :: String -> MetaStructure -> GM AC.CurryProg
+metaStructureToProg prefix s = do
   let name = escapeName $ msName s
       qn = mkQName name
       props = msProperties s
@@ -95,11 +95,13 @@ metaStructureToType s = do
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-  return (ty, insts)
+  -- TODO: Compute custom imports
+  imps <- gets gsStandardImports
+  return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
 
--- | Converts a meta enumeration to a Curry type declaration (and instances).
-metaEnumerationToType :: MetaEnumeration -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
-metaEnumerationToType e = do
+-- | Converts a meta enumeration to a Curry program.
+metaEnumerationToProg :: String -> MetaEnumeration -> GM AC.CurryProg
+metaEnumerationToProg prefix e = do
   let name = escapeName $ meName e
       qn = mkQName name
       vis = AC.Public
@@ -113,7 +115,9 @@ metaEnumerationToType e = do
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-  return (ty, insts)
+  -- TODO: Compute custom imports
+  imps <- gets gsStandardImports
+  return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
 metaStructureToFromJSONInstance :: String -> MetaStructure -> GM AC.CInstanceDecl
@@ -204,6 +208,13 @@ metaEnumerationValueToCons prefix v = do
       vis = AC.Public
   return $ AC.CCons qn vis []
 
+-- | Converts a meta type alias to a Curry program.
+metaAliasToProg :: String -> MetaTypeAlias -> GM (Maybe AC.CurryProg)
+metaAliasToProg prefix a = do
+  maybeTy <- metaAliasToAlias a
+  imps <- gets gsStandardImports
+  return $ (\ty -> AC.CurryProg (qualWith prefix (typeName ty)) imps Nothing [] [] [ty] [] []) <$> maybeTy
+
 -- | Converts a meta type alias to a Curry type alias.
 metaAliasToAlias :: MetaTypeAlias -> GM (Maybe AC.CTypeDecl)
 metaAliasToAlias a = do
@@ -257,6 +268,13 @@ metaBaseTypeToTypeExpr b = case b of
   MetaBaseTypeNull        -> ACB.unitType
   MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
   MetaBaseTypeUri         -> ACB.baseType $ support "Uri"
+
+-- | Extracts the name from a type declaration.
+typeName :: AC.CTypeDecl -> String
+typeName ty = snd $ case ty of
+  AC.CType    n _ _ _ _ -> n
+  AC.CTypeSyn n _ _ _   -> n
+  AC.CNewType n _ _ _ _ -> n
 
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName
@@ -317,3 +335,7 @@ fieldName prefix name = uncapitalize prefix ++ capitalize name
 -- | Escapes a type name for use in Curry (e.g. replacing underscores with 'Base').
 escapeName :: String -> String
 escapeName = replaceSingle '_' "Base"
+
+-- | Qualifies the given name with the given prefix.
+qualWith :: String -> String -> String
+qualWith prefix name = prefix ++ "." ++ name
