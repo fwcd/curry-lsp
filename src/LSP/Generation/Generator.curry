@@ -70,13 +70,17 @@ metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
 metaModelToProgs :: String -> MetaModel -> GM [AC.CurryProg]
 metaModelToProgs prefix m = do
   let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data", "JSON.Pretty"]
-      funs = []
-  (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
-  (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
-  aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
-  let tys = structs ++ enums ++ aliases
-      insts = structInsts ++ enumInsts
-  return $ [AC.CurryProg prefix imps Nothing [] insts tys funs []]
+  structs <- mapM metaStructureToType (mmStructures m)
+  enums <- mapM metaEnumerationToType (mmEnumerations m)
+  aliases <- map (\a -> (a, [])) . catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
+  let tysWithInsts = structs ++ enums ++ aliases
+  return $ (\(ty, insts) -> AC.CurryProg (prefix ++ "." ++ tyName ty) imps Nothing [] insts [ty] [] []) <$> tysWithInsts
+  where
+    tyName :: AC.CTypeDecl -> String
+    tyName t = snd $ case t of
+      AC.CType n _ _ _ _    -> n
+      AC.CTypeSyn n _ _ _   -> n
+      AC.CNewType n _ _ _ _ -> n
 
 -- | Converts a meta structure to a Curry type declaration (and instances).
 metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
