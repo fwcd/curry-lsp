@@ -169,7 +169,7 @@ lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
 -- | Converts a meta enumeration to a FromJSON instance.
 metaEnumerationToFromJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
 metaEnumerationToFromJSONInstance mname prefix e = do
-  ty <- metaTypeToTypeExpr mname $ meType e
+  ty <- metaTypeToTypeExpr $ meType e
   let name = escapeName $ meName e
       qn = (mname, name)
       ctx = AC.CContext []
@@ -223,7 +223,7 @@ metaAliasToProg a = do
       mname = qualWith mprefix name
       qn = (mname, name)
       vis = AC.Public
-  texp <- metaTypeToTypeExpr mname $ mtaType a
+  texp <- metaTypeToTypeExpr $ mtaType a
   btas <- asks geBuiltInTypeAliases
   let maybeTy = case M.lookup name btas of
         Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
@@ -236,7 +236,7 @@ metaPropertyToField :: String -> String -> MetaProperty -> GM AC.CFieldDecl
 metaPropertyToField mname prefix p = do
   let qn = (mname, fieldName prefix (mpName p))
       vis = AC.Public
-  texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr mname (mpType p)
+  texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr (mpType p)
   return $ AC.CField qn vis texp
 
 -- | Wraps a type expression in a Maybe if the given flag is set.
@@ -245,20 +245,22 @@ maybeTypeExprIf False = id
 maybeTypeExprIf True = ACB.maybeType
 
 -- | Converts a meta type to a Curry type expression.
-metaTypeToTypeExpr :: String -> MetaType -> GM AC.CTypeExpr
-metaTypeToTypeExpr mname t = case t of
-  MetaTypeReference n     -> do btas <- asks geBuiltInTypeAliases
-                                return $ ACB.baseType $ fromMaybe (mname, n) $ M.lookup n btas
-  MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr mname a
-  MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM (metaTypeToTypeExpr mname) [k, e]
-  MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
-  MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM (metaTypeToTypeExpr mname) is
-  MetaTypeAnd is          -> ACB.tupleType <$> mapM (metaTypeToTypeExpr mname) is
-  -- TODO: Find a better representation for string literal types?
-  -- We should probably rewrite or-ed string literal types to algebraic data types!
-  MetaTypeStringLiteral _ -> return ACB.stringType
-  MetaTypeTuple is        -> ACB.tupleType <$> mapM (metaTypeToTypeExpr mname) is
-  MetaTypeLiteral _       -> return ACB.unitType -- TODO
+metaTypeToTypeExpr :: MetaType -> GM AC.CTypeExpr
+metaTypeToTypeExpr t = do
+  mprefix <- asks geModulePrefix
+  case t of
+    MetaTypeReference n     -> do btas <- asks geBuiltInTypeAliases
+                                  return $ ACB.baseType $ fromMaybe (mkQName mprefix n) $ M.lookup n btas
+    MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr a
+    MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM metaTypeToTypeExpr [k, e]
+    MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
+    MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM metaTypeToTypeExpr is
+    MetaTypeAnd is          -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+    -- TODO: Find a better representation for string literal types?
+    -- We should probably rewrite or-ed string literal types to algebraic data types!
+    MetaTypeStringLiteral _ -> return ACB.stringType
+    MetaTypeTuple is        -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+    MetaTypeLiteral _       -> return ACB.unitType -- TODO
 
 -- | Converts a meta base type to a Curry type expression.
 metaBaseTypeToTypeExpr :: MetaBaseType -> AC.CTypeExpr
