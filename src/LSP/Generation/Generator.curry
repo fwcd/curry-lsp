@@ -232,15 +232,20 @@ metaEnumerationToFromJSONInstance mname prefix e = do
 
 -- | Converts a meta enumeration to a ToJSON instance.
 metaEnumerationToToJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
-metaEnumerationToToJSONInstance mname prefix s' = do
-  let name = escapeName $ meName s'
+metaEnumerationToToJSONInstance mname prefix e = do
+  let name = escapeName $ meName e
       ctx = AC.CContext []
       qn = (mname, name)
       texp = ACB.baseType qn
       vis = AC.Public
       sig = ACB.emptyClassType $ toJSONType texp
       xVar = (0, "x")
-      expr = ACB.applyF objectQName [] -- FIXME: This should match on the value instead
+      vals = meValues e
+      valLits = metaEnumerationValueToLit . mevValue <$> vals
+      valLitExprs = AC.CLit <$> valLits
+      valQNames = (,) mname . enumValueName prefix . mevName <$> vals
+      arms = zipWith (\q v -> (AC.CPComb q [], AC.CSimpleRhs (ACB.applyF toJSONQName [v]) [])) valQNames valLitExprs
+      expr = AC.CCase AC.CRigid (AC.CVar xVar) arms
       rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
