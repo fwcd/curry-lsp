@@ -126,9 +126,10 @@ metaEnumerationToProg e = do
   stdDerivs <- asks geStandardDerivings
   enumDerivs <- asks geStandardEnumDerivings
   fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
+  toJSONInst <- metaEnumerationToToJSONInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
-      insts = [fromJSONInst]
+      insts = [fromJSONInst, toJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
@@ -228,6 +229,22 @@ metaEnumerationToFromJSONInstance mname prefix e = do
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+
+-- | Converts a meta enumeration to a ToJSON instance.
+metaEnumerationToToJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToToJSONInstance mname prefix s' = do
+  let name = escapeName $ meName s'
+      ctx = AC.CContext []
+      qn = (mname, name)
+      texp = ACB.baseType qn
+      vis = AC.Public
+      sig = ACB.emptyClassType $ toJSONType texp
+      xVar = (0, "x")
+      expr = ACB.applyF objectQName [] -- FIXME: This should match on the value instead
+      rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
+      fdecls = [fdecl]
+  return $ AC.CInstance toJSONClassQName ctx texp fdecls
 
 -- | Converts a meta enumeration value to a Curry literal.
 metaEnumerationValueToLit :: JValue -> AC.CLiteral
