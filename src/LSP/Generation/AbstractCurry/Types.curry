@@ -20,7 +20,7 @@ module LSP.Generation.AbstractCurry.Types where
 
 --- Current version of AbstractCurry
 version :: String
-version = "AbstractCurry 3.0"
+version = "LSP.Generation.AbstractCurry 3.0"
 
 --- A module name.
 type MName = String
