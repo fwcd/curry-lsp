@@ -96,7 +96,10 @@ exprModuleDeps expr = case expr of
 
 -- | Extracts the module dependencies from the given statement.
 statementModuleDeps :: AC.CStatement -> S.Set String
-statementModuleDeps _ = S.empty -- TODO
+statementModuleDeps stmt = case stmt of
+  AC.CSExpr e     -> exprModuleDeps e
+  AC.CSPat pat e  -> S.union (patternModuleDeps pat) (exprModuleDeps e)
+  AC.CSLet ldecls -> unionMap localDeclModuleDeps ldecls
 
 -- | Extracts the module dependencies from the given case arm.
 caseArmModuleDeps :: (AC.CPattern, AC.CRhs) -> S.Set String
@@ -104,7 +107,7 @@ caseArmModuleDeps (pat, rhs) = S.union (patternModuleDeps pat) (rhsModuleDeps rh
 
 -- | Extracts the module dependencies from the given field.
 fieldModuleDeps :: AC.CField AC.CExpr -> S.Set String
-fieldModuleDeps _ = S.empty
+fieldModuleDeps (qn, e) = S.union (qNameModuleDeps qn) (exprModuleDeps e)
 
 -- | Extracts the module dependencies from the given guard.
 guardModuleDeps :: (AC.CExpr, AC.CExpr) -> S.Set String
