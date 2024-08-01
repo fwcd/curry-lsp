@@ -5,6 +5,7 @@ module LSP.Utils.JSON
   , lookupFromJSON, lookupObjectFromJSON, lookupMaybeFromJSON
   , lookupPathFromJSON
   , (.=), (.?=), (<#>)
+  , object
   ) where
 
 import qualified Data.Map as M
@@ -241,3 +242,7 @@ infixr 4 <#>
 (<#>) v1 v2 = case (v1, v2) of
   (JObject kvs1, JObject kvs2) -> JObject (kvs1 ++ kvs2)
   _ -> error $ "(<#>) requires two JObjects, but got " ++ show v1 ++ ", " ++ show v2
+
+-- Flattens a list of objects (e.g. key value pairs created with (.=)).
+object :: [JValue] -> JValue
+object vs = JObject [kv | JObject kvs <- vs, kv <- kvs]
