@@ -9,12 +9,13 @@ import Control.Monad ( join )
 import Control.Monad.Trans.Reader ( Reader, runReader, asks )
 import qualified Data.Map as M
 import qualified Data.Set as S
+import Data.List ( intercalate )
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Generation.Deps
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap, keyBy )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
@@ -51,12 +52,12 @@ generatorEnv mprefix = GeneratorEnv
 runGM :: GM a -> String -> a
 runGM x = runReader x . generatorEnv
 
--- | Converts a meta structure to prettyprinted Curry programs, keyed by module.
+-- | Converts a meta structure to prettyprinted Curry programs, keyed by module name.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
-metaModelToPrettyProgs mprefix m = prettyWithModuleName <$> progs
+metaModelToPrettyProgs mprefix m = pretty <$.> progs
   where
     progs = runGM (metaModelToProgs m) mprefix
-    prettyWithModuleName prog = (progName prog, unlines [pragmas, body])
+    pretty prog = unlines [pragmas, body]
       where
         -- Disable qualification since instances are not generated correctly
         -- when using qualified identifiers. We just have to make sure to include
@@ -72,12 +73,26 @@ metaModelToPrettyProgs mprefix m = prettyWithModuleName <$> progs
         body = ACP.prettyCurryProg ppOpts prog
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProgs :: MetaModel -> GM [AC.CurryProg]
+metaModelToProgs :: MetaModel -> GM [(String, AC.CurryProg)]
 metaModelToProgs m = do
   structs <- mapM metaStructureToProg (mmStructures m)
   enums <- mapM metaEnumerationToProg (mmEnumerations m)
   aliases <- catMaybes <$> mapM metaAliasToProg (mmTypeAliases m)
-  return $ structs ++ enums ++ aliases
+  mprefix <- asks geModulePrefix
+  let progs = structs ++ enums ++ aliases
+      umbrella = mkUmbrellaProg mprefix (progName <$> progs)
+  return $ umbrella : (keyBy progName <$> progs)
+
+-- | Generates an umbrella module that reexports the given modules.
+mkUmbrellaProg :: String -> [String] -> (String, AC.CurryProg)
+mkUmbrellaProg mname mods = (mname, AC.CurryProg (mname ++ prettyExports) [] Nothing [] [] [] [] [])
+  where
+    -- TODO: This is a workaround for generating exports (which currently cannot
+    -- be represented by AbstractCurry) by appending the raw syntax to the module
+    -- name. We should find a cleaner solution to this.
+    indent = "  "
+    prettyMods = ("module " ++) <$> mods
+    prettyExports = "\n" ++ indent ++ "( " ++ intercalate ("\n" ++ indent ++ ", ") prettyMods ++ "\n" ++ indent ++ ")"
 
 -- | Converts a meta structure to a Curry program.
 metaStructureToProg :: MetaStructure -> GM AC.CurryProg

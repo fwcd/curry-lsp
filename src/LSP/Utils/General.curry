@@ -6,6 +6,7 @@ module LSP.Utils.General
   , replace, replaceSingle
   , unions, unionMap
   , (<.$>), (<$.>)
+  , keyBy
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -78,3 +79,7 @@ unionMap f = unions . map f
 -- | Maps over the second element of a tuple.
 (<$.>) :: Functor f => (b -> c) -> f (a, b) -> f (a, c)
 (<$.>) f = ((\(x, y) -> (x, f y)) <$>)
+
+-- | Associates the given value with the given key.
+keyBy :: (a -> k) -> a -> (k, a)
+keyBy f x = (f x, x)
