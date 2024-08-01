@@ -56,7 +56,7 @@ metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
 metaModelToPrettyProgs mprefix m = prettyWithModuleName <$> progs
   where
     progs = runGM (metaModelToProgs m) mprefix
-    prettyWithModuleName prog@(AC.CurryProg name _ _ _ _ _ _ _) = (name, unlines [pragmas, body])
+    prettyWithModuleName prog = (progName prog, unlines [pragmas, body])
       where
         -- Disable qualification since instances are not generated correctly
         -- when using qualified identifiers. We just have to make sure to include
@@ -278,6 +278,10 @@ typeName ty = snd $ case ty of
   AC.CType    n _ _ _ _ -> n
   AC.CTypeSyn n _ _ _   -> n
   AC.CNewType n _ _ _ _ -> n
+
+-- | Extracts the module name from the given program.
+progName :: AC.CurryProg -> String
+progName (AC.CurryProg name _ _ _ _ _ _ _) = name
 
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName
