@@ -20,7 +20,8 @@ import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unio
 
 -- | Internal (read-only) generator environment.
 data GeneratorEnv = GeneratorEnv
-  { geBuiltInTypeAliases :: M.Map String AC.QName
+  { geModulePrefix :: String
+  , geBuiltInTypeAliases :: M.Map String AC.QName
   , geStandardImports :: [String]
   , geStandardDerivings :: [AC.QName]
   , geStandardEnumDerivings :: [AC.QName]
@@ -29,9 +30,10 @@ data GeneratorEnv = GeneratorEnv
 type GM = Reader GeneratorEnv
 
 -- | Creates the generator environment.
-generatorEnv :: GeneratorEnv
-generatorEnv = GeneratorEnv
-  { geBuiltInTypeAliases = M.fromList
+generatorEnv :: String -> GeneratorEnv
+generatorEnv mprefix = GeneratorEnv
+  { geModulePrefix = mprefix
+  , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
     -- TODO: Remove these since if we can generate the needed imports?
@@ -54,14 +56,14 @@ generatorEnv = GeneratorEnv
   }
 
 -- | Runs the generator monad.
-runGM :: GM a -> a
-runGM x = runReader x generatorEnv
+runGM :: GM a -> String -> a
+runGM x = runReader x . generatorEnv
 
 -- | Converts a meta structure to prettyprinted Curry programs, keyed by module.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
-metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
+metaModelToPrettyProgs mprefix m = prettyWithModuleName <$> progs
   where
-    progs = runGM (metaModelToProgs prefix m)
+    progs = runGM (metaModelToProgs m) mprefix
     prettyWithModuleName prog@(AC.CurryProg name _ _ _ _ _ _ _) = (name, unlines [pragmas, body])
       where
         -- Disable qualification since instances are not generated correctly
@@ -78,16 +80,17 @@ metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
         body = ACP.prettyCurryProg ppOpts prog
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProgs :: String -> MetaModel -> GM [AC.CurryProg]
-metaModelToProgs mprefix m = do
-  structs <- mapM (metaStructureToProg mprefix) (mmStructures m)
-  enums <- mapM (metaEnumerationToProg mprefix) (mmEnumerations m)
-  aliases <- catMaybes <$> mapM (metaAliasToProg mprefix) (mmTypeAliases m)
+metaModelToProgs :: MetaModel -> GM [AC.CurryProg]
+metaModelToProgs m = do
+  structs <- mapM metaStructureToProg (mmStructures m)
+  enums <- mapM metaEnumerationToProg (mmEnumerations m)
+  aliases <- catMaybes <$> mapM metaAliasToProg (mmTypeAliases m)
   return $ structs ++ enums ++ aliases
 
 -- | Converts a meta structure to a Curry program.
-metaStructureToProg :: String -> MetaStructure -> GM AC.CurryProg
-metaStructureToProg mprefix s = do
+metaStructureToProg :: MetaStructure -> GM AC.CurryProg
+metaStructureToProg s = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ msName s
       mname = qualWith mprefix name
       qn = (mname, name)
@@ -103,8 +106,9 @@ metaStructureToProg mprefix s = do
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
-metaEnumerationToProg :: String -> MetaEnumeration -> GM AC.CurryProg
-metaEnumerationToProg mprefix e = do
+metaEnumerationToProg :: MetaEnumeration -> GM AC.CurryProg
+metaEnumerationToProg e = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ meName e
       mname = qualWith mprefix name
       qn = (mname, name)
@@ -212,8 +216,9 @@ metaEnumerationValueToCons mname prefix v = do
   return $ AC.CCons qn vis []
 
 -- | Converts a meta type alias to a Curry program.
-metaAliasToProg :: String -> MetaTypeAlias -> GM (Maybe AC.CurryProg)
-metaAliasToProg mprefix a = do
+metaAliasToProg :: MetaTypeAlias -> GM (Maybe AC.CurryProg)
+metaAliasToProg a = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ mtaName a
       mname = qualWith mprefix name
       qn = (mname, name)
