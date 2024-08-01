@@ -18,6 +18,11 @@ instance FromJSON DidChangeConfigurationRegistrationOptions where
          ("Unrecognized DidChangeConfigurationRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DidChangeConfigurationRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "section" (didChangeConfigurationRegistrationOptionsSection x)]
+
 data DidChangeConfigurationRegistrationOptions = DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection :: Maybe (Either String [String]) }
  deriving (Show,Eq)
 

@@ -19,6 +19,14 @@ instance FromJSON InitializeResult where
                              , initializeResultServerInfo = parsedServerInfo }
       _ -> Left ("Unrecognized InitializeResult value: " ++ ppJSON j)
 
+instance ToJSON InitializeResult where
+  toJSON x =
+    object
+     [(.=) "capabilities" (initializeResultCapabilities x),  (.?=)
+                                                              "serverInfo"
+                                                              (initializeResultServerInfo
+                                                                x)]
+
 data InitializeResult = InitializeResult { initializeResultCapabilities :: ServerCapabilities
                                          , initializeResultServerInfo :: Maybe ServerInfo }
  deriving (Show,Eq)

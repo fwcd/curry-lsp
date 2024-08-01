@@ -23,6 +23,18 @@ instance FromJSON ImplementationRegistrationOptions where
          ("Unrecognized ImplementationRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ImplementationRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (implementationRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                "workDoneProgress"
+                                                                (implementationRegistrationOptionsWorkDoneProgress
+                                                                  x),  (.?=)
+                                                                        "id"
+                                                                        (implementationRegistrationOptionsId
+                                                                          x)]
+
 data ImplementationRegistrationOptions = ImplementationRegistrationOptions { implementationRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , implementationRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , implementationRegistrationOptionsId :: Maybe String }

@@ -15,6 +15,10 @@ instance FromJSON DeclarationOptions where
             DeclarationOptions { declarationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DeclarationOptions value: " ++ ppJSON j)
 
+instance ToJSON DeclarationOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (declarationOptionsWorkDoneProgress x)]
+
 data DeclarationOptions = DeclarationOptions { declarationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

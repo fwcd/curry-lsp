@@ -27,6 +27,19 @@ instance FromJSON DocumentRangeFormattingParams where
         Left
          ("Unrecognized DocumentRangeFormattingParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentRangeFormattingParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken"
+       (documentRangeFormattingParamsWorkDoneToken x),  (.=) "textDocument"
+                                                         (documentRangeFormattingParamsTextDocument
+                                                           x),  (.=) "range"
+                                                                 (documentRangeFormattingParamsRange
+                                                                   x),  (.=)
+                                                                         "options"
+                                                                         (documentRangeFormattingParamsOptions
+                                                                           x)]
+
 data DocumentRangeFormattingParams = DocumentRangeFormattingParams { documentRangeFormattingParamsWorkDoneToken :: Maybe ProgressToken
                                                                    , documentRangeFormattingParamsTextDocument :: TextDocumentIdentifier
                                                                    , documentRangeFormattingParamsRange :: Range

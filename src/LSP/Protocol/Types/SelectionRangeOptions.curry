@@ -15,6 +15,11 @@ instance FromJSON SelectionRangeOptions where
             SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized SelectionRangeOptions value: " ++ ppJSON j)
 
+instance ToJSON SelectionRangeOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (selectionRangeOptionsWorkDoneProgress x)]
+
 data SelectionRangeOptions = SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

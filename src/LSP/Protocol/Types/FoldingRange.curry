@@ -26,6 +26,24 @@ instance FromJSON FoldingRange where
                          , foldingRangeCollapsedText = parsedCollapsedText }
       _ -> Left ("Unrecognized FoldingRange value: " ++ ppJSON j)
 
+instance ToJSON FoldingRange where
+  toJSON x =
+    object
+     [(.=) "startLine" (foldingRangeStartLine x),  (.?=) "startCharacter"
+                                                    (foldingRangeStartCharacter
+                                                      x),  (.=) "endLine"
+                                                            (foldingRangeEndLine
+                                                              x),  (.?=)
+                                                                    "endCharacter"
+                                                                    (foldingRangeEndCharacter
+                                                                      x),  (.?=)
+                                                                            "kind"
+                                                                            (foldingRangeKind
+                                                                              x),  (.?=)
+                                                                                    "collapsedText"
+                                                                                    (foldingRangeCollapsedText
+                                                                                      x)]
+
 data FoldingRange = FoldingRange { foldingRangeStartLine :: Int
                                  , foldingRangeStartCharacter :: Maybe Int
                                  , foldingRangeEndLine :: Int

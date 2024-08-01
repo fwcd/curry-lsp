@@ -29,6 +29,23 @@ instance FromJSON CodeActionParams where
                              , codeActionParamsContext = parsedContext }
       _ -> Left ("Unrecognized CodeActionParams value: " ++ ppJSON j)
 
+instance ToJSON CodeActionParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (codeActionParamsWorkDoneToken x),  (.?=)
+                                                                 "partialResultToken"
+                                                                 (codeActionParamsPartialResultToken
+                                                                   x),  (.=)
+                                                                         "textDocument"
+                                                                         (codeActionParamsTextDocument
+                                                                           x),  (.=)
+                                                                                 "range"
+                                                                                 (codeActionParamsRange
+                                                                                   x),  (.=)
+                                                                                         "context"
+                                                                                         (codeActionParamsContext
+                                                                                           x)]
+
 data CodeActionParams = CodeActionParams { codeActionParamsWorkDoneToken :: Maybe ProgressToken
                                          , codeActionParamsPartialResultToken :: Maybe ProgressToken
                                          , codeActionParamsTextDocument :: TextDocumentIdentifier

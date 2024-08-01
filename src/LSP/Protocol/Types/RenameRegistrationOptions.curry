@@ -20,6 +20,18 @@ instance FromJSON RenameRegistrationOptions where
                                       , renameRegistrationOptionsPrepareProvider = parsedPrepareProvider }
       _ -> Left ("Unrecognized RenameRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON RenameRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (renameRegistrationOptionsDocumentSelector x),  (.?=)
+                                                        "workDoneProgress"
+                                                        (renameRegistrationOptionsWorkDoneProgress
+                                                          x),  (.?=)
+                                                                "prepareProvider"
+                                                                (renameRegistrationOptionsPrepareProvider
+                                                                  x)]
+
 data RenameRegistrationOptions = RenameRegistrationOptions { renameRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                            , renameRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                            , renameRegistrationOptionsPrepareProvider :: Maybe Bool }

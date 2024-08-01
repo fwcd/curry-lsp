@@ -26,6 +26,25 @@ instance FromJSON FileOperationOptions where
                                  , fileOperationOptionsWillDelete = parsedWillDelete }
       _ -> Left ("Unrecognized FileOperationOptions value: " ++ ppJSON j)
 
+instance ToJSON FileOperationOptions where
+  toJSON x =
+    object
+     [(.?=) "didCreate" (fileOperationOptionsDidCreate x),  (.?=) "willCreate"
+                                                             (fileOperationOptionsWillCreate
+                                                               x),  (.?=)
+                                                                     "didRename"
+                                                                     (fileOperationOptionsDidRename
+                                                                       x),  (.?=)
+                                                                             "willRename"
+                                                                             (fileOperationOptionsWillRename
+                                                                               x),  (.?=)
+                                                                                     "didDelete"
+                                                                                     (fileOperationOptionsDidDelete
+                                                                                       x),  (.?=)
+                                                                                             "willDelete"
+                                                                                             (fileOperationOptionsWillDelete
+                                                                                               x)]
+
 data FileOperationOptions = FileOperationOptions { fileOperationOptionsDidCreate :: Maybe FileOperationRegistrationOptions
                                                  , fileOperationOptionsWillCreate :: Maybe FileOperationRegistrationOptions
                                                  , fileOperationOptionsDidRename :: Maybe FileOperationRegistrationOptions

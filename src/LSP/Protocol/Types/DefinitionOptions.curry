@@ -15,6 +15,10 @@ instance FromJSON DefinitionOptions where
             DefinitionOptions { definitionOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DefinitionOptions value: " ++ ppJSON j)
 
+instance ToJSON DefinitionOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (definitionOptionsWorkDoneProgress x)]
+
 data DefinitionOptions = DefinitionOptions { definitionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

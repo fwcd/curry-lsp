@@ -15,6 +15,9 @@ instance FromJSON StaticRegistrationOptions where
             StaticRegistrationOptions { staticRegistrationOptionsId = parsedId }
       _ -> Left ("Unrecognized StaticRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON StaticRegistrationOptions where
+  toJSON x = object [(.?=) "id" (staticRegistrationOptionsId x)]
+
 data StaticRegistrationOptions = StaticRegistrationOptions { staticRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)
 

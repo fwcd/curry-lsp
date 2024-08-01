@@ -14,6 +14,12 @@ instance FromJSON InsertTextFormat where
          2 -> Right InsertTextFormatSnippet
          _ -> Left ("Unrecognized InsertTextFormat value: " ++ ppJSON j)
 
+instance ToJSON InsertTextFormat where
+  toJSON x =
+    case x of
+      InsertTextFormatPlainText -> toJSON 1
+      InsertTextFormatSnippet -> toJSON 2
+
 data InsertTextFormat = InsertTextFormatPlainText | InsertTextFormatSnippet
  deriving (Show,Eq,Enum,Bounded,Ord)
 

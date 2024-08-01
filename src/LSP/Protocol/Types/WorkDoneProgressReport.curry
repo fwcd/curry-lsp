@@ -21,6 +21,18 @@ instance FromJSON WorkDoneProgressReport where
                                    , workDoneProgressReportPercentage = parsedPercentage }
       _ -> Left ("Unrecognized WorkDoneProgressReport value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressReport where
+  toJSON x =
+    object
+     [(.=) "kind" (workDoneProgressReportKind x),  (.?=) "cancellable"
+                                                    (workDoneProgressReportCancellable
+                                                      x),  (.?=) "message"
+                                                            (workDoneProgressReportMessage
+                                                              x),  (.?=)
+                                                                    "percentage"
+                                                                    (workDoneProgressReportPercentage
+                                                                      x)]
+
 data WorkDoneProgressReport = WorkDoneProgressReport { workDoneProgressReportKind :: String
                                                      , workDoneProgressReportCancellable :: Maybe Bool
                                                      , workDoneProgressReportMessage :: Maybe String

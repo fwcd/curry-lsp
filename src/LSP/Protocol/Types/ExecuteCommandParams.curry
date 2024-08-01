@@ -21,6 +21,17 @@ instance FromJSON ExecuteCommandParams where
                                  , executeCommandParamsArguments = parsedArguments }
       _ -> Left ("Unrecognized ExecuteCommandParams value: " ++ ppJSON j)
 
+instance ToJSON ExecuteCommandParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (executeCommandParamsWorkDoneToken x),  (.=)
+                                                                     "command"
+                                                                     (executeCommandParamsCommand
+                                                                       x),  (.?=)
+                                                                             "arguments"
+                                                                             (executeCommandParamsArguments
+                                                                               x)]
+
 data ExecuteCommandParams = ExecuteCommandParams { executeCommandParamsWorkDoneToken :: Maybe ProgressToken
                                                  , executeCommandParamsCommand :: String
                                                  , executeCommandParamsArguments :: Maybe [LSPAny] }

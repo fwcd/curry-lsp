@@ -18,6 +18,14 @@ instance FromJSON DeleteFileOptions where
                               , deleteFileOptionsIgnoreIfNotExists = parsedIgnoreIfNotExists }
       _ -> Left ("Unrecognized DeleteFileOptions value: " ++ ppJSON j)
 
+instance ToJSON DeleteFileOptions where
+  toJSON x =
+    object
+     [(.?=) "recursive" (deleteFileOptionsRecursive x),  (.?=)
+                                                          "ignoreIfNotExists"
+                                                          (deleteFileOptionsIgnoreIfNotExists
+                                                            x)]
+
 data DeleteFileOptions = DeleteFileOptions { deleteFileOptionsRecursive :: Maybe Bool
                                            , deleteFileOptionsIgnoreIfNotExists :: Maybe Bool }
  deriving (Show,Eq)

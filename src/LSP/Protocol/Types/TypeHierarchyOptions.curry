@@ -15,6 +15,10 @@ instance FromJSON TypeHierarchyOptions where
             TypeHierarchyOptions { typeHierarchyOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized TypeHierarchyOptions value: " ++ ppJSON j)
 
+instance ToJSON TypeHierarchyOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (typeHierarchyOptionsWorkDoneProgress x)]
+
 data TypeHierarchyOptions = TypeHierarchyOptions { typeHierarchyOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

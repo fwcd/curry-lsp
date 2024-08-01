@@ -41,6 +41,38 @@ instance FromJSON InitializeParams where
                              , initializeParamsWorkspaceFolders = parsedWorkspaceFolders }
       _ -> Left ("Unrecognized InitializeParams value: " ++ ppJSON j)
 
+instance ToJSON InitializeParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (initializeParamsWorkDoneToken x),  (.=)
+                                                                 "processId"
+                                                                 (initializeParamsProcessId
+                                                                   x),  (.?=)
+                                                                         "clientInfo"
+                                                                         (initializeParamsClientInfo
+                                                                           x),  (.?=)
+                                                                                 "locale"
+                                                                                 (initializeParamsLocale
+                                                                                   x),  (.?=)
+                                                                                         "rootPath"
+                                                                                         (initializeParamsRootPath
+                                                                                           x),  (.=)
+                                                                                                 "rootUri"
+                                                                                                 (initializeParamsRootUri
+                                                                                                   x),  (.=)
+                                                                                                         "capabilities"
+                                                                                                         (initializeParamsCapabilities
+                                                                                                           x),  (.?=)
+                                                                                                                 "initializationOptions"
+                                                                                                                 (initializeParamsInitializationOptions
+                                                                                                                   x),  (.?=)
+                                                                                                                         "trace"
+                                                                                                                         (initializeParamsTrace
+                                                                                                                           x),  (.?=)
+                                                                                                                                 "workspaceFolders"
+                                                                                                                                 (initializeParamsWorkspaceFolders
+                                                                                                                                   x)]
+
 data InitializeParams = InitializeParams { initializeParamsWorkDoneToken :: Maybe ProgressToken
                                          , initializeParamsProcessId :: Either Int ()
                                          , initializeParamsClientInfo :: Maybe ClientInfo

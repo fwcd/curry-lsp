@@ -39,6 +39,33 @@ instance FromJSON Diagnostic where
                        , diagnosticData = parsedData }
       _ -> Left ("Unrecognized Diagnostic value: " ++ ppJSON j)
 
+instance ToJSON Diagnostic where
+  toJSON x =
+    object
+     [(.=) "range" (diagnosticRange x),  (.?=) "severity"
+                                          (diagnosticSeverity x),  (.?=)
+                                                                    "code"
+                                                                    (diagnosticCode
+                                                                      x),  (.?=)
+                                                                            "codeDescription"
+                                                                            (diagnosticCodeDescription
+                                                                              x),  (.?=)
+                                                                                    "source"
+                                                                                    (diagnosticSource
+                                                                                      x),  (.=)
+                                                                                            "message"
+                                                                                            (diagnosticMessage
+                                                                                              x),  (.?=)
+                                                                                                    "tags"
+                                                                                                    (diagnosticTags
+                                                                                                      x),  (.?=)
+                                                                                                            "relatedInformation"
+                                                                                                            (diagnosticRelatedInformation
+                                                                                                              x),  (.?=)
+                                                                                                                    "data"
+                                                                                                                    (diagnosticData
+                                                                                                                      x)]
+
 data Diagnostic = Diagnostic { diagnosticRange :: Range
                              , diagnosticSeverity :: Maybe DiagnosticSeverity
                              , diagnosticCode :: Maybe (Either Int String)

@@ -25,6 +25,20 @@ instance FromJSON SemanticTokensDeltaParams where
                                       , semanticTokensDeltaParamsPreviousResultId = parsedPreviousResultId }
       _ -> Left ("Unrecognized SemanticTokensDeltaParams value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensDeltaParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (semanticTokensDeltaParamsWorkDoneToken x),  (.?=)
+                                                                          "partialResultToken"
+                                                                          (semanticTokensDeltaParamsPartialResultToken
+                                                                            x),  (.=)
+                                                                                  "textDocument"
+                                                                                  (semanticTokensDeltaParamsTextDocument
+                                                                                    x),  (.=)
+                                                                                          "previousResultId"
+                                                                                          (semanticTokensDeltaParamsPreviousResultId
+                                                                                            x)]
+
 data SemanticTokensDeltaParams = SemanticTokensDeltaParams { semanticTokensDeltaParamsWorkDoneToken :: Maybe ProgressToken
                                                            , semanticTokensDeltaParamsPartialResultToken :: Maybe ProgressToken
                                                            , semanticTokensDeltaParamsTextDocument :: TextDocumentIdentifier

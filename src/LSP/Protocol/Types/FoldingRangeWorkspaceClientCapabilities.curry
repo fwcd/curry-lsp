@@ -18,6 +18,12 @@ instance FromJSON FoldingRangeWorkspaceClientCapabilities where
          ("Unrecognized FoldingRangeWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON FoldingRangeWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (foldingRangeWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data FoldingRangeWorkspaceClientCapabilities = FoldingRangeWorkspaceClientCapabilities { foldingRangeWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

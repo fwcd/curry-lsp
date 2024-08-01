@@ -23,6 +23,17 @@ instance FromJSON DocumentLinkParams where
                                , documentLinkParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized DocumentLinkParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentLinkParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (documentLinkParamsWorkDoneToken x),  (.?=)
+                                                                   "partialResultToken"
+                                                                   (documentLinkParamsPartialResultToken
+                                                                     x),  (.=)
+                                                                           "textDocument"
+                                                                           (documentLinkParamsTextDocument
+                                                                             x)]
+
 data DocumentLinkParams = DocumentLinkParams { documentLinkParamsWorkDoneToken :: Maybe ProgressToken
                                              , documentLinkParamsPartialResultToken :: Maybe ProgressToken
                                              , documentLinkParamsTextDocument :: TextDocumentIdentifier }

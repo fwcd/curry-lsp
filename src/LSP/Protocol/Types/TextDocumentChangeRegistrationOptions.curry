@@ -22,6 +22,15 @@ instance FromJSON TextDocumentChangeRegistrationOptions where
          ("Unrecognized TextDocumentChangeRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON TextDocumentChangeRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (textDocumentChangeRegistrationOptionsDocumentSelector x),  (.=)
+                                                                    "syncKind"
+                                                                    (textDocumentChangeRegistrationOptionsSyncKind
+                                                                      x)]
+
 data TextDocumentChangeRegistrationOptions = TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , textDocumentChangeRegistrationOptionsSyncKind :: TextDocumentSyncKind }
  deriving (Show,Eq)

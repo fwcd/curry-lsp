@@ -18,6 +18,10 @@ instance FromJSON ClientCompletionItemOptionsKind where
         Left
          ("Unrecognized ClientCompletionItemOptionsKind value: " ++ ppJSON j)
 
+instance ToJSON ClientCompletionItemOptionsKind where
+  toJSON x =
+    object [(.?=) "valueSet" (clientCompletionItemOptionsKindValueSet x)]
+
 data ClientCompletionItemOptionsKind = ClientCompletionItemOptionsKind { clientCompletionItemOptionsKindValueSet :: Maybe [CompletionItemKind] }
  deriving (Show,Eq)
 

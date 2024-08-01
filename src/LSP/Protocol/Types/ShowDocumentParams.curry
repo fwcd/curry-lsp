@@ -23,6 +23,17 @@ instance FromJSON ShowDocumentParams where
                                , showDocumentParamsSelection = parsedSelection }
       _ -> Left ("Unrecognized ShowDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON ShowDocumentParams where
+  toJSON x =
+    object
+     [(.=) "uri" (showDocumentParamsUri x),  (.?=) "external"
+                                              (showDocumentParamsExternal
+                                                x),  (.?=) "takeFocus"
+                                                      (showDocumentParamsTakeFocus
+                                                        x),  (.?=) "selection"
+                                                              (showDocumentParamsSelection
+                                                                x)]
+
 data ShowDocumentParams = ShowDocumentParams { showDocumentParamsUri :: Uri
                                              , showDocumentParamsExternal :: Maybe Bool
                                              , showDocumentParamsTakeFocus :: Maybe Bool

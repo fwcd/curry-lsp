@@ -15,6 +15,13 @@ instance FromJSON TextDocumentSyncKind where
          2 -> Right TextDocumentSyncKindIncremental
          _ -> Left ("Unrecognized TextDocumentSyncKind value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentSyncKind where
+  toJSON x =
+    case x of
+      TextDocumentSyncKindNone -> toJSON 0
+      TextDocumentSyncKindFull -> toJSON 1
+      TextDocumentSyncKindIncremental -> toJSON 2
+
 data TextDocumentSyncKind = TextDocumentSyncKindNone
                           | TextDocumentSyncKindFull
                           | TextDocumentSyncKindIncremental

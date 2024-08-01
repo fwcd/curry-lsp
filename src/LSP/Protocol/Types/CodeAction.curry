@@ -35,6 +35,30 @@ instance FromJSON CodeAction where
                        , codeActionData = parsedData }
       _ -> Left ("Unrecognized CodeAction value: " ++ ppJSON j)
 
+instance ToJSON CodeAction where
+  toJSON x =
+    object
+     [(.=) "title" (codeActionTitle x),  (.?=) "kind"
+                                          (codeActionKind x),  (.?=)
+                                                                "diagnostics"
+                                                                (codeActionDiagnostics
+                                                                  x),  (.?=)
+                                                                        "isPreferred"
+                                                                        (codeActionIsPreferred
+                                                                          x),  (.?=)
+                                                                                "disabled"
+                                                                                (codeActionDisabled
+                                                                                  x),  (.?=)
+                                                                                        "edit"
+                                                                                        (codeActionEdit
+                                                                                          x),  (.?=)
+                                                                                                "command"
+                                                                                                (codeActionCommand
+                                                                                                  x),  (.?=)
+                                                                                                        "data"
+                                                                                                        (codeActionData
+                                                                                                          x)]
+
 data CodeAction = CodeAction { codeActionTitle :: String
                              , codeActionKind :: Maybe CodeActionKind
                              , codeActionDiagnostics :: Maybe [Diagnostic]

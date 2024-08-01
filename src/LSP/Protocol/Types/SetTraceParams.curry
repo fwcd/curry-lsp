@@ -15,6 +15,9 @@ instance FromJSON SetTraceParams where
            return SetTraceParams { setTraceParamsValue = parsedValue }
       _ -> Left ("Unrecognized SetTraceParams value: " ++ ppJSON j)
 
+instance ToJSON SetTraceParams where
+  toJSON x = object [(.=) "value" (setTraceParamsValue x)]
+
 data SetTraceParams = SetTraceParams { setTraceParamsValue :: TraceValue }
  deriving (Show,Eq)
 

@@ -31,6 +31,30 @@ instance FromJSON FileOperationClientCapabilities where
         Left
          ("Unrecognized FileOperationClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON FileOperationClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (fileOperationClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                 "didCreate"
+                                                                 (fileOperationClientCapabilitiesDidCreate
+                                                                   x),  (.?=)
+                                                                         "willCreate"
+                                                                         (fileOperationClientCapabilitiesWillCreate
+                                                                           x),  (.?=)
+                                                                                 "didRename"
+                                                                                 (fileOperationClientCapabilitiesDidRename
+                                                                                   x),  (.?=)
+                                                                                         "willRename"
+                                                                                         (fileOperationClientCapabilitiesWillRename
+                                                                                           x),  (.?=)
+                                                                                                 "didDelete"
+                                                                                                 (fileOperationClientCapabilitiesDidDelete
+                                                                                                   x),  (.?=)
+                                                                                                         "willDelete"
+                                                                                                         (fileOperationClientCapabilitiesWillDelete
+                                                                                                           x)]
+
 data FileOperationClientCapabilities = FileOperationClientCapabilities { fileOperationClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                        , fileOperationClientCapabilitiesDidCreate :: Maybe Bool
                                                                        , fileOperationClientCapabilitiesWillCreate :: Maybe Bool

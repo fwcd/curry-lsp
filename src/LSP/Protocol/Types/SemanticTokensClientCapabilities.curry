@@ -45,6 +45,36 @@ instance FromJSON SemanticTokensClientCapabilities where
         Left
          ("Unrecognized SemanticTokensClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (semanticTokensClientCapabilitiesDynamicRegistration x),  (.=)
+                                                                  "requests"
+                                                                  (semanticTokensClientCapabilitiesRequests
+                                                                    x),  (.=)
+                                                                          "tokenTypes"
+                                                                          (semanticTokensClientCapabilitiesTokenTypes
+                                                                            x),  (.=)
+                                                                                  "tokenModifiers"
+                                                                                  (semanticTokensClientCapabilitiesTokenModifiers
+                                                                                    x),  (.=)
+                                                                                          "formats"
+                                                                                          (semanticTokensClientCapabilitiesFormats
+                                                                                            x),  (.?=)
+                                                                                                  "overlappingTokenSupport"
+                                                                                                  (semanticTokensClientCapabilitiesOverlappingTokenSupport
+                                                                                                    x),  (.?=)
+                                                                                                          "multilineTokenSupport"
+                                                                                                          (semanticTokensClientCapabilitiesMultilineTokenSupport
+                                                                                                            x),  (.?=)
+                                                                                                                  "serverCancelSupport"
+                                                                                                                  (semanticTokensClientCapabilitiesServerCancelSupport
+                                                                                                                    x),  (.?=)
+                                                                                                                          "augmentsSyntaxTokens"
+                                                                                                                          (semanticTokensClientCapabilitiesAugmentsSyntaxTokens
+                                                                                                                            x)]
+
 data SemanticTokensClientCapabilities = SemanticTokensClientCapabilities { semanticTokensClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , semanticTokensClientCapabilitiesRequests :: ClientSemanticTokensRequestOptions
                                                                          , semanticTokensClientCapabilitiesTokenTypes :: [String]

@@ -16,6 +16,9 @@ instance FromJSON RegistrationParams where
             RegistrationParams { registrationParamsRegistrations = parsedRegistrations }
       _ -> Left ("Unrecognized RegistrationParams value: " ++ ppJSON j)
 
+instance ToJSON RegistrationParams where
+  toJSON x = object [(.=) "registrations" (registrationParamsRegistrations x)]
+
 data RegistrationParams = RegistrationParams { registrationParamsRegistrations :: [Registration] }
  deriving (Show,Eq)
 

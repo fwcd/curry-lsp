@@ -14,6 +14,12 @@ instance FromJSON DiagnosticTag where
          2 -> Right DiagnosticTagDeprecated
          _ -> Left ("Unrecognized DiagnosticTag value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticTag where
+  toJSON x =
+    case x of
+      DiagnosticTagUnnecessary -> toJSON 1
+      DiagnosticTagDeprecated -> toJSON 2
+
 data DiagnosticTag = DiagnosticTagUnnecessary | DiagnosticTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)
 

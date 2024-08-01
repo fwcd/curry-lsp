@@ -18,6 +18,12 @@ instance FromJSON ReferenceClientCapabilities where
       _ ->
         Left ("Unrecognized ReferenceClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON ReferenceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (referenceClientCapabilitiesDynamicRegistration x)]
+
 data ReferenceClientCapabilities = ReferenceClientCapabilities { referenceClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

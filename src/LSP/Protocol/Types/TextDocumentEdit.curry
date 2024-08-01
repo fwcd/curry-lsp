@@ -21,6 +21,13 @@ instance FromJSON TextDocumentEdit where
                              , textDocumentEditEdits = parsedEdits }
       _ -> Left ("Unrecognized TextDocumentEdit value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentEdit where
+  toJSON x =
+    object
+     [(.=) "textDocument" (textDocumentEditTextDocument x),  (.=) "edits"
+                                                              (textDocumentEditEdits
+                                                                x)]
+
 data TextDocumentEdit = TextDocumentEdit { textDocumentEditTextDocument :: OptionalVersionedTextDocumentIdentifier
                                          , textDocumentEditEdits :: [Either (Either TextEdit AnnotatedTextEdit) SnippetTextEdit] }
  deriving (Show,Eq)

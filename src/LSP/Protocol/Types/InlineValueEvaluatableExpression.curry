@@ -20,6 +20,14 @@ instance FromJSON InlineValueEvaluatableExpression where
         Left
          ("Unrecognized InlineValueEvaluatableExpression value: " ++ ppJSON j)
 
+instance ToJSON InlineValueEvaluatableExpression where
+  toJSON x =
+    object
+     [(.=) "range" (inlineValueEvaluatableExpressionRange x),  (.?=)
+                                                                "expression"
+                                                                (inlineValueEvaluatableExpressionExpression
+                                                                  x)]
+
 data InlineValueEvaluatableExpression = InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange :: Range
                                                                          , inlineValueEvaluatableExpressionExpression :: Maybe String }
  deriving (Show,Eq)

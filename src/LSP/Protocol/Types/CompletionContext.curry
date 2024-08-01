@@ -18,6 +18,14 @@ instance FromJSON CompletionContext where
                               , completionContextTriggerCharacter = parsedTriggerCharacter }
       _ -> Left ("Unrecognized CompletionContext value: " ++ ppJSON j)
 
+instance ToJSON CompletionContext where
+  toJSON x =
+    object
+     [(.=) "triggerKind" (completionContextTriggerKind x),  (.?=)
+                                                             "triggerCharacter"
+                                                             (completionContextTriggerCharacter
+                                                               x)]
+
 data CompletionContext = CompletionContext { completionContextTriggerKind :: CompletionTriggerKind
                                            , completionContextTriggerCharacter :: Maybe String }
  deriving (Show,Eq)

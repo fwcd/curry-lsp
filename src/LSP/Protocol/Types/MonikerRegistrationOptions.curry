@@ -19,6 +19,15 @@ instance FromJSON MonikerRegistrationOptions where
       _ ->
         Left ("Unrecognized MonikerRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON MonikerRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (monikerRegistrationOptionsDocumentSelector x),  (.?=)
+                                                         "workDoneProgress"
+                                                         (monikerRegistrationOptionsWorkDoneProgress
+                                                           x)]
+
 data MonikerRegistrationOptions = MonikerRegistrationOptions { monikerRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                              , monikerRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

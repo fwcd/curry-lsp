@@ -12,6 +12,9 @@ instance FromJSON InitializedParams where
       JObject vs -> do return InitializedParams {  }
       _ -> Left ("Unrecognized InitializedParams value: " ++ ppJSON j)
 
+instance ToJSON InitializedParams where
+  toJSON x = object []
+
 data InitializedParams = InitializedParams {  }
  deriving (Show,Eq)
 

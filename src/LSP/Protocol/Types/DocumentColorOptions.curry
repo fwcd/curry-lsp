@@ -15,6 +15,10 @@ instance FromJSON DocumentColorOptions where
             DocumentColorOptions { documentColorOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DocumentColorOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentColorOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (documentColorOptionsWorkDoneProgress x)]
+
 data DocumentColorOptions = DocumentColorOptions { documentColorOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

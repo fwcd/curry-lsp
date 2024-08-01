@@ -15,6 +15,9 @@ instance FromJSON LocationUriOnly where
            return LocationUriOnly { locationUriOnlyUri = parsedUri }
       _ -> Left ("Unrecognized LocationUriOnly value: " ++ ppJSON j)
 
+instance ToJSON LocationUriOnly where
+  toJSON x = object [(.=) "uri" (locationUriOnlyUri x)]
+
 data LocationUriOnly = LocationUriOnly { locationUriOnlyUri :: DocumentUri }
  deriving (Show,Eq)
 

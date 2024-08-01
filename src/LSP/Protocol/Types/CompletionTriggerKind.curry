@@ -15,6 +15,13 @@ instance FromJSON CompletionTriggerKind where
          3 -> Right CompletionTriggerKindTriggerForIncompleteCompletions
          _ -> Left ("Unrecognized CompletionTriggerKind value: " ++ ppJSON j)
 
+instance ToJSON CompletionTriggerKind where
+  toJSON x =
+    case x of
+      CompletionTriggerKindInvoked -> toJSON 1
+      CompletionTriggerKindTriggerCharacter -> toJSON 2
+      CompletionTriggerKindTriggerForIncompleteCompletions -> toJSON 3
+
 data CompletionTriggerKind = CompletionTriggerKindInvoked
                            | CompletionTriggerKindTriggerCharacter
                            | CompletionTriggerKindTriggerForIncompleteCompletions

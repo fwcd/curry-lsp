@@ -26,6 +26,20 @@ instance FromJSON NotebookDocument where
                              , notebookDocumentCells = parsedCells }
       _ -> Left ("Unrecognized NotebookDocument value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocument where
+  toJSON x =
+    object
+     [(.=) "uri" (notebookDocumentUri x),  (.=) "notebookType"
+                                            (notebookDocumentNotebookType
+                                              x),  (.=) "version"
+                                                    (notebookDocumentVersion
+                                                      x),  (.?=) "metadata"
+                                                            (notebookDocumentMetadata
+                                                              x),  (.=)
+                                                                    "cells"
+                                                                    (notebookDocumentCells
+                                                                      x)]
+
 data NotebookDocument = NotebookDocument { notebookDocumentUri :: Uri
                                          , notebookDocumentNotebookType :: String
                                          , notebookDocumentVersion :: Int

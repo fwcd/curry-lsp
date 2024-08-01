@@ -24,6 +24,18 @@ instance FromJSON CreateFile where
                        , createFileOptions = parsedOptions }
       _ -> Left ("Unrecognized CreateFile value: " ++ ppJSON j)
 
+instance ToJSON CreateFile where
+  toJSON x =
+    object
+     [(.=) "kind" (createFileKind x),  (.?=) "annotationId"
+                                        (createFileAnnotationId x),  (.=)
+                                                                      "uri"
+                                                                      (createFileUri
+                                                                        x),  (.?=)
+                                                                              "options"
+                                                                              (createFileOptions
+                                                                                x)]
+
 data CreateFile = CreateFile { createFileKind :: String
                              , createFileAnnotationId :: Maybe ChangeAnnotationIdentifier
                              , createFileUri :: DocumentUri

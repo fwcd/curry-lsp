@@ -38,6 +38,36 @@ instance FromJSON SymbolKind where
          26 -> Right SymbolKindTypeParameter
          _ -> Left ("Unrecognized SymbolKind value: " ++ ppJSON j)
 
+instance ToJSON SymbolKind where
+  toJSON x =
+    case x of
+      SymbolKindFile -> toJSON 1
+      SymbolKindModule -> toJSON 2
+      SymbolKindNamespace -> toJSON 3
+      SymbolKindPackage -> toJSON 4
+      SymbolKindClass -> toJSON 5
+      SymbolKindMethod -> toJSON 6
+      SymbolKindProperty -> toJSON 7
+      SymbolKindField -> toJSON 8
+      SymbolKindConstructor -> toJSON 9
+      SymbolKindEnum -> toJSON 10
+      SymbolKindInterface -> toJSON 11
+      SymbolKindFunction -> toJSON 12
+      SymbolKindVariable -> toJSON 13
+      SymbolKindConstant -> toJSON 14
+      SymbolKindString -> toJSON 15
+      SymbolKindNumber -> toJSON 16
+      SymbolKindBoolean -> toJSON 17
+      SymbolKindArray -> toJSON 18
+      SymbolKindObject -> toJSON 19
+      SymbolKindKey -> toJSON 20
+      SymbolKindNull -> toJSON 21
+      SymbolKindEnumMember -> toJSON 22
+      SymbolKindStruct -> toJSON 23
+      SymbolKindEvent -> toJSON 24
+      SymbolKindOperator -> toJSON 25
+      SymbolKindTypeParameter -> toJSON 26
+
 data SymbolKind = SymbolKindFile
                 | SymbolKindModule
                 | SymbolKindNamespace

@@ -13,6 +13,9 @@ instance FromJSON SymbolTag where
          1 -> Right SymbolTagDeprecated
          _ -> Left ("Unrecognized SymbolTag value: " ++ ppJSON j)
 
+instance ToJSON SymbolTag where
+  toJSON x = case x of SymbolTagDeprecated -> toJSON 1
+
 data SymbolTag = SymbolTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)
 

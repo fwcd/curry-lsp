@@ -24,6 +24,18 @@ instance FromJSON NotebookDocumentSyncRegistrationOptions where
          ("Unrecognized NotebookDocumentSyncRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentSyncRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "notebookSelector"
+       (notebookDocumentSyncRegistrationOptionsNotebookSelector x),  (.?=)
+                                                                      "save"
+                                                                      (notebookDocumentSyncRegistrationOptionsSave
+                                                                        x),  (.?=)
+                                                                              "id"
+                                                                              (notebookDocumentSyncRegistrationOptionsId
+                                                                                x)]
+
 data NotebookDocumentSyncRegistrationOptions = NotebookDocumentSyncRegistrationOptions { notebookDocumentSyncRegistrationOptionsNotebookSelector :: [Either NotebookDocumentFilterWithNotebook NotebookDocumentFilterWithCells]
                                                                                        , notebookDocumentSyncRegistrationOptionsSave :: Maybe Bool
                                                                                        , notebookDocumentSyncRegistrationOptionsId :: Maybe String }

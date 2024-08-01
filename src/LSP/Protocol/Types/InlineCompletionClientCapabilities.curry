@@ -20,6 +20,12 @@ instance FromJSON InlineCompletionClientCapabilities where
          ("Unrecognized InlineCompletionClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON InlineCompletionClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (inlineCompletionClientCapabilitiesDynamicRegistration x)]
+
 data InlineCompletionClientCapabilities = InlineCompletionClientCapabilities { inlineCompletionClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

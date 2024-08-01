@@ -22,6 +22,20 @@ instance FromJSON SemanticTokenModifiers where
          "defaultLibrary" -> Right SemanticTokenModifiersDefaultLibrary
          _ -> Left ("Unrecognized SemanticTokenModifiers value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokenModifiers where
+  toJSON x =
+    case x of
+      SemanticTokenModifiersDeclaration -> toJSON "declaration"
+      SemanticTokenModifiersDefinition -> toJSON "definition"
+      SemanticTokenModifiersReadonly -> toJSON "readonly"
+      SemanticTokenModifiersStatic -> toJSON "static"
+      SemanticTokenModifiersDeprecated -> toJSON "deprecated"
+      SemanticTokenModifiersAbstract -> toJSON "abstract"
+      SemanticTokenModifiersAsync -> toJSON "async"
+      SemanticTokenModifiersModification -> toJSON "modification"
+      SemanticTokenModifiersDocumentation -> toJSON "documentation"
+      SemanticTokenModifiersDefaultLibrary -> toJSON "defaultLibrary"
+
 data SemanticTokenModifiers = SemanticTokenModifiersDeclaration
                             | SemanticTokenModifiersDefinition
                             | SemanticTokenModifiersReadonly

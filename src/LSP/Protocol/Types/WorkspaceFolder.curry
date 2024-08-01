@@ -18,6 +18,11 @@ instance FromJSON WorkspaceFolder where
                             , workspaceFolderName = parsedName }
       _ -> Left ("Unrecognized WorkspaceFolder value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceFolder where
+  toJSON x =
+    object
+     [(.=) "uri" (workspaceFolderUri x),  (.=) "name" (workspaceFolderName x)]
+
 data WorkspaceFolder = WorkspaceFolder { workspaceFolderUri :: Uri
                                        , workspaceFolderName :: String }
  deriving (Show,Eq)

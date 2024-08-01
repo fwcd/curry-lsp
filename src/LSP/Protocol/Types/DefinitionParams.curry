@@ -26,6 +26,19 @@ instance FromJSON DefinitionParams where
                              , definitionParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized DefinitionParams value: " ++ ppJSON j)
 
+instance ToJSON DefinitionParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (definitionParamsTextDocument x),  (.=) "position"
+                                                              (definitionParamsPosition
+                                                                x),  (.?=)
+                                                                      "workDoneToken"
+                                                                      (definitionParamsWorkDoneToken
+                                                                        x),  (.?=)
+                                                                              "partialResultToken"
+                                                                              (definitionParamsPartialResultToken
+                                                                                x)]
+
 data DefinitionParams = DefinitionParams { definitionParamsTextDocument :: TextDocumentIdentifier
                                          , definitionParamsPosition :: Position
                                          , definitionParamsWorkDoneToken :: Maybe ProgressToken

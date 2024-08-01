@@ -15,6 +15,9 @@ instance FromJSON CreateFilesParams where
            return CreateFilesParams { createFilesParamsFiles = parsedFiles }
       _ -> Left ("Unrecognized CreateFilesParams value: " ++ ppJSON j)
 
+instance ToJSON CreateFilesParams where
+  toJSON x = object [(.=) "files" (createFilesParamsFiles x)]
+
 data CreateFilesParams = CreateFilesParams { createFilesParamsFiles :: [FileCreate] }
  deriving (Show,Eq)
 

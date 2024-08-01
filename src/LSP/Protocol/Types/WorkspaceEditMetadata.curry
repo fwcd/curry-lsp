@@ -15,6 +15,10 @@ instance FromJSON WorkspaceEditMetadata where
             WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring = parsedIsRefactoring }
       _ -> Left ("Unrecognized WorkspaceEditMetadata value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceEditMetadata where
+  toJSON x =
+    object [(.?=) "isRefactoring" (workspaceEditMetadataIsRefactoring x)]
+
 data WorkspaceEditMetadata = WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring :: Maybe Bool }
  deriving (Show,Eq)
 

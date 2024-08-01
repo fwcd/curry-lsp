@@ -35,6 +35,30 @@ instance FromJSON InlayHint where
                       , inlayHintData = parsedData }
       _ -> Left ("Unrecognized InlayHint value: " ++ ppJSON j)
 
+instance ToJSON InlayHint where
+  toJSON x =
+    object
+     [(.=) "position" (inlayHintPosition x),  (.=) "label"
+                                               (inlayHintLabel x),  (.?=)
+                                                                     "kind"
+                                                                     (inlayHintKind
+                                                                       x),  (.?=)
+                                                                             "textEdits"
+                                                                             (inlayHintTextEdits
+                                                                               x),  (.?=)
+                                                                                     "tooltip"
+                                                                                     (inlayHintTooltip
+                                                                                       x),  (.?=)
+                                                                                             "paddingLeft"
+                                                                                             (inlayHintPaddingLeft
+                                                                                               x),  (.?=)
+                                                                                                     "paddingRight"
+                                                                                                     (inlayHintPaddingRight
+                                                                                                       x),  (.?=)
+                                                                                                             "data"
+                                                                                                             (inlayHintData
+                                                                                                               x)]
+
 data InlayHint = InlayHint { inlayHintPosition :: Position
                            , inlayHintLabel :: Either String [InlayHintLabelPart]
                            , inlayHintKind :: Maybe InlayHintKind

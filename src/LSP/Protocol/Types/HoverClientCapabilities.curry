@@ -20,6 +20,14 @@ instance FromJSON HoverClientCapabilities where
                                     , hoverClientCapabilitiesContentFormat = parsedContentFormat }
       _ -> Left ("Unrecognized HoverClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON HoverClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (hoverClientCapabilitiesDynamicRegistration x),  (.?=) "contentFormat"
+                                                         (hoverClientCapabilitiesContentFormat
+                                                           x)]
+
 data HoverClientCapabilities = HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                        , hoverClientCapabilitiesContentFormat :: Maybe [MarkupKind] }
  deriving (Show,Eq)

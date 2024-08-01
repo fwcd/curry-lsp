@@ -23,6 +23,17 @@ instance FromJSON DocumentColorParams where
                                 , documentColorParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized DocumentColorParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentColorParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (documentColorParamsWorkDoneToken x),  (.?=)
+                                                                    "partialResultToken"
+                                                                    (documentColorParamsPartialResultToken
+                                                                      x),  (.=)
+                                                                            "textDocument"
+                                                                            (documentColorParamsTextDocument
+                                                                              x)]
+
 data DocumentColorParams = DocumentColorParams { documentColorParamsWorkDoneToken :: Maybe ProgressToken
                                                , documentColorParamsPartialResultToken :: Maybe ProgressToken
                                                , documentColorParamsTextDocument :: TextDocumentIdentifier }

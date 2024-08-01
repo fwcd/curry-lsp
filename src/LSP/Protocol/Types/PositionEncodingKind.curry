@@ -15,6 +15,13 @@ instance FromJSON PositionEncodingKind where
          "utf-32" -> Right PositionEncodingKindUTF32
          _ -> Left ("Unrecognized PositionEncodingKind value: " ++ ppJSON j)
 
+instance ToJSON PositionEncodingKind where
+  toJSON x =
+    case x of
+      PositionEncodingKindUTF8 -> toJSON "utf-8"
+      PositionEncodingKindUTF16 -> toJSON "utf-16"
+      PositionEncodingKindUTF32 -> toJSON "utf-32"
+
 data PositionEncodingKind = PositionEncodingKindUTF8
                           | PositionEncodingKindUTF16
                           | PositionEncodingKindUTF32

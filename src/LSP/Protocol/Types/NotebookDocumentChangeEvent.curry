@@ -20,6 +20,13 @@ instance FromJSON NotebookDocumentChangeEvent where
       _ ->
         Left ("Unrecognized NotebookDocumentChangeEvent value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocumentChangeEvent where
+  toJSON x =
+    object
+     [(.?=) "metadata" (notebookDocumentChangeEventMetadata x),  (.?=) "cells"
+                                                                  (notebookDocumentChangeEventCells
+                                                                    x)]
+
 data NotebookDocumentChangeEvent = NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata :: Maybe LSPObject
                                                                , notebookDocumentChangeEventCells :: Maybe NotebookDocumentCellChanges }
  deriving (Show,Eq)

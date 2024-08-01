@@ -18,6 +18,13 @@ instance FromJSON PrepareRenamePlaceholder where
                                      , prepareRenamePlaceholderPlaceholder = parsedPlaceholder }
       _ -> Left ("Unrecognized PrepareRenamePlaceholder value: " ++ ppJSON j)
 
+instance ToJSON PrepareRenamePlaceholder where
+  toJSON x =
+    object
+     [(.=) "range" (prepareRenamePlaceholderRange x),  (.=) "placeholder"
+                                                        (prepareRenamePlaceholderPlaceholder
+                                                          x)]
+
 data PrepareRenamePlaceholder = PrepareRenamePlaceholder { prepareRenamePlaceholderRange :: Range
                                                          , prepareRenamePlaceholderPlaceholder :: String }
  deriving (Show,Eq)

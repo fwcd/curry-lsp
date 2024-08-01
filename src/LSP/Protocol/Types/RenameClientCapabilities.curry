@@ -28,6 +28,21 @@ instance FromJSON RenameClientCapabilities where
                                      , renameClientCapabilitiesHonorsChangeAnnotations = parsedHonorsChangeAnnotations }
       _ -> Left ("Unrecognized RenameClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON RenameClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (renameClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                          "prepareSupport"
+                                                          (renameClientCapabilitiesPrepareSupport
+                                                            x),  (.?=)
+                                                                  "prepareSupportDefaultBehavior"
+                                                                  (renameClientCapabilitiesPrepareSupportDefaultBehavior
+                                                                    x),  (.?=)
+                                                                          "honorsChangeAnnotations"
+                                                                          (renameClientCapabilitiesHonorsChangeAnnotations
+                                                                            x)]
+
 data RenameClientCapabilities = RenameClientCapabilities { renameClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                          , renameClientCapabilitiesPrepareSupport :: Maybe Bool
                                                          , renameClientCapabilitiesPrepareSupportDefaultBehavior :: Maybe PrepareSupportDefaultBehavior

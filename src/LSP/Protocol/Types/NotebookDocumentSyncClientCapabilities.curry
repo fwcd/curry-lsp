@@ -24,6 +24,15 @@ instance FromJSON NotebookDocumentSyncClientCapabilities where
          ("Unrecognized NotebookDocumentSyncClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentSyncClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (notebookDocumentSyncClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                        "executionSummarySupport"
+                                                                        (notebookDocumentSyncClientCapabilitiesExecutionSummarySupport
+                                                                          x)]
+
 data NotebookDocumentSyncClientCapabilities = NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                      , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport :: Maybe Bool }
  deriving (Show,Eq)

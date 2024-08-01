@@ -22,6 +22,12 @@ instance FromJSON DocumentDiagnosticReportPartialResult where
          ("Unrecognized DocumentDiagnosticReportPartialResult value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentDiagnosticReportPartialResult where
+  toJSON x =
+    object
+     [(.=) "relatedDocuments"
+       (documentDiagnosticReportPartialResultRelatedDocuments x)]
+
 data DocumentDiagnosticReportPartialResult = DocumentDiagnosticReportPartialResult { documentDiagnosticReportPartialResultRelatedDocuments :: Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport) }
  deriving (Show,Eq)
 

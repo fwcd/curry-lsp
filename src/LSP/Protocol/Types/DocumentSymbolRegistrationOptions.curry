@@ -23,6 +23,18 @@ instance FromJSON DocumentSymbolRegistrationOptions where
          ("Unrecognized DocumentSymbolRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentSymbolRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentSymbolRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                "workDoneProgress"
+                                                                (documentSymbolRegistrationOptionsWorkDoneProgress
+                                                                  x),  (.?=)
+                                                                        "label"
+                                                                        (documentSymbolRegistrationOptionsLabel
+                                                                          x)]
+
 data DocumentSymbolRegistrationOptions = DocumentSymbolRegistrationOptions { documentSymbolRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , documentSymbolRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , documentSymbolRegistrationOptionsLabel :: Maybe String }

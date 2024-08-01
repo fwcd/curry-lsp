@@ -15,6 +15,10 @@ instance FromJSON FoldingRangeOptions where
             FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized FoldingRangeOptions value: " ++ ppJSON j)
 
+instance ToJSON FoldingRangeOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (foldingRangeOptionsWorkDoneProgress x)]
+
 data FoldingRangeOptions = FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

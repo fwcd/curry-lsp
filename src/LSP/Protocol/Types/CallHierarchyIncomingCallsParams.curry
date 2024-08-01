@@ -25,6 +25,17 @@ instance FromJSON CallHierarchyIncomingCallsParams where
         Left
          ("Unrecognized CallHierarchyIncomingCallsParams value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyIncomingCallsParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken"
+       (callHierarchyIncomingCallsParamsWorkDoneToken x),  (.?=)
+                                                            "partialResultToken"
+                                                            (callHierarchyIncomingCallsParamsPartialResultToken
+                                                              x),  (.=) "item"
+                                                                    (callHierarchyIncomingCallsParamsItem
+                                                                      x)]
+
 data CallHierarchyIncomingCallsParams = CallHierarchyIncomingCallsParams { callHierarchyIncomingCallsParamsWorkDoneToken :: Maybe ProgressToken
                                                                          , callHierarchyIncomingCallsParamsPartialResultToken :: Maybe ProgressToken
                                                                          , callHierarchyIncomingCallsParamsItem :: CallHierarchyItem }

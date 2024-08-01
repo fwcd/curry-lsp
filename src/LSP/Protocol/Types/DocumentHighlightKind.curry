@@ -15,6 +15,13 @@ instance FromJSON DocumentHighlightKind where
          3 -> Right DocumentHighlightKindWrite
          _ -> Left ("Unrecognized DocumentHighlightKind value: " ++ ppJSON j)
 
+instance ToJSON DocumentHighlightKind where
+  toJSON x =
+    case x of
+      DocumentHighlightKindText -> toJSON 1
+      DocumentHighlightKindRead -> toJSON 2
+      DocumentHighlightKindWrite -> toJSON 3
+
 data DocumentHighlightKind = DocumentHighlightKindText
                            | DocumentHighlightKindRead
                            | DocumentHighlightKindWrite

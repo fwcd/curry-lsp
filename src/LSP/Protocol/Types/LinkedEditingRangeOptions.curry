@@ -15,6 +15,11 @@ instance FromJSON LinkedEditingRangeOptions where
             LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized LinkedEditingRangeOptions value: " ++ ppJSON j)
 
+instance ToJSON LinkedEditingRangeOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (linkedEditingRangeOptionsWorkDoneProgress x)]
+
 data LinkedEditingRangeOptions = LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -26,6 +26,20 @@ instance FromJSON ImplementationParams where
                                  , implementationParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized ImplementationParams value: " ++ ppJSON j)
 
+instance ToJSON ImplementationParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (implementationParamsTextDocument x),  (.=)
+                                                                  "position"
+                                                                  (implementationParamsPosition
+                                                                    x),  (.?=)
+                                                                          "workDoneToken"
+                                                                          (implementationParamsWorkDoneToken
+                                                                            x),  (.?=)
+                                                                                  "partialResultToken"
+                                                                                  (implementationParamsPartialResultToken
+                                                                                    x)]
+
 data ImplementationParams = ImplementationParams { implementationParamsTextDocument :: TextDocumentIdentifier
                                                  , implementationParamsPosition :: Position
                                                  , implementationParamsWorkDoneToken :: Maybe ProgressToken

@@ -23,6 +23,17 @@ instance FromJSON NotebookDocumentCellChanges where
       _ ->
         Left ("Unrecognized NotebookDocumentCellChanges value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocumentCellChanges where
+  toJSON x =
+    object
+     [(.?=) "structure" (notebookDocumentCellChangesStructure x),  (.?=)
+                                                                    "data"
+                                                                    (notebookDocumentCellChangesData
+                                                                      x),  (.?=)
+                                                                            "textContent"
+                                                                            (notebookDocumentCellChangesTextContent
+                                                                              x)]
+
 data NotebookDocumentCellChanges = NotebookDocumentCellChanges { notebookDocumentCellChangesStructure :: Maybe NotebookDocumentCellChangeStructure
                                                                , notebookDocumentCellChangesData :: Maybe [NotebookCell]
                                                                , notebookDocumentCellChangesTextContent :: Maybe [NotebookDocumentCellContentChanges] }

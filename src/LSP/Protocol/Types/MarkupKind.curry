@@ -14,6 +14,12 @@ instance FromJSON MarkupKind where
          "markdown" -> Right MarkupKindMarkdown
          _ -> Left ("Unrecognized MarkupKind value: " ++ ppJSON j)
 
+instance ToJSON MarkupKind where
+  toJSON x =
+    case x of
+      MarkupKindPlainText -> toJSON "plaintext"
+      MarkupKindMarkdown -> toJSON "markdown"
+
 data MarkupKind = MarkupKindPlainText | MarkupKindMarkdown
  deriving (Show,Eq,Enum,Bounded,Ord)
 

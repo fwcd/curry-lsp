@@ -31,6 +31,27 @@ instance FromJSON SemanticTokensRegistrationOptions where
          ("Unrecognized SemanticTokensRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON SemanticTokensRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (semanticTokensRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                "workDoneProgress"
+                                                                (semanticTokensRegistrationOptionsWorkDoneProgress
+                                                                  x),  (.=)
+                                                                        "legend"
+                                                                        (semanticTokensRegistrationOptionsLegend
+                                                                          x),  (.?=)
+                                                                                "range"
+                                                                                (semanticTokensRegistrationOptionsRange
+                                                                                  x),  (.?=)
+                                                                                        "full"
+                                                                                        (semanticTokensRegistrationOptionsFull
+                                                                                          x),  (.?=)
+                                                                                                "id"
+                                                                                                (semanticTokensRegistrationOptionsId
+                                                                                                  x)]
+
 data SemanticTokensRegistrationOptions = SemanticTokensRegistrationOptions { semanticTokensRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , semanticTokensRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , semanticTokensRegistrationOptionsLegend :: SemanticTokensLegend

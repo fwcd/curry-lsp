@@ -18,6 +18,12 @@ instance FromJSON WorkspaceFoldersInitializeParams where
         Left
          ("Unrecognized WorkspaceFoldersInitializeParams value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceFoldersInitializeParams where
+  toJSON x =
+    object
+     [(.?=) "workspaceFolders"
+       (workspaceFoldersInitializeParamsWorkspaceFolders x)]
+
 data WorkspaceFoldersInitializeParams = WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders :: Maybe (Either [WorkspaceFolder] ()) }
  deriving (Show,Eq)
 

@@ -20,6 +20,14 @@ instance FromJSON StaleRequestSupportOptions where
       _ ->
         Left ("Unrecognized StaleRequestSupportOptions value: " ++ ppJSON j)
 
+instance ToJSON StaleRequestSupportOptions where
+  toJSON x =
+    object
+     [(.=) "cancel" (staleRequestSupportOptionsCancel x),  (.=)
+                                                            "retryOnContentModified"
+                                                            (staleRequestSupportOptionsRetryOnContentModified
+                                                              x)]
+
 data StaleRequestSupportOptions = StaleRequestSupportOptions { staleRequestSupportOptionsCancel :: Bool
                                                              , staleRequestSupportOptionsRetryOnContentModified :: [String] }
  deriving (Show,Eq)

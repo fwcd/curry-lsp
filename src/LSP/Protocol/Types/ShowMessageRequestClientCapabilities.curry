@@ -20,6 +20,12 @@ instance FromJSON ShowMessageRequestClientCapabilities where
          ("Unrecognized ShowMessageRequestClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON ShowMessageRequestClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "messageActionItem"
+       (showMessageRequestClientCapabilitiesMessageActionItem x)]
+
 data ShowMessageRequestClientCapabilities = ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem :: Maybe ClientShowMessageActionItemOptions }
  deriving (Show,Eq)
 

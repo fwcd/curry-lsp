@@ -18,6 +18,12 @@ instance FromJSON LogMessageParams where
                              , logMessageParamsMessage = parsedMessage }
       _ -> Left ("Unrecognized LogMessageParams value: " ++ ppJSON j)
 
+instance ToJSON LogMessageParams where
+  toJSON x =
+    object
+     [(.=) "type" (logMessageParamsType x),  (.=) "message"
+                                              (logMessageParamsMessage x)]
+
 data LogMessageParams = LogMessageParams { logMessageParamsType :: MessageType
                                          , logMessageParamsMessage :: String }
  deriving (Show,Eq)

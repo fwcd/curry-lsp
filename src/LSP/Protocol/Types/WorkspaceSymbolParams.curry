@@ -22,6 +22,17 @@ instance FromJSON WorkspaceSymbolParams where
                                   , workspaceSymbolParamsQuery = parsedQuery }
       _ -> Left ("Unrecognized WorkspaceSymbolParams value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceSymbolParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (workspaceSymbolParamsWorkDoneToken x),  (.?=)
+                                                                      "partialResultToken"
+                                                                      (workspaceSymbolParamsPartialResultToken
+                                                                        x),  (.=)
+                                                                              "query"
+                                                                              (workspaceSymbolParamsQuery
+                                                                                x)]
+
 data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsWorkDoneToken :: Maybe ProgressToken
                                                    , workspaceSymbolParamsPartialResultToken :: Maybe ProgressToken
                                                    , workspaceSymbolParamsQuery :: String }

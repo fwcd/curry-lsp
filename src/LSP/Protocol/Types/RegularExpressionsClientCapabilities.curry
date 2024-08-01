@@ -21,6 +21,14 @@ instance FromJSON RegularExpressionsClientCapabilities where
          ("Unrecognized RegularExpressionsClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON RegularExpressionsClientCapabilities where
+  toJSON x =
+    object
+     [(.=) "engine" (regularExpressionsClientCapabilitiesEngine x),  (.?=)
+                                                                      "version"
+                                                                      (regularExpressionsClientCapabilitiesVersion
+                                                                        x)]
+
 data RegularExpressionsClientCapabilities = RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine :: RegularExpressionEngineKind
                                                                                  , regularExpressionsClientCapabilitiesVersion :: Maybe String }
  deriving (Show,Eq)

@@ -17,6 +17,11 @@ instance FromJSON Position where
                      , positionCharacter = parsedCharacter }
       _ -> Left ("Unrecognized Position value: " ++ ppJSON j)
 
+instance ToJSON Position where
+  toJSON x =
+    object
+     [(.=) "line" (positionLine x),  (.=) "character" (positionCharacter x)]
+
 data Position = Position { positionLine :: Int, positionCharacter :: Int }
  deriving (Show,Eq)
 

@@ -20,6 +20,13 @@ instance FromJSON UnchangedDocumentDiagnosticReport where
          ("Unrecognized UnchangedDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
+instance ToJSON UnchangedDocumentDiagnosticReport where
+  toJSON x =
+    object
+     [(.=) "kind" (unchangedDocumentDiagnosticReportKind x),  (.=) "resultId"
+                                                               (unchangedDocumentDiagnosticReportResultId
+                                                                 x)]
+
 data UnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind :: String
                                                                            , unchangedDocumentDiagnosticReportResultId :: String }
  deriving (Show,Eq)

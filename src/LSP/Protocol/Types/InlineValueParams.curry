@@ -25,6 +25,20 @@ instance FromJSON InlineValueParams where
                               , inlineValueParamsContext = parsedContext }
       _ -> Left ("Unrecognized InlineValueParams value: " ++ ppJSON j)
 
+instance ToJSON InlineValueParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (inlineValueParamsWorkDoneToken x),  (.=)
+                                                                  "textDocument"
+                                                                  (inlineValueParamsTextDocument
+                                                                    x),  (.=)
+                                                                          "range"
+                                                                          (inlineValueParamsRange
+                                                                            x),  (.=)
+                                                                                  "context"
+                                                                                  (inlineValueParamsContext
+                                                                                    x)]
+
 data InlineValueParams = InlineValueParams { inlineValueParamsWorkDoneToken :: Maybe ProgressToken
                                            , inlineValueParamsTextDocument :: TextDocumentIdentifier
                                            , inlineValueParamsRange :: Range

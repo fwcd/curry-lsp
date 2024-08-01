@@ -17,6 +17,14 @@ instance FromJSON RenameOptions where
                           , renameOptionsPrepareProvider = parsedPrepareProvider }
       _ -> Left ("Unrecognized RenameOptions value: " ++ ppJSON j)
 
+instance ToJSON RenameOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (renameOptionsWorkDoneProgress x),  (.?=)
+                                                                    "prepareProvider"
+                                                                    (renameOptionsPrepareProvider
+                                                                      x)]
+
 data RenameOptions = RenameOptions { renameOptionsWorkDoneProgress :: Maybe Bool
                                    , renameOptionsPrepareProvider :: Maybe Bool }
  deriving (Show,Eq)

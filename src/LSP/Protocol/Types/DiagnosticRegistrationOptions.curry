@@ -31,6 +31,27 @@ instance FromJSON DiagnosticRegistrationOptions where
         Left
          ("Unrecognized DiagnosticRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (diagnosticRegistrationOptionsDocumentSelector x),  (.?=)
+                                                            "workDoneProgress"
+                                                            (diagnosticRegistrationOptionsWorkDoneProgress
+                                                              x),  (.?=)
+                                                                    "identifier"
+                                                                    (diagnosticRegistrationOptionsIdentifier
+                                                                      x),  (.=)
+                                                                            "interFileDependencies"
+                                                                            (diagnosticRegistrationOptionsInterFileDependencies
+                                                                              x),  (.=)
+                                                                                    "workspaceDiagnostics"
+                                                                                    (diagnosticRegistrationOptionsWorkspaceDiagnostics
+                                                                                      x),  (.?=)
+                                                                                            "id"
+                                                                                            (diagnosticRegistrationOptionsId
+                                                                                              x)]
+
 data DiagnosticRegistrationOptions = DiagnosticRegistrationOptions { diagnosticRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , diagnosticRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                    , diagnosticRegistrationOptionsIdentifier :: Maybe String

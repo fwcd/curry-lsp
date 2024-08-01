@@ -17,6 +17,9 @@ instance FromJSON NotebookDocumentIdentifier where
       _ ->
         Left ("Unrecognized NotebookDocumentIdentifier value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocumentIdentifier where
+  toJSON x = object [(.=) "uri" (notebookDocumentIdentifierUri x)]
+
 data NotebookDocumentIdentifier = NotebookDocumentIdentifier { notebookDocumentIdentifierUri :: Uri }
  deriving (Show,Eq)
 

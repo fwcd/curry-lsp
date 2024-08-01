@@ -19,6 +19,10 @@ instance FromJSON Hover where
             Hover { hoverContents = parsedContents, hoverRange = parsedRange }
       _ -> Left ("Unrecognized Hover value: " ++ ppJSON j)
 
+instance ToJSON Hover where
+  toJSON x =
+    object [(.=) "contents" (hoverContents x),  (.?=) "range" (hoverRange x)]
+
 data Hover = Hover { hoverContents :: Either (Either MarkupContent MarkedString) [MarkedString]
                    , hoverRange :: Maybe Range }
  deriving (Show,Eq)

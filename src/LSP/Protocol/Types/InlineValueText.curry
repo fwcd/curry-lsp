@@ -18,6 +18,12 @@ instance FromJSON InlineValueText where
                             , inlineValueTextText = parsedText }
       _ -> Left ("Unrecognized InlineValueText value: " ++ ppJSON j)
 
+instance ToJSON InlineValueText where
+  toJSON x =
+    object
+     [(.=) "range" (inlineValueTextRange x),  (.=) "text"
+                                               (inlineValueTextText x)]
+
 data InlineValueText = InlineValueText { inlineValueTextRange :: Range
                                        , inlineValueTextText :: String }
  deriving (Show,Eq)

@@ -18,6 +18,13 @@ instance FromJSON LinkedEditingRanges where
                                 , linkedEditingRangesWordPattern = parsedWordPattern }
       _ -> Left ("Unrecognized LinkedEditingRanges value: " ++ ppJSON j)
 
+instance ToJSON LinkedEditingRanges where
+  toJSON x =
+    object
+     [(.=) "ranges" (linkedEditingRangesRanges x),  (.?=) "wordPattern"
+                                                     (linkedEditingRangesWordPattern
+                                                       x)]
+
 data LinkedEditingRanges = LinkedEditingRanges { linkedEditingRangesRanges :: [Range]
                                                , linkedEditingRangesWordPattern :: Maybe String }
  deriving (Show,Eq)

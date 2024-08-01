@@ -20,6 +20,14 @@ instance FromJSON DidChangeTextDocumentParams where
       _ ->
         Left ("Unrecognized DidChangeTextDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON DidChangeTextDocumentParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (didChangeTextDocumentParamsTextDocument x),  (.=)
+                                                                         "contentChanges"
+                                                                         (didChangeTextDocumentParamsContentChanges
+                                                                           x)]
+
 data DidChangeTextDocumentParams = DidChangeTextDocumentParams { didChangeTextDocumentParamsTextDocument :: VersionedTextDocumentIdentifier
                                                                , didChangeTextDocumentParamsContentChanges :: [TextDocumentContentChangeEvent] }
  deriving (Show,Eq)

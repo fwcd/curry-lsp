@@ -15,6 +15,11 @@ instance FromJSON ImplementationOptions where
             ImplementationOptions { implementationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized ImplementationOptions value: " ++ ppJSON j)
 
+instance ToJSON ImplementationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (implementationOptionsWorkDoneProgress x)]
+
 data ImplementationOptions = ImplementationOptions { implementationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -26,6 +26,19 @@ instance FromJSON DeclarationParams where
                               , declarationParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized DeclarationParams value: " ++ ppJSON j)
 
+instance ToJSON DeclarationParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (declarationParamsTextDocument x),  (.=) "position"
+                                                               (declarationParamsPosition
+                                                                 x),  (.?=)
+                                                                       "workDoneToken"
+                                                                       (declarationParamsWorkDoneToken
+                                                                         x),  (.?=)
+                                                                               "partialResultToken"
+                                                                               (declarationParamsPartialResultToken
+                                                                                 x)]
+
 data DeclarationParams = DeclarationParams { declarationParamsTextDocument :: TextDocumentIdentifier
                                            , declarationParamsPosition :: Position
                                            , declarationParamsWorkDoneToken :: Maybe ProgressToken

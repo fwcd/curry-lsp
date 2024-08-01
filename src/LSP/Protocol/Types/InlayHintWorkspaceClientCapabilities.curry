@@ -18,6 +18,12 @@ instance FromJSON InlayHintWorkspaceClientCapabilities where
          ("Unrecognized InlayHintWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON InlayHintWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (inlayHintWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data InlayHintWorkspaceClientCapabilities = InlayHintWorkspaceClientCapabilities { inlayHintWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

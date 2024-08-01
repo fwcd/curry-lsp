@@ -28,6 +28,24 @@ instance FromJSON SymbolInformation where
                               , symbolInformationLocation = parsedLocation }
       _ -> Left ("Unrecognized SymbolInformation value: " ++ ppJSON j)
 
+instance ToJSON SymbolInformation where
+  toJSON x =
+    object
+     [(.=) "name" (symbolInformationName x),  (.=) "kind"
+                                               (symbolInformationKind
+                                                 x),  (.?=) "tags"
+                                                       (symbolInformationTags
+                                                         x),  (.?=)
+                                                               "containerName"
+                                                               (symbolInformationContainerName
+                                                                 x),  (.?=)
+                                                                       "deprecated"
+                                                                       (symbolInformationDeprecated
+                                                                         x),  (.=)
+                                                                               "location"
+                                                                               (symbolInformationLocation
+                                                                                 x)]
+
 data SymbolInformation = SymbolInformation { symbolInformationName :: String
                                            , symbolInformationKind :: SymbolKind
                                            , symbolInformationTags :: Maybe [SymbolTag]

@@ -19,6 +19,15 @@ instance FromJSON DocumentRangeFormattingOptions where
         Left
          ("Unrecognized DocumentRangeFormattingOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentRangeFormattingOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (documentRangeFormattingOptionsWorkDoneProgress x),  (.?=)
+                                                             "rangesSupport"
+                                                             (documentRangeFormattingOptionsRangesSupport
+                                                               x)]
+
 data DocumentRangeFormattingOptions = DocumentRangeFormattingOptions { documentRangeFormattingOptionsWorkDoneProgress :: Maybe Bool
                                                                      , documentRangeFormattingOptionsRangesSupport :: Maybe Bool }
  deriving (Show,Eq)

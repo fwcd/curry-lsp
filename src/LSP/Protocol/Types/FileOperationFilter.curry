@@ -18,6 +18,13 @@ instance FromJSON FileOperationFilter where
                                 , fileOperationFilterPattern = parsedPattern }
       _ -> Left ("Unrecognized FileOperationFilter value: " ++ ppJSON j)
 
+instance ToJSON FileOperationFilter where
+  toJSON x =
+    object
+     [(.?=) "scheme" (fileOperationFilterScheme x),  (.=) "pattern"
+                                                      (fileOperationFilterPattern
+                                                        x)]
+
 data FileOperationFilter = FileOperationFilter { fileOperationFilterScheme :: Maybe String
                                                , fileOperationFilterPattern :: FileOperationPattern }
  deriving (Show,Eq)

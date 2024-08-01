@@ -19,6 +19,15 @@ instance FromJSON SemanticTokensEdit where
                                , semanticTokensEditData = parsedData }
       _ -> Left ("Unrecognized SemanticTokensEdit value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensEdit where
+  toJSON x =
+    object
+     [(.=) "start" (semanticTokensEditStart x),  (.=) "deleteCount"
+                                                  (semanticTokensEditDeleteCount
+                                                    x),  (.?=) "data"
+                                                          (semanticTokensEditData
+                                                            x)]
+
 data SemanticTokensEdit = SemanticTokensEdit { semanticTokensEditStart :: Int
                                              , semanticTokensEditDeleteCount :: Int
                                              , semanticTokensEditData :: Maybe [Int] }

@@ -22,6 +22,17 @@ instance FromJSON Command where
                     , commandArguments = parsedArguments }
       _ -> Left ("Unrecognized Command value: " ++ ppJSON j)
 
+instance ToJSON Command where
+  toJSON x =
+    object
+     [(.=) "title" (commandTitle x),  (.?=) "tooltip"
+                                       (commandTooltip x),  (.=) "command"
+                                                             (commandCommand
+                                                               x),  (.?=)
+                                                                     "arguments"
+                                                                     (commandArguments
+                                                                       x)]
+
 data Command = Command { commandTitle :: String
                        , commandTooltip :: Maybe String
                        , commandCommand :: String

@@ -23,6 +23,17 @@ instance FromJSON CodeLensParams where
                            , codeLensParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized CodeLensParams value: " ++ ppJSON j)
 
+instance ToJSON CodeLensParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (codeLensParamsWorkDoneToken x),  (.?=)
+                                                               "partialResultToken"
+                                                               (codeLensParamsPartialResultToken
+                                                                 x),  (.=)
+                                                                       "textDocument"
+                                                                       (codeLensParamsTextDocument
+                                                                         x)]
+
 data CodeLensParams = CodeLensParams { codeLensParamsWorkDoneToken :: Maybe ProgressToken
                                      , codeLensParamsPartialResultToken :: Maybe ProgressToken
                                      , codeLensParamsTextDocument :: TextDocumentIdentifier }

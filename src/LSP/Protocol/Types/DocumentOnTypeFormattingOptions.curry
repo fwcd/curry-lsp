@@ -23,6 +23,15 @@ instance FromJSON DocumentOnTypeFormattingOptions where
         Left
          ("Unrecognized DocumentOnTypeFormattingOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentOnTypeFormattingOptions where
+  toJSON x =
+    object
+     [(.=) "firstTriggerCharacter"
+       (documentOnTypeFormattingOptionsFirstTriggerCharacter x),  (.?=)
+                                                                   "moreTriggerCharacter"
+                                                                   (documentOnTypeFormattingOptionsMoreTriggerCharacter
+                                                                     x)]
+
 data DocumentOnTypeFormattingOptions = DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter :: String
                                                                        , documentOnTypeFormattingOptionsMoreTriggerCharacter :: Maybe [String] }
  deriving (Show,Eq)

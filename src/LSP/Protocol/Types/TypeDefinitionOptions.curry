@@ -15,6 +15,11 @@ instance FromJSON TypeDefinitionOptions where
             TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized TypeDefinitionOptions value: " ++ ppJSON j)
 
+instance ToJSON TypeDefinitionOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (typeDefinitionOptionsWorkDoneProgress x)]
+
 data TypeDefinitionOptions = TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

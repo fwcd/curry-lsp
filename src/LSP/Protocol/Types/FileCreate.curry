@@ -14,6 +14,9 @@ instance FromJSON FileCreate where
            return FileCreate { fileCreateUri = parsedUri }
       _ -> Left ("Unrecognized FileCreate value: " ++ ppJSON j)
 
+instance ToJSON FileCreate where
+  toJSON x = object [(.=) "uri" (fileCreateUri x)]
+
 data FileCreate = FileCreate { fileCreateUri :: String }
  deriving (Show,Eq)
 

@@ -27,6 +27,21 @@ instance FromJSON TextDocumentSyncClientCapabilities where
          ("Unrecognized TextDocumentSyncClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON TextDocumentSyncClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (textDocumentSyncClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                    "willSave"
+                                                                    (textDocumentSyncClientCapabilitiesWillSave
+                                                                      x),  (.?=)
+                                                                            "willSaveWaitUntil"
+                                                                            (textDocumentSyncClientCapabilitiesWillSaveWaitUntil
+                                                                              x),  (.?=)
+                                                                                    "didSave"
+                                                                                    (textDocumentSyncClientCapabilitiesDidSave
+                                                                                      x)]
+
 data TextDocumentSyncClientCapabilities = TextDocumentSyncClientCapabilities { textDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                              , textDocumentSyncClientCapabilitiesWillSave :: Maybe Bool
                                                                              , textDocumentSyncClientCapabilitiesWillSaveWaitUntil :: Maybe Bool

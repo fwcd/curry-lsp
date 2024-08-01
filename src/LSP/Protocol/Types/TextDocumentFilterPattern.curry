@@ -20,6 +20,16 @@ instance FromJSON TextDocumentFilterPattern where
                                       , textDocumentFilterPatternPattern = parsedPattern }
       _ -> Left ("Unrecognized TextDocumentFilterPattern value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentFilterPattern where
+  toJSON x =
+    object
+     [(.?=) "language" (textDocumentFilterPatternLanguage x),  (.?=) "scheme"
+                                                                (textDocumentFilterPatternScheme
+                                                                  x),  (.=)
+                                                                        "pattern"
+                                                                        (textDocumentFilterPatternPattern
+                                                                          x)]
+
 data TextDocumentFilterPattern = TextDocumentFilterPattern { textDocumentFilterPatternLanguage :: Maybe String
                                                            , textDocumentFilterPatternScheme :: Maybe String
                                                            , textDocumentFilterPatternPattern :: GlobPattern }

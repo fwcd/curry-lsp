@@ -23,6 +23,18 @@ instance FromJSON LinkedEditingRangeRegistrationOptions where
          ("Unrecognized LinkedEditingRangeRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON LinkedEditingRangeRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (linkedEditingRangeRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                    "workDoneProgress"
+                                                                    (linkedEditingRangeRegistrationOptionsWorkDoneProgress
+                                                                      x),  (.?=)
+                                                                            "id"
+                                                                            (linkedEditingRangeRegistrationOptionsId
+                                                                              x)]
+
 data LinkedEditingRangeRegistrationOptions = LinkedEditingRangeRegistrationOptions { linkedEditingRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , linkedEditingRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                                    , linkedEditingRangeRegistrationOptionsId :: Maybe String }

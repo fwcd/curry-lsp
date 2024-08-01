@@ -21,6 +21,16 @@ instance FromJSON InlineValueVariableLookup where
                                       , inlineValueVariableLookupCaseSensitiveLookup = parsedCaseSensitiveLookup }
       _ -> Left ("Unrecognized InlineValueVariableLookup value: " ++ ppJSON j)
 
+instance ToJSON InlineValueVariableLookup where
+  toJSON x =
+    object
+     [(.=) "range" (inlineValueVariableLookupRange x),  (.?=) "variableName"
+                                                         (inlineValueVariableLookupVariableName
+                                                           x),  (.=)
+                                                                 "caseSensitiveLookup"
+                                                                 (inlineValueVariableLookupCaseSensitiveLookup
+                                                                   x)]
+
 data InlineValueVariableLookup = InlineValueVariableLookup { inlineValueVariableLookupRange :: Range
                                                            , inlineValueVariableLookupVariableName :: Maybe String
                                                            , inlineValueVariableLookupCaseSensitiveLookup :: Bool }

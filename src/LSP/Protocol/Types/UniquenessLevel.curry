@@ -17,6 +17,15 @@ instance FromJSON UniquenessLevel where
          "global" -> Right UniquenessLevelGlobal
          _ -> Left ("Unrecognized UniquenessLevel value: " ++ ppJSON j)
 
+instance ToJSON UniquenessLevel where
+  toJSON x =
+    case x of
+      UniquenessLevelDocument -> toJSON "document"
+      UniquenessLevelProject -> toJSON "project"
+      UniquenessLevelGroup -> toJSON "group"
+      UniquenessLevelScheme -> toJSON "scheme"
+      UniquenessLevelGlobal -> toJSON "global"
+
 data UniquenessLevel = UniquenessLevelDocument
                      | UniquenessLevelProject
                      | UniquenessLevelGroup

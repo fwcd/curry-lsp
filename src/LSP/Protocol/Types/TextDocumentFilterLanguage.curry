@@ -21,6 +21,16 @@ instance FromJSON TextDocumentFilterLanguage where
       _ ->
         Left ("Unrecognized TextDocumentFilterLanguage value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentFilterLanguage where
+  toJSON x =
+    object
+     [(.=) "language" (textDocumentFilterLanguageLanguage x),  (.?=) "scheme"
+                                                                (textDocumentFilterLanguageScheme
+                                                                  x),  (.?=)
+                                                                        "pattern"
+                                                                        (textDocumentFilterLanguagePattern
+                                                                          x)]
+
 data TextDocumentFilterLanguage = TextDocumentFilterLanguage { textDocumentFilterLanguageLanguage :: String
                                                              , textDocumentFilterLanguageScheme :: Maybe String
                                                              , textDocumentFilterLanguagePattern :: Maybe GlobPattern }

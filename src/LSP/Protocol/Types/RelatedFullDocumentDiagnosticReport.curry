@@ -29,6 +29,20 @@ instance FromJSON RelatedFullDocumentDiagnosticReport where
          ("Unrecognized RelatedFullDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
+instance ToJSON RelatedFullDocumentDiagnosticReport where
+  toJSON x =
+    object
+     [(.=) "kind" (relatedFullDocumentDiagnosticReportKind x),  (.?=)
+                                                                 "resultId"
+                                                                 (relatedFullDocumentDiagnosticReportResultId
+                                                                   x),  (.=)
+                                                                         "items"
+                                                                         (relatedFullDocumentDiagnosticReportItems
+                                                                           x),  (.?=)
+                                                                                 "relatedDocuments"
+                                                                                 (relatedFullDocumentDiagnosticReportRelatedDocuments
+                                                                                   x)]
+
 data RelatedFullDocumentDiagnosticReport = RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportKind :: String
                                                                                , relatedFullDocumentDiagnosticReportResultId :: Maybe String
                                                                                , relatedFullDocumentDiagnosticReportItems :: [Diagnostic]

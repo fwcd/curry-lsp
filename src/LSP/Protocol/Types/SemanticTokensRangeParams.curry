@@ -26,6 +26,20 @@ instance FromJSON SemanticTokensRangeParams where
                                       , semanticTokensRangeParamsRange = parsedRange }
       _ -> Left ("Unrecognized SemanticTokensRangeParams value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensRangeParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (semanticTokensRangeParamsWorkDoneToken x),  (.?=)
+                                                                          "partialResultToken"
+                                                                          (semanticTokensRangeParamsPartialResultToken
+                                                                            x),  (.=)
+                                                                                  "textDocument"
+                                                                                  (semanticTokensRangeParamsTextDocument
+                                                                                    x),  (.=)
+                                                                                          "range"
+                                                                                          (semanticTokensRangeParamsRange
+                                                                                            x)]
+
 data SemanticTokensRangeParams = SemanticTokensRangeParams { semanticTokensRangeParamsWorkDoneToken :: Maybe ProgressToken
                                                            , semanticTokensRangeParamsPartialResultToken :: Maybe ProgressToken
                                                            , semanticTokensRangeParamsTextDocument :: TextDocumentIdentifier

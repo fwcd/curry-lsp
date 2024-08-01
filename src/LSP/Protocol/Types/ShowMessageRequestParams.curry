@@ -21,6 +21,15 @@ instance FromJSON ShowMessageRequestParams where
                                      , showMessageRequestParamsActions = parsedActions }
       _ -> Left ("Unrecognized ShowMessageRequestParams value: " ++ ppJSON j)
 
+instance ToJSON ShowMessageRequestParams where
+  toJSON x =
+    object
+     [(.=) "type" (showMessageRequestParamsType x),  (.=) "message"
+                                                      (showMessageRequestParamsMessage
+                                                        x),  (.?=) "actions"
+                                                              (showMessageRequestParamsActions
+                                                                x)]
+
 data ShowMessageRequestParams = ShowMessageRequestParams { showMessageRequestParamsType :: MessageType
                                                          , showMessageRequestParamsMessage :: String
                                                          , showMessageRequestParamsActions :: Maybe [MessageActionItem] }

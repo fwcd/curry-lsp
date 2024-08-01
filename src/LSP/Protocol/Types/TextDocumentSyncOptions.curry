@@ -26,6 +26,22 @@ instance FromJSON TextDocumentSyncOptions where
                                     , textDocumentSyncOptionsSave = parsedSave }
       _ -> Left ("Unrecognized TextDocumentSyncOptions value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentSyncOptions where
+  toJSON x =
+    object
+     [(.?=) "openClose" (textDocumentSyncOptionsOpenClose x),  (.?=) "change"
+                                                                (textDocumentSyncOptionsChange
+                                                                  x),  (.?=)
+                                                                        "willSave"
+                                                                        (textDocumentSyncOptionsWillSave
+                                                                          x),  (.?=)
+                                                                                "willSaveWaitUntil"
+                                                                                (textDocumentSyncOptionsWillSaveWaitUntil
+                                                                                  x),  (.?=)
+                                                                                        "save"
+                                                                                        (textDocumentSyncOptionsSave
+                                                                                          x)]
+
 data TextDocumentSyncOptions = TextDocumentSyncOptions { textDocumentSyncOptionsOpenClose :: Maybe Bool
                                                        , textDocumentSyncOptionsChange :: Maybe TextDocumentSyncKind
                                                        , textDocumentSyncOptionsWillSave :: Maybe Bool

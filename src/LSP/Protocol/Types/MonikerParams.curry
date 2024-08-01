@@ -26,6 +26,19 @@ instance FromJSON MonikerParams where
                           , monikerParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized MonikerParams value: " ++ ppJSON j)
 
+instance ToJSON MonikerParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (monikerParamsTextDocument x),  (.=) "position"
+                                                           (monikerParamsPosition
+                                                             x),  (.?=)
+                                                                   "workDoneToken"
+                                                                   (monikerParamsWorkDoneToken
+                                                                     x),  (.?=)
+                                                                           "partialResultToken"
+                                                                           (monikerParamsPartialResultToken
+                                                                             x)]
+
 data MonikerParams = MonikerParams { monikerParamsTextDocument :: TextDocumentIdentifier
                                    , monikerParamsPosition :: Position
                                    , monikerParamsWorkDoneToken :: Maybe ProgressToken

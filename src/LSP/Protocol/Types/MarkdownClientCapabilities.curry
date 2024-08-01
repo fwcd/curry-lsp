@@ -20,6 +20,16 @@ instance FromJSON MarkdownClientCapabilities where
       _ ->
         Left ("Unrecognized MarkdownClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON MarkdownClientCapabilities where
+  toJSON x =
+    object
+     [(.=) "parser" (markdownClientCapabilitiesParser x),  (.?=) "version"
+                                                            (markdownClientCapabilitiesVersion
+                                                              x),  (.?=)
+                                                                    "allowedTags"
+                                                                    (markdownClientCapabilitiesAllowedTags
+                                                                      x)]
+
 data MarkdownClientCapabilities = MarkdownClientCapabilities { markdownClientCapabilitiesParser :: String
                                                              , markdownClientCapabilitiesVersion :: Maybe String
                                                              , markdownClientCapabilitiesAllowedTags :: Maybe [String] }

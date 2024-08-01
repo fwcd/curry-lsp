@@ -26,6 +26,20 @@ instance FromJSON LocationLink where
                          , locationLinkTargetSelectionRange = parsedTargetSelectionRange }
       _ -> Left ("Unrecognized LocationLink value: " ++ ppJSON j)
 
+instance ToJSON LocationLink where
+  toJSON x =
+    object
+     [(.?=) "originSelectionRange" (locationLinkOriginSelectionRange x),  (.=)
+                                                                           "targetUri"
+                                                                           (locationLinkTargetUri
+                                                                             x),  (.=)
+                                                                                   "targetRange"
+                                                                                   (locationLinkTargetRange
+                                                                                     x),  (.=)
+                                                                                           "targetSelectionRange"
+                                                                                           (locationLinkTargetSelectionRange
+                                                                                             x)]
+
 data LocationLink = LocationLink { locationLinkOriginSelectionRange :: Maybe Range
                                  , locationLinkTargetUri :: DocumentUri
                                  , locationLinkTargetRange :: Range

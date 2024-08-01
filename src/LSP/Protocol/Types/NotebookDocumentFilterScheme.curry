@@ -21,6 +21,17 @@ instance FromJSON NotebookDocumentFilterScheme where
       _ ->
         Left ("Unrecognized NotebookDocumentFilterScheme value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocumentFilterScheme where
+  toJSON x =
+    object
+     [(.?=) "notebookType" (notebookDocumentFilterSchemeNotebookType x),  (.=)
+                                                                           "scheme"
+                                                                           (notebookDocumentFilterSchemeScheme
+                                                                             x),  (.?=)
+                                                                                   "pattern"
+                                                                                   (notebookDocumentFilterSchemePattern
+                                                                                     x)]
+
 data NotebookDocumentFilterScheme = NotebookDocumentFilterScheme { notebookDocumentFilterSchemeNotebookType :: Maybe String
                                                                  , notebookDocumentFilterSchemeScheme :: String
                                                                  , notebookDocumentFilterSchemePattern :: Maybe GlobPattern }

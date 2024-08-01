@@ -16,6 +16,10 @@ instance FromJSON UnregistrationParams where
             UnregistrationParams { unregistrationParamsUnregisterations = parsedUnregisterations }
       _ -> Left ("Unrecognized UnregistrationParams value: " ++ ppJSON j)
 
+instance ToJSON UnregistrationParams where
+  toJSON x =
+    object [(.=) "unregisterations" (unregistrationParamsUnregisterations x)]
+
 data UnregistrationParams = UnregistrationParams { unregistrationParamsUnregisterations :: [Unregistration] }
  deriving (Show,Eq)
 

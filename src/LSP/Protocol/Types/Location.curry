@@ -18,6 +18,10 @@ instance FromJSON Location where
             Location { locationUri = parsedUri, locationRange = parsedRange }
       _ -> Left ("Unrecognized Location value: " ++ ppJSON j)
 
+instance ToJSON Location where
+  toJSON x =
+    object [(.=) "uri" (locationUri x),  (.=) "range" (locationRange x)]
+
 data Location = Location { locationUri :: DocumentUri
                          , locationRange :: Range }
  deriving (Show,Eq)

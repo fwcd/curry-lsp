@@ -20,6 +20,14 @@ instance FromJSON WillSaveTextDocumentParams where
       _ ->
         Left ("Unrecognized WillSaveTextDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON WillSaveTextDocumentParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (willSaveTextDocumentParamsTextDocument x),  (.=)
+                                                                        "reason"
+                                                                        (willSaveTextDocumentParamsReason
+                                                                          x)]
+
 data WillSaveTextDocumentParams = WillSaveTextDocumentParams { willSaveTextDocumentParamsTextDocument :: TextDocumentIdentifier
                                                              , willSaveTextDocumentParamsReason :: TextDocumentSaveReason }
  deriving (Show,Eq)

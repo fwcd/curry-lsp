@@ -14,6 +14,12 @@ instance FromJSON InlayHintKind where
          2 -> Right InlayHintKindParameter
          _ -> Left ("Unrecognized InlayHintKind value: " ++ ppJSON j)
 
+instance ToJSON InlayHintKind where
+  toJSON x =
+    case x of
+      InlayHintKindType -> toJSON 1
+      InlayHintKindParameter -> toJSON 2
+
 data InlayHintKind = InlayHintKindType | InlayHintKindParameter
  deriving (Show,Eq,Enum,Bounded,Ord)
 

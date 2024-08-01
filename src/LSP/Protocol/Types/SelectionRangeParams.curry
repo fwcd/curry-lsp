@@ -26,6 +26,20 @@ instance FromJSON SelectionRangeParams where
                                  , selectionRangeParamsPositions = parsedPositions }
       _ -> Left ("Unrecognized SelectionRangeParams value: " ++ ppJSON j)
 
+instance ToJSON SelectionRangeParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (selectionRangeParamsWorkDoneToken x),  (.?=)
+                                                                     "partialResultToken"
+                                                                     (selectionRangeParamsPartialResultToken
+                                                                       x),  (.=)
+                                                                             "textDocument"
+                                                                             (selectionRangeParamsTextDocument
+                                                                               x),  (.=)
+                                                                                     "positions"
+                                                                                     (selectionRangeParamsPositions
+                                                                                       x)]
+
 data SelectionRangeParams = SelectionRangeParams { selectionRangeParamsWorkDoneToken :: Maybe ProgressToken
                                                  , selectionRangeParamsPartialResultToken :: Maybe ProgressToken
                                                  , selectionRangeParamsTextDocument :: TextDocumentIdentifier

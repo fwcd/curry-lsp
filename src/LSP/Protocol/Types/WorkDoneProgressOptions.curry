@@ -15,6 +15,11 @@ instance FromJSON WorkDoneProgressOptions where
             WorkDoneProgressOptions { workDoneProgressOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized WorkDoneProgressOptions value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (workDoneProgressOptionsWorkDoneProgress x)]
+
 data WorkDoneProgressOptions = WorkDoneProgressOptions { workDoneProgressOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

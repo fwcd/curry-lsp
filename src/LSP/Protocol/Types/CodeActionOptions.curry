@@ -23,6 +23,20 @@ instance FromJSON CodeActionOptions where
                               , codeActionOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized CodeActionOptions value: " ++ ppJSON j)
 
+instance ToJSON CodeActionOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (codeActionOptionsWorkDoneProgress x),  (.?=)
+                                                                        "codeActionKinds"
+                                                                        (codeActionOptionsCodeActionKinds
+                                                                          x),  (.?=)
+                                                                                "documentation"
+                                                                                (codeActionOptionsDocumentation
+                                                                                  x),  (.?=)
+                                                                                        "resolveProvider"
+                                                                                        (codeActionOptionsResolveProvider
+                                                                                          x)]
+
 data CodeActionOptions = CodeActionOptions { codeActionOptionsWorkDoneProgress :: Maybe Bool
                                            , codeActionOptionsCodeActionKinds :: Maybe [CodeActionKind]
                                            , codeActionOptionsDocumentation :: Maybe [CodeActionKindDocumentation]

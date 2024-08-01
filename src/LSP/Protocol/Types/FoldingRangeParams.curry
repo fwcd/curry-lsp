@@ -23,6 +23,17 @@ instance FromJSON FoldingRangeParams where
                                , foldingRangeParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized FoldingRangeParams value: " ++ ppJSON j)
 
+instance ToJSON FoldingRangeParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (foldingRangeParamsWorkDoneToken x),  (.?=)
+                                                                   "partialResultToken"
+                                                                   (foldingRangeParamsPartialResultToken
+                                                                     x),  (.=)
+                                                                           "textDocument"
+                                                                           (foldingRangeParamsTextDocument
+                                                                             x)]
+
 data FoldingRangeParams = FoldingRangeParams { foldingRangeParamsWorkDoneToken :: Maybe ProgressToken
                                              , foldingRangeParamsPartialResultToken :: Maybe ProgressToken
                                              , foldingRangeParamsTextDocument :: TextDocumentIdentifier }

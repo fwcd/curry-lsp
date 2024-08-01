@@ -16,6 +16,10 @@ instance FromJSON CompletionListCapabilities where
       _ ->
         Left ("Unrecognized CompletionListCapabilities value: " ++ ppJSON j)
 
+instance ToJSON CompletionListCapabilities where
+  toJSON x =
+    object [(.?=) "itemDefaults" (completionListCapabilitiesItemDefaults x)]
+
 data CompletionListCapabilities = CompletionListCapabilities { completionListCapabilitiesItemDefaults :: Maybe [String] }
  deriving (Show,Eq)
 

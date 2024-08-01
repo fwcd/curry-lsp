@@ -14,6 +14,9 @@ instance FromJSON FileDelete where
            return FileDelete { fileDeleteUri = parsedUri }
       _ -> Left ("Unrecognized FileDelete value: " ++ ppJSON j)
 
+instance ToJSON FileDelete where
+  toJSON x = object [(.=) "uri" (fileDeleteUri x)]
+
 data FileDelete = FileDelete { fileDeleteUri :: String }
  deriving (Show,Eq)
 

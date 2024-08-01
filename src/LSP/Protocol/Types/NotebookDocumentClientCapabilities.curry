@@ -19,6 +19,12 @@ instance FromJSON NotebookDocumentClientCapabilities where
          ("Unrecognized NotebookDocumentClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentClientCapabilities where
+  toJSON x =
+    object
+     [(.=) "synchronization"
+       (notebookDocumentClientCapabilitiesSynchronization x)]
+
 data NotebookDocumentClientCapabilities = NotebookDocumentClientCapabilities { notebookDocumentClientCapabilitiesSynchronization :: NotebookDocumentSyncClientCapabilities }
  deriving (Show,Eq)
 

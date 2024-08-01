@@ -32,6 +32,27 @@ instance FromJSON CompletionRegistrationOptions where
         Left
          ("Unrecognized CompletionRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON CompletionRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (completionRegistrationOptionsDocumentSelector x),  (.?=)
+                                                            "workDoneProgress"
+                                                            (completionRegistrationOptionsWorkDoneProgress
+                                                              x),  (.?=)
+                                                                    "triggerCharacters"
+                                                                    (completionRegistrationOptionsTriggerCharacters
+                                                                      x),  (.?=)
+                                                                            "allCommitCharacters"
+                                                                            (completionRegistrationOptionsAllCommitCharacters
+                                                                              x),  (.?=)
+                                                                                    "resolveProvider"
+                                                                                    (completionRegistrationOptionsResolveProvider
+                                                                                      x),  (.?=)
+                                                                                            "completionItem"
+                                                                                            (completionRegistrationOptionsCompletionItem
+                                                                                              x)]
+
 data CompletionRegistrationOptions = CompletionRegistrationOptions { completionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , completionRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                    , completionRegistrationOptionsTriggerCharacters :: Maybe [String]

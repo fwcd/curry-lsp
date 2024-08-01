@@ -15,6 +15,9 @@ instance FromJSON PrepareSupportDefaultBehavior where
            Left
             ("Unrecognized PrepareSupportDefaultBehavior value: " ++ ppJSON j)
 
+instance ToJSON PrepareSupportDefaultBehavior where
+  toJSON x = case x of PrepareSupportDefaultBehaviorIdentifier -> toJSON 1
+
 data PrepareSupportDefaultBehavior = PrepareSupportDefaultBehaviorIdentifier
  deriving (Show,Eq,Enum,Bounded,Ord)
 

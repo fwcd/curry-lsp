@@ -23,6 +23,18 @@ instance FromJSON InlineCompletionRegistrationOptions where
          ("Unrecognized InlineCompletionRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON InlineCompletionRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (inlineCompletionRegistrationOptionsWorkDoneProgress x),  (.=)
+                                                                  "documentSelector"
+                                                                  (inlineCompletionRegistrationOptionsDocumentSelector
+                                                                    x),  (.?=)
+                                                                          "id"
+                                                                          (inlineCompletionRegistrationOptionsId
+                                                                            x)]
+
 data InlineCompletionRegistrationOptions = InlineCompletionRegistrationOptions { inlineCompletionRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                                , inlineCompletionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                , inlineCompletionRegistrationOptionsId :: Maybe String }

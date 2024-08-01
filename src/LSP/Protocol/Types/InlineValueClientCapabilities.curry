@@ -19,6 +19,12 @@ instance FromJSON InlineValueClientCapabilities where
         Left
          ("Unrecognized InlineValueClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON InlineValueClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (inlineValueClientCapabilitiesDynamicRegistration x)]
+
 data InlineValueClientCapabilities = InlineValueClientCapabilities { inlineValueClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -19,6 +19,14 @@ instance FromJSON WorkspaceOptions where
                              , workspaceOptionsFileOperations = parsedFileOperations }
       _ -> Left ("Unrecognized WorkspaceOptions value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceOptions where
+  toJSON x =
+    object
+     [(.?=) "workspaceFolders" (workspaceOptionsWorkspaceFolders x),  (.?=)
+                                                                       "fileOperations"
+                                                                       (workspaceOptionsFileOperations
+                                                                         x)]
+
 data WorkspaceOptions = WorkspaceOptions { workspaceOptionsWorkspaceFolders :: Maybe WorkspaceFoldersServerCapabilities
                                          , workspaceOptionsFileOperations :: Maybe FileOperationOptions }
  deriving (Show,Eq)

@@ -29,6 +29,22 @@ instance FromJSON ReferenceParams where
                             , referenceParamsContext = parsedContext }
       _ -> Left ("Unrecognized ReferenceParams value: " ++ ppJSON j)
 
+instance ToJSON ReferenceParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (referenceParamsTextDocument x),  (.=) "position"
+                                                             (referenceParamsPosition
+                                                               x),  (.?=)
+                                                                     "workDoneToken"
+                                                                     (referenceParamsWorkDoneToken
+                                                                       x),  (.?=)
+                                                                             "partialResultToken"
+                                                                             (referenceParamsPartialResultToken
+                                                                               x),  (.=)
+                                                                                     "context"
+                                                                                     (referenceParamsContext
+                                                                                       x)]
+
 data ReferenceParams = ReferenceParams { referenceParamsTextDocument :: TextDocumentIdentifier
                                        , referenceParamsPosition :: Position
                                        , referenceParamsWorkDoneToken :: Maybe ProgressToken

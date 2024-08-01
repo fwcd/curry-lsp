@@ -18,6 +18,12 @@ instance FromJSON ShowMessageParams where
                               , showMessageParamsMessage = parsedMessage }
       _ -> Left ("Unrecognized ShowMessageParams value: " ++ ppJSON j)
 
+instance ToJSON ShowMessageParams where
+  toJSON x =
+    object
+     [(.=) "type" (showMessageParamsType x),  (.=) "message"
+                                               (showMessageParamsMessage x)]
+
 data ShowMessageParams = ShowMessageParams { showMessageParamsType :: MessageType
                                            , showMessageParamsMessage :: String }
  deriving (Show,Eq)

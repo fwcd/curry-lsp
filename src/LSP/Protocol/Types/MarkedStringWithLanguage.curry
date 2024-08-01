@@ -17,6 +17,13 @@ instance FromJSON MarkedStringWithLanguage where
                                      , markedStringWithLanguageValue = parsedValue }
       _ -> Left ("Unrecognized MarkedStringWithLanguage value: " ++ ppJSON j)
 
+instance ToJSON MarkedStringWithLanguage where
+  toJSON x =
+    object
+     [(.=) "language" (markedStringWithLanguageLanguage x),  (.=) "value"
+                                                              (markedStringWithLanguageValue
+                                                                x)]
+
 data MarkedStringWithLanguage = MarkedStringWithLanguage { markedStringWithLanguageLanguage :: String
                                                          , markedStringWithLanguageValue :: String }
  deriving (Show,Eq)

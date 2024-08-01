@@ -38,6 +38,35 @@ instance FromJSON BaseInitializeParams where
                                  , baseInitializeParamsTrace = parsedTrace }
       _ -> Left ("Unrecognized BaseInitializeParams value: " ++ ppJSON j)
 
+instance ToJSON BaseInitializeParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (baseInitializeParamsWorkDoneToken x),  (.=)
+                                                                     "processId"
+                                                                     (baseInitializeParamsProcessId
+                                                                       x),  (.?=)
+                                                                             "clientInfo"
+                                                                             (baseInitializeParamsClientInfo
+                                                                               x),  (.?=)
+                                                                                     "locale"
+                                                                                     (baseInitializeParamsLocale
+                                                                                       x),  (.?=)
+                                                                                             "rootPath"
+                                                                                             (baseInitializeParamsRootPath
+                                                                                               x),  (.=)
+                                                                                                     "rootUri"
+                                                                                                     (baseInitializeParamsRootUri
+                                                                                                       x),  (.=)
+                                                                                                             "capabilities"
+                                                                                                             (baseInitializeParamsCapabilities
+                                                                                                               x),  (.?=)
+                                                                                                                     "initializationOptions"
+                                                                                                                     (baseInitializeParamsInitializationOptions
+                                                                                                                       x),  (.?=)
+                                                                                                                             "trace"
+                                                                                                                             (baseInitializeParamsTrace
+                                                                                                                               x)]
+
 data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsWorkDoneToken :: Maybe ProgressToken
                                                  , baseInitializeParamsProcessId :: Either Int ()
                                                  , baseInitializeParamsClientInfo :: Maybe ClientInfo

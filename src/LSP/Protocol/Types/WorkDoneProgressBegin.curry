@@ -23,6 +23,21 @@ instance FromJSON WorkDoneProgressBegin where
                                   , workDoneProgressBeginPercentage = parsedPercentage }
       _ -> Left ("Unrecognized WorkDoneProgressBegin value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressBegin where
+  toJSON x =
+    object
+     [(.=) "kind" (workDoneProgressBeginKind x),  (.=) "title"
+                                                   (workDoneProgressBeginTitle
+                                                     x),  (.?=) "cancellable"
+                                                           (workDoneProgressBeginCancellable
+                                                             x),  (.?=)
+                                                                   "message"
+                                                                   (workDoneProgressBeginMessage
+                                                                     x),  (.?=)
+                                                                           "percentage"
+                                                                           (workDoneProgressBeginPercentage
+                                                                             x)]
+
 data WorkDoneProgressBegin = WorkDoneProgressBegin { workDoneProgressBeginKind :: String
                                                    , workDoneProgressBeginTitle :: String
                                                    , workDoneProgressBeginCancellable :: Maybe Bool

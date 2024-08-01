@@ -19,6 +19,14 @@ instance FromJSON DiagnosticRelatedInformation where
       _ ->
         Left ("Unrecognized DiagnosticRelatedInformation value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticRelatedInformation where
+  toJSON x =
+    object
+     [(.=) "location" (diagnosticRelatedInformationLocation x),  (.=)
+                                                                  "message"
+                                                                  (diagnosticRelatedInformationMessage
+                                                                    x)]
+
 data DiagnosticRelatedInformation = DiagnosticRelatedInformation { diagnosticRelatedInformationLocation :: Location
                                                                  , diagnosticRelatedInformationMessage :: String }
  deriving (Show,Eq)

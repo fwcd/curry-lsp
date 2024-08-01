@@ -20,6 +20,12 @@ instance FromJSON RelativePattern where
                             , relativePatternPattern = parsedPattern }
       _ -> Left ("Unrecognized RelativePattern value: " ++ ppJSON j)
 
+instance ToJSON RelativePattern where
+  toJSON x =
+    object
+     [(.=) "baseUri" (relativePatternBaseUri x),  (.=) "pattern"
+                                                   (relativePatternPattern x)]
+
 data RelativePattern = RelativePattern { relativePatternBaseUri :: Either WorkspaceFolder Uri
                                        , relativePatternPattern :: Pattern }
  deriving (Show,Eq)

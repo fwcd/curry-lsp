@@ -21,6 +21,15 @@ instance FromJSON PublishDiagnosticsParams where
                                      , publishDiagnosticsParamsDiagnostics = parsedDiagnostics }
       _ -> Left ("Unrecognized PublishDiagnosticsParams value: " ++ ppJSON j)
 
+instance ToJSON PublishDiagnosticsParams where
+  toJSON x =
+    object
+     [(.=) "uri" (publishDiagnosticsParamsUri x),  (.?=) "version"
+                                                    (publishDiagnosticsParamsVersion
+                                                      x),  (.=) "diagnostics"
+                                                            (publishDiagnosticsParamsDiagnostics
+                                                              x)]
+
 data PublishDiagnosticsParams = PublishDiagnosticsParams { publishDiagnosticsParamsUri :: DocumentUri
                                                          , publishDiagnosticsParamsVersion :: Maybe Int
                                                          , publishDiagnosticsParamsDiagnostics :: [Diagnostic] }

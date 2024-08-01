@@ -17,6 +17,15 @@ instance FromJSON FailureHandlingKind where
          "undo" -> Right FailureHandlingKindUndo
          _ -> Left ("Unrecognized FailureHandlingKind value: " ++ ppJSON j)
 
+instance ToJSON FailureHandlingKind where
+  toJSON x =
+    case x of
+      FailureHandlingKindAbort -> toJSON "abort"
+      FailureHandlingKindTransactional -> toJSON "transactional"
+      FailureHandlingKindTextOnlyTransactional ->
+        toJSON "textOnlyTransactional"
+      FailureHandlingKindUndo -> toJSON "undo"
+
 data FailureHandlingKind = FailureHandlingKindAbort
                          | FailureHandlingKindTransactional
                          | FailureHandlingKindTextOnlyTransactional

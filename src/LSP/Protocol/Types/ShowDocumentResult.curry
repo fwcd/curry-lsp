@@ -15,6 +15,9 @@ instance FromJSON ShowDocumentResult where
             ShowDocumentResult { showDocumentResultSuccess = parsedSuccess }
       _ -> Left ("Unrecognized ShowDocumentResult value: " ++ ppJSON j)
 
+instance ToJSON ShowDocumentResult where
+  toJSON x = object [(.=) "success" (showDocumentResultSuccess x)]
+
 data ShowDocumentResult = ShowDocumentResult { showDocumentResultSuccess :: Bool }
  deriving (Show,Eq)
 

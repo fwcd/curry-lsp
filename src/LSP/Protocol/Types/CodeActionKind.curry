@@ -23,6 +23,21 @@ instance FromJSON CodeActionKind where
          "notebook" -> Right CodeActionKindNotebook
          _ -> Left ("Unrecognized CodeActionKind value: " ++ ppJSON j)
 
+instance ToJSON CodeActionKind where
+  toJSON x =
+    case x of
+      CodeActionKindEmpty -> toJSON ""
+      CodeActionKindQuickFix -> toJSON "quickfix"
+      CodeActionKindRefactor -> toJSON "refactor"
+      CodeActionKindRefactorExtract -> toJSON "refactor.extract"
+      CodeActionKindRefactorInline -> toJSON "refactor.inline"
+      CodeActionKindRefactorMove -> toJSON "refactor.move"
+      CodeActionKindRefactorRewrite -> toJSON "refactor.rewrite"
+      CodeActionKindSource -> toJSON "source"
+      CodeActionKindSourceOrganizeImports -> toJSON "source.organizeImports"
+      CodeActionKindSourceFixAll -> toJSON "source.fixAll"
+      CodeActionKindNotebook -> toJSON "notebook"
+
 data CodeActionKind = CodeActionKindEmpty
                     | CodeActionKindQuickFix
                     | CodeActionKindRefactor

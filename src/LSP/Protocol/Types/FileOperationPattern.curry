@@ -21,6 +21,15 @@ instance FromJSON FileOperationPattern where
                                  , fileOperationPatternOptions = parsedOptions }
       _ -> Left ("Unrecognized FileOperationPattern value: " ++ ppJSON j)
 
+instance ToJSON FileOperationPattern where
+  toJSON x =
+    object
+     [(.=) "glob" (fileOperationPatternGlob x),  (.?=) "matches"
+                                                  (fileOperationPatternMatches
+                                                    x),  (.?=) "options"
+                                                          (fileOperationPatternOptions
+                                                            x)]
+
 data FileOperationPattern = FileOperationPattern { fileOperationPatternGlob :: String
                                                  , fileOperationPatternMatches :: Maybe FileOperationPatternKind
                                                  , fileOperationPatternOptions :: Maybe FileOperationPatternOptions }

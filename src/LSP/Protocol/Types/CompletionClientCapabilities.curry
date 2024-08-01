@@ -34,6 +34,27 @@ instance FromJSON CompletionClientCapabilities where
       _ ->
         Left ("Unrecognized CompletionClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON CompletionClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (completionClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                              "completionItem"
+                                                              (completionClientCapabilitiesCompletionItem
+                                                                x),  (.?=)
+                                                                      "completionItemKind"
+                                                                      (completionClientCapabilitiesCompletionItemKind
+                                                                        x),  (.?=)
+                                                                              "insertTextMode"
+                                                                              (completionClientCapabilitiesInsertTextMode
+                                                                                x),  (.?=)
+                                                                                      "contextSupport"
+                                                                                      (completionClientCapabilitiesContextSupport
+                                                                                        x),  (.?=)
+                                                                                              "completionList"
+                                                                                              (completionClientCapabilitiesCompletionList
+                                                                                                x)]
+
 data CompletionClientCapabilities = CompletionClientCapabilities { completionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , completionClientCapabilitiesCompletionItem :: Maybe ClientCompletionItemOptions
                                                                  , completionClientCapabilitiesCompletionItemKind :: Maybe ClientCompletionItemOptionsKind

@@ -15,6 +15,9 @@ instance FromJSON RenameFilesParams where
            return RenameFilesParams { renameFilesParamsFiles = parsedFiles }
       _ -> Left ("Unrecognized RenameFilesParams value: " ++ ppJSON j)
 
+instance ToJSON RenameFilesParams where
+  toJSON x = object [(.=) "files" (renameFilesParamsFiles x)]
+
 data RenameFilesParams = RenameFilesParams { renameFilesParamsFiles :: [FileRename] }
  deriving (Show,Eq)
 

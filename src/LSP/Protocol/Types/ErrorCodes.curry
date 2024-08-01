@@ -19,6 +19,17 @@ instance FromJSON ErrorCodes where
          -32001 -> Right ErrorCodesUnknownErrorCode
          _ -> Left ("Unrecognized ErrorCodes value: " ++ ppJSON j)
 
+instance ToJSON ErrorCodes where
+  toJSON x =
+    case x of
+      ErrorCodesParseError -> toJSON -32700
+      ErrorCodesInvalidRequest -> toJSON -32600
+      ErrorCodesMethodNotFound -> toJSON -32601
+      ErrorCodesInvalidParams -> toJSON -32602
+      ErrorCodesInternalError -> toJSON -32603
+      ErrorCodesServerNotInitialized -> toJSON -32002
+      ErrorCodesUnknownErrorCode -> toJSON -32001
+
 data ErrorCodes = ErrorCodesParseError
                 | ErrorCodesInvalidRequest
                 | ErrorCodesMethodNotFound

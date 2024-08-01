@@ -63,6 +63,62 @@ instance FromJSON CompletionItem where
                            , completionItemData = parsedData }
       _ -> Left ("Unrecognized CompletionItem value: " ++ ppJSON j)
 
+instance ToJSON CompletionItem where
+  toJSON x =
+    object
+     [(.=) "label" (completionItemLabel x),  (.?=) "labelDetails"
+                                              (completionItemLabelDetails
+                                                x),  (.?=) "kind"
+                                                      (completionItemKind
+                                                        x),  (.?=) "tags"
+                                                              (completionItemTags
+                                                                x),  (.?=)
+                                                                      "detail"
+                                                                      (completionItemDetail
+                                                                        x),  (.?=)
+                                                                              "documentation"
+                                                                              (completionItemDocumentation
+                                                                                x),  (.?=)
+                                                                                      "deprecated"
+                                                                                      (completionItemDeprecated
+                                                                                        x),  (.?=)
+                                                                                              "preselect"
+                                                                                              (completionItemPreselect
+                                                                                                x),  (.?=)
+                                                                                                      "sortText"
+                                                                                                      (completionItemSortText
+                                                                                                        x),  (.?=)
+                                                                                                              "filterText"
+                                                                                                              (completionItemFilterText
+                                                                                                                x),  (.?=)
+                                                                                                                      "insertText"
+                                                                                                                      (completionItemInsertText
+                                                                                                                        x),  (.?=)
+                                                                                                                              "insertTextFormat"
+                                                                                                                              (completionItemInsertTextFormat
+                                                                                                                                x),  (.?=)
+                                                                                                                                      "insertTextMode"
+                                                                                                                                      (completionItemInsertTextMode
+                                                                                                                                        x),  (.?=)
+                                                                                                                                              "textEdit"
+                                                                                                                                              (completionItemTextEdit
+                                                                                                                                                x),  (.?=)
+                                                                                                                                                      "textEditText"
+                                                                                                                                                      (completionItemTextEditText
+                                                                                                                                                        x),  (.?=)
+                                                                                                                                                              "additionalTextEdits"
+                                                                                                                                                              (completionItemAdditionalTextEdits
+                                                                                                                                                                x),  (.?=)
+                                                                                                                                                                      "commitCharacters"
+                                                                                                                                                                      (completionItemCommitCharacters
+                                                                                                                                                                        x),  (.?=)
+                                                                                                                                                                              "command"
+                                                                                                                                                                              (completionItemCommand
+                                                                                                                                                                                x),  (.?=)
+                                                                                                                                                                                      "data"
+                                                                                                                                                                                      (completionItemData
+                                                                                                                                                                                        x)]
+
 data CompletionItem = CompletionItem { completionItemLabel :: String
                                      , completionItemLabelDetails :: Maybe CompletionItemLabelDetails
                                      , completionItemKind :: Maybe CompletionItemKind

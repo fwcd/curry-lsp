@@ -16,6 +16,14 @@ instance FromJSON LSPErrorCodes where
          -32800 -> Right LSPErrorCodesRequestCancelled
          _ -> Left ("Unrecognized LSPErrorCodes value: " ++ ppJSON j)
 
+instance ToJSON LSPErrorCodes where
+  toJSON x =
+    case x of
+      LSPErrorCodesRequestFailed -> toJSON -32803
+      LSPErrorCodesServerCancelled -> toJSON -32802
+      LSPErrorCodesContentModified -> toJSON -32801
+      LSPErrorCodesRequestCancelled -> toJSON -32800
+
 data LSPErrorCodes = LSPErrorCodesRequestFailed
                    | LSPErrorCodesServerCancelled
                    | LSPErrorCodesContentModified

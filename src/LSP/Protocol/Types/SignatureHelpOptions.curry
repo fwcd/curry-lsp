@@ -22,6 +22,17 @@ instance FromJSON SignatureHelpOptions where
                                  , signatureHelpOptionsRetriggerCharacters = parsedRetriggerCharacters }
       _ -> Left ("Unrecognized SignatureHelpOptions value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (signatureHelpOptionsWorkDoneProgress x),  (.?=) "triggerCharacters"
+                                                   (signatureHelpOptionsTriggerCharacters
+                                                     x),  (.?=)
+                                                           "retriggerCharacters"
+                                                           (signatureHelpOptionsRetriggerCharacters
+                                                             x)]
+
 data SignatureHelpOptions = SignatureHelpOptions { signatureHelpOptionsWorkDoneProgress :: Maybe Bool
                                                  , signatureHelpOptionsTriggerCharacters :: Maybe [String]
                                                  , signatureHelpOptionsRetriggerCharacters :: Maybe [String] }

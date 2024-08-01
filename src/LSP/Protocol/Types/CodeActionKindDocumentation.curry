@@ -20,6 +20,13 @@ instance FromJSON CodeActionKindDocumentation where
       _ ->
         Left ("Unrecognized CodeActionKindDocumentation value: " ++ ppJSON j)
 
+instance ToJSON CodeActionKindDocumentation where
+  toJSON x =
+    object
+     [(.=) "kind" (codeActionKindDocumentationKind x),  (.=) "command"
+                                                         (codeActionKindDocumentationCommand
+                                                           x)]
+
 data CodeActionKindDocumentation = CodeActionKindDocumentation { codeActionKindDocumentationKind :: CodeActionKind
                                                                , codeActionKindDocumentationCommand :: Command }
  deriving (Show,Eq)

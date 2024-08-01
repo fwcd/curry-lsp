@@ -15,6 +15,9 @@ instance FromJSON SemanticTokensFullDelta where
             SemanticTokensFullDelta { semanticTokensFullDeltaDelta = parsedDelta }
       _ -> Left ("Unrecognized SemanticTokensFullDelta value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensFullDelta where
+  toJSON x = object [(.?=) "delta" (semanticTokensFullDeltaDelta x)]
+
 data SemanticTokensFullDelta = SemanticTokensFullDelta { semanticTokensFullDeltaDelta :: Maybe Bool }
  deriving (Show,Eq)
 

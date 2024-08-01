@@ -15,6 +15,9 @@ instance FromJSON NotebookCellLanguage where
             NotebookCellLanguage { notebookCellLanguageLanguage = parsedLanguage }
       _ -> Left ("Unrecognized NotebookCellLanguage value: " ++ ppJSON j)
 
+instance ToJSON NotebookCellLanguage where
+  toJSON x = object [(.=) "language" (notebookCellLanguageLanguage x)]
+
 data NotebookCellLanguage = NotebookCellLanguage { notebookCellLanguageLanguage :: String }
  deriving (Show,Eq)
 

@@ -26,6 +26,20 @@ instance FromJSON DiagnosticsCapabilities where
                                     , diagnosticsCapabilitiesDataSupport = parsedDataSupport }
       _ -> Left ("Unrecognized DiagnosticsCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticsCapabilities where
+  toJSON x =
+    object
+     [(.?=) "relatedInformation"
+       (diagnosticsCapabilitiesRelatedInformation x),  (.?=) "tagSupport"
+                                                        (diagnosticsCapabilitiesTagSupport
+                                                          x),  (.?=)
+                                                                "codeDescriptionSupport"
+                                                                (diagnosticsCapabilitiesCodeDescriptionSupport
+                                                                  x),  (.?=)
+                                                                        "dataSupport"
+                                                                        (diagnosticsCapabilitiesDataSupport
+                                                                          x)]
+
 data DiagnosticsCapabilities = DiagnosticsCapabilities { diagnosticsCapabilitiesRelatedInformation :: Maybe Bool
                                                        , diagnosticsCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions
                                                        , diagnosticsCapabilitiesCodeDescriptionSupport :: Maybe Bool

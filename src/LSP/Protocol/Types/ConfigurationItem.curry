@@ -18,6 +18,13 @@ instance FromJSON ConfigurationItem where
                               , configurationItemSection = parsedSection }
       _ -> Left ("Unrecognized ConfigurationItem value: " ++ ppJSON j)
 
+instance ToJSON ConfigurationItem where
+  toJSON x =
+    object
+     [(.?=) "scopeUri" (configurationItemScopeUri x),  (.?=) "section"
+                                                        (configurationItemSection
+                                                          x)]
+
 data ConfigurationItem = ConfigurationItem { configurationItemScopeUri :: Maybe Uri
                                            , configurationItemSection :: Maybe String }
  deriving (Show,Eq)

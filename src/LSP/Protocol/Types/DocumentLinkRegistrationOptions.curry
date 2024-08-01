@@ -22,6 +22,18 @@ instance FromJSON DocumentLinkRegistrationOptions where
         Left
          ("Unrecognized DocumentLinkRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentLinkRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentLinkRegistrationOptionsDocumentSelector x),  (.?=)
+                                                              "workDoneProgress"
+                                                              (documentLinkRegistrationOptionsWorkDoneProgress
+                                                                x),  (.?=)
+                                                                      "resolveProvider"
+                                                                      (documentLinkRegistrationOptionsResolveProvider
+                                                                        x)]
+
 data DocumentLinkRegistrationOptions = DocumentLinkRegistrationOptions { documentLinkRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                        , documentLinkRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                        , documentLinkRegistrationOptionsResolveProvider :: Maybe Bool }

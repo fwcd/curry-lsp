@@ -21,6 +21,14 @@ instance FromJSON InlineCompletionContext where
                                     , inlineCompletionContextSelectedCompletionInfo = parsedSelectedCompletionInfo }
       _ -> Left ("Unrecognized InlineCompletionContext value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionContext where
+  toJSON x =
+    object
+     [(.=) "triggerKind" (inlineCompletionContextTriggerKind x),  (.?=)
+                                                                   "selectedCompletionInfo"
+                                                                   (inlineCompletionContextSelectedCompletionInfo
+                                                                     x)]
+
 data InlineCompletionContext = InlineCompletionContext { inlineCompletionContextTriggerKind :: InlineCompletionTriggerKind
                                                        , inlineCompletionContextSelectedCompletionInfo :: Maybe SelectedCompletionInfo }
  deriving (Show,Eq)

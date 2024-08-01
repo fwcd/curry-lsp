@@ -23,6 +23,17 @@ instance FromJSON CallHierarchyPrepareParams where
       _ ->
         Left ("Unrecognized CallHierarchyPrepareParams value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyPrepareParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (callHierarchyPrepareParamsTextDocument x),  (.=)
+                                                                        "position"
+                                                                        (callHierarchyPrepareParamsPosition
+                                                                          x),  (.?=)
+                                                                                "workDoneToken"
+                                                                                (callHierarchyPrepareParamsWorkDoneToken
+                                                                                  x)]
+
 data CallHierarchyPrepareParams = CallHierarchyPrepareParams { callHierarchyPrepareParamsTextDocument :: TextDocumentIdentifier
                                                              , callHierarchyPrepareParamsPosition :: Position
                                                              , callHierarchyPrepareParamsWorkDoneToken :: Maybe ProgressToken }

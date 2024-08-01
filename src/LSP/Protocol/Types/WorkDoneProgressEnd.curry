@@ -17,6 +17,13 @@ instance FromJSON WorkDoneProgressEnd where
                                 , workDoneProgressEndMessage = parsedMessage }
       _ -> Left ("Unrecognized WorkDoneProgressEnd value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressEnd where
+  toJSON x =
+    object
+     [(.=) "kind" (workDoneProgressEndKind x),  (.?=) "message"
+                                                 (workDoneProgressEndMessage
+                                                   x)]
+
 data WorkDoneProgressEnd = WorkDoneProgressEnd { workDoneProgressEndKind :: String
                                                , workDoneProgressEndMessage :: Maybe String }
  deriving (Show,Eq)

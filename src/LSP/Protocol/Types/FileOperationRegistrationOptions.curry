@@ -18,6 +18,10 @@ instance FromJSON FileOperationRegistrationOptions where
         Left
          ("Unrecognized FileOperationRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON FileOperationRegistrationOptions where
+  toJSON x =
+    object [(.=) "filters" (fileOperationRegistrationOptionsFilters x)]
+
 data FileOperationRegistrationOptions = FileOperationRegistrationOptions { fileOperationRegistrationOptionsFilters :: [FileOperationFilter] }
  deriving (Show,Eq)
 

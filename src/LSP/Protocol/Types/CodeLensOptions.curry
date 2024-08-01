@@ -17,6 +17,14 @@ instance FromJSON CodeLensOptions where
                             , codeLensOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized CodeLensOptions value: " ++ ppJSON j)
 
+instance ToJSON CodeLensOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (codeLensOptionsWorkDoneProgress x),  (.?=)
+                                                                      "resolveProvider"
+                                                                      (codeLensOptionsResolveProvider
+                                                                        x)]
+
 data CodeLensOptions = CodeLensOptions { codeLensOptionsWorkDoneProgress :: Maybe Bool
                                        , codeLensOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

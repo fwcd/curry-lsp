@@ -19,6 +19,15 @@ instance FromJSON ReferenceRegistrationOptions where
       _ ->
         Left ("Unrecognized ReferenceRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON ReferenceRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (referenceRegistrationOptionsDocumentSelector x),  (.?=)
+                                                           "workDoneProgress"
+                                                           (referenceRegistrationOptionsWorkDoneProgress
+                                                             x)]
+
 data ReferenceRegistrationOptions = ReferenceRegistrationOptions { referenceRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                  , referenceRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

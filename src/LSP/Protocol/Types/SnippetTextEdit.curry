@@ -22,6 +22,15 @@ instance FromJSON SnippetTextEdit where
                             , snippetTextEditAnnotationId = parsedAnnotationId }
       _ -> Left ("Unrecognized SnippetTextEdit value: " ++ ppJSON j)
 
+instance ToJSON SnippetTextEdit where
+  toJSON x =
+    object
+     [(.=) "range" (snippetTextEditRange x),  (.=) "snippet"
+                                               (snippetTextEditSnippet
+                                                 x),  (.?=) "annotationId"
+                                                       (snippetTextEditAnnotationId
+                                                         x)]
+
 data SnippetTextEdit = SnippetTextEdit { snippetTextEditRange :: Range
                                        , snippetTextEditSnippet :: StringValue
                                        , snippetTextEditAnnotationId :: Maybe ChangeAnnotationIdentifier }

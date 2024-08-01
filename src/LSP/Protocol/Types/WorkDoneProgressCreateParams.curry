@@ -17,6 +17,9 @@ instance FromJSON WorkDoneProgressCreateParams where
       _ ->
         Left ("Unrecognized WorkDoneProgressCreateParams value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressCreateParams where
+  toJSON x = object [(.=) "token" (workDoneProgressCreateParamsToken x)]
+
 data WorkDoneProgressCreateParams = WorkDoneProgressCreateParams { workDoneProgressCreateParamsToken :: ProgressToken }
  deriving (Show,Eq)
 

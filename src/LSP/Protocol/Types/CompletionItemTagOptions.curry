@@ -16,6 +16,9 @@ instance FromJSON CompletionItemTagOptions where
             CompletionItemTagOptions { completionItemTagOptionsValueSet = parsedValueSet }
       _ -> Left ("Unrecognized CompletionItemTagOptions value: " ++ ppJSON j)
 
+instance ToJSON CompletionItemTagOptions where
+  toJSON x = object [(.=) "valueSet" (completionItemTagOptionsValueSet x)]
+
 data CompletionItemTagOptions = CompletionItemTagOptions { completionItemTagOptionsValueSet :: [CompletionItemTag] }
  deriving (Show,Eq)
 

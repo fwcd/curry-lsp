@@ -22,6 +22,14 @@ instance FromJSON NotebookDocumentCellContentChanges where
          ("Unrecognized NotebookDocumentCellContentChanges value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentCellContentChanges where
+  toJSON x =
+    object
+     [(.=) "document" (notebookDocumentCellContentChangesDocument x),  (.=)
+                                                                        "changes"
+                                                                        (notebookDocumentCellContentChangesChanges
+                                                                          x)]
+
 data NotebookDocumentCellContentChanges = NotebookDocumentCellContentChanges { notebookDocumentCellContentChangesDocument :: VersionedTextDocumentIdentifier
                                                                              , notebookDocumentCellContentChangesChanges :: [TextDocumentContentChangeEvent] }
  deriving (Show,Eq)

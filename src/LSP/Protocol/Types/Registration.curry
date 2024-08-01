@@ -20,6 +20,15 @@ instance FromJSON Registration where
                          , registrationRegisterOptions = parsedRegisterOptions }
       _ -> Left ("Unrecognized Registration value: " ++ ppJSON j)
 
+instance ToJSON Registration where
+  toJSON x =
+    object
+     [(.=) "id" (registrationId x),  (.=) "method"
+                                      (registrationMethod x),  (.?=)
+                                                                "registerOptions"
+                                                                (registrationRegisterOptions
+                                                                  x)]
+
 data Registration = Registration { registrationId :: String
                                  , registrationMethod :: String
                                  , registrationRegisterOptions :: Maybe LSPAny }

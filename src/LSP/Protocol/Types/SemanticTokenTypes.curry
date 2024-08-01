@@ -36,6 +36,34 @@ instance FromJSON SemanticTokenTypes where
          "label" -> Right SemanticTokenTypesLabel
          _ -> Left ("Unrecognized SemanticTokenTypes value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokenTypes where
+  toJSON x =
+    case x of
+      SemanticTokenTypesNamespace -> toJSON "namespace"
+      SemanticTokenTypesType -> toJSON "type"
+      SemanticTokenTypesClass -> toJSON "class"
+      SemanticTokenTypesEnum -> toJSON "enum"
+      SemanticTokenTypesInterface -> toJSON "interface"
+      SemanticTokenTypesStruct -> toJSON "struct"
+      SemanticTokenTypesTypeParameter -> toJSON "typeParameter"
+      SemanticTokenTypesParameter -> toJSON "parameter"
+      SemanticTokenTypesVariable -> toJSON "variable"
+      SemanticTokenTypesProperty -> toJSON "property"
+      SemanticTokenTypesEnumMember -> toJSON "enumMember"
+      SemanticTokenTypesEvent -> toJSON "event"
+      SemanticTokenTypesFunction -> toJSON "function"
+      SemanticTokenTypesMethod -> toJSON "method"
+      SemanticTokenTypesMacro -> toJSON "macro"
+      SemanticTokenTypesKeyword -> toJSON "keyword"
+      SemanticTokenTypesModifier -> toJSON "modifier"
+      SemanticTokenTypesComment -> toJSON "comment"
+      SemanticTokenTypesString -> toJSON "string"
+      SemanticTokenTypesNumber -> toJSON "number"
+      SemanticTokenTypesRegexp -> toJSON "regexp"
+      SemanticTokenTypesOperator -> toJSON "operator"
+      SemanticTokenTypesDecorator -> toJSON "decorator"
+      SemanticTokenTypesLabel -> toJSON "label"
+
 data SemanticTokenTypes = SemanticTokenTypesNamespace
                         | SemanticTokenTypesType
                         | SemanticTokenTypesClass

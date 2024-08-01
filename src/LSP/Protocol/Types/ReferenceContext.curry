@@ -15,6 +15,10 @@ instance FromJSON ReferenceContext where
             ReferenceContext { referenceContextIncludeDeclaration = parsedIncludeDeclaration }
       _ -> Left ("Unrecognized ReferenceContext value: " ++ ppJSON j)
 
+instance ToJSON ReferenceContext where
+  toJSON x =
+    object [(.=) "includeDeclaration" (referenceContextIncludeDeclaration x)]
+
 data ReferenceContext = ReferenceContext { referenceContextIncludeDeclaration :: Bool }
  deriving (Show,Eq)
 

@@ -23,6 +23,17 @@ instance FromJSON TextDocumentItem where
                              , textDocumentItemText = parsedText }
       _ -> Left ("Unrecognized TextDocumentItem value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentItem where
+  toJSON x =
+    object
+     [(.=) "uri" (textDocumentItemUri x),  (.=) "languageId"
+                                            (textDocumentItemLanguageId
+                                              x),  (.=) "version"
+                                                    (textDocumentItemVersion
+                                                      x),  (.=) "text"
+                                                            (textDocumentItemText
+                                                              x)]
+
 data TextDocumentItem = TextDocumentItem { textDocumentItemUri :: DocumentUri
                                          , textDocumentItemLanguageId :: LanguageKind
                                          , textDocumentItemVersion :: Int

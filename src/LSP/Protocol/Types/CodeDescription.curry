@@ -15,6 +15,9 @@ instance FromJSON CodeDescription where
            return CodeDescription { codeDescriptionHref = parsedHref }
       _ -> Left ("Unrecognized CodeDescription value: " ++ ppJSON j)
 
+instance ToJSON CodeDescription where
+  toJSON x = object [(.=) "href" (codeDescriptionHref x)]
+
 data CodeDescription = CodeDescription { codeDescriptionHref :: Uri }
  deriving (Show,Eq)
 

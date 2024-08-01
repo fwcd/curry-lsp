@@ -24,6 +24,15 @@ instance FromJSON DidChangeWatchedFilesClientCapabilities where
          ("Unrecognized DidChangeWatchedFilesClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DidChangeWatchedFilesClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (didChangeWatchedFilesClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                         "relativePatternSupport"
+                                                                         (didChangeWatchedFilesClientCapabilitiesRelativePatternSupport
+                                                                           x)]
+
 data DidChangeWatchedFilesClientCapabilities = DidChangeWatchedFilesClientCapabilities { didChangeWatchedFilesClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                        , didChangeWatchedFilesClientCapabilitiesRelativePatternSupport :: Maybe Bool }
  deriving (Show,Eq)

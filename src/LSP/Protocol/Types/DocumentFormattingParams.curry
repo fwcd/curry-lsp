@@ -22,6 +22,17 @@ instance FromJSON DocumentFormattingParams where
                                      , documentFormattingParamsOptions = parsedOptions }
       _ -> Left ("Unrecognized DocumentFormattingParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentFormattingParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (documentFormattingParamsWorkDoneToken x),  (.=)
+                                                                         "textDocument"
+                                                                         (documentFormattingParamsTextDocument
+                                                                           x),  (.=)
+                                                                                 "options"
+                                                                                 (documentFormattingParamsOptions
+                                                                                   x)]
+
 data DocumentFormattingParams = DocumentFormattingParams { documentFormattingParamsWorkDoneToken :: Maybe ProgressToken
                                                          , documentFormattingParamsTextDocument :: TextDocumentIdentifier
                                                          , documentFormattingParamsOptions :: FormattingOptions }

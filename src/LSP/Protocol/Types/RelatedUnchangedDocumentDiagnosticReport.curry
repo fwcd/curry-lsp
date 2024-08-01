@@ -26,6 +26,17 @@ instance FromJSON RelatedUnchangedDocumentDiagnosticReport where
          ("Unrecognized RelatedUnchangedDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
+instance ToJSON RelatedUnchangedDocumentDiagnosticReport where
+  toJSON x =
+    object
+     [(.=) "kind" (relatedUnchangedDocumentDiagnosticReportKind x),  (.=)
+                                                                      "resultId"
+                                                                      (relatedUnchangedDocumentDiagnosticReportResultId
+                                                                        x),  (.?=)
+                                                                              "relatedDocuments"
+                                                                              (relatedUnchangedDocumentDiagnosticReportRelatedDocuments
+                                                                                x)]
+
 data RelatedUnchangedDocumentDiagnosticReport = RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportKind :: String
                                                                                          , relatedUnchangedDocumentDiagnosticReportResultId :: String
                                                                                          , relatedUnchangedDocumentDiagnosticReportRelatedDocuments :: Maybe (Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport)) }

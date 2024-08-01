@@ -18,6 +18,11 @@ instance FromJSON TextEdit where
                      , textEditNewText = parsedNewText }
       _ -> Left ("Unrecognized TextEdit value: " ++ ppJSON j)
 
+instance ToJSON TextEdit where
+  toJSON x =
+    object
+     [(.=) "range" (textEditRange x),  (.=) "newText" (textEditNewText x)]
+
 data TextEdit = TextEdit { textEditRange :: Range, textEditNewText :: String }
  deriving (Show,Eq)
 

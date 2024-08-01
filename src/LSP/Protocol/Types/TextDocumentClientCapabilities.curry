@@ -113,6 +113,101 @@ instance FromJSON TextDocumentClientCapabilities where
         Left
          ("Unrecognized TextDocumentClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "synchronization"
+       (textDocumentClientCapabilitiesSynchronization x),  (.?=) "completion"
+                                                            (textDocumentClientCapabilitiesCompletion
+                                                              x),  (.?=)
+                                                                    "hover"
+                                                                    (textDocumentClientCapabilitiesHover
+                                                                      x),  (.?=)
+                                                                            "signatureHelp"
+                                                                            (textDocumentClientCapabilitiesSignatureHelp
+                                                                              x),  (.?=)
+                                                                                    "declaration"
+                                                                                    (textDocumentClientCapabilitiesDeclaration
+                                                                                      x),  (.?=)
+                                                                                            "definition"
+                                                                                            (textDocumentClientCapabilitiesDefinition
+                                                                                              x),  (.?=)
+                                                                                                    "typeDefinition"
+                                                                                                    (textDocumentClientCapabilitiesTypeDefinition
+                                                                                                      x),  (.?=)
+                                                                                                            "implementation"
+                                                                                                            (textDocumentClientCapabilitiesImplementation
+                                                                                                              x),  (.?=)
+                                                                                                                    "references"
+                                                                                                                    (textDocumentClientCapabilitiesReferences
+                                                                                                                      x),  (.?=)
+                                                                                                                            "documentHighlight"
+                                                                                                                            (textDocumentClientCapabilitiesDocumentHighlight
+                                                                                                                              x),  (.?=)
+                                                                                                                                    "documentSymbol"
+                                                                                                                                    (textDocumentClientCapabilitiesDocumentSymbol
+                                                                                                                                      x),  (.?=)
+                                                                                                                                            "codeAction"
+                                                                                                                                            (textDocumentClientCapabilitiesCodeAction
+                                                                                                                                              x),  (.?=)
+                                                                                                                                                    "codeLens"
+                                                                                                                                                    (textDocumentClientCapabilitiesCodeLens
+                                                                                                                                                      x),  (.?=)
+                                                                                                                                                            "documentLink"
+                                                                                                                                                            (textDocumentClientCapabilitiesDocumentLink
+                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                    "colorProvider"
+                                                                                                                                                                    (textDocumentClientCapabilitiesColorProvider
+                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                            "formatting"
+                                                                                                                                                                            (textDocumentClientCapabilitiesFormatting
+                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                    "rangeFormatting"
+                                                                                                                                                                                    (textDocumentClientCapabilitiesRangeFormatting
+                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                            "onTypeFormatting"
+                                                                                                                                                                                            (textDocumentClientCapabilitiesOnTypeFormatting
+                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                    "rename"
+                                                                                                                                                                                                    (textDocumentClientCapabilitiesRename
+                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                            "foldingRange"
+                                                                                                                                                                                                            (textDocumentClientCapabilitiesFoldingRange
+                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                    "selectionRange"
+                                                                                                                                                                                                                    (textDocumentClientCapabilitiesSelectionRange
+                                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                                            "publishDiagnostics"
+                                                                                                                                                                                                                            (textDocumentClientCapabilitiesPublishDiagnostics
+                                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                                    "callHierarchy"
+                                                                                                                                                                                                                                    (textDocumentClientCapabilitiesCallHierarchy
+                                                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                                                            "semanticTokens"
+                                                                                                                                                                                                                                            (textDocumentClientCapabilitiesSemanticTokens
+                                                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                                                    "linkedEditingRange"
+                                                                                                                                                                                                                                                    (textDocumentClientCapabilitiesLinkedEditingRange
+                                                                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                                                                            "moniker"
+                                                                                                                                                                                                                                                            (textDocumentClientCapabilitiesMoniker
+                                                                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                                                                    "typeHierarchy"
+                                                                                                                                                                                                                                                                    (textDocumentClientCapabilitiesTypeHierarchy
+                                                                                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                                                                                            "inlineValue"
+                                                                                                                                                                                                                                                                            (textDocumentClientCapabilitiesInlineValue
+                                                                                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                                                                                    "inlayHint"
+                                                                                                                                                                                                                                                                                    (textDocumentClientCapabilitiesInlayHint
+                                                                                                                                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                                                                                                                                            "diagnostic"
+                                                                                                                                                                                                                                                                                            (textDocumentClientCapabilitiesDiagnostic
+                                                                                                                                                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                                                                                                                                                    "inlineCompletion"
+                                                                                                                                                                                                                                                                                                    (textDocumentClientCapabilitiesInlineCompletion
+                                                                                                                                                                                                                                                                                                      x)]
+
 data TextDocumentClientCapabilities = TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization :: Maybe TextDocumentSyncClientCapabilities
                                                                      , textDocumentClientCapabilitiesCompletion :: Maybe CompletionClientCapabilities
                                                                      , textDocumentClientCapabilitiesHover :: Maybe HoverClientCapabilities

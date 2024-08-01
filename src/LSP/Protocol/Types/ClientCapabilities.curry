@@ -31,6 +31,25 @@ instance FromJSON ClientCapabilities where
                                , clientCapabilitiesExperimental = parsedExperimental }
       _ -> Left ("Unrecognized ClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON ClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "workspace" (clientCapabilitiesWorkspace x),  (.?=) "textDocument"
+                                                           (clientCapabilitiesTextDocument
+                                                             x),  (.?=)
+                                                                   "notebookDocument"
+                                                                   (clientCapabilitiesNotebookDocument
+                                                                     x),  (.?=)
+                                                                           "window"
+                                                                           (clientCapabilitiesWindow
+                                                                             x),  (.?=)
+                                                                                   "general"
+                                                                                   (clientCapabilitiesGeneral
+                                                                                     x),  (.?=)
+                                                                                           "experimental"
+                                                                                           (clientCapabilitiesExperimental
+                                                                                             x)]
+
 data ClientCapabilities = ClientCapabilities { clientCapabilitiesWorkspace :: Maybe WorkspaceClientCapabilities
                                              , clientCapabilitiesTextDocument :: Maybe TextDocumentClientCapabilities
                                              , clientCapabilitiesNotebookDocument :: Maybe NotebookDocumentClientCapabilities

@@ -40,6 +40,30 @@ instance FromJSON WorkspaceEditClientCapabilities where
         Left
          ("Unrecognized WorkspaceEditClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceEditClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "documentChanges"
+       (workspaceEditClientCapabilitiesDocumentChanges x),  (.?=)
+                                                             "resourceOperations"
+                                                             (workspaceEditClientCapabilitiesResourceOperations
+                                                               x),  (.?=)
+                                                                     "failureHandling"
+                                                                     (workspaceEditClientCapabilitiesFailureHandling
+                                                                       x),  (.?=)
+                                                                             "normalizesLineEndings"
+                                                                             (workspaceEditClientCapabilitiesNormalizesLineEndings
+                                                                               x),  (.?=)
+                                                                                     "changeAnnotationSupport"
+                                                                                     (workspaceEditClientCapabilitiesChangeAnnotationSupport
+                                                                                       x),  (.?=)
+                                                                                             "metadataSupport"
+                                                                                             (workspaceEditClientCapabilitiesMetadataSupport
+                                                                                               x),  (.?=)
+                                                                                                     "snippetEditSupport"
+                                                                                                     (workspaceEditClientCapabilitiesSnippetEditSupport
+                                                                                                       x)]
+
 data WorkspaceEditClientCapabilities = WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges :: Maybe Bool
                                                                        , workspaceEditClientCapabilitiesResourceOperations :: Maybe [ResourceOperationKind]
                                                                        , workspaceEditClientCapabilitiesFailureHandling :: Maybe FailureHandlingKind

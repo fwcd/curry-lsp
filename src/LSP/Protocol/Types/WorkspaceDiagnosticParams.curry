@@ -25,6 +25,20 @@ instance FromJSON WorkspaceDiagnosticParams where
                                       , workspaceDiagnosticParamsPreviousResultIds = parsedPreviousResultIds }
       _ -> Left ("Unrecognized WorkspaceDiagnosticParams value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceDiagnosticParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (workspaceDiagnosticParamsWorkDoneToken x),  (.?=)
+                                                                          "partialResultToken"
+                                                                          (workspaceDiagnosticParamsPartialResultToken
+                                                                            x),  (.?=)
+                                                                                  "identifier"
+                                                                                  (workspaceDiagnosticParamsIdentifier
+                                                                                    x),  (.=)
+                                                                                          "previousResultIds"
+                                                                                          (workspaceDiagnosticParamsPreviousResultIds
+                                                                                            x)]
+
 data WorkspaceDiagnosticParams = WorkspaceDiagnosticParams { workspaceDiagnosticParamsWorkDoneToken :: Maybe ProgressToken
                                                            , workspaceDiagnosticParamsPartialResultToken :: Maybe ProgressToken
                                                            , workspaceDiagnosticParamsIdentifier :: Maybe String

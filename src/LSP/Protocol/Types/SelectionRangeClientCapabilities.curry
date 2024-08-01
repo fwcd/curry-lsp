@@ -19,6 +19,12 @@ instance FromJSON SelectionRangeClientCapabilities where
         Left
          ("Unrecognized SelectionRangeClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON SelectionRangeClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (selectionRangeClientCapabilitiesDynamicRegistration x)]
+
 data SelectionRangeClientCapabilities = SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

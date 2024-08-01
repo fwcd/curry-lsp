@@ -16,6 +16,9 @@ instance FromJSON ConfigurationParams where
             ConfigurationParams { configurationParamsItems = parsedItems }
       _ -> Left ("Unrecognized ConfigurationParams value: " ++ ppJSON j)
 
+instance ToJSON ConfigurationParams where
+  toJSON x = object [(.=) "items" (configurationParamsItems x)]
+
 data ConfigurationParams = ConfigurationParams { configurationParamsItems :: [ConfigurationItem] }
  deriving (Show,Eq)
 

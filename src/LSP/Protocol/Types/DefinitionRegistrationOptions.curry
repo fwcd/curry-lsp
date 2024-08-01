@@ -20,6 +20,15 @@ instance FromJSON DefinitionRegistrationOptions where
         Left
          ("Unrecognized DefinitionRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON DefinitionRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (definitionRegistrationOptionsDocumentSelector x),  (.?=)
+                                                            "workDoneProgress"
+                                                            (definitionRegistrationOptionsWorkDoneProgress
+                                                              x)]
+
 data DefinitionRegistrationOptions = DefinitionRegistrationOptions { definitionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , definitionRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

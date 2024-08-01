@@ -18,6 +18,12 @@ instance FromJSON ServerCompletionItemOptions where
       _ ->
         Left ("Unrecognized ServerCompletionItemOptions value: " ++ ppJSON j)
 
+instance ToJSON ServerCompletionItemOptions where
+  toJSON x =
+    object
+     [(.?=) "labelDetailsSupport"
+       (serverCompletionItemOptionsLabelDetailsSupport x)]
+
 data ServerCompletionItemOptions = ServerCompletionItemOptions { serverCompletionItemOptionsLabelDetailsSupport :: Maybe Bool }
  deriving (Show,Eq)
 

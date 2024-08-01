@@ -16,6 +16,12 @@ instance FromJSON InlineCompletionTriggerKind where
            Left
             ("Unrecognized InlineCompletionTriggerKind value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionTriggerKind where
+  toJSON x =
+    case x of
+      InlineCompletionTriggerKindInvoked -> toJSON 1
+      InlineCompletionTriggerKindAutomatic -> toJSON 2
+
 data InlineCompletionTriggerKind = InlineCompletionTriggerKindInvoked
                                  | InlineCompletionTriggerKindAutomatic
  deriving (Show,Eq,Enum,Bounded,Ord)

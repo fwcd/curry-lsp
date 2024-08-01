@@ -14,6 +14,12 @@ instance FromJSON NotebookCellKind where
          2 -> Right NotebookCellKindCode
          _ -> Left ("Unrecognized NotebookCellKind value: " ++ ppJSON j)
 
+instance ToJSON NotebookCellKind where
+  toJSON x =
+    case x of
+      NotebookCellKindMarkup -> toJSON 1
+      NotebookCellKindCode -> toJSON 2
+
 data NotebookCellKind = NotebookCellKindMarkup | NotebookCellKindCode
  deriving (Show,Eq,Enum,Bounded,Ord)
 

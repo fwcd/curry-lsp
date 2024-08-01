@@ -15,6 +15,9 @@ instance FromJSON DeleteFilesParams where
            return DeleteFilesParams { deleteFilesParamsFiles = parsedFiles }
       _ -> Left ("Unrecognized DeleteFilesParams value: " ++ ppJSON j)
 
+instance ToJSON DeleteFilesParams where
+  toJSON x = object [(.=) "files" (deleteFilesParamsFiles x)]
+
 data DeleteFilesParams = DeleteFilesParams { deleteFilesParamsFiles :: [FileDelete] }
  deriving (Show,Eq)
 

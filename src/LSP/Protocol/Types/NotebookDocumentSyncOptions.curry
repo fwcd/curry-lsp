@@ -20,6 +20,14 @@ instance FromJSON NotebookDocumentSyncOptions where
       _ ->
         Left ("Unrecognized NotebookDocumentSyncOptions value: " ++ ppJSON j)
 
+instance ToJSON NotebookDocumentSyncOptions where
+  toJSON x =
+    object
+     [(.=) "notebookSelector"
+       (notebookDocumentSyncOptionsNotebookSelector x),  (.?=) "save"
+                                                          (notebookDocumentSyncOptionsSave
+                                                            x)]
+
 data NotebookDocumentSyncOptions = NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector :: [Either NotebookDocumentFilterWithNotebook NotebookDocumentFilterWithCells]
                                                                , notebookDocumentSyncOptionsSave :: Maybe Bool }
  deriving (Show,Eq)

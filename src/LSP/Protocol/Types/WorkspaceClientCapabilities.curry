@@ -60,6 +60,53 @@ instance FromJSON WorkspaceClientCapabilities where
       _ ->
         Left ("Unrecognized WorkspaceClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "applyEdit" (workspaceClientCapabilitiesApplyEdit x),  (.?=)
+                                                                    "workspaceEdit"
+                                                                    (workspaceClientCapabilitiesWorkspaceEdit
+                                                                      x),  (.?=)
+                                                                            "didChangeConfiguration"
+                                                                            (workspaceClientCapabilitiesDidChangeConfiguration
+                                                                              x),  (.?=)
+                                                                                    "didChangeWatchedFiles"
+                                                                                    (workspaceClientCapabilitiesDidChangeWatchedFiles
+                                                                                      x),  (.?=)
+                                                                                            "symbol"
+                                                                                            (workspaceClientCapabilitiesSymbol
+                                                                                              x),  (.?=)
+                                                                                                    "executeCommand"
+                                                                                                    (workspaceClientCapabilitiesExecuteCommand
+                                                                                                      x),  (.?=)
+                                                                                                            "workspaceFolders"
+                                                                                                            (workspaceClientCapabilitiesWorkspaceFolders
+                                                                                                              x),  (.?=)
+                                                                                                                    "configuration"
+                                                                                                                    (workspaceClientCapabilitiesConfiguration
+                                                                                                                      x),  (.?=)
+                                                                                                                            "semanticTokens"
+                                                                                                                            (workspaceClientCapabilitiesSemanticTokens
+                                                                                                                              x),  (.?=)
+                                                                                                                                    "codeLens"
+                                                                                                                                    (workspaceClientCapabilitiesCodeLens
+                                                                                                                                      x),  (.?=)
+                                                                                                                                            "fileOperations"
+                                                                                                                                            (workspaceClientCapabilitiesFileOperations
+                                                                                                                                              x),  (.?=)
+                                                                                                                                                    "inlineValue"
+                                                                                                                                                    (workspaceClientCapabilitiesInlineValue
+                                                                                                                                                      x),  (.?=)
+                                                                                                                                                            "inlayHint"
+                                                                                                                                                            (workspaceClientCapabilitiesInlayHint
+                                                                                                                                                              x),  (.?=)
+                                                                                                                                                                    "diagnostics"
+                                                                                                                                                                    (workspaceClientCapabilitiesDiagnostics
+                                                                                                                                                                      x),  (.?=)
+                                                                                                                                                                            "foldingRange"
+                                                                                                                                                                            (workspaceClientCapabilitiesFoldingRange
+                                                                                                                                                                              x)]
+
 data WorkspaceClientCapabilities = WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit :: Maybe Bool
                                                                , workspaceClientCapabilitiesWorkspaceEdit :: Maybe WorkspaceEditClientCapabilities
                                                                , workspaceClientCapabilitiesDidChangeConfiguration :: Maybe DidChangeConfigurationClientCapabilities

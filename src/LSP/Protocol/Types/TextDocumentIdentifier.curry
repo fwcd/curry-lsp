@@ -16,6 +16,9 @@ instance FromJSON TextDocumentIdentifier where
             TextDocumentIdentifier { textDocumentIdentifierUri = parsedUri }
       _ -> Left ("Unrecognized TextDocumentIdentifier value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentIdentifier where
+  toJSON x = object [(.=) "uri" (textDocumentIdentifierUri x)]
+
 data TextDocumentIdentifier = TextDocumentIdentifier { textDocumentIdentifierUri :: DocumentUri }
  deriving (Show,Eq)
 

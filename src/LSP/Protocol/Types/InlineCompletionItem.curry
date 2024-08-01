@@ -24,6 +24,20 @@ instance FromJSON InlineCompletionItem where
                                  , inlineCompletionItemCommand = parsedCommand }
       _ -> Left ("Unrecognized InlineCompletionItem value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionItem where
+  toJSON x =
+    object
+     [(.=) "insertText" (inlineCompletionItemInsertText x),  (.?=)
+                                                              "filterText"
+                                                              (inlineCompletionItemFilterText
+                                                                x),  (.?=)
+                                                                      "range"
+                                                                      (inlineCompletionItemRange
+                                                                        x),  (.?=)
+                                                                              "command"
+                                                                              (inlineCompletionItemCommand
+                                                                                x)]
+
 data InlineCompletionItem = InlineCompletionItem { inlineCompletionItemInsertText :: Either String StringValue
                                                  , inlineCompletionItemFilterText :: Maybe String
                                                  , inlineCompletionItemRange :: Maybe Range
