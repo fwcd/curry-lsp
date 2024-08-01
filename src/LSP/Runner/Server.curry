@@ -15,7 +15,7 @@ runServerLoop :: Handle -> Handle -> IO ()
 runServerLoop i o = runLoop
   where
     runLoop = do
-      m <- (readMessage i :: IO (Request InitializeParams))
+      m <- readMessage i :: IO (Request InitializeParams)
       -- TODO: Do something proper
       hPutStrLn stderr $ show m
       runLoop
