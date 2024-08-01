@@ -7,6 +7,9 @@ import qualified AbstractCurry.Types as AC
 import qualified Data.Set as S
 import LSP.Utils.General ( unions )
 
+-- TODO: Make this a type class?
+-- This would also let us model CField more cleanly without requiring CExpr.
+
 -- | Extracts the required imports from the given type declaration.
 typeDeclToImports :: AC.CTypeDecl -> S.Set String
 typeDeclToImports ty = case ty of
@@ -75,7 +78,31 @@ rhsToImports rhs = case rhs of
 
 -- | Extracts the required imports from the given expression.
 exprToImports :: AC.CExpr -> S.Set String
-exprToImports _ = S.empty -- TODO
+exprToImports expr = case expr of
+  AC.CVar _            -> S.empty
+  AC.CLit _            -> S.empty
+  AC.CSymbol qn        -> qNameToImports qn
+  AC.CApply e1 e2      -> S.union (exprToImports e1) (exprToImports e2)
+  AC.CLambda pats e    -> S.union (unions $ patternToImports <$> pats) (exprToImports e)
+  AC.CLetDecl ldecls e -> S.union (unions $ localDeclToImports <$> ldecls) (exprToImports e)
+  AC.CDoExpr stmts     -> unions $ statementToImports <$> stmts
+  AC.CListComp e stmts -> S.union (exprToImports e) (unions $ statementToImports <$> stmts)
+  AC.CCase _ e arms    -> S.union (exprToImports e) (unions $ caseArmToImports <$> arms)
+  AC.CTyped e qty      -> S.union (exprToImports e) (qualTypeExprToImports qty)
+  AC.CRecConstr qn fs  -> S.union (qNameToImports qn) (unions $ fieldToImports <$> fs)
+  AC.CRecUpdate e fs   -> S.union (exprToImports e) (unions $ fieldToImports <$> fs)
+
+-- | Extracts the required imports from the given statement.
+statementToImports :: AC.CStatement -> S.Set String
+statementToImports _ = S.empty -- TODO
+
+-- | Extracts the required imports from the given case arm.
+caseArmToImports :: (AC.CPattern, AC.CRhs) -> S.Set String
+caseArmToImports (pat, rhs) = S.union (patternToImports pat) (rhsToImports rhs)
+
+-- | Extracts the required imports from the given field.
+fieldToImports :: AC.CField AC.CExpr -> S.Set String
+fieldToImports _ = S.empty
 
 -- | Extracts the required imports from the given guard.
 guardToImports :: (AC.CExpr, AC.CExpr) -> S.Set String
