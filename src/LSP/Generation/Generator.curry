@@ -301,10 +301,27 @@ fieldDeclToImports :: AC.CFieldDecl -> S.Set String
 fieldDeclToImports fdecl = case fdecl of
   AC.CField _ _ texp -> typeExprToImports texp
 
+-- | Extracts the required imports from the given instance declaration.
+instanceDeclToImports :: AC.CInstanceDecl -> S.Set String
+instanceDeclToImports idecl = case idecl of
+  AC.CInstance qn ctx texp fdecls -> unions
+    [ qNameToImports qn
+    , contextToImports ctx
+    , typeExprToImports texp
+    , unions $ funcDeclToImports <$> fdecls
+    ]
+
+-- | Extracts the required imports from the given context.
+contextToImports :: AC.CContext -> S.Set String
+contextToImports ctx = S.empty -- TODO
+
+-- | Extracts the required imports from the given function declaration.
+funcDeclToImports :: AC.CFuncDecl -> S.Set String
+funcDeclToImports ctx = S.empty -- TODO
+
 -- | Extracts the required imports from the given qualified name.
 qNameToImports :: AC.QName -> S.Set String
-qNameToImports (mname, _) | mname == AC.preludeName = S.empty
-                          | otherwise               = S.fromList [mname] -- TODO: Use S.singleton once https://github.com/curry-packages/containers/pull/1 is merged
+qNameToImports (mname, _) = S.fromList [mname] -- TODO: Use S.singleton once https://github.com/curry-packages/containers/pull/1 is merged
 
 -- | Extracts the name from a type declaration.
 typeName :: AC.CTypeDecl -> String
