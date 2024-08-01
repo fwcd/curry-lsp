@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+cd "$(dirname $0)/.."
+
+msgs=(
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":[]}}'
+)
+
+input=''
+for msg in "${msgs[@]}"; do
+  input+="Content-Length: ${#msg}\r\n\r\n${msg}"
+done
+
+echo -e "$input" | bin/curry-lsp-example-server
