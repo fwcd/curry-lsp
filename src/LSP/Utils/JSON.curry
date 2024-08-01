@@ -4,6 +4,7 @@ module LSP.Utils.JSON
   , stringFromJSON, arrayFromJSON, objectFromJSON, maybeFromJSON, boolFromJSON, integralFromJSON, fractionalFromJSON
   , lookupFromJSON, lookupObjectFromJSON, lookupMaybeFromJSON
   , lookupPathFromJSON
+  , (.=), (.?=), (<#>)
   ) where
 
 import qualified Data.Map as M
@@ -198,3 +199,19 @@ lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either Stri
 lookupMaybeFromJSON k vs = case lookup k vs of
   Just x  -> fromJSON x
   Nothing -> Right Nothing
+
+-- Constructs a JSON object with a single key-value pair.
+(.=) :: ToJSON a => String -> a -> JValue
+(.=) k v = JObject [(k, toJSON v)]
+
+-- Constructs a JSON object with a single optional key-value pair.
+(.?=) :: ToJSON a => String -> Maybe a -> JValue
+(.?=) k v = JObject $ case v of
+  Just v' -> [(k, toJSON v')]
+  Nothing -> []
+
+-- Combines JSON objects.
+(<#>) :: JValue -> JValue -> JValue
+(<#>) v1 v2 = case (v1, v2) of
+  (JObject kvs1, JObject kvs2) -> JObject (kvs1 ++ kvs2)
+  _ -> error $ "(<#>) requires two JObjects, but got " ++ show v1 ++ ", " ++ show v2
