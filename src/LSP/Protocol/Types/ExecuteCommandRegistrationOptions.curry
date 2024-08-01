@@ -9,12 +9,18 @@ import LSP.Utils.JSON
 instance FromJSON ExecuteCommandRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return ExecuteCommandRegistrationOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedCommands <- lookupFromJSON "commands" vs
+           return
+            ExecuteCommandRegistrationOptions { executeCommandRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                              , executeCommandRegistrationOptionsCommands = parsedCommands }
       _ ->
         Left
          ("Unrecognized ExecuteCommandRegistrationOptions value: "
            ++ ppJSON j)
 
-data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions {  }
+data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions { executeCommandRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                           , executeCommandRegistrationOptionsCommands :: [String] }
  deriving (Show,Eq)
 

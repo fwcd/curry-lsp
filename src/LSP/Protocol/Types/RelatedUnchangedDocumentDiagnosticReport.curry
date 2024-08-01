@@ -14,14 +14,20 @@ instance FromJSON RelatedUnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupFromJSON "resultId" vs
+           parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
            return
-            RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
+            RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportKind = parsedKind
+                                                     , relatedUnchangedDocumentDiagnosticReportResultId = parsedResultId
+                                                     , relatedUnchangedDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
       _ ->
         Left
          ("Unrecognized RelatedUnchangedDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
-data RelatedUnchangedDocumentDiagnosticReport = RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportRelatedDocuments :: Maybe (Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport)) }
+data RelatedUnchangedDocumentDiagnosticReport = RelatedUnchangedDocumentDiagnosticReport { relatedUnchangedDocumentDiagnosticReportKind :: String
+                                                                                         , relatedUnchangedDocumentDiagnosticReportResultId :: String
+                                                                                         , relatedUnchangedDocumentDiagnosticReportRelatedDocuments :: Maybe (Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport)) }
  deriving (Show,Eq)
 

@@ -10,11 +10,14 @@ instance FromJSON RenameOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedPrepareProvider <- lookupMaybeFromJSON "prepareProvider" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedPrepareProvider <- lookupMaybeFromJSON "prepareProvider" vs
            return
-            RenameOptions { renameOptionsPrepareProvider = parsedPrepareProvider }
+            RenameOptions { renameOptionsWorkDoneProgress = parsedWorkDoneProgress
+                          , renameOptionsPrepareProvider = parsedPrepareProvider }
       _ -> Left ("Unrecognized RenameOptions value: " ++ ppJSON j)
 
-data RenameOptions = RenameOptions { renameOptionsPrepareProvider :: Maybe Bool }
+data RenameOptions = RenameOptions { renameOptionsWorkDoneProgress :: Maybe Bool
+                                   , renameOptionsPrepareProvider :: Maybe Bool }
  deriving (Show,Eq)
 

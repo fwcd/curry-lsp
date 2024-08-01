@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FoldingRangeParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
@@ -11,11 +12,19 @@ instance FromJSON FoldingRangeParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
-            FoldingRangeParams { foldingRangeParamsTextDocument = parsedTextDocument }
+            FoldingRangeParams { foldingRangeParamsWorkDoneToken = parsedWorkDoneToken
+                               , foldingRangeParamsPartialResultToken = parsedPartialResultToken
+                               , foldingRangeParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized FoldingRangeParams value: " ++ ppJSON j)
 
-data FoldingRangeParams = FoldingRangeParams { foldingRangeParamsTextDocument :: TextDocumentIdentifier }
+data FoldingRangeParams = FoldingRangeParams { foldingRangeParamsWorkDoneToken :: Maybe ProgressToken
+                                             , foldingRangeParamsPartialResultToken :: Maybe ProgressToken
+                                             , foldingRangeParamsTextDocument :: TextDocumentIdentifier }
  deriving (Show,Eq)
 

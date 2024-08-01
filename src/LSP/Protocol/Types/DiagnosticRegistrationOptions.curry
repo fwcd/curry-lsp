@@ -4,16 +4,38 @@ module LSP.Protocol.Types.DiagnosticRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DiagnosticRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
+           parsedInterFileDependencies <- lookupFromJSON
+                                           "interFileDependencies"
+                                           vs
+           parsedWorkspaceDiagnostics <- lookupFromJSON "workspaceDiagnostics"
+                                          vs
+           parsedId <- lookupMaybeFromJSON "id" vs
+           return
+            DiagnosticRegistrationOptions { diagnosticRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                          , diagnosticRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                          , diagnosticRegistrationOptionsIdentifier = parsedIdentifier
+                                          , diagnosticRegistrationOptionsInterFileDependencies = parsedInterFileDependencies
+                                          , diagnosticRegistrationOptionsWorkspaceDiagnostics = parsedWorkspaceDiagnostics
+                                          , diagnosticRegistrationOptionsId = parsedId }
       _ ->
         Left
          ("Unrecognized DiagnosticRegistrationOptions value: " ++ ppJSON j)
 
-data DiagnosticRegistrationOptions = DiagnosticRegistrationOptions {  }
+data DiagnosticRegistrationOptions = DiagnosticRegistrationOptions { diagnosticRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                   , diagnosticRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                   , diagnosticRegistrationOptionsIdentifier :: Maybe String
+                                                                   , diagnosticRegistrationOptionsInterFileDependencies :: Bool
+                                                                   , diagnosticRegistrationOptionsWorkspaceDiagnostics :: Bool
+                                                                   , diagnosticRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)
 

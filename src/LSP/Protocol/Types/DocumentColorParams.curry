@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentColorParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
@@ -11,11 +12,19 @@ instance FromJSON DocumentColorParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
-            DocumentColorParams { documentColorParamsTextDocument = parsedTextDocument }
+            DocumentColorParams { documentColorParamsWorkDoneToken = parsedWorkDoneToken
+                                , documentColorParamsPartialResultToken = parsedPartialResultToken
+                                , documentColorParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized DocumentColorParams value: " ++ ppJSON j)
 
-data DocumentColorParams = DocumentColorParams { documentColorParamsTextDocument :: TextDocumentIdentifier }
+data DocumentColorParams = DocumentColorParams { documentColorParamsWorkDoneToken :: Maybe ProgressToken
+                                               , documentColorParamsPartialResultToken :: Maybe ProgressToken
+                                               , documentColorParamsTextDocument :: TextDocumentIdentifier }
  deriving (Show,Eq)
 

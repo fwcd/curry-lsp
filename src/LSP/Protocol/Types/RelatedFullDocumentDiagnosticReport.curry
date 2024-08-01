@@ -6,6 +6,7 @@ import Data.Map
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Protocol.Types.Diagnostic
 import LSP.Protocol.Types.FullDocumentDiagnosticReport
 import LSP.Protocol.Types.UnchangedDocumentDiagnosticReport
 import LSP.Utils.JSON
@@ -14,14 +15,23 @@ instance FromJSON RelatedFullDocumentDiagnosticReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupMaybeFromJSON "resultId" vs
+           parsedItems <- lookupFromJSON "items" vs
+           parsedRelatedDocuments <- lookupMaybeFromJSON "relatedDocuments" vs
            return
-            RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
+            RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportKind = parsedKind
+                                                , relatedFullDocumentDiagnosticReportResultId = parsedResultId
+                                                , relatedFullDocumentDiagnosticReportItems = parsedItems
+                                                , relatedFullDocumentDiagnosticReportRelatedDocuments = parsedRelatedDocuments }
       _ ->
         Left
          ("Unrecognized RelatedFullDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
-data RelatedFullDocumentDiagnosticReport = RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportRelatedDocuments :: Maybe (Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport)) }
+data RelatedFullDocumentDiagnosticReport = RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportKind :: String
+                                                                               , relatedFullDocumentDiagnosticReportResultId :: Maybe String
+                                                                               , relatedFullDocumentDiagnosticReportItems :: [Diagnostic]
+                                                                               , relatedFullDocumentDiagnosticReportRelatedDocuments :: Maybe (Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport)) }
  deriving (Show,Eq)
 

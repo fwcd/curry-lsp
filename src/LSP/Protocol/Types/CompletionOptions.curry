@@ -11,7 +11,8 @@ instance FromJSON CompletionOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTriggerCharacters <- lookupMaybeFromJSON "triggerCharacters"
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedTriggerCharacters <- lookupMaybeFromJSON "triggerCharacters"
                                        vs
            parsedAllCommitCharacters <- lookupMaybeFromJSON
                                          "allCommitCharacters"
@@ -19,13 +20,15 @@ instance FromJSON CompletionOptions where
            parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            parsedCompletionItem <- lookupMaybeFromJSON "completionItem" vs
            return
-            CompletionOptions { completionOptionsTriggerCharacters = parsedTriggerCharacters
+            CompletionOptions { completionOptionsWorkDoneProgress = parsedWorkDoneProgress
+                              , completionOptionsTriggerCharacters = parsedTriggerCharacters
                               , completionOptionsAllCommitCharacters = parsedAllCommitCharacters
                               , completionOptionsResolveProvider = parsedResolveProvider
                               , completionOptionsCompletionItem = parsedCompletionItem }
       _ -> Left ("Unrecognized CompletionOptions value: " ++ ppJSON j)
 
-data CompletionOptions = CompletionOptions { completionOptionsTriggerCharacters :: Maybe [String]
+data CompletionOptions = CompletionOptions { completionOptionsWorkDoneProgress :: Maybe Bool
+                                           , completionOptionsTriggerCharacters :: Maybe [String]
                                            , completionOptionsAllCommitCharacters :: Maybe [String]
                                            , completionOptionsResolveProvider :: Maybe Bool
                                            , completionOptionsCompletionItem :: Maybe ServerCompletionItemOptions }

@@ -4,25 +4,42 @@ module LSP.Protocol.Types.DiagnosticClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ClientDiagnosticsTagOptions
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticClientCapabilities where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedDynamicRegistration <- lookupMaybeFromJSON
+        do parsedRelatedInformation <- lookupMaybeFromJSON
+                                        "relatedInformation"
+                                        vs
+           parsedTagSupport <- lookupMaybeFromJSON "tagSupport" vs
+           parsedCodeDescriptionSupport <- lookupMaybeFromJSON
+                                            "codeDescriptionSupport"
+                                            vs
+           parsedDataSupport <- lookupMaybeFromJSON "dataSupport" vs
+           parsedDynamicRegistration <- lookupMaybeFromJSON
                                          "dynamicRegistration"
                                          vs
            parsedRelatedDocumentSupport <- lookupMaybeFromJSON
                                             "relatedDocumentSupport"
                                             vs
            return
-            DiagnosticClientCapabilities { diagnosticClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
+            DiagnosticClientCapabilities { diagnosticClientCapabilitiesRelatedInformation = parsedRelatedInformation
+                                         , diagnosticClientCapabilitiesTagSupport = parsedTagSupport
+                                         , diagnosticClientCapabilitiesCodeDescriptionSupport = parsedCodeDescriptionSupport
+                                         , diagnosticClientCapabilitiesDataSupport = parsedDataSupport
+                                         , diagnosticClientCapabilitiesDynamicRegistration = parsedDynamicRegistration
                                          , diagnosticClientCapabilitiesRelatedDocumentSupport = parsedRelatedDocumentSupport }
       _ ->
         Left ("Unrecognized DiagnosticClientCapabilities value: " ++ ppJSON j)
 
-data DiagnosticClientCapabilities = DiagnosticClientCapabilities { diagnosticClientCapabilitiesDynamicRegistration :: Maybe Bool
+data DiagnosticClientCapabilities = DiagnosticClientCapabilities { diagnosticClientCapabilitiesRelatedInformation :: Maybe Bool
+                                                                 , diagnosticClientCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions
+                                                                 , diagnosticClientCapabilitiesCodeDescriptionSupport :: Maybe Bool
+                                                                 , diagnosticClientCapabilitiesDataSupport :: Maybe Bool
+                                                                 , diagnosticClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , diagnosticClientCapabilitiesRelatedDocumentSupport :: Maybe Bool }
  deriving (Show,Eq)
 

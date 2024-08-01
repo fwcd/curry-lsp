@@ -10,11 +10,14 @@ instance FromJSON InlayHintOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
-            InlayHintOptions { inlayHintOptionsResolveProvider = parsedResolveProvider }
+            InlayHintOptions { inlayHintOptionsWorkDoneProgress = parsedWorkDoneProgress
+                             , inlayHintOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized InlayHintOptions value: " ++ ppJSON j)
 
-data InlayHintOptions = InlayHintOptions { inlayHintOptionsResolveProvider :: Maybe Bool }
+data InlayHintOptions = InlayHintOptions { inlayHintOptionsWorkDoneProgress :: Maybe Bool
+                                         , inlayHintOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

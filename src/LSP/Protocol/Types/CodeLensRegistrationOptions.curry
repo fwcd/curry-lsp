@@ -4,15 +4,25 @@ module LSP.Protocol.Types.CodeLensRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON CodeLensRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return CodeLensRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+           return
+            CodeLensRegistrationOptions { codeLensRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                        , codeLensRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                        , codeLensRegistrationOptionsResolveProvider = parsedResolveProvider }
       _ ->
         Left ("Unrecognized CodeLensRegistrationOptions value: " ++ ppJSON j)
 
-data CodeLensRegistrationOptions = CodeLensRegistrationOptions {  }
+data CodeLensRegistrationOptions = CodeLensRegistrationOptions { codeLensRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                               , codeLensRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                               , codeLensRegistrationOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

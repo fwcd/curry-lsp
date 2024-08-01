@@ -4,17 +4,26 @@ module LSP.Protocol.Types.WorkspaceSymbolParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ProgressToken
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbolParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedQuery <- lookupFromJSON "query" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           parsedQuery <- lookupFromJSON "query" vs
            return
-            WorkspaceSymbolParams { workspaceSymbolParamsQuery = parsedQuery }
+            WorkspaceSymbolParams { workspaceSymbolParamsWorkDoneToken = parsedWorkDoneToken
+                                  , workspaceSymbolParamsPartialResultToken = parsedPartialResultToken
+                                  , workspaceSymbolParamsQuery = parsedQuery }
       _ -> Left ("Unrecognized WorkspaceSymbolParams value: " ++ ppJSON j)
 
-data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsQuery :: String }
+data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsWorkDoneToken :: Maybe ProgressToken
+                                                   , workspaceSymbolParamsPartialResultToken :: Maybe ProgressToken
+                                                   , workspaceSymbolParamsQuery :: String }
  deriving (Show,Eq)
 

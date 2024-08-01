@@ -12,16 +12,19 @@ instance FromJSON SemanticTokensOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLegend <- lookupFromJSON "legend" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedLegend <- lookupFromJSON "legend" vs
            parsedRange <- lookupMaybeFromJSON "range" vs
            parsedFull <- lookupMaybeFromJSON "full" vs
            return
-            SemanticTokensOptions { semanticTokensOptionsLegend = parsedLegend
+            SemanticTokensOptions { semanticTokensOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                  , semanticTokensOptionsLegend = parsedLegend
                                   , semanticTokensOptionsRange = parsedRange
                                   , semanticTokensOptionsFull = parsedFull }
       _ -> Left ("Unrecognized SemanticTokensOptions value: " ++ ppJSON j)
 
-data SemanticTokensOptions = SemanticTokensOptions { semanticTokensOptionsLegend :: SemanticTokensLegend
+data SemanticTokensOptions = SemanticTokensOptions { semanticTokensOptionsWorkDoneProgress :: Maybe Bool
+                                                   , semanticTokensOptionsLegend :: SemanticTokensLegend
                                                    , semanticTokensOptionsRange :: Maybe (Either Bool ())
                                                    , semanticTokensOptionsFull :: Maybe (Either Bool SemanticTokensFullDelta) }
  deriving (Show,Eq)

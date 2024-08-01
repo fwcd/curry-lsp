@@ -4,19 +4,23 @@ module LSP.Protocol.Types.VersionedTextDocumentIdentifier where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Support
 import LSP.Utils.JSON
 
 instance FromJSON VersionedTextDocumentIdentifier where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedVersion <- lookupFromJSON "version" vs
+        do parsedUri <- lookupFromJSON "uri" vs
+           parsedVersion <- lookupFromJSON "version" vs
            return
-            VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion = parsedVersion }
+            VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierUri = parsedUri
+                                            , versionedTextDocumentIdentifierVersion = parsedVersion }
       _ ->
         Left
          ("Unrecognized VersionedTextDocumentIdentifier value: " ++ ppJSON j)
 
-data VersionedTextDocumentIdentifier = VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierVersion :: Int }
+data VersionedTextDocumentIdentifier = VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierUri :: DocumentUri
+                                                                       , versionedTextDocumentIdentifierVersion :: Int }
  deriving (Show,Eq)
 

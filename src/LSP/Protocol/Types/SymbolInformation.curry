@@ -5,20 +5,34 @@ module LSP.Protocol.Types.SymbolInformation where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Location
+import LSP.Protocol.Types.SymbolKind
+import LSP.Protocol.Types.SymbolTag
 import LSP.Utils.JSON
 
 instance FromJSON SymbolInformation where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedDeprecated <- lookupMaybeFromJSON "deprecated" vs
+        do parsedName <- lookupFromJSON "name" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupMaybeFromJSON "tags" vs
+           parsedContainerName <- lookupMaybeFromJSON "containerName" vs
+           parsedDeprecated <- lookupMaybeFromJSON "deprecated" vs
            parsedLocation <- lookupFromJSON "location" vs
            return
-            SymbolInformation { symbolInformationDeprecated = parsedDeprecated
+            SymbolInformation { symbolInformationName = parsedName
+                              , symbolInformationKind = parsedKind
+                              , symbolInformationTags = parsedTags
+                              , symbolInformationContainerName = parsedContainerName
+                              , symbolInformationDeprecated = parsedDeprecated
                               , symbolInformationLocation = parsedLocation }
       _ -> Left ("Unrecognized SymbolInformation value: " ++ ppJSON j)
 
-data SymbolInformation = SymbolInformation { symbolInformationDeprecated :: Maybe Bool
+data SymbolInformation = SymbolInformation { symbolInformationName :: String
+                                           , symbolInformationKind :: SymbolKind
+                                           , symbolInformationTags :: Maybe [SymbolTag]
+                                           , symbolInformationContainerName :: Maybe String
+                                           , symbolInformationDeprecated :: Maybe Bool
                                            , symbolInformationLocation :: Location }
  deriving (Show,Eq)
 

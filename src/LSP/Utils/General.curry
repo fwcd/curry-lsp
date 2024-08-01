@@ -5,8 +5,8 @@ module LSP.Utils.General
   , capitalize, uncapitalize
   , replace, replaceSingle
   , unions, unionMap
-  , (<.$>), (<$.>)
-  , keyBy
+  , (<.$>), (<$.>), (<<$>>)
+  , keyOn, nubOrdOn
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -80,6 +80,26 @@ unionMap f = unions . map f
 (<$.>) :: Functor f => (b -> c) -> f (a, b) -> f (a, c)
 (<$.>) f = ((\(x, y) -> (x, f y)) <$>)
 
+-- | Map over nested functors. Alias for `fmap . fmap` (or `fmap fmap fmap`).
+(<<$>>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
+(<<$>>) = fmap . fmap
+
 -- | Associates the given value with the given key.
-keyBy :: (a -> k) -> a -> (k, a)
-keyBy f x = (f x, x)
+keyOn :: (a -> k) -> a -> (k, a)
+keyOn f x = (f x, x)
+
+-- Source: https://hackage.haskell.org/package/containers-0.7/docs/src/Data.Containers.ListUtils.html#nubOrdOn
+-- License: BSD-style ((c) Gershom Bazerman 2018)
+
+-- | Removes duplicates from the given list by comparing the values after the given projection.
+nubOrdOn :: Ord k => (a -> k) -> [a] -> [a]
+nubOrdOn f xs = nubOrdOnExcluding f S.empty xs
+
+nubOrdOnExcluding :: Ord k => (a -> k) -> S.Set k -> [a] -> [a]
+nubOrdOnExcluding f = go
+  where
+    go _ [] = []
+    go s (x:xs)
+      | fx `S.member` s = go s xs
+      | otherwise = x : go (S.insert fx s) xs
+      where fx = f x

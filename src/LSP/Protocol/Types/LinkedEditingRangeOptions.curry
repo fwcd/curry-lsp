@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON LinkedEditingRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return LinkedEditingRangeOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized LinkedEditingRangeOptions value: " ++ ppJSON j)
 
-data LinkedEditingRangeOptions = LinkedEditingRangeOptions {  }
+data LinkedEditingRangeOptions = LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

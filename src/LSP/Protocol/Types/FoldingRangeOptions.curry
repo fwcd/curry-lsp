@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON FoldingRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return FoldingRangeOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized FoldingRangeOptions value: " ++ ppJSON j)
 
-data FoldingRangeOptions = FoldingRangeOptions {  }
+data FoldingRangeOptions = FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

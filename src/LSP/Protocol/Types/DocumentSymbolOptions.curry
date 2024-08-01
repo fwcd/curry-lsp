@@ -10,11 +10,14 @@ instance FromJSON DocumentSymbolOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLabel <- lookupMaybeFromJSON "label" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedLabel <- lookupMaybeFromJSON "label" vs
            return
-            DocumentSymbolOptions { documentSymbolOptionsLabel = parsedLabel }
+            DocumentSymbolOptions { documentSymbolOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                  , documentSymbolOptionsLabel = parsedLabel }
       _ -> Left ("Unrecognized DocumentSymbolOptions value: " ++ ppJSON j)
 
-data DocumentSymbolOptions = DocumentSymbolOptions { documentSymbolOptionsLabel :: Maybe String }
+data DocumentSymbolOptions = DocumentSymbolOptions { documentSymbolOptionsWorkDoneProgress :: Maybe Bool
+                                                   , documentSymbolOptionsLabel :: Maybe String }
  deriving (Show,Eq)
 

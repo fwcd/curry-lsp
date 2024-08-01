@@ -5,17 +5,29 @@ module LSP.Protocol.Types.InlineCompletionParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.InlineCompletionContext
+import LSP.Protocol.Types.Position
+import LSP.Protocol.Types.ProgressToken
+import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedContext <- lookupFromJSON "context" vs
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedContext <- lookupFromJSON "context" vs
            return
-            InlineCompletionParams { inlineCompletionParamsContext = parsedContext }
+            InlineCompletionParams { inlineCompletionParamsTextDocument = parsedTextDocument
+                                   , inlineCompletionParamsPosition = parsedPosition
+                                   , inlineCompletionParamsWorkDoneToken = parsedWorkDoneToken
+                                   , inlineCompletionParamsContext = parsedContext }
       _ -> Left ("Unrecognized InlineCompletionParams value: " ++ ppJSON j)
 
-data InlineCompletionParams = InlineCompletionParams { inlineCompletionParamsContext :: InlineCompletionContext }
+data InlineCompletionParams = InlineCompletionParams { inlineCompletionParamsTextDocument :: TextDocumentIdentifier
+                                                     , inlineCompletionParamsPosition :: Position
+                                                     , inlineCompletionParamsWorkDoneToken :: Maybe ProgressToken
+                                                     , inlineCompletionParamsContext :: InlineCompletionContext }
  deriving (Show,Eq)
 

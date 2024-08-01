@@ -16,14 +16,15 @@ import qualified LSP.Generation.AbstractCurry.Build as ACB
 import qualified LSP.Generation.AbstractCurry.Pretty as ACP
 import LSP.Generation.Deps
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap, keyBy )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), (<<$>>), unions, unionMap, keyOn )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
 
 -- | Internal (read-only) generator environment.
 data GeneratorEnv = GeneratorEnv
-  { geModulePrefix :: String
+  { geMetaStructures :: M.Map String MetaStructure
+  , geModulePrefix :: String
   , geBuiltInTypeAliases :: M.Map String AC.QName
   , geStandardDerivings :: [AC.QName]
   , geStandardEnumDerivings :: [AC.QName]
@@ -32,9 +33,10 @@ data GeneratorEnv = GeneratorEnv
 type GM = Reader GeneratorEnv
 
 -- | Creates the generator environment.
-generatorEnv :: String -> GeneratorEnv
-generatorEnv mprefix = GeneratorEnv
-  { geModulePrefix = mprefix
+generatorEnv :: String -> MetaModel -> GeneratorEnv
+generatorEnv mprefix m = GeneratorEnv
+  { geMetaStructures = M.fromList $ keyOn msName <$> mmStructures m
+  , geModulePrefix = mprefix
   , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
@@ -50,14 +52,14 @@ generatorEnv mprefix = GeneratorEnv
   }
 
 -- | Runs the generator monad.
-runGM :: GM a -> String -> a
-runGM x = runReader x . generatorEnv
+runGM :: GM a -> String -> MetaModel -> a
+runGM x = runReader x <<$>> generatorEnv
 
 -- | Converts a meta structure to prettyprinted Curry programs, keyed by module name.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
 metaModelToPrettyProgs mprefix m = pretty <$.> progs
   where
-    progs = runGM (metaModelToProgs m) mprefix
+    progs = runGM (metaModelToProgs m) mprefix m
     pretty prog = unlines [pragmas, body]
       where
         -- Disable qualification since instances are not generated correctly
@@ -82,7 +84,7 @@ metaModelToProgs m = do
   mprefix <- asks geModulePrefix
   let progs = structs ++ enums ++ aliases
       umbrella = mkUmbrellaProg mprefix (ACS.progName <$> progs)
-  return $ keyBy ACS.progName <$> (umbrella : progs)
+  return $ keyOn ACS.progName <$> (umbrella : progs)
 
 -- | Generates an umbrella module that reexports the given modules.
 mkUmbrellaProg :: String -> [String] -> AC.CurryProg
@@ -92,14 +94,16 @@ mkUmbrellaProg mname mods = AC.CurryProg mname mods mods Nothing [] [] [] [] []
 metaStructureToProg :: MetaStructure -> GM AC.CurryProg
 metaStructureToProg s = do
   mprefix <- asks geModulePrefix
-  let name = escapeName $ msName s
+  structs <- asks geMetaStructures
+  let s' = flattenMetaStructure structs s
+      name = escapeName $ msName s'
       mname = qualWith mprefix name
       qn = (mname, name)
-      props = msProperties s
+      props = msProperties s'
       vis = AC.Public
   fs <- mapM (metaPropertyToField mname name) props
   derivs <- asks geStandardDerivings
-  fromJSONInst <- metaStructureToFromJSONInstance mname name s
+  fromJSONInst <- flatMetaStructureToFromJSONInstance mname name s'
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
@@ -128,9 +132,9 @@ metaEnumerationToProg e = do
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
-metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
-metaStructureToFromJSONInstance mname prefix s = do
-  let name = escapeName $ msName s
+flatMetaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+flatMetaStructureToFromJSONInstance mname prefix s' = do
+  let name = escapeName $ msName s'
       qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
@@ -139,9 +143,9 @@ metaStructureToFromJSONInstance mname prefix s = do
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
-      fieldNames = mpName <$> msProperties s
+      fieldNames = mpName <$> msProperties s'
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
-      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
+      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s'
       fields = zip (((,) mname . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]

@@ -4,16 +4,26 @@ module LSP.Protocol.Types.DocumentLinkRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON DocumentLinkRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentLinkRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+           return
+            DocumentLinkRegistrationOptions { documentLinkRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                            , documentLinkRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                            , documentLinkRegistrationOptionsResolveProvider = parsedResolveProvider }
       _ ->
         Left
          ("Unrecognized DocumentLinkRegistrationOptions value: " ++ ppJSON j)
 
-data DocumentLinkRegistrationOptions = DocumentLinkRegistrationOptions {  }
+data DocumentLinkRegistrationOptions = DocumentLinkRegistrationOptions { documentLinkRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                       , documentLinkRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                       , documentLinkRegistrationOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

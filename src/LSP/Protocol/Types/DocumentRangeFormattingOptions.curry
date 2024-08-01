@@ -10,13 +10,16 @@ instance FromJSON DocumentRangeFormattingOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedRangesSupport <- lookupMaybeFromJSON "rangesSupport" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedRangesSupport <- lookupMaybeFromJSON "rangesSupport" vs
            return
-            DocumentRangeFormattingOptions { documentRangeFormattingOptionsRangesSupport = parsedRangesSupport }
+            DocumentRangeFormattingOptions { documentRangeFormattingOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                           , documentRangeFormattingOptionsRangesSupport = parsedRangesSupport }
       _ ->
         Left
          ("Unrecognized DocumentRangeFormattingOptions value: " ++ ppJSON j)
 
-data DocumentRangeFormattingOptions = DocumentRangeFormattingOptions { documentRangeFormattingOptionsRangesSupport :: Maybe Bool }
+data DocumentRangeFormattingOptions = DocumentRangeFormattingOptions { documentRangeFormattingOptionsWorkDoneProgress :: Maybe Bool
+                                                                     , documentRangeFormattingOptionsRangesSupport :: Maybe Bool }
  deriving (Show,Eq)
 

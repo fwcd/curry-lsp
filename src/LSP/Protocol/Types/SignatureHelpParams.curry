@@ -4,18 +4,30 @@ module LSP.Protocol.Types.SignatureHelpParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.Position
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.SignatureHelpContext
+import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedContext <- lookupMaybeFromJSON "context" vs
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedContext <- lookupMaybeFromJSON "context" vs
            return
-            SignatureHelpParams { signatureHelpParamsContext = parsedContext }
+            SignatureHelpParams { signatureHelpParamsTextDocument = parsedTextDocument
+                                , signatureHelpParamsPosition = parsedPosition
+                                , signatureHelpParamsWorkDoneToken = parsedWorkDoneToken
+                                , signatureHelpParamsContext = parsedContext }
       _ -> Left ("Unrecognized SignatureHelpParams value: " ++ ppJSON j)
 
-data SignatureHelpParams = SignatureHelpParams { signatureHelpParamsContext :: Maybe SignatureHelpContext }
+data SignatureHelpParams = SignatureHelpParams { signatureHelpParamsTextDocument :: TextDocumentIdentifier
+                                               , signatureHelpParamsPosition :: Position
+                                               , signatureHelpParamsWorkDoneToken :: Maybe ProgressToken
+                                               , signatureHelpParamsContext :: Maybe SignatureHelpContext }
  deriving (Show,Eq)
 

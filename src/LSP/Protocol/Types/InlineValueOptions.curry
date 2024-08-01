@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON InlineValueOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return InlineValueOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            InlineValueOptions { inlineValueOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized InlineValueOptions value: " ++ ppJSON j)
 
-data InlineValueOptions = InlineValueOptions {  }
+data InlineValueOptions = InlineValueOptions { inlineValueOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

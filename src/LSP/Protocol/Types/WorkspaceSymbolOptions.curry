@@ -10,11 +10,14 @@ instance FromJSON WorkspaceSymbolOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
-            WorkspaceSymbolOptions { workspaceSymbolOptionsResolveProvider = parsedResolveProvider }
+            WorkspaceSymbolOptions { workspaceSymbolOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                   , workspaceSymbolOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized WorkspaceSymbolOptions value: " ++ ppJSON j)
 
-data WorkspaceSymbolOptions = WorkspaceSymbolOptions { workspaceSymbolOptionsResolveProvider :: Maybe Bool }
+data WorkspaceSymbolOptions = WorkspaceSymbolOptions { workspaceSymbolOptionsWorkDoneProgress :: Maybe Bool
+                                                     , workspaceSymbolOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -5,20 +5,29 @@ module LSP.Protocol.Types.WorkspaceDiagnosticParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.PreviousResultId
+import LSP.Protocol.Types.ProgressToken
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceDiagnosticParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
            parsedPreviousResultIds <- lookupFromJSON "previousResultIds" vs
            return
-            WorkspaceDiagnosticParams { workspaceDiagnosticParamsIdentifier = parsedIdentifier
+            WorkspaceDiagnosticParams { workspaceDiagnosticParamsWorkDoneToken = parsedWorkDoneToken
+                                      , workspaceDiagnosticParamsPartialResultToken = parsedPartialResultToken
+                                      , workspaceDiagnosticParamsIdentifier = parsedIdentifier
                                       , workspaceDiagnosticParamsPreviousResultIds = parsedPreviousResultIds }
       _ -> Left ("Unrecognized WorkspaceDiagnosticParams value: " ++ ppJSON j)
 
-data WorkspaceDiagnosticParams = WorkspaceDiagnosticParams { workspaceDiagnosticParamsIdentifier :: Maybe String
+data WorkspaceDiagnosticParams = WorkspaceDiagnosticParams { workspaceDiagnosticParamsWorkDoneToken :: Maybe ProgressToken
+                                                           , workspaceDiagnosticParamsPartialResultToken :: Maybe ProgressToken
+                                                           , workspaceDiagnosticParamsIdentifier :: Maybe String
                                                            , workspaceDiagnosticParamsPreviousResultIds :: [PreviousResultId] }
  deriving (Show,Eq)
 
