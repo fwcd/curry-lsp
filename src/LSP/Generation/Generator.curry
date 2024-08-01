@@ -104,9 +104,10 @@ metaStructureToProg s = do
   fs <- mapM (metaPropertyToField mname name) props
   derivs <- asks geStandardDerivings
   fromJSONInst <- flatMetaStructureToFromJSONInstance mname name s'
+  toJSONInst <- flatMetaStructureToToJSONInstance mname name s'
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
-      insts = [fromJSONInst]
+      insts = [fromJSONInst, toJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
@@ -139,7 +140,7 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
-      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
+      sig = ACB.emptyClassType $ fromJSONType texp
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
@@ -168,7 +169,13 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
 -- | Converts a flattened meta structure to a ToJSON instance.
 flatMetaStructureToToJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 flatMetaStructureToToJSONInstance mname prefix s' = do
-  -- TODO
+  let name = escapeName $ msName s'
+      ctx = AC.CContext []
+      qn = (mname, name)
+      texp = ACB.baseType qn
+      sig = ACB.emptyClassType $ toJSONType texp
+      fdecls = [] -- TODO
+  return $ AC.CInstance toJSONClassQName ctx texp fdecls
 
 -- | Picks the correct lookupFromJSON method for the given property.
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
@@ -185,7 +192,7 @@ metaEnumerationToFromJSONInstance mname prefix e = do
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
-      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
+      sig = ACB.emptyClassType $ fromJSONType texp
       jVar = (0, "j")
       rawVar = (1, "raw")
       anonVar = (2, "_")
@@ -325,9 +332,17 @@ jObjectQName = ("JSON.Data", "JObject")
 fromJSONType :: AC.CTypeExpr -> AC.CTypeExpr
 fromJSONType ty = AC.CFuncType (ACB.baseType jValueQName) (eitherType ACB.stringType ty)
 
+-- | The toJSON function type expr with the given result type.
+toJSONType :: AC.CTypeExpr -> AC.CTypeExpr
+toJSONType ty = AC.CFuncType ty (ACB.baseType jValueQName)
+
 -- | The fromJSON function name.
 fromJSONQName :: AC.QName
 fromJSONQName = ("LSP.Utils.JSON", "fromJSON")
+
+-- | The toJSON function name.
+toJSONQName :: AC.QName
+toJSONQName = ("LSP.Utils.JSON", "toJSON")
 
 -- | The lookupFromJSON function name.
 lookupFromJSONQName :: AC.QName
