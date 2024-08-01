@@ -16,7 +16,7 @@ import qualified LSP.Generation.AbstractCurry.Build as ACB
 import qualified LSP.Generation.AbstractCurry.Pretty as ACP
 import LSP.Generation.Deps
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), (<<$>>), unions, unionMap, keyBy )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), (<<$>>), unions, unionMap, keyOn )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
@@ -35,7 +35,7 @@ type GM = Reader GeneratorEnv
 -- | Creates the generator environment.
 generatorEnv :: String -> MetaModel -> GeneratorEnv
 generatorEnv mprefix m = GeneratorEnv
-  { geMetaStructures = M.fromList $ keyBy msName <$> mmStructures m
+  { geMetaStructures = M.fromList $ keyOn msName <$> mmStructures m
   , geModulePrefix = mprefix
   , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
@@ -84,7 +84,7 @@ metaModelToProgs m = do
   mprefix <- asks geModulePrefix
   let progs = structs ++ enums ++ aliases
       umbrella = mkUmbrellaProg mprefix (ACS.progName <$> progs)
-  return $ keyBy ACS.progName <$> (umbrella : progs)
+  return $ keyOn ACS.progName <$> (umbrella : progs)
 
 -- | Generates an umbrella module that reexports the given modules.
 mkUmbrellaProg :: String -> [String] -> AC.CurryProg

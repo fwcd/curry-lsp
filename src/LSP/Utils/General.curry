@@ -6,7 +6,7 @@ module LSP.Utils.General
   , replace, replaceSingle
   , unions, unionMap
   , (<.$>), (<$.>), (<<$>>)
-  , keyBy, nubOrdOn
+  , keyOn, nubOrdOn
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -85,8 +85,8 @@ unionMap f = unions . map f
 (<<$>>) = fmap . fmap
 
 -- | Associates the given value with the given key.
-keyBy :: (a -> k) -> a -> (k, a)
-keyBy f x = (f x, x)
+keyOn :: (a -> k) -> a -> (k, a)
+keyOn f x = (f x, x)
 
 -- Source: https://hackage.haskell.org/package/containers-0.7/docs/src/Data.Containers.ListUtils.html#nubOrdOn
 -- License: BSD-style ((c) Gershom Bazerman 2018)
