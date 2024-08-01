@@ -303,26 +303,63 @@ consDeclToImports cdecl = case cdecl of
 
 -- | Extracts the required imports from the given field declaration.
 fieldDeclToImports :: AC.CFieldDecl -> S.Set String
-fieldDeclToImports fdecl = case fdecl of
-  AC.CField _ _ texp -> typeExprToImports texp
+fieldDeclToImports (AC.CField _ _ texp) = typeExprToImports texp
 
 -- | Extracts the required imports from the given instance declaration.
 instanceDeclToImports :: AC.CInstanceDecl -> S.Set String
-instanceDeclToImports idecl = case idecl of
-  AC.CInstance qn ctx texp fdecls -> unions
-    [ qNameToImports qn
-    , contextToImports ctx
-    , typeExprToImports texp
-    , unions $ funcDeclToImports <$> fdecls
-    ]
+instanceDeclToImports (AC.CInstance qn ctx texp fdecls) = unions
+  [ qNameToImports qn
+  , contextToImports ctx
+  , typeExprToImports texp
+  , unions $ funcDeclToImports <$> fdecls
+  ]
 
 -- | Extracts the required imports from the given context.
 contextToImports :: AC.CContext -> S.Set String
-contextToImports ctx = S.empty -- TODO
+contextToImports (AC.CContext cs) = unions $ constraintToImports <$> cs
+
+-- | Extracts the required imports from the given constraint.
+constraintToImports :: AC.CConstraint -> S.Set String
+constraintToImports (qn, texp) = S.union (qNameToImports qn) (typeExprToImports texp)
 
 -- | Extracts the required imports from the given function declaration.
 funcDeclToImports :: AC.CFuncDecl -> S.Set String
-funcDeclToImports ctx = S.empty -- TODO
+funcDeclToImports fdecl = case fdecl of
+  AC.CFunc     qn _ _ qty rs -> unions [qNameToImports qn, qualTypeExprToImports qty, unions $ ruleToImports <$> rs]
+  AC.CmtFunc _ qn _ _ qty rs -> unions [qNameToImports qn, qualTypeExprToImports qty, unions $ ruleToImports <$> rs]
+
+-- | Extracts the required imports from the given qualified type expression.
+qualTypeExprToImports :: AC.CQualTypeExpr -> S.Set String
+qualTypeExprToImports (AC.CQualType ctx texp) = S.union (contextToImports ctx) (typeExprToImports texp)
+
+-- | Extracts the required imports from the given rule.
+ruleToImports :: AC.CRule -> S.Set String
+ruleToImports (AC.CRule pats rhs) = S.union (unions $ patternToImports <$> pats) (rhsToImports rhs)
+
+-- | Extracts the required imports from the given pattern.
+patternToImports :: AC.CPattern -> S.Set String
+patternToImports _ = S.empty -- TODO
+
+-- | Extracts the required imports from the given right-hand side.
+rhsToImports :: AC.CRhs -> S.Set String
+rhsToImports rhs = case rhs of
+  AC.CSimpleRhs expr ldecls    -> S.union (exprToImports expr) (unions $ localDeclToImports <$> ldecls)
+  AC.CGuardedRhs guards ldecls -> S.union (unions $ guardToImports <$> guards) (unions $ localDeclToImports <$> ldecls)
+
+-- | Extracts the required imports from the given expression.
+exprToImports :: AC.CExpr -> S.Set String
+exprToImports _ = S.empty -- TODO
+
+-- | Extracts the required imports from the given guard.
+guardToImports :: (AC.CExpr, AC.CExpr) -> S.Set String
+guardToImports (e1, e2) = S.union (exprToImports e1) (exprToImports e2)
+
+-- | Extracts the required imports from the given local declaration.
+localDeclToImports :: AC.CLocalDecl -> S.Set String
+localDeclToImports ldecl = case ldecl of
+  AC.CLocalFunc fdecl  -> funcDeclToImports fdecl
+  AC.CLocalPat pat rhs -> S.union (patternToImports pat) (rhsToImports rhs)
+  AC.CLocalVars _      -> S.empty
 
 -- | Extracts the required imports from the given qualified name.
 qNameToImports :: AC.QName -> S.Set String
