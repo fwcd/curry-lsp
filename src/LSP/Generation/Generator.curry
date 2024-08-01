@@ -2,9 +2,6 @@ module LSP.Generation.Generator
   ( metaModelToPrettyProgs
   ) where
 
-import qualified AbstractCurry.Types as AC
-import qualified AbstractCurry.Build as ACB
-import qualified AbstractCurry.Pretty as ACP
 import Control.Monad ( join )
 import Control.Monad.Trans.Reader ( Reader, runReader, asks )
 import qualified Data.Map as M
@@ -13,6 +10,9 @@ import Data.List ( intercalate )
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
+import qualified LSP.Generation.AbstractCurry.Types as AC
+import qualified LSP.Generation.AbstractCurry.Build as ACB
+import qualified LSP.Generation.AbstractCurry.Pretty as ACP
 import LSP.Generation.Deps
 import LSP.Generation.Model
 import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap, keyBy )

@@ -3,8 +3,8 @@ module LSP.Generation.Deps
   , instanceDeclModuleDeps
   ) where
 
-import qualified AbstractCurry.Types as AC
 import qualified Data.Set as S
+import qualified LSP.Generation.AbstractCurry.Types as AC
 import LSP.Utils.General ( unions, unionMap )
 
 -- TODO: It would be nice to turn this into a type class, which would also let
