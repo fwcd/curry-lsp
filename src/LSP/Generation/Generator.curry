@@ -173,14 +173,26 @@ flatMetaStructureToToJSONInstance mname prefix s' = do
       ctx = AC.CContext []
       qn = (mname, name)
       texp = ACB.baseType qn
+      vis = AC.Public
       sig = ACB.emptyClassType $ toJSONType texp
-      fdecls = [] -- TODO
+      xVar = (0, "x")
+      fieldExprs = [ACB.applyF (kvOperatorForMetaProperty p) [ACB.string2ac (mpName p), ACB.applyF (mname, fieldName prefix (mpName p)) [AC.CVar xVar]] | p <- msProperties s']
+      expr = ACB.applyF objectQName [AC.CList fieldExprs]
+      rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
+      fdecls = [fdecl]
   return $ AC.CInstance toJSONClassQName ctx texp fdecls
 
 -- | Picks the correct lookupFromJSON method for the given property.
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
 lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
                                 | otherwise  = lookupFromJSONQName
+  where isOptional = fromMaybe False $ mpOptional p
+
+-- | Picks the correct kv operator for the given property.
+kvOperatorForMetaProperty :: MetaProperty -> AC.QName
+kvOperatorForMetaProperty p | isOptional = optionalKvOperatorQName
+                            | otherwise  = kvOperatorQName
   where isOptional = fromMaybe False $ mpOptional p
 
 -- | Converts a meta enumeration to a FromJSON instance.
@@ -351,6 +363,18 @@ lookupFromJSONQName = ("LSP.Utils.JSON", "lookupFromJSON")
 -- | The lookupMaybeFromJSON function name.
 lookupMaybeFromJSONQName :: AC.QName
 lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
+
+-- | The object function name.
+objectQName :: AC.QName
+objectQName = ("LSP.Utils.JSON", "object")
+
+-- | The key value operator name.
+kvOperatorQName :: AC.QName
+kvOperatorQName = ("LSP.Utils.JSON", "(.=)")
+
+-- | The optional key value operator name.
+optionalKvOperatorQName :: AC.QName
+optionalKvOperatorQName = ("LSP.Utils.JSON", "(.?=)")
 
 -- | The ppJSON function name.
 ppJSONQName :: AC.QName
