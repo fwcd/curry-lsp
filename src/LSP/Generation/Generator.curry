@@ -81,18 +81,11 @@ metaModelToProgs m = do
   mprefix <- asks geModulePrefix
   let progs = structs ++ enums ++ aliases
       umbrella = mkUmbrellaProg mprefix (progName <$> progs)
-  return $ umbrella : (keyBy progName <$> progs)
+  return $ keyBy progName <$> (umbrella : progs)
 
 -- | Generates an umbrella module that reexports the given modules.
-mkUmbrellaProg :: String -> [String] -> (String, AC.CurryProg)
-mkUmbrellaProg mname mods = (mname, AC.CurryProg (mname ++ prettyExports) [] Nothing [] [] [] [] [])
-  where
-    -- TODO: This is a workaround for generating exports (which currently cannot
-    -- be represented by AbstractCurry) by appending the raw syntax to the module
-    -- name. We should find a cleaner solution to this.
-    indent = "  "
-    prettyMods = ("module " ++) <$> mods
-    prettyExports = "\n" ++ indent ++ "( " ++ intercalate ("\n" ++ indent ++ ", ") prettyMods ++ "\n" ++ indent ++ ")"
+mkUmbrellaProg :: String -> [String] -> AC.CurryProg
+mkUmbrellaProg mname mods = AC.CurryProg mname mods [] Nothing [] [] [] [] []
 
 -- | Converts a meta structure to a Curry program.
 metaStructureToProg :: MetaStructure -> GM AC.CurryProg
@@ -110,7 +103,7 @@ metaStructureToProg s = do
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
-  return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
+  return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
 metaEnumerationToProg :: MetaEnumeration -> GM AC.CurryProg
@@ -131,7 +124,7 @@ metaEnumerationToProg e = do
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
-  return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
+  return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
 metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
@@ -236,7 +229,7 @@ metaAliasToProg a = do
         Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
         Nothing -> Just $ AC.CTypeSyn qn vis [] texp
       imps = requiredImports mname $ unions $ typeDeclModuleDeps <$> maybeToList maybeTy
-  return $ (\ty -> AC.CurryProg mname imps Nothing [] [] [ty] [] []) <$> maybeTy
+  return $ (\ty -> AC.CurryProg mname [] imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
 metaPropertyToField :: String -> String -> MetaProperty -> GM AC.CFieldDecl
