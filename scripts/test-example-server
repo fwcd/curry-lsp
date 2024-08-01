@@ -4,7 +4,20 @@ set -e
 cd "$(dirname $0)/.."
 
 msgs=(
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":[]}}'
+  "{
+    \"jsonrpc\": \"2.0\",
+    \"id\": 1,
+    \"method\": \"initialize\",
+    \"params\": {
+      \"processId\": $PPID,
+      \"capabilities\": {},
+      \"clientInfo\": {
+        \"name\": \"test-example-server\",
+        \"version\": \"0.0.1\"
+      },
+      \"rootUri\": \"file://$PWD\"
+    }
+  }"
 )
 
 input=''
