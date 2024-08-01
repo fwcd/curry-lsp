@@ -103,6 +103,15 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (a, b, c) where
 instance (FromJSON a, FromJSON b, FromJSON c, FromJSON d) => FromJSON (a, b, c, d) where
   fromJSON j = (,,,) <$> fromJSON j <*> fromJSON j <*> fromJSON j <*> fromJSON j
 
+instance (ToJSON a, ToJSON b) => ToJSON (a, b) where
+  toJSON (x, y) = JArray [toJSON x, toJSON y]
+
+instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (a, b, c) where
+  toJSON (x, y, z) = JArray [toJSON x, toJSON y, toJSON z]
+
+instance (ToJSON a, ToJSON b, ToJSON c, ToJSON d) => ToJSON (a, b, c, d) where
+  toJSON (x, y, z, w) = JArray [toJSON x, toJSON y, toJSON z, toJSON w]
+
 instance FromJSON Char where
   fromJSON j = case j of
     JString [c] -> Right c
