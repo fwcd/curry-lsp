@@ -95,6 +95,7 @@ exprModuleDeps expr = case expr of
   AC.CLambda pats e    -> S.union (unionMap patternModuleDeps pats) (exprModuleDeps e)
   AC.CLetDecl ldecls e -> S.union (unionMap localDeclModuleDeps ldecls) (exprModuleDeps e)
   AC.CDoExpr stmts     -> unionMap statementModuleDeps stmts
+  AC.CList es          -> unionMap exprModuleDeps es
   AC.CListComp e stmts -> S.union (exprModuleDeps e) (unionMap statementModuleDeps stmts)
   AC.CCase _ e arms    -> S.union (exprModuleDeps e) (unionMap caseArmModuleDeps arms)
   AC.CTyped e qty      -> S.union (exprModuleDeps e) (qualTypeExprModuleDeps qty)
