@@ -13,11 +13,11 @@ module LSP.Generation.Model
   , flattenMetaStructure
   ) where
 
-import Data.List ( nub )
 import Data.Maybe ( fromMaybe, maybeToList )
 import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
+import LSP.Utils.General ( nubOrdOn )
 import LSP.Utils.JSON ( FromJSON (..)
                       , lookupFromJSON, lookupFromJSON, lookupObjectFromJSON
                       , lookupMaybeFromJSON, lookupMaybeFromJSON, lookupPathFromJSON
@@ -131,7 +131,7 @@ data MetaModel = MetaModel
 
 flattenMetaStructure :: M.Map String MetaStructure -> MetaStructure -> MetaStructure
 flattenMetaStructure structs s = s
-  { msProperties = nub $ inheritedProps ++ msProperties s
+  { msProperties = nubOrdOn mpName $ inheritedProps ++ msProperties s
   , msExtends = []
   , msMixins = []
   }
