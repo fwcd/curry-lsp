@@ -5,7 +5,7 @@ module LSP.Utils.General
   , capitalize, uncapitalize
   , replace, replaceSingle
   , unions, unionMap
-  , (<.$>), (<$.>)
+  , (<.$>), (<$.>), (<<$>>)
   , keyBy
   ) where
 
@@ -79,6 +79,10 @@ unionMap f = unions . map f
 -- | Maps over the second element of a tuple.
 (<$.>) :: Functor f => (b -> c) -> f (a, b) -> f (a, c)
 (<$.>) f = ((\(x, y) -> (x, f y)) <$>)
+
+-- | Map over nested functors. Alias for `fmap . fmap` (or `fmap fmap fmap`).
+(<<$>>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
+(<<$>>) = fmap . fmap
 
 -- | Associates the given value with the given key.
 keyBy :: (a -> k) -> a -> (k, a)
