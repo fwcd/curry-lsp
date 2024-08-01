@@ -1,4 +1,4 @@
-module LSP.Generation.Dependencies
+module LSP.Generation.Deps
   ( typeDeclModuleDeps
   , instanceDeclModuleDeps
   ) where
