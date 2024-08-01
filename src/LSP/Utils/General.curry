@@ -1,12 +1,20 @@
 module LSP.Utils.General
-  ( lookup', fromJust', fromRight'
+  ( forM_
+  , lookup', fromJust', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
-  , replaceSingle
+  , replace, replaceSingle
+  , unions, unionMap
   , (<.$>), (<$.>)
+  , keyBy
   ) where
 
 import Data.Char ( toUpper, toLower )
+import qualified Data.Set as S
+
+-- | Flipped version of mapM_.
+forM_ :: Monad m => [a] -> (a -> m b) -> m ()
+forM_ = flip mapM_
 
 -- | A version of fromJust that throws a descriptive error message.
 fromJust' :: String -> Maybe a -> a
@@ -46,11 +54,23 @@ uncapitalize :: String -> String
 uncapitalize [] = []
 uncapitalize (c:cs) = toLower c : cs
 
+-- | Replaces an element with another.
+replace :: Eq a => a -> a -> [a] -> [a]
+replace x y = fmap $ \x' -> if x == x' then y else x'
+
 -- | Replaces an element with a list.
 replaceSingle :: Eq a => a -> [a] -> [a] -> [a]
 replaceSingle _ _ [] = []
 replaceSingle y ys (x:xs) | x == y    = ys ++ xs
                           | otherwise = x : replaceSingle y ys xs
+
+-- | The union over all sets.
+unions :: Ord a => [S.Set a] -> S.Set a
+unions = foldr S.union S.empty
+
+-- | Maps and forms a union. Analogous to concatMap for lists.
+unionMap :: Ord b => (a -> S.Set b) -> [a] -> S.Set b
+unionMap f = unions . map f
 
 -- | Maps over the first element of a tuple.
 (<.$>) :: Functor f => (a -> c) -> f (a, b) -> f (c, b)
@@ -59,3 +79,7 @@ replaceSingle y ys (x:xs) | x == y    = ys ++ xs
 -- | Maps over the second element of a tuple.
 (<$.>) :: Functor f => (b -> c) -> f (a, b) -> f (a, c)
 (<$.>) f = ((\(x, y) -> (x, f y)) <$>)
+
+-- | Associates the given value with the given key.
+keyBy :: (a -> k) -> a -> (k, a)
+keyBy f x = (f x, x)

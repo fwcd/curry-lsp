@@ -7,8 +7,8 @@
   "license": "BSD-3-Clause",
   "licenseFile": "LICENSE",
   "dependencies": {
-    "abstract-curry": ">= 3.0.0, < 4.0.0",
     "containers": ">= 3.0.0, < 4.0.0",
+    "directory": ">= 3.0.0, < 4.0.0",
     "json": ">= 3.0.0, < 4.0.0",
     "transformers": ">= 3.0.0, < 4.0.0"
   },

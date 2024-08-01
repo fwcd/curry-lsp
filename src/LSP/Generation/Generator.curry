@@ -1,119 +1,137 @@
 module LSP.Generation.Generator
-  ( metaModelToPrettyCurry
+  ( metaModelToPrettyProgs
   ) where
 
-import qualified AbstractCurry.Types as AC
-import qualified AbstractCurry.Build as ACB
-import qualified AbstractCurry.Pretty as ACP
 import Control.Monad ( join )
-import Control.Monad.Trans.State ( State, evalState, gets )
+import Control.Monad.Trans.Reader ( Reader, runReader, asks )
 import qualified Data.Map as M
+import qualified Data.Set as S
+import Data.List ( intercalate )
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
+import qualified LSP.Generation.AbstractCurry.Types as AC
+import qualified LSP.Generation.AbstractCurry.Select as ACS
+import qualified LSP.Generation.AbstractCurry.Build as ACB
+import qualified LSP.Generation.AbstractCurry.Pretty as ACP
+import LSP.Generation.Deps
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>) )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap, keyBy )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
 
--- | Internal generator state.
-data GeneratorState = GeneratorState
-  { gsStructMap :: M.Map String MetaStructure
-  , gsBuiltInTypeAliases :: M.Map String AC.QName
-  , gsStandardDerivings :: [AC.QName]
-  , gsStandardEnumDerivings :: [AC.QName]
+-- | Internal (read-only) generator environment.
+data GeneratorEnv = GeneratorEnv
+  { geModulePrefix :: String
+  , geBuiltInTypeAliases :: M.Map String AC.QName
+  , geStandardDerivings :: [AC.QName]
+  , geStandardEnumDerivings :: [AC.QName]
   }
 
-type GM = State GeneratorState
+type GM = Reader GeneratorEnv
 
--- | Creates the initial generator state.
-initialGeneratorState :: MetaModel -> GeneratorState
-initialGeneratorState m = GeneratorState
-  { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
-  , gsBuiltInTypeAliases = M.fromList
+-- | Creates the generator environment.
+generatorEnv :: String -> GeneratorEnv
+generatorEnv mprefix = GeneratorEnv
+  { geModulePrefix = mprefix
+  , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
-  , gsStandardDerivings =
+  , geStandardDerivings =
     [ AC.pre "Show"
     , AC.pre "Eq"
     ]
-  , gsStandardEnumDerivings =
+  , geStandardEnumDerivings =
     [ AC.pre "Enum"
     , AC.pre "Bounded"
     , AC.pre "Ord"
     ]
   }
 
--- | Converts a meta structure to a prettyprinted Curry program.
-metaModelToPrettyCurry :: String -> MetaModel -> String
-metaModelToPrettyCurry name m = unlines
-  -- TODO: We currently disable overlapping pattern warnings since some
-  --       LSP error codes cannot be parsed unambiguously currently. A
-  --       better solution would be to explicitly only generate one of
-  --       the cases or add a more specific flag to the frontend for only
-  --       disabling unreachable pattern warnings (not overlapping).
-  [ "{-# OPTIONS_FRONTEND -Wno-unused-bindings -Wno-overlapping #-}"
-  , ACP.prettyCurryProg ppOpts $ evalState (metaModelToProg name m) st
-  ]
+-- | Runs the generator monad.
+runGM :: GM a -> String -> a
+runGM x = runReader x . generatorEnv
+
+-- | Converts a meta structure to prettyprinted Curry programs, keyed by module name.
+metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
+metaModelToPrettyProgs mprefix m = pretty <$.> progs
   where
-    st = initialGeneratorState m
-    -- Disable qualification since instances are not generated correctly
-    -- when using qualified identifiers. We just have to make sure to include
-    -- all of the required imports (and make sure that no LSP identifiers
-    -- conflict with our supporting types).
-    ppOpts = ACP.setNoQualification ACP.defaultOptions
+    progs = runGM (metaModelToProgs m) mprefix
+    pretty prog = unlines [pragmas, body]
+      where
+        -- Disable qualification since instances are not generated correctly
+        -- when using qualified identifiers. We just have to make sure to include
+        -- all of the required imports (and make sure that no LSP identifiers
+        -- conflict with our supporting types).
+        ppOpts = ACP.setNoQualification ACP.defaultOptions
+        -- TODO: We currently disable overlapping pattern warnings since some
+        --       LSP error codes cannot be parsed unambiguously currently. A
+        --       better solution would be to explicitly only generate one of
+        --       the cases or add a more specific flag to the frontend for only
+        --       disabling unreachable pattern warnings (not overlapping).
+        pragmas = "{-# OPTIONS_FRONTEND -Wno-unused-bindings -Wno-overlapping #-}"
+        body = ACP.prettyCurryProg ppOpts prog
 
 -- | Converts a meta structure to a Curry program.
-metaModelToProg :: String -> MetaModel -> GM AC.CurryProg
-metaModelToProg name m = do
-  let imps = ["LSP.Utils.JSON", "LSP.Protocol.Support", "Data.Map", "JSON.Data", "JSON.Pretty"]
-      funs = []
-  (structs, structInsts) <- join <$.> unzip <$> mapM metaStructureToType (mmStructures m)
-  (enums, enumInsts) <- join <$.> unzip <$> mapM metaEnumerationToType (mmEnumerations m)
-  aliases <- catMaybes <$> mapM metaAliasToAlias (mmTypeAliases m)
-  let tys = structs ++ enums ++ aliases
-      insts = structInsts ++ enumInsts
-  return $ AC.CurryProg name imps Nothing [] insts tys funs []
+metaModelToProgs :: MetaModel -> GM [(String, AC.CurryProg)]
+metaModelToProgs m = do
+  structs <- mapM metaStructureToProg (mmStructures m)
+  enums <- mapM metaEnumerationToProg (mmEnumerations m)
+  aliases <- catMaybes <$> mapM metaAliasToProg (mmTypeAliases m)
+  mprefix <- asks geModulePrefix
+  let progs = structs ++ enums ++ aliases
+      umbrella = mkUmbrellaProg mprefix (ACS.progName <$> progs)
+  return $ keyBy ACS.progName <$> (umbrella : progs)
 
--- | Converts a meta structure to a Curry type declaration (and instances).
-metaStructureToType :: MetaStructure -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
-metaStructureToType s = do
+-- | Generates an umbrella module that reexports the given modules.
+mkUmbrellaProg :: String -> [String] -> AC.CurryProg
+mkUmbrellaProg mname mods = AC.CurryProg mname mods mods Nothing [] [] [] [] []
+
+-- | Converts a meta structure to a Curry program.
+metaStructureToProg :: MetaStructure -> GM AC.CurryProg
+metaStructureToProg s = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ msName s
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       props = msProperties s
       vis = AC.Public
-  fs <- mapM (metaPropertyToField name) props
-  derivs <- gets gsStandardDerivings
-  fromJSONInst <- metaStructureToFromJSONInstance name s
+  fs <- mapM (metaPropertyToField mname name) props
+  derivs <- asks geStandardDerivings
+  fromJSONInst <- metaStructureToFromJSONInstance mname name s
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-  return (ty, insts)
+      imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
+  return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
--- | Converts a meta enumeration to a Curry type declaration (and instances).
-metaEnumerationToType :: MetaEnumeration -> GM (AC.CTypeDecl, [AC.CInstanceDecl])
-metaEnumerationToType e = do
+-- | Converts a meta enumeration to a Curry program.
+metaEnumerationToProg :: MetaEnumeration -> GM AC.CurryProg
+metaEnumerationToProg e = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ meName e
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       vis = AC.Public
       vals = meValues e
-  cdecls <- mapM (metaEnumerationValueToCons name) vals
+  cdecls <- mapM (metaEnumerationValueToCons mname name) vals
   -- TODO: liftA2 on StateT is broken due to the missing implementation of <*>, causing the program to loop
-  -- derivs <- liftA2 (++) (gets gsStandardDerivings) (gets gsStandardEnumDerivings)
-  stdDerivs <- gets gsStandardDerivings
-  enumDerivs <- gets gsStandardEnumDerivings
-  fromJSONInst <- metaEnumerationToFromJSONInstance name e
+  -- derivs <- liftA2 (++) (asks geStandardDerivings) (asks geStandardEnumDerivings)
+  stdDerivs <- asks geStandardDerivings
+  enumDerivs <- asks geStandardEnumDerivings
+  fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-  return (ty, insts)
+      imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
+  return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
-metaStructureToFromJSONInstance :: String -> MetaStructure -> GM AC.CInstanceDecl
-metaStructureToFromJSONInstance prefix s = do
+metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+metaStructureToFromJSONInstance mname prefix s = do
   let name = escapeName $ msName s
-      qn = mkQName name
+      qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
@@ -124,7 +142,7 @@ metaStructureToFromJSONInstance prefix s = do
       fieldNames = mpName <$> msProperties s
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
       fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
-      fields = zip ((mkQName . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
+      fields = zip (((,) mname . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       arms =
@@ -150,11 +168,11 @@ lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
   where isOptional = fromMaybe False $ mpOptional p
 
 -- | Converts a meta enumeration to a FromJSON instance.
-metaEnumerationToFromJSONInstance :: String -> MetaEnumeration -> GM AC.CInstanceDecl
-metaEnumerationToFromJSONInstance prefix e = do
+metaEnumerationToFromJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToFromJSONInstance mname prefix e = do
   ty <- metaTypeToTypeExpr $ meType e
   let name = escapeName $ meName e
-      qn = mkQName name
+      qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
@@ -165,7 +183,7 @@ metaEnumerationToFromJSONInstance prefix e = do
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       vals = meValues e
       valLits = metaEnumerationValueToLit . mevValue <$> vals
-      valQNames = mkQName . enumValueName prefix . mevName <$> vals
+      valQNames = (,) mname . enumValueName prefix . mevName <$> vals
       valArms = zipWith (\v q -> (AC.CPLit v, AC.CSimpleRhs (ACB.applyF (AC.pre "Right") [AC.CSymbol q]) [])) valLits valQNames
       arms = valArms ++ [(AC.CPVar anonVar, AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) [])]
       rawExpr = ACB.applyF fromJSONQName [AC.CVar jVar]
@@ -191,29 +209,33 @@ metaEnumerationValueToLit j = case j of
   _         -> error $ "Unrepresentable enum value: " ++ ppJSON j
 
 -- | Converts a meta enumeration value to a Curry constructor.
-metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
-metaEnumerationValueToCons prefix v = do
+metaEnumerationValueToCons :: String -> String -> MetaEnumerationValue -> GM AC.CConsDecl
+metaEnumerationValueToCons mname prefix v = do
   let name = enumValueName prefix (mevName v)
-      qn = mkQName name
+      qn = (mname, name)
       vis = AC.Public
   return $ AC.CCons qn vis []
 
--- | Converts a meta type alias to a Curry type alias.
-metaAliasToAlias :: MetaTypeAlias -> GM (Maybe AC.CTypeDecl)
-metaAliasToAlias a = do
+-- | Converts a meta type alias to a Curry program.
+metaAliasToProg :: MetaTypeAlias -> GM (Maybe AC.CurryProg)
+metaAliasToProg a = do
+  mprefix <- asks geModulePrefix
   let name = escapeName $ mtaName a
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       vis = AC.Public
   texp <- metaTypeToTypeExpr $ mtaType a
-  btas <- gets gsBuiltInTypeAliases
-  return $ case M.lookup name btas of
-    Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
-    Nothing -> Just $ AC.CTypeSyn qn vis [] texp
+  btas <- asks geBuiltInTypeAliases
+  let maybeTy = case M.lookup name btas of
+        Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
+        Nothing -> Just $ AC.CTypeSyn qn vis [] texp
+      imps = requiredImports mname $ unions $ typeDeclModuleDeps <$> maybeToList maybeTy
+  return $ (\ty -> AC.CurryProg mname [] imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
-metaPropertyToField :: String -> MetaProperty -> GM AC.CFieldDecl
-metaPropertyToField prefix p = do
-  let qn = mkQName $ fieldName prefix (mpName p)
+metaPropertyToField :: String -> String -> MetaProperty -> GM AC.CFieldDecl
+metaPropertyToField mname prefix p = do
+  let qn = (mname, fieldName prefix (mpName p))
       vis = AC.Public
   texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr (mpType p)
   return $ AC.CField qn vis texp
@@ -225,19 +247,21 @@ maybeTypeExprIf True = ACB.maybeType
 
 -- | Converts a meta type to a Curry type expression.
 metaTypeToTypeExpr :: MetaType -> GM AC.CTypeExpr
-metaTypeToTypeExpr t = case t of
-  MetaTypeReference n     -> do btas <- gets gsBuiltInTypeAliases
-                                return $ ACB.baseType $ fromMaybe (mkQName n) $ M.lookup n btas
-  MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr a
-  MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM metaTypeToTypeExpr [k, e]
-  MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
-  MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM metaTypeToTypeExpr is
-  MetaTypeAnd is          -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
-  -- TODO: Find a better representation for string literal types?
-  -- We should probably rewrite or-ed string literal types to algebraic data types!
-  MetaTypeStringLiteral _ -> return ACB.stringType
-  MetaTypeTuple is        -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
-  MetaTypeLiteral _       -> return ACB.unitType -- TODO
+metaTypeToTypeExpr t = do
+  mprefix <- asks geModulePrefix
+  case t of
+    MetaTypeReference n     -> do btas <- asks geBuiltInTypeAliases
+                                  return $ ACB.baseType $ fromMaybe (mkQName mprefix n) $ M.lookup n btas
+    MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr a
+    MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM metaTypeToTypeExpr [k, e]
+    MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
+    MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM metaTypeToTypeExpr is
+    MetaTypeAnd is          -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+    -- TODO: Find a better representation for string literal types?
+    -- We should probably rewrite or-ed string literal types to algebraic data types!
+    MetaTypeStringLiteral _ -> return ACB.stringType
+    MetaTypeTuple is        -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+    MetaTypeLiteral _       -> return ACB.unitType -- TODO
 
 -- | Converts a meta base type to a Curry type expression.
 metaBaseTypeToTypeExpr :: MetaBaseType -> AC.CTypeExpr
@@ -251,6 +275,18 @@ metaBaseTypeToTypeExpr b = case b of
   MetaBaseTypeNull        -> ACB.unitType
   MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
   MetaBaseTypeUri         -> ACB.baseType $ support "Uri"
+
+-- | Orders and filters out the required imports for the given module.
+requiredImports :: String -> S.Set String -> [String]
+requiredImports mname = filter isRequired . S.toList
+  where isRequired m = m /= AC.preludeName && m /= mname
+
+-- | Extracts the name from a type declaration.
+typeName :: AC.CTypeDecl -> String
+typeName ty = snd $ case ty of
+  AC.CType    n _ _ _ _ -> n
+  AC.CTypeSyn n _ _ _   -> n
+  AC.CNewType n _ _ _ _ -> n
 
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName
@@ -296,10 +332,6 @@ lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
 ppJSONQName :: AC.QName
 ppJSONQName = ("JSON.Pretty", "ppJSON")
 
--- | Creates a QName with an empty module name.
-mkQName :: String -> AC.QName
-mkQName n = ("", n)
-
 -- | Generates a prefixed enum value name.
 enumValueName :: String -> String -> String
 enumValueName prefix name = capitalize prefix ++ capitalize name
@@ -311,3 +343,11 @@ fieldName prefix name = uncapitalize prefix ++ capitalize name
 -- | Escapes a type name for use in Curry (e.g. replacing underscores with 'Base').
 escapeName :: String -> String
 escapeName = replaceSingle '_' "Base"
+
+-- | Qualifies the given name with the given prefix.
+qualWith :: String -> String -> String
+qualWith prefix name = prefix ++ "." ++ name
+
+-- | Creates a QName with the derived module name.
+mkQName :: String -> String -> AC.QName
+mkQName mprefix n = (qualWith mprefix n, n)
