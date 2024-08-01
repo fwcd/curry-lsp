@@ -86,7 +86,7 @@ metaModelToProgs m = do
 
 -- | Generates an umbrella module that reexports the given modules.
 mkUmbrellaProg :: String -> [String] -> AC.CurryProg
-mkUmbrellaProg mname mods = AC.CurryProg mname mods [] Nothing [] [] [] [] []
+mkUmbrellaProg mname mods = AC.CurryProg mname mods mods Nothing [] [] [] [] []
 
 -- | Converts a meta structure to a Curry program.
 metaStructureToProg :: MetaStructure -> GM AC.CurryProg
