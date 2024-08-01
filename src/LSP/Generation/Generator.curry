@@ -16,14 +16,15 @@ import qualified LSP.Generation.AbstractCurry.Build as ACB
 import qualified LSP.Generation.AbstractCurry.Pretty as ACP
 import LSP.Generation.Deps
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap, keyBy )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), (<<$>>), unions, unionMap, keyBy )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
 
 -- | Internal (read-only) generator environment.
 data GeneratorEnv = GeneratorEnv
-  { geModulePrefix :: String
+  { geMetaStructures :: M.Map String MetaStructure
+  , geModulePrefix :: String
   , geBuiltInTypeAliases :: M.Map String AC.QName
   , geStandardDerivings :: [AC.QName]
   , geStandardEnumDerivings :: [AC.QName]
@@ -32,9 +33,10 @@ data GeneratorEnv = GeneratorEnv
 type GM = Reader GeneratorEnv
 
 -- | Creates the generator environment.
-generatorEnv :: String -> GeneratorEnv
-generatorEnv mprefix = GeneratorEnv
-  { geModulePrefix = mprefix
+generatorEnv :: String -> MetaModel -> GeneratorEnv
+generatorEnv mprefix m = GeneratorEnv
+  { geMetaStructures = M.fromList $ keyBy msName <$> mmStructures m
+  , geModulePrefix = mprefix
   , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
@@ -50,14 +52,14 @@ generatorEnv mprefix = GeneratorEnv
   }
 
 -- | Runs the generator monad.
-runGM :: GM a -> String -> a
-runGM x = runReader x . generatorEnv
+runGM :: GM a -> String -> MetaModel -> a
+runGM x = runReader x <<$>> generatorEnv
 
 -- | Converts a meta structure to prettyprinted Curry programs, keyed by module name.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
 metaModelToPrettyProgs mprefix m = pretty <$.> progs
   where
-    progs = runGM (metaModelToProgs m) mprefix
+    progs = runGM (metaModelToProgs m) mprefix m
     pretty prog = unlines [pragmas, body]
       where
         -- Disable qualification since instances are not generated correctly
