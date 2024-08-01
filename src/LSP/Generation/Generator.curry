@@ -78,52 +78,54 @@ metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
 
 -- | Converts a meta structure to a Curry program.
 metaModelToProgs :: String -> MetaModel -> GM [AC.CurryProg]
-metaModelToProgs prefix m = do
-  structs <- mapM (metaStructureToProg prefix) (mmStructures m)
-  enums <- mapM (metaEnumerationToProg prefix) (mmEnumerations m)
-  aliases <- catMaybes <$> mapM (metaAliasToProg prefix) (mmTypeAliases m)
+metaModelToProgs mprefix m = do
+  structs <- mapM (metaStructureToProg mprefix) (mmStructures m)
+  enums <- mapM (metaEnumerationToProg mprefix) (mmEnumerations m)
+  aliases <- catMaybes <$> mapM (metaAliasToProg mprefix) (mmTypeAliases m)
   return $ structs ++ enums ++ aliases
 
 -- | Converts a meta structure to a Curry program.
 metaStructureToProg :: String -> MetaStructure -> GM AC.CurryProg
-metaStructureToProg prefix s = do
+metaStructureToProg mprefix s = do
   let name = escapeName $ msName s
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       props = msProperties s
       vis = AC.Public
-  fs <- mapM (metaPropertyToField name) props
+  fs <- mapM (metaPropertyToField mname name) props
   derivs <- gets gsStandardDerivings
-  fromJSONInst <- metaStructureToFromJSONInstance name s
+  fromJSONInst <- metaStructureToFromJSONInstance mname name s
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
       imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
-  return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
+  return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
 metaEnumerationToProg :: String -> MetaEnumeration -> GM AC.CurryProg
-metaEnumerationToProg prefix e = do
+metaEnumerationToProg mprefix e = do
   let name = escapeName $ meName e
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       vis = AC.Public
       vals = meValues e
-  cdecls <- mapM (metaEnumerationValueToCons name) vals
+  cdecls <- mapM (metaEnumerationValueToCons mname name) vals
   -- TODO: liftA2 on StateT is broken due to the missing implementation of <*>, causing the program to loop
   -- derivs <- liftA2 (++) (gets gsStandardDerivings) (gets gsStandardEnumDerivings)
   stdDerivs <- gets gsStandardDerivings
   enumDerivs <- gets gsStandardEnumDerivings
-  fromJSONInst <- metaEnumerationToFromJSONInstance name e
+  fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
       imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
-  return $ AC.CurryProg (qualWith prefix name) imps Nothing [] insts [ty] [] []
+  return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
-metaStructureToFromJSONInstance :: String -> MetaStructure -> GM AC.CInstanceDecl
-metaStructureToFromJSONInstance prefix s = do
+metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+metaStructureToFromJSONInstance mname prefix s = do
   let name = escapeName $ msName s
-      qn = mkQName name
+      qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
@@ -134,7 +136,7 @@ metaStructureToFromJSONInstance prefix s = do
       fieldNames = mpName <$> msProperties s
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
       fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
-      fields = zip ((mkQName . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
+      fields = zip (((,) mname . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       arms =
@@ -160,11 +162,11 @@ lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
   where isOptional = fromMaybe False $ mpOptional p
 
 -- | Converts a meta enumeration to a FromJSON instance.
-metaEnumerationToFromJSONInstance :: String -> MetaEnumeration -> GM AC.CInstanceDecl
-metaEnumerationToFromJSONInstance prefix e = do
-  ty <- metaTypeToTypeExpr $ meType e
+metaEnumerationToFromJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToFromJSONInstance mname prefix e = do
+  ty <- metaTypeToTypeExpr mname $ meType e
   let name = escapeName $ meName e
-      qn = mkQName name
+      qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
@@ -175,7 +177,7 @@ metaEnumerationToFromJSONInstance prefix e = do
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]
       vals = meValues e
       valLits = metaEnumerationValueToLit . mevValue <$> vals
-      valQNames = mkQName . enumValueName prefix . mevName <$> vals
+      valQNames = (,) mname . enumValueName prefix . mevName <$> vals
       valArms = zipWith (\v q -> (AC.CPLit v, AC.CSimpleRhs (ACB.applyF (AC.pre "Right") [AC.CSymbol q]) [])) valLits valQNames
       arms = valArms ++ [(AC.CPVar anonVar, AC.CSimpleRhs (ACB.applyF (AC.pre "Left") [errMsg]) [])]
       rawExpr = ACB.applyF fromJSONQName [AC.CVar jVar]
@@ -201,38 +203,34 @@ metaEnumerationValueToLit j = case j of
   _         -> error $ "Unrepresentable enum value: " ++ ppJSON j
 
 -- | Converts a meta enumeration value to a Curry constructor.
-metaEnumerationValueToCons :: String -> MetaEnumerationValue -> GM AC.CConsDecl
-metaEnumerationValueToCons prefix v = do
+metaEnumerationValueToCons :: String -> String -> MetaEnumerationValue -> GM AC.CConsDecl
+metaEnumerationValueToCons mname prefix v = do
   let name = enumValueName prefix (mevName v)
-      qn = mkQName name
+      qn = (mname, name)
       vis = AC.Public
   return $ AC.CCons qn vis []
 
 -- | Converts a meta type alias to a Curry program.
 metaAliasToProg :: String -> MetaTypeAlias -> GM (Maybe AC.CurryProg)
-metaAliasToProg prefix a = do
-  maybeTy <- metaAliasToAlias a
-  imps <- gets gsStandardImports
-  return $ (\ty -> AC.CurryProg (qualWith prefix (typeName ty)) imps Nothing [] [] [ty] [] []) <$> maybeTy
-
--- | Converts a meta type alias to a Curry type alias.
-metaAliasToAlias :: MetaTypeAlias -> GM (Maybe AC.CTypeDecl)
-metaAliasToAlias a = do
+metaAliasToProg mprefix a = do
   let name = escapeName $ mtaName a
-      qn = mkQName name
+      mname = qualWith mprefix name
+      qn = (mname, name)
       vis = AC.Public
-  texp <- metaTypeToTypeExpr $ mtaType a
+  texp <- metaTypeToTypeExpr mname $ mtaType a
   btas <- gets gsBuiltInTypeAliases
-  return $ case M.lookup name btas of
-    Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
-    Nothing -> Just $ AC.CTypeSyn qn vis [] texp
+  let maybeTy = case M.lookup name btas of
+        Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
+        Nothing -> Just $ AC.CTypeSyn qn vis [] texp
+  imps <- gets gsStandardImports
+  return $ (\ty -> AC.CurryProg mname imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
-metaPropertyToField :: String -> MetaProperty -> GM AC.CFieldDecl
-metaPropertyToField prefix p = do
-  let qn = mkQName $ fieldName prefix (mpName p)
+metaPropertyToField :: String -> String -> MetaProperty -> GM AC.CFieldDecl
+metaPropertyToField mname prefix p = do
+  let qn = (mname, fieldName prefix (mpName p))
       vis = AC.Public
-  texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr (mpType p)
+  texp <- maybeTypeExprIf (fromMaybe False (mpOptional p)) <$> metaTypeToTypeExpr mname (mpType p)
   return $ AC.CField qn vis texp
 
 -- | Wraps a type expression in a Maybe if the given flag is set.
@@ -241,19 +239,19 @@ maybeTypeExprIf False = id
 maybeTypeExprIf True = ACB.maybeType
 
 -- | Converts a meta type to a Curry type expression.
-metaTypeToTypeExpr :: MetaType -> GM AC.CTypeExpr
-metaTypeToTypeExpr t = case t of
+metaTypeToTypeExpr :: String -> MetaType -> GM AC.CTypeExpr
+metaTypeToTypeExpr mname t = case t of
   MetaTypeReference n     -> do btas <- gets gsBuiltInTypeAliases
-                                return $ ACB.baseType $ fromMaybe (mkQName n) $ M.lookup n btas
-  MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr a
-  MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM metaTypeToTypeExpr [k, e]
+                                return $ ACB.baseType $ fromMaybe (mname, n) $ M.lookup n btas
+  MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr mname a
+  MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM (metaTypeToTypeExpr mname) [k, e]
   MetaTypeBase b          -> return $ metaBaseTypeToTypeExpr b
-  MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM metaTypeToTypeExpr is
-  MetaTypeAnd is          -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+  MetaTypeOr is           -> foldl1 (\x y -> ACB.applyTC (AC.pre "Either") [x, y]) <$> mapM (metaTypeToTypeExpr mname) is
+  MetaTypeAnd is          -> ACB.tupleType <$> mapM (metaTypeToTypeExpr mname) is
   -- TODO: Find a better representation for string literal types?
   -- We should probably rewrite or-ed string literal types to algebraic data types!
   MetaTypeStringLiteral _ -> return ACB.stringType
-  MetaTypeTuple is        -> ACB.tupleType <$> mapM metaTypeToTypeExpr is
+  MetaTypeTuple is        -> ACB.tupleType <$> mapM (metaTypeToTypeExpr mname) is
   MetaTypeLiteral _       -> return ACB.unitType -- TODO
 
 -- | Converts a meta base type to a Curry type expression.
@@ -351,11 +349,7 @@ lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
 ppJSONQName :: AC.QName
 ppJSONQName = ("JSON.Pretty", "ppJSON")
 
--- | Creates a QName with an empty module name.
-mkQName :: String -> AC.QName
-mkQName n = ("", n)
-
--- | Generates a prefixed enum value name.
+-- | a prefixed enum value name.
 enumValueName :: String -> String -> String
 enumValueName prefix name = capitalize prefix ++ capitalize name
 
