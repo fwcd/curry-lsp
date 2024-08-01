@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON SelectionRangeOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return SelectionRangeOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized SelectionRangeOptions value: " ++ ppJSON j)
 
-data SelectionRangeOptions = SelectionRangeOptions {  }
+data SelectionRangeOptions = SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

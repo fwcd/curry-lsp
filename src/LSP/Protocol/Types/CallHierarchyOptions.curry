@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON CallHierarchyOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return CallHierarchyOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            CallHierarchyOptions { callHierarchyOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized CallHierarchyOptions value: " ++ ppJSON j)
 
-data CallHierarchyOptions = CallHierarchyOptions {  }
+data CallHierarchyOptions = CallHierarchyOptions { callHierarchyOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

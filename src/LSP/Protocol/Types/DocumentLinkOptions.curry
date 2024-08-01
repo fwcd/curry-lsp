@@ -10,11 +10,14 @@ instance FromJSON DocumentLinkOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
-            DocumentLinkOptions { documentLinkOptionsResolveProvider = parsedResolveProvider }
+            DocumentLinkOptions { documentLinkOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                , documentLinkOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized DocumentLinkOptions value: " ++ ppJSON j)
 
-data DocumentLinkOptions = DocumentLinkOptions { documentLinkOptionsResolveProvider :: Maybe Bool }
+data DocumentLinkOptions = DocumentLinkOptions { documentLinkOptionsWorkDoneProgress :: Maybe Bool
+                                               , documentLinkOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

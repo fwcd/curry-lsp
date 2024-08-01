@@ -7,20 +7,34 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Location
 import LSP.Protocol.Types.LocationUriOnly
+import LSP.Protocol.Types.SymbolKind
+import LSP.Protocol.Types.SymbolTag
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbol where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedLocation <- lookupFromJSON "location" vs
+        do parsedName <- lookupFromJSON "name" vs
+           parsedKind <- lookupFromJSON "kind" vs
+           parsedTags <- lookupMaybeFromJSON "tags" vs
+           parsedContainerName <- lookupMaybeFromJSON "containerName" vs
+           parsedLocation <- lookupFromJSON "location" vs
            parsedData <- lookupMaybeFromJSON "data" vs
            return
-            WorkspaceSymbol { workspaceSymbolLocation = parsedLocation
+            WorkspaceSymbol { workspaceSymbolName = parsedName
+                            , workspaceSymbolKind = parsedKind
+                            , workspaceSymbolTags = parsedTags
+                            , workspaceSymbolContainerName = parsedContainerName
+                            , workspaceSymbolLocation = parsedLocation
                             , workspaceSymbolData = parsedData }
       _ -> Left ("Unrecognized WorkspaceSymbol value: " ++ ppJSON j)
 
-data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolLocation :: Either Location LocationUriOnly
+data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolName :: String
+                                       , workspaceSymbolKind :: SymbolKind
+                                       , workspaceSymbolTags :: Maybe [SymbolTag]
+                                       , workspaceSymbolContainerName :: Maybe String
+                                       , workspaceSymbolLocation :: Either Location LocationUriOnly
                                        , workspaceSymbolData :: Maybe LSPAny }
  deriving (Show,Eq)
 

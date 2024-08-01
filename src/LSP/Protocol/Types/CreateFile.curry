@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CreateFile where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.CreateFileOptions
 import LSP.Utils.JSON
 
@@ -13,15 +14,18 @@ instance FromJSON CreateFile where
     case j of
       JObject vs ->
         do parsedKind <- lookupFromJSON "kind" vs
+           parsedAnnotationId <- lookupMaybeFromJSON "annotationId" vs
            parsedUri <- lookupFromJSON "uri" vs
            parsedOptions <- lookupMaybeFromJSON "options" vs
            return
             CreateFile { createFileKind = parsedKind
+                       , createFileAnnotationId = parsedAnnotationId
                        , createFileUri = parsedUri
                        , createFileOptions = parsedOptions }
       _ -> Left ("Unrecognized CreateFile value: " ++ ppJSON j)
 
 data CreateFile = CreateFile { createFileKind :: String
+                             , createFileAnnotationId :: Maybe ChangeAnnotationIdentifier
                              , createFileUri :: DocumentUri
                              , createFileOptions :: Maybe CreateFileOptions }
  deriving (Show,Eq)

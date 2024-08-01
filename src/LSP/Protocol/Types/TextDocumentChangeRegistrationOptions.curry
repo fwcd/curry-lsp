@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TextDocumentChangeRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Protocol.Types.TextDocumentSyncKind
 import LSP.Utils.JSON
 
@@ -11,14 +12,17 @@ instance FromJSON TextDocumentChangeRegistrationOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedSyncKind <- lookupFromJSON "syncKind" vs
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedSyncKind <- lookupFromJSON "syncKind" vs
            return
-            TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsSyncKind = parsedSyncKind }
+            TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                                  , textDocumentChangeRegistrationOptionsSyncKind = parsedSyncKind }
       _ ->
         Left
          ("Unrecognized TextDocumentChangeRegistrationOptions value: "
            ++ ppJSON j)
 
-data TextDocumentChangeRegistrationOptions = TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsSyncKind :: TextDocumentSyncKind }
+data TextDocumentChangeRegistrationOptions = TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                                   , textDocumentChangeRegistrationOptionsSyncKind :: TextDocumentSyncKind }
  deriving (Show,Eq)
 

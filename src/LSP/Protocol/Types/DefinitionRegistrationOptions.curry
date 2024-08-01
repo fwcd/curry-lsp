@@ -4,16 +4,23 @@ module LSP.Protocol.Types.DefinitionRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON DefinitionRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DefinitionRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            DefinitionRegistrationOptions { definitionRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                          , definitionRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ ->
         Left
          ("Unrecognized DefinitionRegistrationOptions value: " ++ ppJSON j)
 
-data DefinitionRegistrationOptions = DefinitionRegistrationOptions {  }
+data DefinitionRegistrationOptions = DefinitionRegistrationOptions { definitionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                   , definitionRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

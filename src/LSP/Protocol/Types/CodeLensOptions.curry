@@ -10,11 +10,14 @@ instance FromJSON CodeLensOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
-            CodeLensOptions { codeLensOptionsResolveProvider = parsedResolveProvider }
+            CodeLensOptions { codeLensOptionsWorkDoneProgress = parsedWorkDoneProgress
+                            , codeLensOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized CodeLensOptions value: " ++ ppJSON j)
 
-data CodeLensOptions = CodeLensOptions { codeLensOptionsResolveProvider :: Maybe Bool }
+data CodeLensOptions = CodeLensOptions { codeLensOptionsWorkDoneProgress :: Maybe Bool
+                                       , codeLensOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

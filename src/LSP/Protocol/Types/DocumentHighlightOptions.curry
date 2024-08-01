@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON DocumentHighlightOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentHighlightOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DocumentHighlightOptions value: " ++ ppJSON j)
 
-data DocumentHighlightOptions = DocumentHighlightOptions {  }
+data DocumentHighlightOptions = DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -4,16 +4,26 @@ module LSP.Protocol.Types.FoldingRangeRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return FoldingRangeRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedId <- lookupMaybeFromJSON "id" vs
+           return
+            FoldingRangeRegistrationOptions { foldingRangeRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                            , foldingRangeRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                            , foldingRangeRegistrationOptionsId = parsedId }
       _ ->
         Left
          ("Unrecognized FoldingRangeRegistrationOptions value: " ++ ppJSON j)
 
-data FoldingRangeRegistrationOptions = FoldingRangeRegistrationOptions {  }
+data FoldingRangeRegistrationOptions = FoldingRangeRegistrationOptions { foldingRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                       , foldingRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                       , foldingRangeRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)
 

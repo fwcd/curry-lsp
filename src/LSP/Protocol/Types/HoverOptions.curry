@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON HoverOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return HoverOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            HoverOptions { hoverOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized HoverOptions value: " ++ ppJSON j)
 
-data HoverOptions = HoverOptions {  }
+data HoverOptions = HoverOptions { hoverOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

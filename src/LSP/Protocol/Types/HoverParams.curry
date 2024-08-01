@@ -4,14 +4,26 @@ module LSP.Protocol.Types.HoverParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.Position
+import LSP.Protocol.Types.ProgressToken
+import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
 instance FromJSON HoverParams where
   fromJSON j =
     case j of
-      JObject vs -> do return HoverParams {  }
+      JObject vs ->
+        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+           parsedPosition <- lookupFromJSON "position" vs
+           parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           return
+            HoverParams { hoverParamsTextDocument = parsedTextDocument
+                        , hoverParamsPosition = parsedPosition
+                        , hoverParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized HoverParams value: " ++ ppJSON j)
 
-data HoverParams = HoverParams {  }
+data HoverParams = HoverParams { hoverParamsTextDocument :: TextDocumentIdentifier
+                               , hoverParamsPosition :: Position
+                               , hoverParamsWorkDoneToken :: Maybe ProgressToken }
  deriving (Show,Eq)
 

@@ -9,12 +9,18 @@ import LSP.Utils.JSON
 instance FromJSON WorkspaceSymbolRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return WorkspaceSymbolRegistrationOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
+           return
+            WorkspaceSymbolRegistrationOptions { workspaceSymbolRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                               , workspaceSymbolRegistrationOptionsResolveProvider = parsedResolveProvider }
       _ ->
         Left
          ("Unrecognized WorkspaceSymbolRegistrationOptions value: "
            ++ ppJSON j)
 
-data WorkspaceSymbolRegistrationOptions = WorkspaceSymbolRegistrationOptions {  }
+data WorkspaceSymbolRegistrationOptions = WorkspaceSymbolRegistrationOptions { workspaceSymbolRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                             , workspaceSymbolRegistrationOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)
 

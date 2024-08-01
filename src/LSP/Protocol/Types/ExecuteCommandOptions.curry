@@ -10,11 +10,14 @@ instance FromJSON ExecuteCommandOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedCommands <- lookupFromJSON "commands" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedCommands <- lookupFromJSON "commands" vs
            return
-            ExecuteCommandOptions { executeCommandOptionsCommands = parsedCommands }
+            ExecuteCommandOptions { executeCommandOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                  , executeCommandOptionsCommands = parsedCommands }
       _ -> Left ("Unrecognized ExecuteCommandOptions value: " ++ ppJSON j)
 
-data ExecuteCommandOptions = ExecuteCommandOptions { executeCommandOptionsCommands :: [String] }
+data ExecuteCommandOptions = ExecuteCommandOptions { executeCommandOptionsWorkDoneProgress :: Maybe Bool
+                                                   , executeCommandOptionsCommands :: [String] }
  deriving (Show,Eq)
 

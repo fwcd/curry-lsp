@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON DocumentFormattingOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentFormattingOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DocumentFormattingOptions value: " ++ ppJSON j)
 
-data DocumentFormattingOptions = DocumentFormattingOptions {  }
+data DocumentFormattingOptions = DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

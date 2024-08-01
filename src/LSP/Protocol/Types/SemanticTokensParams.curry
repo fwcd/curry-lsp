@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
 
@@ -11,11 +12,19 @@ instance FromJSON SemanticTokensParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedPartialResultToken <- lookupMaybeFromJSON
+                                        "partialResultToken"
+                                        vs
+           parsedTextDocument <- lookupFromJSON "textDocument" vs
            return
-            SemanticTokensParams { semanticTokensParamsTextDocument = parsedTextDocument }
+            SemanticTokensParams { semanticTokensParamsWorkDoneToken = parsedWorkDoneToken
+                                 , semanticTokensParamsPartialResultToken = parsedPartialResultToken
+                                 , semanticTokensParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized SemanticTokensParams value: " ++ ppJSON j)
 
-data SemanticTokensParams = SemanticTokensParams { semanticTokensParamsTextDocument :: TextDocumentIdentifier }
+data SemanticTokensParams = SemanticTokensParams { semanticTokensParamsWorkDoneToken :: Maybe ProgressToken
+                                                 , semanticTokensParamsPartialResultToken :: Maybe ProgressToken
+                                                 , semanticTokensParamsTextDocument :: TextDocumentIdentifier }
  deriving (Show,Eq)
 

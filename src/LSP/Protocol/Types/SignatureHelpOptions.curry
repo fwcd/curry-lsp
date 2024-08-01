@@ -10,17 +10,20 @@ instance FromJSON SignatureHelpOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTriggerCharacters <- lookupMaybeFromJSON "triggerCharacters"
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedTriggerCharacters <- lookupMaybeFromJSON "triggerCharacters"
                                        vs
            parsedRetriggerCharacters <- lookupMaybeFromJSON
                                          "retriggerCharacters"
                                          vs
            return
-            SignatureHelpOptions { signatureHelpOptionsTriggerCharacters = parsedTriggerCharacters
+            SignatureHelpOptions { signatureHelpOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                 , signatureHelpOptionsTriggerCharacters = parsedTriggerCharacters
                                  , signatureHelpOptionsRetriggerCharacters = parsedRetriggerCharacters }
       _ -> Left ("Unrecognized SignatureHelpOptions value: " ++ ppJSON j)
 
-data SignatureHelpOptions = SignatureHelpOptions { signatureHelpOptionsTriggerCharacters :: Maybe [String]
+data SignatureHelpOptions = SignatureHelpOptions { signatureHelpOptionsWorkDoneProgress :: Maybe Bool
+                                                 , signatureHelpOptionsTriggerCharacters :: Maybe [String]
                                                  , signatureHelpOptionsRetriggerCharacters :: Maybe [String] }
  deriving (Show,Eq)
 

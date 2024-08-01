@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON ImplementationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return ImplementationOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            ImplementationOptions { implementationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized ImplementationOptions value: " ++ ppJSON j)
 
-data ImplementationOptions = ImplementationOptions {  }
+data ImplementationOptions = ImplementationOptions { implementationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

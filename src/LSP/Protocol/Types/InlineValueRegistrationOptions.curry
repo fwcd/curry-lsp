@@ -4,16 +4,26 @@ module LSP.Protocol.Types.InlineValueRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return InlineValueRegistrationOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedId <- lookupMaybeFromJSON "id" vs
+           return
+            InlineValueRegistrationOptions { inlineValueRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                           , inlineValueRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                           , inlineValueRegistrationOptionsId = parsedId }
       _ ->
         Left
          ("Unrecognized InlineValueRegistrationOptions value: " ++ ppJSON j)
 
-data InlineValueRegistrationOptions = InlineValueRegistrationOptions {  }
+data InlineValueRegistrationOptions = InlineValueRegistrationOptions { inlineValueRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                     , inlineValueRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                     , inlineValueRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)
 

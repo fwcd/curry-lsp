@@ -12,16 +12,19 @@ instance FromJSON CodeActionOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedCodeActionKinds <- lookupMaybeFromJSON "codeActionKinds" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedCodeActionKinds <- lookupMaybeFromJSON "codeActionKinds" vs
            parsedDocumentation <- lookupMaybeFromJSON "documentation" vs
            parsedResolveProvider <- lookupMaybeFromJSON "resolveProvider" vs
            return
-            CodeActionOptions { codeActionOptionsCodeActionKinds = parsedCodeActionKinds
+            CodeActionOptions { codeActionOptionsWorkDoneProgress = parsedWorkDoneProgress
+                              , codeActionOptionsCodeActionKinds = parsedCodeActionKinds
                               , codeActionOptionsDocumentation = parsedDocumentation
                               , codeActionOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized CodeActionOptions value: " ++ ppJSON j)
 
-data CodeActionOptions = CodeActionOptions { codeActionOptionsCodeActionKinds :: Maybe [CodeActionKind]
+data CodeActionOptions = CodeActionOptions { codeActionOptionsWorkDoneProgress :: Maybe Bool
+                                           , codeActionOptionsCodeActionKinds :: Maybe [CodeActionKind]
                                            , codeActionOptionsDocumentation :: Maybe [CodeActionKindDocumentation]
                                            , codeActionOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

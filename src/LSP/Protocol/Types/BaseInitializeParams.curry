@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ClientCapabilities
 import LSP.Protocol.Types.ClientInfo
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TraceValue
 import LSP.Utils.JSON
 
@@ -14,7 +15,8 @@ instance FromJSON BaseInitializeParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedProcessId <- lookupFromJSON "processId" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedProcessId <- lookupFromJSON "processId" vs
            parsedClientInfo <- lookupMaybeFromJSON "clientInfo" vs
            parsedLocale <- lookupMaybeFromJSON "locale" vs
            parsedRootPath <- lookupMaybeFromJSON "rootPath" vs
@@ -25,7 +27,8 @@ instance FromJSON BaseInitializeParams where
                                            vs
            parsedTrace <- lookupMaybeFromJSON "trace" vs
            return
-            BaseInitializeParams { baseInitializeParamsProcessId = parsedProcessId
+            BaseInitializeParams { baseInitializeParamsWorkDoneToken = parsedWorkDoneToken
+                                 , baseInitializeParamsProcessId = parsedProcessId
                                  , baseInitializeParamsClientInfo = parsedClientInfo
                                  , baseInitializeParamsLocale = parsedLocale
                                  , baseInitializeParamsRootPath = parsedRootPath
@@ -35,7 +38,8 @@ instance FromJSON BaseInitializeParams where
                                  , baseInitializeParamsTrace = parsedTrace }
       _ -> Left ("Unrecognized BaseInitializeParams value: " ++ ppJSON j)
 
-data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsProcessId :: Either Int ()
+data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsWorkDoneToken :: Maybe ProgressToken
+                                                 , baseInitializeParamsProcessId :: Either Int ()
                                                  , baseInitializeParamsClientInfo :: Maybe ClientInfo
                                                  , baseInitializeParamsLocale :: Maybe String
                                                  , baseInitializeParamsRootPath :: Maybe (Either String ())

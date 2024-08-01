@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON MonikerOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return MonikerOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            MonikerOptions { monikerOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized MonikerOptions value: " ++ ppJSON j)
 
-data MonikerOptions = MonikerOptions {  }
+data MonikerOptions = MonikerOptions { monikerOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

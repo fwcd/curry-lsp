@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlayHintParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Utils.JSON
@@ -12,14 +13,17 @@ instance FromJSON InlayHintParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedTextDocument <- lookupFromJSON "textDocument" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedTextDocument <- lookupFromJSON "textDocument" vs
            parsedRange <- lookupFromJSON "range" vs
            return
-            InlayHintParams { inlayHintParamsTextDocument = parsedTextDocument
+            InlayHintParams { inlayHintParamsWorkDoneToken = parsedWorkDoneToken
+                            , inlayHintParamsTextDocument = parsedTextDocument
                             , inlayHintParamsRange = parsedRange }
       _ -> Left ("Unrecognized InlayHintParams value: " ++ ppJSON j)
 
-data InlayHintParams = InlayHintParams { inlayHintParamsTextDocument :: TextDocumentIdentifier
+data InlayHintParams = InlayHintParams { inlayHintParamsWorkDoneToken :: Maybe ProgressToken
+                                       , inlayHintParamsTextDocument :: TextDocumentIdentifier
                                        , inlayHintParamsRange :: Range }
  deriving (Show,Eq)
 

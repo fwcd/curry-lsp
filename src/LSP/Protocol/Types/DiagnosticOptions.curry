@@ -10,19 +10,22 @@ instance FromJSON DiagnosticOptions where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedIdentifier <- lookupMaybeFromJSON "identifier" vs
            parsedInterFileDependencies <- lookupFromJSON
                                            "interFileDependencies"
                                            vs
            parsedWorkspaceDiagnostics <- lookupFromJSON "workspaceDiagnostics"
                                           vs
            return
-            DiagnosticOptions { diagnosticOptionsIdentifier = parsedIdentifier
+            DiagnosticOptions { diagnosticOptionsWorkDoneProgress = parsedWorkDoneProgress
+                              , diagnosticOptionsIdentifier = parsedIdentifier
                               , diagnosticOptionsInterFileDependencies = parsedInterFileDependencies
                               , diagnosticOptionsWorkspaceDiagnostics = parsedWorkspaceDiagnostics }
       _ -> Left ("Unrecognized DiagnosticOptions value: " ++ ppJSON j)
 
-data DiagnosticOptions = DiagnosticOptions { diagnosticOptionsIdentifier :: Maybe String
+data DiagnosticOptions = DiagnosticOptions { diagnosticOptionsWorkDoneProgress :: Maybe Bool
+                                           , diagnosticOptionsIdentifier :: Maybe String
                                            , diagnosticOptionsInterFileDependencies :: Bool
                                            , diagnosticOptionsWorkspaceDiagnostics :: Bool }
  deriving (Show,Eq)

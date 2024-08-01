@@ -4,16 +4,26 @@ module LSP.Protocol.Types.DocumentColorRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON DocumentColorRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentColorRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           parsedId <- lookupMaybeFromJSON "id" vs
+           return
+            DocumentColorRegistrationOptions { documentColorRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                             , documentColorRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress
+                                             , documentColorRegistrationOptionsId = parsedId }
       _ ->
         Left
          ("Unrecognized DocumentColorRegistrationOptions value: " ++ ppJSON j)
 
-data DocumentColorRegistrationOptions = DocumentColorRegistrationOptions {  }
+data DocumentColorRegistrationOptions = DocumentColorRegistrationOptions { documentColorRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                         , documentColorRegistrationOptionsWorkDoneProgress :: Maybe Bool
+                                                                         , documentColorRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)
 

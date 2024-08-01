@@ -4,17 +4,24 @@ module LSP.Protocol.Types.DocumentHighlightRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Protocol.Types.DocumentSelector
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightRegistrationOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return DocumentHighlightRegistrationOptions {  }
+      JObject vs ->
+        do parsedDocumentSelector <- lookupFromJSON "documentSelector" vs
+           parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            DocumentHighlightRegistrationOptions { documentHighlightRegistrationOptionsDocumentSelector = parsedDocumentSelector
+                                                 , documentHighlightRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ ->
         Left
          ("Unrecognized DocumentHighlightRegistrationOptions value: "
            ++ ppJSON j)
 
-data DocumentHighlightRegistrationOptions = DocumentHighlightRegistrationOptions {  }
+data DocumentHighlightRegistrationOptions = DocumentHighlightRegistrationOptions { documentHighlightRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
+                                                                                 , documentHighlightRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

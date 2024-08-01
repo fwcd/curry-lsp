@@ -5,20 +5,24 @@ module LSP.Protocol.Types.ExecuteCommandParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Protocol.Types.ProgressToken
 import LSP.Utils.JSON
 
 instance FromJSON ExecuteCommandParams where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedCommand <- lookupFromJSON "command" vs
+        do parsedWorkDoneToken <- lookupMaybeFromJSON "workDoneToken" vs
+           parsedCommand <- lookupFromJSON "command" vs
            parsedArguments <- lookupMaybeFromJSON "arguments" vs
            return
-            ExecuteCommandParams { executeCommandParamsCommand = parsedCommand
+            ExecuteCommandParams { executeCommandParamsWorkDoneToken = parsedWorkDoneToken
+                                 , executeCommandParamsCommand = parsedCommand
                                  , executeCommandParamsArguments = parsedArguments }
       _ -> Left ("Unrecognized ExecuteCommandParams value: " ++ ppJSON j)
 
-data ExecuteCommandParams = ExecuteCommandParams { executeCommandParamsCommand :: String
+data ExecuteCommandParams = ExecuteCommandParams { executeCommandParamsWorkDoneToken :: Maybe ProgressToken
+                                                 , executeCommandParamsCommand :: String
                                                  , executeCommandParamsArguments :: Maybe [LSPAny] }
  deriving (Show,Eq)
 

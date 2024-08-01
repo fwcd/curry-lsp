@@ -11,17 +11,23 @@ instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
   fromJSON j =
     case j of
       JObject vs ->
-        do parsedUri <- lookupFromJSON "uri" vs
+        do parsedKind <- lookupFromJSON "kind" vs
+           parsedResultId <- lookupFromJSON "resultId" vs
+           parsedUri <- lookupFromJSON "uri" vs
            parsedVersion <- lookupFromJSON "version" vs
            return
-            WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportUri = parsedUri
+            WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportKind = parsedKind
+                                                       , workspaceUnchangedDocumentDiagnosticReportResultId = parsedResultId
+                                                       , workspaceUnchangedDocumentDiagnosticReportUri = parsedUri
                                                        , workspaceUnchangedDocumentDiagnosticReportVersion = parsedVersion }
       _ ->
         Left
          ("Unrecognized WorkspaceUnchangedDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
-data WorkspaceUnchangedDocumentDiagnosticReport = WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportUri :: DocumentUri
+data WorkspaceUnchangedDocumentDiagnosticReport = WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportKind :: String
+                                                                                             , workspaceUnchangedDocumentDiagnosticReportResultId :: String
+                                                                                             , workspaceUnchangedDocumentDiagnosticReportUri :: DocumentUri
                                                                                              , workspaceUnchangedDocumentDiagnosticReportVersion :: Either Int () }
  deriving (Show,Eq)
 

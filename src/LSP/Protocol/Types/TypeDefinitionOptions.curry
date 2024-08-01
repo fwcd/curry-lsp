@@ -9,9 +9,12 @@ import LSP.Utils.JSON
 instance FromJSON TypeDefinitionOptions where
   fromJSON j =
     case j of
-      JObject vs -> do return TypeDefinitionOptions {  }
+      JObject vs ->
+        do parsedWorkDoneProgress <- lookupMaybeFromJSON "workDoneProgress" vs
+           return
+            TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized TypeDefinitionOptions value: " ++ ppJSON j)
 
-data TypeDefinitionOptions = TypeDefinitionOptions {  }
+data TypeDefinitionOptions = TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 
