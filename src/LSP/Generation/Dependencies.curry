@@ -7,8 +7,10 @@ import qualified AbstractCurry.Types as AC
 import qualified Data.Set as S
 import LSP.Utils.General ( unions, unionMap )
 
--- TODO: Make this a type class?
--- This would also let us model CField more cleanly without requiring CExpr.
+-- TODO: It would be nice to turn this into a type class, which would also let
+-- us model CField more cleanly without requiring CExpr. Curry doesn't support
+-- instances on type aliases etc. (which would be needed for QName/String), so
+-- we cannot do this without FlexibleInstances etc.
 
 -- | Extracts the required imports from the given type declaration.
 typeDeclToImports :: AC.CTypeDecl -> S.Set String
