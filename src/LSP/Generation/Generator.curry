@@ -14,7 +14,7 @@ import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Generation.Dependencies
 import LSP.Generation.Model
-import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions )
+import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions, unionMap )
 
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
@@ -94,7 +94,7 @@ metaStructureToProg s = do
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-      imps = requiredImports mname $ typeDeclModuleDeps ty
+      imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
@@ -115,7 +115,7 @@ metaEnumerationToProg e = do
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-      imps = requiredImports mname $ typeDeclModuleDeps ty
+      imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
