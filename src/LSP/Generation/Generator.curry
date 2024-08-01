@@ -23,7 +23,6 @@ import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unio
 data GeneratorEnv = GeneratorEnv
   { geModulePrefix :: String
   , geBuiltInTypeAliases :: M.Map String AC.QName
-  , geStandardImports :: [String]
   , geStandardDerivings :: [AC.QName]
   , geStandardEnumDerivings :: [AC.QName]
   }
@@ -36,14 +35,6 @@ generatorEnv mprefix = GeneratorEnv
   { geModulePrefix = mprefix
   , geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
-    ]
-    -- TODO: Remove these since if we can generate the needed imports?
-  , geStandardImports =
-    [ "LSP.Utils.JSON"
-    , "LSP.Protocol.Support"
-    , "Data.Map"
-    , "JSON.Data"
-    , "JSON.Pretty"
     ]
   , geStandardDerivings =
     [ AC.pre "Show"
@@ -229,7 +220,7 @@ metaAliasToProg a = do
   let maybeTy = case M.lookup name btas of
         Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
         Nothing -> Just $ AC.CTypeSyn qn vis [] texp
-  imps <- asks geStandardImports
+      imps = requiredImports mname $ unions $ typeDeclToImports <$> maybeToList maybeTy
   return $ (\ty -> AC.CurryProg mname imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
