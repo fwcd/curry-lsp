@@ -70,7 +70,14 @@ ruleModuleDeps (AC.CRule pats rhs) = S.union (unionMap patternModuleDeps pats) (
 
 -- | Extracts the module dependencies from the given pattern.
 patternModuleDeps :: AC.CPattern -> S.Set String
-patternModuleDeps _ = S.empty -- TODO
+patternModuleDeps pat = case pat of
+  AC.CPVar _          -> S.empty
+  AC.CPLit _          -> S.empty
+  AC.CPComb qn ps     -> S.union (qNameModuleDeps qn) (unionMap patternModuleDeps ps)
+  AC.CPAs _ p         -> patternModuleDeps p
+  AC.CPFuncComb qn ps -> S.union (qNameModuleDeps qn) (unionMap patternModuleDeps ps)
+  AC.CPLazy p         -> patternModuleDeps p
+  AC.CPRecord qn fs   -> S.union (qNameModuleDeps qn) (unionMap patternFieldModuleDeps fs)
 
 -- | Extracts the module dependencies from the given right-hand side.
 rhsModuleDeps :: AC.CRhs -> S.Set String
@@ -91,8 +98,8 @@ exprModuleDeps expr = case expr of
   AC.CListComp e stmts -> S.union (exprModuleDeps e) (unionMap statementModuleDeps stmts)
   AC.CCase _ e arms    -> S.union (exprModuleDeps e) (unionMap caseArmModuleDeps arms)
   AC.CTyped e qty      -> S.union (exprModuleDeps e) (qualTypeExprModuleDeps qty)
-  AC.CRecConstr qn fs  -> S.union (qNameModuleDeps qn) (unionMap fieldModuleDeps fs)
-  AC.CRecUpdate e fs   -> S.union (exprModuleDeps e) (unionMap fieldModuleDeps fs)
+  AC.CRecConstr qn fs  -> S.union (qNameModuleDeps qn) (unionMap exprFieldModuleDeps fs)
+  AC.CRecUpdate e fs   -> S.union (exprModuleDeps e) (unionMap exprFieldModuleDeps fs)
 
 -- | Extracts the module dependencies from the given statement.
 statementModuleDeps :: AC.CStatement -> S.Set String
@@ -106,8 +113,12 @@ caseArmModuleDeps :: (AC.CPattern, AC.CRhs) -> S.Set String
 caseArmModuleDeps (pat, rhs) = S.union (patternModuleDeps pat) (rhsModuleDeps rhs)
 
 -- | Extracts the module dependencies from the given field.
-fieldModuleDeps :: AC.CField AC.CExpr -> S.Set String
-fieldModuleDeps (qn, e) = S.union (qNameModuleDeps qn) (exprModuleDeps e)
+exprFieldModuleDeps :: AC.CField AC.CExpr -> S.Set String
+exprFieldModuleDeps (qn, e) = S.union (qNameModuleDeps qn) (exprModuleDeps e)
+
+-- | Extracts the module dependencies from the given field.
+patternFieldModuleDeps :: AC.CField AC.CPattern -> S.Set String
+patternFieldModuleDeps (qn, p) = S.union (qNameModuleDeps qn) (patternModuleDeps p)
 
 -- | Extracts the module dependencies from the given guard.
 guardModuleDeps :: (AC.CExpr, AC.CExpr) -> S.Set String
