@@ -12,7 +12,7 @@ import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 import JSON.Parser ( parseJSON )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.General ( lookup', rightToMaybe )
+import LSP.Utils.General ( lookup', rightToMaybe, fromRight' )
 
 class FromJSON a where
   -- | Converts from a JSON value to the type.
@@ -118,7 +118,8 @@ instance ToJSON Char where
 instance (Ord k, FromJSON k, FromJSON v) => FromJSON (M.Map k v) where
   fromJSON = (M.fromList <$>) . objectFromJSON
 
--- TODO: ToJSON instance for Map
+instance (Ord k, ToJSON k, ToJSON v) => ToJSON (M.Map k v) where
+  toJSON = objectToJSON . M.toList
 
 -- Parses a boolean value from JSON.
 boolFromJSON :: JValue -> Either String Bool
@@ -168,6 +169,10 @@ objectFromJSON :: (FromJSON k, FromJSON v) => JValue -> Either String [(k, v)]
 objectFromJSON j = case j of
   JObject vs -> mapM (\(k, v) -> (,) <$> fromJSON (JString k) <*> fromJSON v) vs
   _ -> Left $ "Expected object but was: " ++ ppJSON j
+
+-- Converts an object to JSON.
+objectToJSON :: (Ord k, ToJSON k, ToJSON v) => [(k, v)] -> JValue
+objectToJSON kvs = JObject $ (\(k, v) -> (fromRight' (stringFromJSON (toJSON k)), toJSON v)) <$> kvs
 
 -- Parses an array from JSON.
 arrayFromJSON :: FromJSON a => JValue -> Either String [a]
