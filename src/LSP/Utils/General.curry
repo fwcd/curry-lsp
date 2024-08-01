@@ -6,7 +6,7 @@ module LSP.Utils.General
   , replace, replaceSingle
   , unions, unionMap
   , (<.$>), (<$.>), (<<$>>)
-  , keyBy
+  , keyBy, nubOrdOn
   ) where
 
 import Data.Char ( toUpper, toLower )
@@ -87,3 +87,19 @@ unionMap f = unions . map f
 -- | Associates the given value with the given key.
 keyBy :: (a -> k) -> a -> (k, a)
 keyBy f x = (f x, x)
+
+-- Source: https://hackage.haskell.org/package/containers-0.7/docs/src/Data.Containers.ListUtils.html#nubOrdOn
+-- License: BSD-style ((c) Gershom Bazerman 2018)
+
+-- | Removes duplicates from the given list by comparing the values after the given projection.
+nubOrdOn :: Ord k => (a -> k) -> [a] -> [a]
+nubOrdOn f xs = nubOrdOnExcluding f S.empty xs
+
+nubOrdOnExcluding :: Ord k => (a -> k) -> S.Set k -> [a] -> [a]
+nubOrdOnExcluding f = go
+  where
+    go _ [] = []
+    go s (x:xs)
+      | fx `S.member` s = go s xs
+      | otherwise = x : go (S.insert fx s) xs
+      where fx = f x
