@@ -349,7 +349,7 @@ lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
 ppJSONQName :: AC.QName
 ppJSONQName = ("JSON.Pretty", "ppJSON")
 
--- | a prefixed enum value name.
+-- | Generates a prefixed enum value name.
 enumValueName :: String -> String -> String
 enumValueName prefix name = capitalize prefix ++ capitalize name
 
@@ -364,3 +364,7 @@ escapeName = replaceSingle '_' "Base"
 -- | Qualifies the given name with the given prefix.
 qualWith :: String -> String -> String
 qualWith prefix name = prefix ++ "." ++ name
+
+-- | Creates a QName with the derived module name.
+mkQName :: String -> String -> AC.QName
+mkQName mprefix n = (qualWith mprefix n, n)
