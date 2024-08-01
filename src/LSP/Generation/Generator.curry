@@ -103,7 +103,7 @@ metaStructureToProg s = do
       vis = AC.Public
   fs <- mapM (metaPropertyToField mname name) props
   derivs <- asks geStandardDerivings
-  fromJSONInst <- metaStructureToFromJSONInstance mname name s
+  fromJSONInst <- flatMetaStructureToFromJSONInstance mname name s'
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
@@ -132,11 +132,9 @@ metaEnumerationToProg e = do
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
-metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
-metaStructureToFromJSONInstance mname prefix s = do
-  structs <- asks geMetaStructures
-  let s' = flattenMetaStructure structs s
-      name = escapeName $ msName s'
+flatMetaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+flatMetaStructureToFromJSONInstance mname prefix s' = do
+  let name = escapeName $ msName s'
       qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
