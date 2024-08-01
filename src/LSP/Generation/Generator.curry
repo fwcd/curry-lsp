@@ -7,6 +7,7 @@ import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
 import Control.Monad ( join )
 import Control.Monad.Trans.State ( State, evalState, gets )
+import Control.Monad.Trans.Reader ( ReaderT (..), asks )
 import qualified Data.Map as M
 import qualified Data.Set as S
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
@@ -18,49 +19,61 @@ import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unio
 -- TODO: Generate documentation
 -- See https://git.ps.informatik.uni-kiel.de/curry-packages/abstract-curry/-/issues/1
 
--- | Internal generator state.
-data GeneratorState = GeneratorState
-  { gsStructMap :: M.Map String MetaStructure
-  , gsBuiltInTypeAliases :: M.Map String AC.QName
-  , gsStandardImports :: [String]
-  , gsStandardDerivings :: [AC.QName]
-  , gsStandardEnumDerivings :: [AC.QName]
+-- | Internal (read-only) generator environment.
+data GeneratorEnv = GeneratorEnv
+  { geBuiltInTypeAliases :: M.Map String AC.QName
+  , geStandardImports :: [String]
+  , geStandardDerivings :: [AC.QName]
+  , geStandardEnumDerivings :: [AC.QName]
   }
 
-type GM = State GeneratorState
+-- | Internal (read/write) generator state.
+data GeneratorState = GeneratorState
+  { gsStructMap :: M.Map String MetaStructure
+  }
 
--- | Creates the initial generator state.
-initialGeneratorState :: MetaModel -> GeneratorState
-initialGeneratorState m = GeneratorState
-  { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
-  , gsBuiltInTypeAliases = M.fromList
+type GM = ReaderT GeneratorEnv (State GeneratorState)
+
+-- | Creates the generator environment.
+generatorEnv :: GeneratorEnv
+generatorEnv = GeneratorEnv
+  { geBuiltInTypeAliases = M.fromList
     [ ("LSPAny", support "LSPAny")
     ]
     -- TODO: Remove these since if we can generate the needed imports?
-  , gsStandardImports =
+  , geStandardImports =
     [ "LSP.Utils.JSON"
     , "LSP.Protocol.Support"
     , "Data.Map"
     , "JSON.Data"
     , "JSON.Pretty"
     ]
-  , gsStandardDerivings =
+  , geStandardDerivings =
     [ AC.pre "Show"
     , AC.pre "Eq"
     ]
-  , gsStandardEnumDerivings =
+  , geStandardEnumDerivings =
     [ AC.pre "Enum"
     , AC.pre "Bounded"
     , AC.pre "Ord"
     ]
   }
 
+-- | Creates the initial generator state.
+initialGeneratorState :: MetaModel -> GeneratorState
+initialGeneratorState m = GeneratorState
+  { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
+  }
+
+-- | Runs the generator monad on the given model.
+evalGM :: GM a -> MetaModel -> a
+evalGM x m = evalState (runReaderT x generatorEnv) (initialGeneratorState m)
+
 -- | Converts a meta structure to prettyprinted Curry programs, keyed by module.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
 metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
   where
-    st = initialGeneratorState m
-    progs = evalState (metaModelToProgs prefix m) st
+    progs = evalGM (metaModelToProgs prefix m) m
     prettyWithModuleName prog@(AC.CurryProg name _ _ _ _ _ _ _) = (name, unlines [pragmas, body])
       where
         -- Disable qualification since instances are not generated correctly
@@ -93,7 +106,7 @@ metaStructureToProg mprefix s = do
       props = msProperties s
       vis = AC.Public
   fs <- mapM (metaPropertyToField mname name) props
-  derivs <- gets gsStandardDerivings
+  derivs <- asks geStandardDerivings
   fromJSONInst <- metaStructureToFromJSONInstance mname name s
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
@@ -111,9 +124,9 @@ metaEnumerationToProg mprefix e = do
       vals = meValues e
   cdecls <- mapM (metaEnumerationValueToCons mname name) vals
   -- TODO: liftA2 on StateT is broken due to the missing implementation of <*>, causing the program to loop
-  -- derivs <- liftA2 (++) (gets gsStandardDerivings) (gets gsStandardEnumDerivings)
-  stdDerivs <- gets gsStandardDerivings
-  enumDerivs <- gets gsStandardEnumDerivings
+  -- derivs <- liftA2 (++) (asks geStandardDerivings) (asks geStandardEnumDerivings)
+  stdDerivs <- asks geStandardDerivings
+  enumDerivs <- asks geStandardEnumDerivings
   fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
@@ -218,11 +231,11 @@ metaAliasToProg mprefix a = do
       qn = (mname, name)
       vis = AC.Public
   texp <- metaTypeToTypeExpr mname $ mtaType a
-  btas <- gets gsBuiltInTypeAliases
+  btas <- asks geBuiltInTypeAliases
   let maybeTy = case M.lookup name btas of
         Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
         Nothing -> Just $ AC.CTypeSyn qn vis [] texp
-  imps <- gets gsStandardImports
+  imps <- asks geStandardImports
   return $ (\ty -> AC.CurryProg mname imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
@@ -241,7 +254,7 @@ maybeTypeExprIf True = ACB.maybeType
 -- | Converts a meta type to a Curry type expression.
 metaTypeToTypeExpr :: String -> MetaType -> GM AC.CTypeExpr
 metaTypeToTypeExpr mname t = case t of
-  MetaTypeReference n     -> do btas <- gets gsBuiltInTypeAliases
+  MetaTypeReference n     -> do btas <- asks geBuiltInTypeAliases
                                 return $ ACB.baseType $ fromMaybe (mname, n) $ M.lookup n btas
   MetaTypeArray a         -> ACB.listType <$> metaTypeToTypeExpr mname a
   MetaTypeMap k e         -> ACB.applyTC ("Data.Map", "Map") <$> mapM (metaTypeToTypeExpr mname) [k, e]
