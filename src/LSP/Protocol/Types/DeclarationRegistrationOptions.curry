@@ -22,6 +22,17 @@ instance FromJSON DeclarationRegistrationOptions where
         Left
          ("Unrecognized DeclarationRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON DeclarationRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (declarationRegistrationOptionsWorkDoneProgress x),  (.=)
+                                                             "documentSelector"
+                                                             (declarationRegistrationOptionsDocumentSelector
+                                                               x),  (.?=) "id"
+                                                                     (declarationRegistrationOptionsId
+                                                                       x)]
+
 data DeclarationRegistrationOptions = DeclarationRegistrationOptions { declarationRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                      , declarationRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                      , declarationRegistrationOptionsId :: Maybe String }

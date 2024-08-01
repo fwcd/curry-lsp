@@ -24,6 +24,20 @@ instance FromJSON RenameParams where
                          , renameParamsNewName = parsedNewName }
       _ -> Left ("Unrecognized RenameParams value: " ++ ppJSON j)
 
+instance ToJSON RenameParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (renameParamsWorkDoneToken x),  (.=)
+                                                             "textDocument"
+                                                             (renameParamsTextDocument
+                                                               x),  (.=)
+                                                                     "position"
+                                                                     (renameParamsPosition
+                                                                       x),  (.=)
+                                                                             "newName"
+                                                                             (renameParamsNewName
+                                                                               x)]
+
 data RenameParams = RenameParams { renameParamsWorkDoneToken :: Maybe ProgressToken
                                  , renameParamsTextDocument :: TextDocumentIdentifier
                                  , renameParamsPosition :: Position

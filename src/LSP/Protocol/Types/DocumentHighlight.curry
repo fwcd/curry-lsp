@@ -19,6 +19,12 @@ instance FromJSON DocumentHighlight where
                               , documentHighlightKind = parsedKind }
       _ -> Left ("Unrecognized DocumentHighlight value: " ++ ppJSON j)
 
+instance ToJSON DocumentHighlight where
+  toJSON x =
+    object
+     [(.=) "range" (documentHighlightRange x),  (.?=) "kind"
+                                                 (documentHighlightKind x)]
+
 data DocumentHighlight = DocumentHighlight { documentHighlightRange :: Range
                                            , documentHighlightKind :: Maybe DocumentHighlightKind }
  deriving (Show,Eq)

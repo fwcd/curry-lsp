@@ -23,6 +23,18 @@ instance FromJSON DocumentRangeFormattingRegistrationOptions where
          ("Unrecognized DocumentRangeFormattingRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentRangeFormattingRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentRangeFormattingRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                         "workDoneProgress"
+                                                                         (documentRangeFormattingRegistrationOptionsWorkDoneProgress
+                                                                           x),  (.?=)
+                                                                                 "rangesSupport"
+                                                                                 (documentRangeFormattingRegistrationOptionsRangesSupport
+                                                                                   x)]
+
 data DocumentRangeFormattingRegistrationOptions = DocumentRangeFormattingRegistrationOptions { documentRangeFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                              , documentRangeFormattingRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                                              , documentRangeFormattingRegistrationOptionsRangesSupport :: Maybe Bool }

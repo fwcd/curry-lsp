@@ -16,6 +16,9 @@ instance FromJSON SemanticTokensPartialResult where
       _ ->
         Left ("Unrecognized SemanticTokensPartialResult value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensPartialResult where
+  toJSON x = object [(.=) "data" (semanticTokensPartialResultData x)]
+
 data SemanticTokensPartialResult = SemanticTokensPartialResult { semanticTokensPartialResultData :: [Int] }
  deriving (Show,Eq)
 

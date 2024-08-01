@@ -17,6 +17,14 @@ instance FromJSON ExecuteCommandOptions where
                                   , executeCommandOptionsCommands = parsedCommands }
       _ -> Left ("Unrecognized ExecuteCommandOptions value: " ++ ppJSON j)
 
+instance ToJSON ExecuteCommandOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (executeCommandOptionsWorkDoneProgress x),  (.=) "commands"
+                                                    (executeCommandOptionsCommands
+                                                      x)]
+
 data ExecuteCommandOptions = ExecuteCommandOptions { executeCommandOptionsWorkDoneProgress :: Maybe Bool
                                                    , executeCommandOptionsCommands :: [String] }
  deriving (Show,Eq)

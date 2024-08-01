@@ -17,6 +17,9 @@ instance FromJSON DidChangeConfigurationParams where
       _ ->
         Left ("Unrecognized DidChangeConfigurationParams value: " ++ ppJSON j)
 
+instance ToJSON DidChangeConfigurationParams where
+  toJSON x = object [(.=) "settings" (didChangeConfigurationParamsSettings x)]
+
 data DidChangeConfigurationParams = DidChangeConfigurationParams { didChangeConfigurationParamsSettings :: LSPAny }
  deriving (Show,Eq)
 

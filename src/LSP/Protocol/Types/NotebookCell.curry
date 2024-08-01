@@ -25,6 +25,18 @@ instance FromJSON NotebookCell where
                          , notebookCellExecutionSummary = parsedExecutionSummary }
       _ -> Left ("Unrecognized NotebookCell value: " ++ ppJSON j)
 
+instance ToJSON NotebookCell where
+  toJSON x =
+    object
+     [(.=) "kind" (notebookCellKind x),  (.=) "document"
+                                          (notebookCellDocument x),  (.?=)
+                                                                      "metadata"
+                                                                      (notebookCellMetadata
+                                                                        x),  (.?=)
+                                                                              "executionSummary"
+                                                                              (notebookCellExecutionSummary
+                                                                                x)]
+
 data NotebookCell = NotebookCell { notebookCellKind :: NotebookCellKind
                                  , notebookCellDocument :: DocumentUri
                                  , notebookCellMetadata :: Maybe LSPObject

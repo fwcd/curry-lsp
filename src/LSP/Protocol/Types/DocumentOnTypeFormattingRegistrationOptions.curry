@@ -27,6 +27,18 @@ instance FromJSON DocumentOnTypeFormattingRegistrationOptions where
          ("Unrecognized DocumentOnTypeFormattingRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentOnTypeFormattingRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentOnTypeFormattingRegistrationOptionsDocumentSelector x),  (.=)
+                                                                          "firstTriggerCharacter"
+                                                                          (documentOnTypeFormattingRegistrationOptionsFirstTriggerCharacter
+                                                                            x),  (.?=)
+                                                                                  "moreTriggerCharacter"
+                                                                                  (documentOnTypeFormattingRegistrationOptionsMoreTriggerCharacter
+                                                                                    x)]
+
 data DocumentOnTypeFormattingRegistrationOptions = DocumentOnTypeFormattingRegistrationOptions { documentOnTypeFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                                , documentOnTypeFormattingRegistrationOptionsFirstTriggerCharacter :: String
                                                                                                , documentOnTypeFormattingRegistrationOptionsMoreTriggerCharacter :: Maybe [String] }

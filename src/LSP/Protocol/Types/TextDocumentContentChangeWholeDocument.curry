@@ -18,6 +18,10 @@ instance FromJSON TextDocumentContentChangeWholeDocument where
          ("Unrecognized TextDocumentContentChangeWholeDocument value: "
            ++ ppJSON j)
 
+instance ToJSON TextDocumentContentChangeWholeDocument where
+  toJSON x =
+    object [(.=) "text" (textDocumentContentChangeWholeDocumentText x)]
+
 data TextDocumentContentChangeWholeDocument = TextDocumentContentChangeWholeDocument { textDocumentContentChangeWholeDocumentText :: String }
  deriving (Show,Eq)
 

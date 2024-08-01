@@ -13,6 +13,9 @@ instance FromJSON CompletionItemTag where
          1 -> Right CompletionItemTagDeprecated
          _ -> Left ("Unrecognized CompletionItemTag value: " ++ ppJSON j)
 
+instance ToJSON CompletionItemTag where
+  toJSON x = case x of CompletionItemTagDeprecated -> toJSON 1
+
 data CompletionItemTag = CompletionItemTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)
 

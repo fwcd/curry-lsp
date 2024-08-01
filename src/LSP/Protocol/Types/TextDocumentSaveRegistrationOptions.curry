@@ -21,6 +21,15 @@ instance FromJSON TextDocumentSaveRegistrationOptions where
          ("Unrecognized TextDocumentSaveRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON TextDocumentSaveRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (textDocumentSaveRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                  "includeText"
+                                                                  (textDocumentSaveRegistrationOptionsIncludeText
+                                                                    x)]
+
 data TextDocumentSaveRegistrationOptions = TextDocumentSaveRegistrationOptions { textDocumentSaveRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                , textDocumentSaveRegistrationOptionsIncludeText :: Maybe Bool }
  deriving (Show,Eq)

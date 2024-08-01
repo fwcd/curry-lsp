@@ -20,6 +20,15 @@ instance FromJSON InsertReplaceEdit where
                               , insertReplaceEditReplace = parsedReplace }
       _ -> Left ("Unrecognized InsertReplaceEdit value: " ++ ppJSON j)
 
+instance ToJSON InsertReplaceEdit where
+  toJSON x =
+    object
+     [(.=) "newText" (insertReplaceEditNewText x),  (.=) "insert"
+                                                     (insertReplaceEditInsert
+                                                       x),  (.=) "replace"
+                                                             (insertReplaceEditReplace
+                                                               x)]
+
 data InsertReplaceEdit = InsertReplaceEdit { insertReplaceEditNewText :: String
                                            , insertReplaceEditInsert :: Range
                                            , insertReplaceEditReplace :: Range }

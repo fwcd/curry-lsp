@@ -18,6 +18,10 @@ instance FromJSON FileEvent where
             FileEvent { fileEventUri = parsedUri, fileEventType = parsedType }
       _ -> Left ("Unrecognized FileEvent value: " ++ ppJSON j)
 
+instance ToJSON FileEvent where
+  toJSON x =
+    object [(.=) "uri" (fileEventUri x),  (.=) "type" (fileEventType x)]
+
 data FileEvent = FileEvent { fileEventUri :: DocumentUri
                            , fileEventType :: FileChangeType }
  deriving (Show,Eq)

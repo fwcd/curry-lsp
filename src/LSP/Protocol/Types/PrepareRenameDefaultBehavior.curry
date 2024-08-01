@@ -16,6 +16,11 @@ instance FromJSON PrepareRenameDefaultBehavior where
       _ ->
         Left ("Unrecognized PrepareRenameDefaultBehavior value: " ++ ppJSON j)
 
+instance ToJSON PrepareRenameDefaultBehavior where
+  toJSON x =
+    object
+     [(.=) "defaultBehavior" (prepareRenameDefaultBehaviorDefaultBehavior x)]
+
 data PrepareRenameDefaultBehavior = PrepareRenameDefaultBehavior { prepareRenameDefaultBehaviorDefaultBehavior :: Bool }
  deriving (Show,Eq)
 

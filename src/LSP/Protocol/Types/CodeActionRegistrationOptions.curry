@@ -28,6 +28,24 @@ instance FromJSON CodeActionRegistrationOptions where
         Left
          ("Unrecognized CodeActionRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON CodeActionRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (codeActionRegistrationOptionsDocumentSelector x),  (.?=)
+                                                            "workDoneProgress"
+                                                            (codeActionRegistrationOptionsWorkDoneProgress
+                                                              x),  (.?=)
+                                                                    "codeActionKinds"
+                                                                    (codeActionRegistrationOptionsCodeActionKinds
+                                                                      x),  (.?=)
+                                                                            "documentation"
+                                                                            (codeActionRegistrationOptionsDocumentation
+                                                                              x),  (.?=)
+                                                                                    "resolveProvider"
+                                                                                    (codeActionRegistrationOptionsResolveProvider
+                                                                                      x)]
+
 data CodeActionRegistrationOptions = CodeActionRegistrationOptions { codeActionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , codeActionRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                    , codeActionRegistrationOptionsCodeActionKinds :: Maybe [CodeActionKind]

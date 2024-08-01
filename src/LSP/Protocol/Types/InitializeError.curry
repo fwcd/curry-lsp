@@ -14,6 +14,9 @@ instance FromJSON InitializeError where
            return InitializeError { initializeErrorRetry = parsedRetry }
       _ -> Left ("Unrecognized InitializeError value: " ++ ppJSON j)
 
+instance ToJSON InitializeError where
+  toJSON x = object [(.=) "retry" (initializeErrorRetry x)]
+
 data InitializeError = InitializeError { initializeErrorRetry :: Bool }
  deriving (Show,Eq)
 

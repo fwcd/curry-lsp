@@ -22,6 +22,14 @@ instance FromJSON CodeLens where
                      , codeLensData = parsedData }
       _ -> Left ("Unrecognized CodeLens value: " ++ ppJSON j)
 
+instance ToJSON CodeLens where
+  toJSON x =
+    object
+     [(.=) "range" (codeLensRange x),  (.?=) "command"
+                                        (codeLensCommand x),  (.?=) "data"
+                                                               (codeLensData
+                                                                 x)]
+
 data CodeLens = CodeLens { codeLensRange :: Range
                          , codeLensCommand :: Maybe Command
                          , codeLensData :: Maybe LSPAny }

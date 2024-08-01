@@ -17,6 +17,14 @@ instance FromJSON RenameFileOptions where
                               , renameFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
       _ -> Left ("Unrecognized RenameFileOptions value: " ++ ppJSON j)
 
+instance ToJSON RenameFileOptions where
+  toJSON x =
+    object
+     [(.?=) "overwrite" (renameFileOptionsOverwrite x),  (.?=)
+                                                          "ignoreIfExists"
+                                                          (renameFileOptionsIgnoreIfExists
+                                                            x)]
+
 data RenameFileOptions = RenameFileOptions { renameFileOptionsOverwrite :: Maybe Bool
                                            , renameFileOptionsIgnoreIfExists :: Maybe Bool }
  deriving (Show,Eq)

@@ -17,6 +17,11 @@ instance FromJSON Unregistration where
                            , unregistrationMethod = parsedMethod }
       _ -> Left ("Unrecognized Unregistration value: " ++ ppJSON j)
 
+instance ToJSON Unregistration where
+  toJSON x =
+    object
+     [(.=) "id" (unregistrationId x),  (.=) "method" (unregistrationMethod x)]
+
 data Unregistration = Unregistration { unregistrationId :: String
                                      , unregistrationMethod :: String }
  deriving (Show,Eq)

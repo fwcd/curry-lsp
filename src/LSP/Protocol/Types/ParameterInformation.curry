@@ -18,6 +18,13 @@ instance FromJSON ParameterInformation where
                                  , parameterInformationDocumentation = parsedDocumentation }
       _ -> Left ("Unrecognized ParameterInformation value: " ++ ppJSON j)
 
+instance ToJSON ParameterInformation where
+  toJSON x =
+    object
+     [(.=) "label" (parameterInformationLabel x),  (.?=) "documentation"
+                                                    (parameterInformationDocumentation
+                                                      x)]
+
 data ParameterInformation = ParameterInformation { parameterInformationLabel :: Either String (Int
                                                                                               ,Int)
                                                  , parameterInformationDocumentation :: Maybe (Either String MarkupContent) }

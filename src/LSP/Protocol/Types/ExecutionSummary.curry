@@ -17,6 +17,14 @@ instance FromJSON ExecutionSummary where
                              , executionSummarySuccess = parsedSuccess }
       _ -> Left ("Unrecognized ExecutionSummary value: " ++ ppJSON j)
 
+instance ToJSON ExecutionSummary where
+  toJSON x =
+    object
+     [(.=) "executionOrder" (executionSummaryExecutionOrder x),  (.?=)
+                                                                  "success"
+                                                                  (executionSummarySuccess
+                                                                    x)]
+
 data ExecutionSummary = ExecutionSummary { executionSummaryExecutionOrder :: Int
                                          , executionSummarySuccess :: Maybe Bool }
  deriving (Show,Eq)

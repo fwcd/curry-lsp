@@ -34,6 +34,21 @@ instance FromJSON ClientSignatureInformationOptions where
          ("Unrecognized ClientSignatureInformationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientSignatureInformationOptions where
+  toJSON x =
+    object
+     [(.?=) "documentationFormat"
+       (clientSignatureInformationOptionsDocumentationFormat x),  (.?=)
+                                                                   "parameterInformation"
+                                                                   (clientSignatureInformationOptionsParameterInformation
+                                                                     x),  (.?=)
+                                                                           "activeParameterSupport"
+                                                                           (clientSignatureInformationOptionsActiveParameterSupport
+                                                                             x),  (.?=)
+                                                                                   "noActiveParameterSupport"
+                                                                                   (clientSignatureInformationOptionsNoActiveParameterSupport
+                                                                                     x)]
+
 data ClientSignatureInformationOptions = ClientSignatureInformationOptions { clientSignatureInformationOptionsDocumentationFormat :: Maybe [MarkupKind]
                                                                            , clientSignatureInformationOptionsParameterInformation :: Maybe ClientSignatureParameterInformationOptions
                                                                            , clientSignatureInformationOptionsActiveParameterSupport :: Maybe Bool

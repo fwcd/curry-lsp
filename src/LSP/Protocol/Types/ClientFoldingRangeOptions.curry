@@ -15,6 +15,10 @@ instance FromJSON ClientFoldingRangeOptions where
             ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText = parsedCollapsedText }
       _ -> Left ("Unrecognized ClientFoldingRangeOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientFoldingRangeOptions where
+  toJSON x =
+    object [(.?=) "collapsedText" (clientFoldingRangeOptionsCollapsedText x)]
+
 data ClientFoldingRangeOptions = ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText :: Maybe Bool }
  deriving (Show,Eq)
 

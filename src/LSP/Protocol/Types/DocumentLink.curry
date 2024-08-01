@@ -23,6 +23,18 @@ instance FromJSON DocumentLink where
                          , documentLinkData = parsedData }
       _ -> Left ("Unrecognized DocumentLink value: " ++ ppJSON j)
 
+instance ToJSON DocumentLink where
+  toJSON x =
+    object
+     [(.=) "range" (documentLinkRange x),  (.?=) "target"
+                                            (documentLinkTarget x),  (.?=)
+                                                                      "tooltip"
+                                                                      (documentLinkTooltip
+                                                                        x),  (.?=)
+                                                                              "data"
+                                                                              (documentLinkData
+                                                                                x)]
+
 data DocumentLink = DocumentLink { documentLinkRange :: Range
                                  , documentLinkTarget :: Maybe Uri
                                  , documentLinkTooltip :: Maybe String

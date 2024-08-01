@@ -17,6 +17,11 @@ instance FromJSON ClientInfo where
                        , clientInfoVersion = parsedVersion }
       _ -> Left ("Unrecognized ClientInfo value: " ++ ppJSON j)
 
+instance ToJSON ClientInfo where
+  toJSON x =
+    object
+     [(.=) "name" (clientInfoName x),  (.?=) "version" (clientInfoVersion x)]
+
 data ClientInfo = ClientInfo { clientInfoName :: String
                              , clientInfoVersion :: Maybe String }
  deriving (Show,Eq)

@@ -22,6 +22,17 @@ instance FromJSON TextDocumentContentChangePartial where
         Left
          ("Unrecognized TextDocumentContentChangePartial value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentContentChangePartial where
+  toJSON x =
+    object
+     [(.=) "range" (textDocumentContentChangePartialRange x),  (.?=)
+                                                                "rangeLength"
+                                                                (textDocumentContentChangePartialRangeLength
+                                                                  x),  (.=)
+                                                                        "text"
+                                                                        (textDocumentContentChangePartialText
+                                                                          x)]
+
 data TextDocumentContentChangePartial = TextDocumentContentChangePartial { textDocumentContentChangePartialRange :: Range
                                                                          , textDocumentContentChangePartialRangeLength :: Maybe Int
                                                                          , textDocumentContentChangePartialText :: String }

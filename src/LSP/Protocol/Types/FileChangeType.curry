@@ -15,6 +15,13 @@ instance FromJSON FileChangeType where
          3 -> Right FileChangeTypeDeleted
          _ -> Left ("Unrecognized FileChangeType value: " ++ ppJSON j)
 
+instance ToJSON FileChangeType where
+  toJSON x =
+    case x of
+      FileChangeTypeCreated -> toJSON 1
+      FileChangeTypeChanged -> toJSON 2
+      FileChangeTypeDeleted -> toJSON 3
+
 data FileChangeType = FileChangeTypeCreated
                     | FileChangeTypeChanged
                     | FileChangeTypeDeleted

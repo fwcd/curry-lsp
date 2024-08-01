@@ -22,6 +22,18 @@ instance FromJSON DocumentColorRegistrationOptions where
         Left
          ("Unrecognized DocumentColorRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentColorRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentColorRegistrationOptionsDocumentSelector x),  (.?=)
+                                                               "workDoneProgress"
+                                                               (documentColorRegistrationOptionsWorkDoneProgress
+                                                                 x),  (.?=)
+                                                                       "id"
+                                                                       (documentColorRegistrationOptionsId
+                                                                         x)]
+
 data DocumentColorRegistrationOptions = DocumentColorRegistrationOptions { documentColorRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , documentColorRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                          , documentColorRegistrationOptionsId :: Maybe String }

@@ -15,6 +15,11 @@ instance FromJSON InlineCompletionOptions where
             InlineCompletionOptions { inlineCompletionOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized InlineCompletionOptions value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (inlineCompletionOptionsWorkDoneProgress x)]
+
 data InlineCompletionOptions = InlineCompletionOptions { inlineCompletionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

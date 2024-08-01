@@ -17,6 +17,9 @@ instance FromJSON ClientCodeActionKindOptions where
       _ ->
         Left ("Unrecognized ClientCodeActionKindOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientCodeActionKindOptions where
+  toJSON x = object [(.=) "valueSet" (clientCodeActionKindOptionsValueSet x)]
+
 data ClientCodeActionKindOptions = ClientCodeActionKindOptions { clientCodeActionKindOptionsValueSet :: [CodeActionKind] }
  deriving (Show,Eq)
 

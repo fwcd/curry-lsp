@@ -14,6 +14,9 @@ instance FromJSON MessageActionItem where
            return MessageActionItem { messageActionItemTitle = parsedTitle }
       _ -> Left ("Unrecognized MessageActionItem value: " ++ ppJSON j)
 
+instance ToJSON MessageActionItem where
+  toJSON x = object [(.=) "title" (messageActionItemTitle x)]
+
 data MessageActionItem = MessageActionItem { messageActionItemTitle :: String }
  deriving (Show,Eq)
 

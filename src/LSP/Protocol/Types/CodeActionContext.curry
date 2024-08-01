@@ -22,6 +22,16 @@ instance FromJSON CodeActionContext where
                               , codeActionContextTriggerKind = parsedTriggerKind }
       _ -> Left ("Unrecognized CodeActionContext value: " ++ ppJSON j)
 
+instance ToJSON CodeActionContext where
+  toJSON x =
+    object
+     [(.=) "diagnostics" (codeActionContextDiagnostics x),  (.?=) "only"
+                                                             (codeActionContextOnly
+                                                               x),  (.?=)
+                                                                     "triggerKind"
+                                                                     (codeActionContextTriggerKind
+                                                                       x)]
+
 data CodeActionContext = CodeActionContext { codeActionContextDiagnostics :: [Diagnostic]
                                            , codeActionContextOnly :: Maybe [CodeActionKind]
                                            , codeActionContextTriggerKind :: Maybe CodeActionTriggerKind }

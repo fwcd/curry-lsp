@@ -30,6 +30,24 @@ instance FromJSON WorkspaceSymbol where
                             , workspaceSymbolData = parsedData }
       _ -> Left ("Unrecognized WorkspaceSymbol value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceSymbol where
+  toJSON x =
+    object
+     [(.=) "name" (workspaceSymbolName x),  (.=) "kind"
+                                             (workspaceSymbolKind x),  (.?=)
+                                                                        "tags"
+                                                                        (workspaceSymbolTags
+                                                                          x),  (.?=)
+                                                                                "containerName"
+                                                                                (workspaceSymbolContainerName
+                                                                                  x),  (.=)
+                                                                                        "location"
+                                                                                        (workspaceSymbolLocation
+                                                                                          x),  (.?=)
+                                                                                                "data"
+                                                                                                (workspaceSymbolData
+                                                                                                  x)]
+
 data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolName :: String
                                        , workspaceSymbolKind :: SymbolKind
                                        , workspaceSymbolTags :: Maybe [SymbolTag]

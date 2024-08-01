@@ -18,6 +18,14 @@ instance FromJSON HoverRegistrationOptions where
                                      , hoverRegistrationOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized HoverRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON HoverRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (hoverRegistrationOptionsDocumentSelector x),  (.?=) "workDoneProgress"
+                                                       (hoverRegistrationOptionsWorkDoneProgress
+                                                         x)]
+
 data HoverRegistrationOptions = HoverRegistrationOptions { hoverRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                          , hoverRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

@@ -28,6 +28,22 @@ instance FromJSON FormattingOptions where
                               , formattingOptionsTrimFinalNewlines = parsedTrimFinalNewlines }
       _ -> Left ("Unrecognized FormattingOptions value: " ++ ppJSON j)
 
+instance ToJSON FormattingOptions where
+  toJSON x =
+    object
+     [(.=) "tabSize" (formattingOptionsTabSize x),  (.=) "insertSpaces"
+                                                     (formattingOptionsInsertSpaces
+                                                       x),  (.?=)
+                                                             "trimTrailingWhitespace"
+                                                             (formattingOptionsTrimTrailingWhitespace
+                                                               x),  (.?=)
+                                                                     "insertFinalNewline"
+                                                                     (formattingOptionsInsertFinalNewline
+                                                                       x),  (.?=)
+                                                                             "trimFinalNewlines"
+                                                                             (formattingOptionsTrimFinalNewlines
+                                                                               x)]
+
 data FormattingOptions = FormattingOptions { formattingOptionsTabSize :: Int
                                            , formattingOptionsInsertSpaces :: Bool
                                            , formattingOptionsTrimTrailingWhitespace :: Maybe Bool

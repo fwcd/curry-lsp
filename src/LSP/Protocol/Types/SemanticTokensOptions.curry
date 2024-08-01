@@ -23,6 +23,19 @@ instance FromJSON SemanticTokensOptions where
                                   , semanticTokensOptionsFull = parsedFull }
       _ -> Left ("Unrecognized SemanticTokensOptions value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (semanticTokensOptionsWorkDoneProgress x),  (.=) "legend"
+                                                    (semanticTokensOptionsLegend
+                                                      x),  (.?=) "range"
+                                                            (semanticTokensOptionsRange
+                                                              x),  (.?=)
+                                                                    "full"
+                                                                    (semanticTokensOptionsFull
+                                                                      x)]
+
 data SemanticTokensOptions = SemanticTokensOptions { semanticTokensOptionsWorkDoneProgress :: Maybe Bool
                                                    , semanticTokensOptionsLegend :: SemanticTokensLegend
                                                    , semanticTokensOptionsRange :: Maybe (Either Bool ())

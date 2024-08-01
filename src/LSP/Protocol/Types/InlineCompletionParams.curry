@@ -25,6 +25,20 @@ instance FromJSON InlineCompletionParams where
                                    , inlineCompletionParamsContext = parsedContext }
       _ -> Left ("Unrecognized InlineCompletionParams value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (inlineCompletionParamsTextDocument x),  (.=)
+                                                                    "position"
+                                                                    (inlineCompletionParamsPosition
+                                                                      x),  (.?=)
+                                                                            "workDoneToken"
+                                                                            (inlineCompletionParamsWorkDoneToken
+                                                                              x),  (.=)
+                                                                                    "context"
+                                                                                    (inlineCompletionParamsContext
+                                                                                      x)]
+
 data InlineCompletionParams = InlineCompletionParams { inlineCompletionParamsTextDocument :: TextDocumentIdentifier
                                                      , inlineCompletionParamsPosition :: Position
                                                      , inlineCompletionParamsWorkDoneToken :: Maybe ProgressToken

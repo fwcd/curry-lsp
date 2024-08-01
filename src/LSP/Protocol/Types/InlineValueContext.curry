@@ -18,6 +18,13 @@ instance FromJSON InlineValueContext where
                                , inlineValueContextStoppedLocation = parsedStoppedLocation }
       _ -> Left ("Unrecognized InlineValueContext value: " ++ ppJSON j)
 
+instance ToJSON InlineValueContext where
+  toJSON x =
+    object
+     [(.=) "frameId" (inlineValueContextFrameId x),  (.=) "stoppedLocation"
+                                                      (inlineValueContextStoppedLocation
+                                                        x)]
+
 data InlineValueContext = InlineValueContext { inlineValueContextFrameId :: Int
                                              , inlineValueContextStoppedLocation :: Range }
  deriving (Show,Eq)

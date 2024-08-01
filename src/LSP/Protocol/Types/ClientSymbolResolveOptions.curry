@@ -16,6 +16,10 @@ instance FromJSON ClientSymbolResolveOptions where
       _ ->
         Left ("Unrecognized ClientSymbolResolveOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientSymbolResolveOptions where
+  toJSON x =
+    object [(.=) "properties" (clientSymbolResolveOptionsProperties x)]
+
 data ClientSymbolResolveOptions = ClientSymbolResolveOptions { clientSymbolResolveOptionsProperties :: [String] }
  deriving (Show,Eq)
 

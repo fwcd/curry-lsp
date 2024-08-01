@@ -18,6 +18,9 @@ instance FromJSON DidChangeWorkspaceFoldersParams where
         Left
          ("Unrecognized DidChangeWorkspaceFoldersParams value: " ++ ppJSON j)
 
+instance ToJSON DidChangeWorkspaceFoldersParams where
+  toJSON x = object [(.=) "event" (didChangeWorkspaceFoldersParamsEvent x)]
+
 data DidChangeWorkspaceFoldersParams = DidChangeWorkspaceFoldersParams { didChangeWorkspaceFoldersParamsEvent :: WorkspaceFoldersChangeEvent }
  deriving (Show,Eq)
 

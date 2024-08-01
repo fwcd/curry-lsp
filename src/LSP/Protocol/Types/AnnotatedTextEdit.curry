@@ -21,6 +21,15 @@ instance FromJSON AnnotatedTextEdit where
                               , annotatedTextEditAnnotationId = parsedAnnotationId }
       _ -> Left ("Unrecognized AnnotatedTextEdit value: " ++ ppJSON j)
 
+instance ToJSON AnnotatedTextEdit where
+  toJSON x =
+    object
+     [(.=) "range" (annotatedTextEditRange x),  (.=) "newText"
+                                                 (annotatedTextEditNewText
+                                                   x),  (.=) "annotationId"
+                                                         (annotatedTextEditAnnotationId
+                                                           x)]
+
 data AnnotatedTextEdit = AnnotatedTextEdit { annotatedTextEditRange :: Range
                                            , annotatedTextEditNewText :: String
                                            , annotatedTextEditAnnotationId :: ChangeAnnotationIdentifier }

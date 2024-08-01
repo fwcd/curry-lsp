@@ -13,6 +13,9 @@ instance FromJSON TokenFormat where
          "relative" -> Right TokenFormatRelative
          _ -> Left ("Unrecognized TokenFormat value: " ++ ppJSON j)
 
+instance ToJSON TokenFormat where
+  toJSON x = case x of TokenFormatRelative -> toJSON "relative"
+
 data TokenFormat = TokenFormatRelative
  deriving (Show,Eq,Enum,Bounded,Ord)
 

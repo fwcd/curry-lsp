@@ -18,6 +18,11 @@ instance FromJSON ClientCompletionItemResolveOptions where
          ("Unrecognized ClientCompletionItemResolveOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientCompletionItemResolveOptions where
+  toJSON x =
+    object
+     [(.=) "properties" (clientCompletionItemResolveOptionsProperties x)]
+
 data ClientCompletionItemResolveOptions = ClientCompletionItemResolveOptions { clientCompletionItemResolveOptionsProperties :: [String] }
  deriving (Show,Eq)
 

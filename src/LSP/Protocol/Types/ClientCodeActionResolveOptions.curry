@@ -17,6 +17,10 @@ instance FromJSON ClientCodeActionResolveOptions where
         Left
          ("Unrecognized ClientCodeActionResolveOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientCodeActionResolveOptions where
+  toJSON x =
+    object [(.=) "properties" (clientCodeActionResolveOptionsProperties x)]
+
 data ClientCodeActionResolveOptions = ClientCodeActionResolveOptions { clientCodeActionResolveOptionsProperties :: [String] }
  deriving (Show,Eq)
 

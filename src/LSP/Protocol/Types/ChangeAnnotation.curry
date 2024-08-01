@@ -20,6 +20,15 @@ instance FromJSON ChangeAnnotation where
                              , changeAnnotationDescription = parsedDescription }
       _ -> Left ("Unrecognized ChangeAnnotation value: " ++ ppJSON j)
 
+instance ToJSON ChangeAnnotation where
+  toJSON x =
+    object
+     [(.=) "label" (changeAnnotationLabel x),  (.?=) "needsConfirmation"
+                                                (changeAnnotationNeedsConfirmation
+                                                  x),  (.?=) "description"
+                                                        (changeAnnotationDescription
+                                                          x)]
+
 data ChangeAnnotation = ChangeAnnotation { changeAnnotationLabel :: String
                                          , changeAnnotationNeedsConfirmation :: Maybe Bool
                                          , changeAnnotationDescription :: Maybe String }

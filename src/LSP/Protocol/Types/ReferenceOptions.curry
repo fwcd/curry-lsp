@@ -15,6 +15,10 @@ instance FromJSON ReferenceOptions where
             ReferenceOptions { referenceOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized ReferenceOptions value: " ++ ppJSON j)
 
+instance ToJSON ReferenceOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (referenceOptionsWorkDoneProgress x)]
+
 data ReferenceOptions = ReferenceOptions { referenceOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

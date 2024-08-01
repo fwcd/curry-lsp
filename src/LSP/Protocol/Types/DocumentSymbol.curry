@@ -32,6 +32,30 @@ instance FromJSON DocumentSymbol where
                            , documentSymbolChildren = parsedChildren }
       _ -> Left ("Unrecognized DocumentSymbol value: " ++ ppJSON j)
 
+instance ToJSON DocumentSymbol where
+  toJSON x =
+    object
+     [(.=) "name" (documentSymbolName x),  (.?=) "detail"
+                                            (documentSymbolDetail x),  (.=)
+                                                                        "kind"
+                                                                        (documentSymbolKind
+                                                                          x),  (.?=)
+                                                                                "tags"
+                                                                                (documentSymbolTags
+                                                                                  x),  (.?=)
+                                                                                        "deprecated"
+                                                                                        (documentSymbolDeprecated
+                                                                                          x),  (.=)
+                                                                                                "range"
+                                                                                                (documentSymbolRange
+                                                                                                  x),  (.=)
+                                                                                                        "selectionRange"
+                                                                                                        (documentSymbolSelectionRange
+                                                                                                          x),  (.?=)
+                                                                                                                "children"
+                                                                                                                (documentSymbolChildren
+                                                                                                                  x)]
+
 data DocumentSymbol = DocumentSymbol { documentSymbolName :: String
                                      , documentSymbolDetail :: Maybe String
                                      , documentSymbolKind :: SymbolKind

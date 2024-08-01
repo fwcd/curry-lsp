@@ -15,6 +15,13 @@ instance FromJSON MonikerKind where
          "local" -> Right MonikerKindLocal
          _ -> Left ("Unrecognized MonikerKind value: " ++ ppJSON j)
 
+instance ToJSON MonikerKind where
+  toJSON x =
+    case x of
+      MonikerKindImport -> toJSON "import"
+      MonikerKindExport -> toJSON "export"
+      MonikerKindLocal -> toJSON "local"
+
 data MonikerKind = MonikerKindImport | MonikerKindExport | MonikerKindLocal
  deriving (Show,Eq,Enum,Bounded,Ord)
 

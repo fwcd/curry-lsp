@@ -17,6 +17,15 @@ instance FromJSON MessageType where
          5 -> Right MessageTypeDebug
          _ -> Left ("Unrecognized MessageType value: " ++ ppJSON j)
 
+instance ToJSON MessageType where
+  toJSON x =
+    case x of
+      MessageTypeError -> toJSON 1
+      MessageTypeWarning -> toJSON 2
+      MessageTypeInfo -> toJSON 3
+      MessageTypeLog -> toJSON 4
+      MessageTypeDebug -> toJSON 5
+
 data MessageType = MessageTypeError
                  | MessageTypeWarning
                  | MessageTypeInfo

@@ -49,6 +49,39 @@ instance FromJSON ClientCompletionItemOptions where
       _ ->
         Left ("Unrecognized ClientCompletionItemOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientCompletionItemOptions where
+  toJSON x =
+    object
+     [(.?=) "snippetSupport"
+       (clientCompletionItemOptionsSnippetSupport x),  (.?=)
+                                                        "commitCharactersSupport"
+                                                        (clientCompletionItemOptionsCommitCharactersSupport
+                                                          x),  (.?=)
+                                                                "documentationFormat"
+                                                                (clientCompletionItemOptionsDocumentationFormat
+                                                                  x),  (.?=)
+                                                                        "deprecatedSupport"
+                                                                        (clientCompletionItemOptionsDeprecatedSupport
+                                                                          x),  (.?=)
+                                                                                "preselectSupport"
+                                                                                (clientCompletionItemOptionsPreselectSupport
+                                                                                  x),  (.?=)
+                                                                                        "tagSupport"
+                                                                                        (clientCompletionItemOptionsTagSupport
+                                                                                          x),  (.?=)
+                                                                                                "insertReplaceSupport"
+                                                                                                (clientCompletionItemOptionsInsertReplaceSupport
+                                                                                                  x),  (.?=)
+                                                                                                        "resolveSupport"
+                                                                                                        (clientCompletionItemOptionsResolveSupport
+                                                                                                          x),  (.?=)
+                                                                                                                "insertTextModeSupport"
+                                                                                                                (clientCompletionItemOptionsInsertTextModeSupport
+                                                                                                                  x),  (.?=)
+                                                                                                                        "labelDetailsSupport"
+                                                                                                                        (clientCompletionItemOptionsLabelDetailsSupport
+                                                                                                                          x)]
+
 data ClientCompletionItemOptions = ClientCompletionItemOptions { clientCompletionItemOptionsSnippetSupport :: Maybe Bool
                                                                , clientCompletionItemOptionsCommitCharactersSupport :: Maybe Bool
                                                                , clientCompletionItemOptionsDocumentationFormat :: Maybe [MarkupKind]

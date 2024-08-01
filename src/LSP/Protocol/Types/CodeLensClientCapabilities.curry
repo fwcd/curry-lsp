@@ -21,6 +21,15 @@ instance FromJSON CodeLensClientCapabilities where
       _ ->
         Left ("Unrecognized CodeLensClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON CodeLensClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (codeLensClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                            "resolveSupport"
+                                                            (codeLensClientCapabilitiesResolveSupport
+                                                              x)]
+
 data CodeLensClientCapabilities = CodeLensClientCapabilities { codeLensClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                              , codeLensClientCapabilitiesResolveSupport :: Maybe ClientCodeLensResolveOptions }
  deriving (Show,Eq)

@@ -22,6 +22,14 @@ instance FromJSON DocumentRangeFormattingClientCapabilities where
          ("Unrecognized DocumentRangeFormattingClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentRangeFormattingClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentRangeFormattingClientCapabilitiesDynamicRegistration
+         x),  (.?=) "rangesSupport"
+               (documentRangeFormattingClientCapabilitiesRangesSupport x)]
+
 data DocumentRangeFormattingClientCapabilities = DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                            , documentRangeFormattingClientCapabilitiesRangesSupport :: Maybe Bool }
  deriving (Show,Eq)

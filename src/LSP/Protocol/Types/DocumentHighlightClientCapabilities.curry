@@ -20,6 +20,12 @@ instance FromJSON DocumentHighlightClientCapabilities where
          ("Unrecognized DocumentHighlightClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentHighlightClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentHighlightClientCapabilitiesDynamicRegistration x)]
+
 data DocumentHighlightClientCapabilities = DocumentHighlightClientCapabilities { documentHighlightClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

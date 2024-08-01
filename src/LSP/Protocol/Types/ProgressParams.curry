@@ -19,6 +19,12 @@ instance FromJSON ProgressParams where
                            , progressParamsValue = parsedValue }
       _ -> Left ("Unrecognized ProgressParams value: " ++ ppJSON j)
 
+instance ToJSON ProgressParams where
+  toJSON x =
+    object
+     [(.=) "token" (progressParamsToken x),  (.=) "value"
+                                              (progressParamsValue x)]
+
 data ProgressParams = ProgressParams { progressParamsToken :: ProgressToken
                                      , progressParamsValue :: LSPAny }
  deriving (Show,Eq)

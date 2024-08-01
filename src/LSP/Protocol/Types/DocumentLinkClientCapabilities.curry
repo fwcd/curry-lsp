@@ -21,6 +21,15 @@ instance FromJSON DocumentLinkClientCapabilities where
         Left
          ("Unrecognized DocumentLinkClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DocumentLinkClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentLinkClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                "tooltipSupport"
+                                                                (documentLinkClientCapabilitiesTooltipSupport
+                                                                  x)]
+
 data DocumentLinkClientCapabilities = DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                      , documentLinkClientCapabilitiesTooltipSupport :: Maybe Bool }
  deriving (Show,Eq)

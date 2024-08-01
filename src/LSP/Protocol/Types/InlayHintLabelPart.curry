@@ -24,6 +24,18 @@ instance FromJSON InlayHintLabelPart where
                                , inlayHintLabelPartCommand = parsedCommand }
       _ -> Left ("Unrecognized InlayHintLabelPart value: " ++ ppJSON j)
 
+instance ToJSON InlayHintLabelPart where
+  toJSON x =
+    object
+     [(.=) "value" (inlayHintLabelPartValue x),  (.?=) "tooltip"
+                                                  (inlayHintLabelPartTooltip
+                                                    x),  (.?=) "location"
+                                                          (inlayHintLabelPartLocation
+                                                            x),  (.?=)
+                                                                  "command"
+                                                                  (inlayHintLabelPartCommand
+                                                                    x)]
+
 data InlayHintLabelPart = InlayHintLabelPart { inlayHintLabelPartValue :: String
                                              , inlayHintLabelPartTooltip :: Maybe (Either String MarkupContent)
                                              , inlayHintLabelPartLocation :: Maybe Location

@@ -35,6 +35,26 @@ instance FromJSON DiagnosticClientCapabilities where
       _ ->
         Left ("Unrecognized DiagnosticClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "relatedInformation"
+       (diagnosticClientCapabilitiesRelatedInformation x),  (.?=) "tagSupport"
+                                                             (diagnosticClientCapabilitiesTagSupport
+                                                               x),  (.?=)
+                                                                     "codeDescriptionSupport"
+                                                                     (diagnosticClientCapabilitiesCodeDescriptionSupport
+                                                                       x),  (.?=)
+                                                                             "dataSupport"
+                                                                             (diagnosticClientCapabilitiesDataSupport
+                                                                               x),  (.?=)
+                                                                                     "dynamicRegistration"
+                                                                                     (diagnosticClientCapabilitiesDynamicRegistration
+                                                                                       x),  (.?=)
+                                                                                             "relatedDocumentSupport"
+                                                                                             (diagnosticClientCapabilitiesRelatedDocumentSupport
+                                                                                               x)]
+
 data DiagnosticClientCapabilities = DiagnosticClientCapabilities { diagnosticClientCapabilitiesRelatedInformation :: Maybe Bool
                                                                  , diagnosticClientCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions
                                                                  , diagnosticClientCapabilitiesCodeDescriptionSupport :: Maybe Bool

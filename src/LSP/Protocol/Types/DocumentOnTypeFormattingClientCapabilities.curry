@@ -20,6 +20,12 @@ instance FromJSON DocumentOnTypeFormattingClientCapabilities where
          ("Unrecognized DocumentOnTypeFormattingClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentOnTypeFormattingClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentOnTypeFormattingClientCapabilitiesDynamicRegistration x)]
+
 data DocumentOnTypeFormattingClientCapabilities = DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -26,6 +26,20 @@ instance FromJSON TypeDefinitionParams where
                                  , typeDefinitionParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized TypeDefinitionParams value: " ++ ppJSON j)
 
+instance ToJSON TypeDefinitionParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (typeDefinitionParamsTextDocument x),  (.=)
+                                                                  "position"
+                                                                  (typeDefinitionParamsPosition
+                                                                    x),  (.?=)
+                                                                          "workDoneToken"
+                                                                          (typeDefinitionParamsWorkDoneToken
+                                                                            x),  (.?=)
+                                                                                  "partialResultToken"
+                                                                                  (typeDefinitionParamsPartialResultToken
+                                                                                    x)]
+
 data TypeDefinitionParams = TypeDefinitionParams { typeDefinitionParamsTextDocument :: TextDocumentIdentifier
                                                  , typeDefinitionParamsPosition :: Position
                                                  , typeDefinitionParamsWorkDoneToken :: Maybe ProgressToken

@@ -17,6 +17,14 @@ instance FromJSON SemanticTokensLegend where
                                  , semanticTokensLegendTokenModifiers = parsedTokenModifiers }
       _ -> Left ("Unrecognized SemanticTokensLegend value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensLegend where
+  toJSON x =
+    object
+     [(.=) "tokenTypes" (semanticTokensLegendTokenTypes x),  (.=)
+                                                              "tokenModifiers"
+                                                              (semanticTokensLegendTokenModifiers
+                                                                x)]
+
 data SemanticTokensLegend = SemanticTokensLegend { semanticTokensLegendTokenTypes :: [String]
                                                  , semanticTokensLegendTokenModifiers :: [String] }
  deriving (Show,Eq)

@@ -17,6 +17,11 @@ instance FromJSON ChangeAnnotationsSupportOptions where
         Left
          ("Unrecognized ChangeAnnotationsSupportOptions value: " ++ ppJSON j)
 
+instance ToJSON ChangeAnnotationsSupportOptions where
+  toJSON x =
+    object
+     [(.?=) "groupsOnLabel" (changeAnnotationsSupportOptionsGroupsOnLabel x)]
+
 data ChangeAnnotationsSupportOptions = ChangeAnnotationsSupportOptions { changeAnnotationsSupportOptionsGroupsOnLabel :: Maybe Bool }
  deriving (Show,Eq)
 

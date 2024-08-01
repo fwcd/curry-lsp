@@ -23,6 +23,17 @@ instance FromJSON Moniker where
                     , monikerKind = parsedKind }
       _ -> Left ("Unrecognized Moniker value: " ++ ppJSON j)
 
+instance ToJSON Moniker where
+  toJSON x =
+    object
+     [(.=) "scheme" (monikerScheme x),  (.=) "identifier"
+                                         (monikerIdentifier x),  (.=) "unique"
+                                                                  (monikerUnique
+                                                                    x),  (.?=)
+                                                                          "kind"
+                                                                          (monikerKind
+                                                                            x)]
+
 data Moniker = Moniker { monikerScheme :: String
                        , monikerIdentifier :: String
                        , monikerUnique :: UniquenessLevel

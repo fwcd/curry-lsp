@@ -23,6 +23,18 @@ instance FromJSON SelectionRangeRegistrationOptions where
          ("Unrecognized SelectionRangeRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON SelectionRangeRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (selectionRangeRegistrationOptionsWorkDoneProgress x),  (.=)
+                                                                "documentSelector"
+                                                                (selectionRangeRegistrationOptionsDocumentSelector
+                                                                  x),  (.?=)
+                                                                        "id"
+                                                                        (selectionRangeRegistrationOptionsId
+                                                                          x)]
+
 data SelectionRangeRegistrationOptions = SelectionRangeRegistrationOptions { selectionRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , selectionRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , selectionRangeRegistrationOptionsId :: Maybe String }

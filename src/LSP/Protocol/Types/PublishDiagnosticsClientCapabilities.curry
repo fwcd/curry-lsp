@@ -31,6 +31,24 @@ instance FromJSON PublishDiagnosticsClientCapabilities where
          ("Unrecognized PublishDiagnosticsClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON PublishDiagnosticsClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "relatedInformation"
+       (publishDiagnosticsClientCapabilitiesRelatedInformation x),  (.?=)
+                                                                     "tagSupport"
+                                                                     (publishDiagnosticsClientCapabilitiesTagSupport
+                                                                       x),  (.?=)
+                                                                             "codeDescriptionSupport"
+                                                                             (publishDiagnosticsClientCapabilitiesCodeDescriptionSupport
+                                                                               x),  (.?=)
+                                                                                     "dataSupport"
+                                                                                     (publishDiagnosticsClientCapabilitiesDataSupport
+                                                                                       x),  (.?=)
+                                                                                             "versionSupport"
+                                                                                             (publishDiagnosticsClientCapabilitiesVersionSupport
+                                                                                               x)]
+
 data PublishDiagnosticsClientCapabilities = PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation :: Maybe Bool
                                                                                  , publishDiagnosticsClientCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions
                                                                                  , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport :: Maybe Bool

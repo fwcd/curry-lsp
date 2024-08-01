@@ -15,6 +15,12 @@ instance FromJSON FileOperationPatternKind where
          _ ->
            Left ("Unrecognized FileOperationPatternKind value: " ++ ppJSON j)
 
+instance ToJSON FileOperationPatternKind where
+  toJSON x =
+    case x of
+      FileOperationPatternKindFile -> toJSON "file"
+      FileOperationPatternKindFolder -> toJSON "folder"
+
 data FileOperationPatternKind = FileOperationPatternKindFile
                               | FileOperationPatternKindFolder
  deriving (Show,Eq,Enum,Bounded,Ord)

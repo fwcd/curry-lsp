@@ -23,6 +23,18 @@ instance FromJSON SignatureInformation where
                                  , signatureInformationActiveParameter = parsedActiveParameter }
       _ -> Left ("Unrecognized SignatureInformation value: " ++ ppJSON j)
 
+instance ToJSON SignatureInformation where
+  toJSON x =
+    object
+     [(.=) "label" (signatureInformationLabel x),  (.?=) "documentation"
+                                                    (signatureInformationDocumentation
+                                                      x),  (.?=) "parameters"
+                                                            (signatureInformationParameters
+                                                              x),  (.?=)
+                                                                    "activeParameter"
+                                                                    (signatureInformationActiveParameter
+                                                                      x)]
+
 data SignatureInformation = SignatureInformation { signatureInformationLabel :: String
                                                  , signatureInformationDocumentation :: Maybe (Either String MarkupContent)
                                                  , signatureInformationParameters :: Maybe [ParameterInformation]

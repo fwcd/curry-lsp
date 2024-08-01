@@ -19,6 +19,12 @@ instance FromJSON DocumentColorClientCapabilities where
         Left
          ("Unrecognized DocumentColorClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DocumentColorClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentColorClientCapabilitiesDynamicRegistration x)]
+
 data DocumentColorClientCapabilities = DocumentColorClientCapabilities { documentColorClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

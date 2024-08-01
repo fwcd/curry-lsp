@@ -16,6 +16,10 @@ instance FromJSON FileOperationPatternOptions where
       _ ->
         Left ("Unrecognized FileOperationPatternOptions value: " ++ ppJSON j)
 
+instance ToJSON FileOperationPatternOptions where
+  toJSON x =
+    object [(.?=) "ignoreCase" (fileOperationPatternOptionsIgnoreCase x)]
+
 data FileOperationPatternOptions = FileOperationPatternOptions { fileOperationPatternOptionsIgnoreCase :: Maybe Bool }
  deriving (Show,Eq)
 

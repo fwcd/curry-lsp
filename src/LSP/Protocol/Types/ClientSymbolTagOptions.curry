@@ -16,6 +16,9 @@ instance FromJSON ClientSymbolTagOptions where
             ClientSymbolTagOptions { clientSymbolTagOptionsValueSet = parsedValueSet }
       _ -> Left ("Unrecognized ClientSymbolTagOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientSymbolTagOptions where
+  toJSON x = object [(.=) "valueSet" (clientSymbolTagOptionsValueSet x)]
+
 data ClientSymbolTagOptions = ClientSymbolTagOptions { clientSymbolTagOptionsValueSet :: [SymbolTag] }
  deriving (Show,Eq)
 

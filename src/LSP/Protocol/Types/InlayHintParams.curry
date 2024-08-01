@@ -22,6 +22,17 @@ instance FromJSON InlayHintParams where
                             , inlayHintParamsRange = parsedRange }
       _ -> Left ("Unrecognized InlayHintParams value: " ++ ppJSON j)
 
+instance ToJSON InlayHintParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (inlayHintParamsWorkDoneToken x),  (.=)
+                                                                "textDocument"
+                                                                (inlayHintParamsTextDocument
+                                                                  x),  (.=)
+                                                                        "range"
+                                                                        (inlayHintParamsRange
+                                                                          x)]
+
 data InlayHintParams = InlayHintParams { inlayHintParamsWorkDoneToken :: Maybe ProgressToken
                                        , inlayHintParamsTextDocument :: TextDocumentIdentifier
                                        , inlayHintParamsRange :: Range }

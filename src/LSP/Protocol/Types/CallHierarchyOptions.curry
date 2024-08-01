@@ -15,6 +15,10 @@ instance FromJSON CallHierarchyOptions where
             CallHierarchyOptions { callHierarchyOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized CallHierarchyOptions value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (callHierarchyOptionsWorkDoneProgress x)]
+
 data CallHierarchyOptions = CallHierarchyOptions { callHierarchyOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

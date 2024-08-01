@@ -19,6 +19,13 @@ instance FromJSON CallHierarchyIncomingCall where
                                       , callHierarchyIncomingCallFromRanges = parsedFromRanges }
       _ -> Left ("Unrecognized CallHierarchyIncomingCall value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyIncomingCall where
+  toJSON x =
+    object
+     [(.=) "from" (callHierarchyIncomingCallFrom x),  (.=) "fromRanges"
+                                                       (callHierarchyIncomingCallFromRanges
+                                                         x)]
+
 data CallHierarchyIncomingCall = CallHierarchyIncomingCall { callHierarchyIncomingCallFrom :: CallHierarchyItem
                                                            , callHierarchyIncomingCallFromRanges :: [Range] }
  deriving (Show,Eq)

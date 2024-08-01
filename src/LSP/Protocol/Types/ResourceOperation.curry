@@ -18,6 +18,13 @@ instance FromJSON ResourceOperation where
                               , resourceOperationAnnotationId = parsedAnnotationId }
       _ -> Left ("Unrecognized ResourceOperation value: " ++ ppJSON j)
 
+instance ToJSON ResourceOperation where
+  toJSON x =
+    object
+     [(.=) "kind" (resourceOperationKind x),  (.?=) "annotationId"
+                                               (resourceOperationAnnotationId
+                                                 x)]
+
 data ResourceOperation = ResourceOperation { resourceOperationKind :: String
                                            , resourceOperationAnnotationId :: Maybe ChangeAnnotationIdentifier }
  deriving (Show,Eq)

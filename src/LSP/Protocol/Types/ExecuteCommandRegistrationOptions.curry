@@ -20,6 +20,14 @@ instance FromJSON ExecuteCommandRegistrationOptions where
          ("Unrecognized ExecuteCommandRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ExecuteCommandRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (executeCommandRegistrationOptionsWorkDoneProgress x),  (.=) "commands"
+                                                                (executeCommandRegistrationOptionsCommands
+                                                                  x)]
+
 data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions { executeCommandRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , executeCommandRegistrationOptionsCommands :: [String] }
  deriving (Show,Eq)

@@ -17,6 +17,12 @@ instance FromJSON LogTraceParams where
                            , logTraceParamsVerbose = parsedVerbose }
       _ -> Left ("Unrecognized LogTraceParams value: " ++ ppJSON j)
 
+instance ToJSON LogTraceParams where
+  toJSON x =
+    object
+     [(.=) "message" (logTraceParamsMessage x),  (.?=) "verbose"
+                                                  (logTraceParamsVerbose x)]
+
 data LogTraceParams = LogTraceParams { logTraceParamsMessage :: String
                                      , logTraceParamsVerbose :: Maybe String }
  deriving (Show,Eq)

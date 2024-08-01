@@ -20,6 +20,14 @@ instance FromJSON TextDocumentPositionParams where
       _ ->
         Left ("Unrecognized TextDocumentPositionParams value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentPositionParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (textDocumentPositionParamsTextDocument x),  (.=)
+                                                                        "position"
+                                                                        (textDocumentPositionParamsPosition
+                                                                          x)]
+
 data TextDocumentPositionParams = TextDocumentPositionParams { textDocumentPositionParamsTextDocument :: TextDocumentIdentifier
                                                              , textDocumentPositionParamsPosition :: Position }
  deriving (Show,Eq)

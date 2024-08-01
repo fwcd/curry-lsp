@@ -28,6 +28,23 @@ instance FromJSON WorkspaceFullDocumentDiagnosticReport where
          ("Unrecognized WorkspaceFullDocumentDiagnosticReport value: "
            ++ ppJSON j)
 
+instance ToJSON WorkspaceFullDocumentDiagnosticReport where
+  toJSON x =
+    object
+     [(.=) "kind" (workspaceFullDocumentDiagnosticReportKind x),  (.?=)
+                                                                   "resultId"
+                                                                   (workspaceFullDocumentDiagnosticReportResultId
+                                                                     x),  (.=)
+                                                                           "items"
+                                                                           (workspaceFullDocumentDiagnosticReportItems
+                                                                             x),  (.=)
+                                                                                   "uri"
+                                                                                   (workspaceFullDocumentDiagnosticReportUri
+                                                                                     x),  (.=)
+                                                                                           "version"
+                                                                                           (workspaceFullDocumentDiagnosticReportVersion
+                                                                                             x)]
+
 data WorkspaceFullDocumentDiagnosticReport = WorkspaceFullDocumentDiagnosticReport { workspaceFullDocumentDiagnosticReportKind :: String
                                                                                    , workspaceFullDocumentDiagnosticReportResultId :: Maybe String
                                                                                    , workspaceFullDocumentDiagnosticReportItems :: [Diagnostic]

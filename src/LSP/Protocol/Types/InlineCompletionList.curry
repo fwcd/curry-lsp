@@ -16,6 +16,9 @@ instance FromJSON InlineCompletionList where
             InlineCompletionList { inlineCompletionListItems = parsedItems }
       _ -> Left ("Unrecognized InlineCompletionList value: " ++ ppJSON j)
 
+instance ToJSON InlineCompletionList where
+  toJSON x = object [(.=) "items" (inlineCompletionListItems x)]
+
 data InlineCompletionList = InlineCompletionList { inlineCompletionListItems :: [InlineCompletionItem] }
  deriving (Show,Eq)
 

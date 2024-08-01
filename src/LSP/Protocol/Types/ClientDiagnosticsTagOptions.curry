@@ -17,6 +17,9 @@ instance FromJSON ClientDiagnosticsTagOptions where
       _ ->
         Left ("Unrecognized ClientDiagnosticsTagOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientDiagnosticsTagOptions where
+  toJSON x = object [(.=) "valueSet" (clientDiagnosticsTagOptionsValueSet x)]
+
 data ClientDiagnosticsTagOptions = ClientDiagnosticsTagOptions { clientDiagnosticsTagOptionsValueSet :: [DiagnosticTag] }
  deriving (Show,Eq)
 

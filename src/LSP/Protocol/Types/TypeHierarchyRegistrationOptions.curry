@@ -22,6 +22,18 @@ instance FromJSON TypeHierarchyRegistrationOptions where
         Left
          ("Unrecognized TypeHierarchyRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON TypeHierarchyRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (typeHierarchyRegistrationOptionsDocumentSelector x),  (.?=)
+                                                               "workDoneProgress"
+                                                               (typeHierarchyRegistrationOptionsWorkDoneProgress
+                                                                 x),  (.?=)
+                                                                       "id"
+                                                                       (typeHierarchyRegistrationOptionsId
+                                                                         x)]
+
 data TypeHierarchyRegistrationOptions = TypeHierarchyRegistrationOptions { typeHierarchyRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , typeHierarchyRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                          , typeHierarchyRegistrationOptionsId :: Maybe String }

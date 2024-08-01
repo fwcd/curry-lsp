@@ -22,6 +22,18 @@ instance FromJSON CallHierarchyRegistrationOptions where
         Left
          ("Unrecognized CallHierarchyRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (callHierarchyRegistrationOptionsDocumentSelector x),  (.?=)
+                                                               "workDoneProgress"
+                                                               (callHierarchyRegistrationOptionsWorkDoneProgress
+                                                                 x),  (.?=)
+                                                                       "id"
+                                                                       (callHierarchyRegistrationOptionsId
+                                                                         x)]
+
 data CallHierarchyRegistrationOptions = CallHierarchyRegistrationOptions { callHierarchyRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , callHierarchyRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                          , callHierarchyRegistrationOptionsId :: Maybe String }

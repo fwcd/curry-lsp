@@ -24,6 +24,18 @@ instance FromJSON DeleteFile where
                        , deleteFileOptions = parsedOptions }
       _ -> Left ("Unrecognized DeleteFile value: " ++ ppJSON j)
 
+instance ToJSON DeleteFile where
+  toJSON x =
+    object
+     [(.=) "kind" (deleteFileKind x),  (.?=) "annotationId"
+                                        (deleteFileAnnotationId x),  (.=)
+                                                                      "uri"
+                                                                      (deleteFileUri
+                                                                        x),  (.?=)
+                                                                              "options"
+                                                                              (deleteFileOptions
+                                                                                x)]
+
 data DeleteFile = DeleteFile { deleteFileKind :: String
                              , deleteFileAnnotationId :: Maybe ChangeAnnotationIdentifier
                              , deleteFileUri :: DocumentUri

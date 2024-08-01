@@ -18,6 +18,12 @@ instance FromJSON DiagnosticWorkspaceClientCapabilities where
          ("Unrecognized DiagnosticWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DiagnosticWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (diagnosticWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data DiagnosticWorkspaceClientCapabilities = DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

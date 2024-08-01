@@ -23,6 +23,18 @@ instance FromJSON TypeDefinitionRegistrationOptions where
          ("Unrecognized TypeDefinitionRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON TypeDefinitionRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (typeDefinitionRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                "workDoneProgress"
+                                                                (typeDefinitionRegistrationOptionsWorkDoneProgress
+                                                                  x),  (.?=)
+                                                                        "id"
+                                                                        (typeDefinitionRegistrationOptionsId
+                                                                          x)]
+
 data TypeDefinitionRegistrationOptions = TypeDefinitionRegistrationOptions { typeDefinitionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , typeDefinitionRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , typeDefinitionRegistrationOptionsId :: Maybe String }

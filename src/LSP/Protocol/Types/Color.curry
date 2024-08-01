@@ -21,6 +21,16 @@ instance FromJSON Color where
                   , colorAlpha = parsedAlpha }
       _ -> Left ("Unrecognized Color value: " ++ ppJSON j)
 
+instance ToJSON Color where
+  toJSON x =
+    object
+     [(.=) "red" (colorRed x),  (.=) "green" (colorGreen x),  (.=) "blue"
+                                                               (colorBlue
+                                                                 x),  (.=)
+                                                                       "alpha"
+                                                                       (colorAlpha
+                                                                         x)]
+
 data Color = Color { colorRed :: Float
                    , colorGreen :: Float
                    , colorBlue :: Float

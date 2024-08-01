@@ -17,6 +17,9 @@ instance FromJSON DidChangeWatchedFilesParams where
       _ ->
         Left ("Unrecognized DidChangeWatchedFilesParams value: " ++ ppJSON j)
 
+instance ToJSON DidChangeWatchedFilesParams where
+  toJSON x = object [(.=) "changes" (didChangeWatchedFilesParamsChanges x)]
+
 data DidChangeWatchedFilesParams = DidChangeWatchedFilesParams { didChangeWatchedFilesParamsChanges :: [FileEvent] }
  deriving (Show,Eq)
 

@@ -19,6 +19,11 @@ instance FromJSON ClientCompletionItemInsertTextModeOptions where
          ("Unrecognized ClientCompletionItemInsertTextModeOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientCompletionItemInsertTextModeOptions where
+  toJSON x =
+    object
+     [(.=) "valueSet" (clientCompletionItemInsertTextModeOptionsValueSet x)]
+
 data ClientCompletionItemInsertTextModeOptions = ClientCompletionItemInsertTextModeOptions { clientCompletionItemInsertTextModeOptionsValueSet :: [InsertTextMode] }
  deriving (Show,Eq)
 

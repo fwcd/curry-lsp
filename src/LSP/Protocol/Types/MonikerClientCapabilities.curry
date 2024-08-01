@@ -17,6 +17,12 @@ instance FromJSON MonikerClientCapabilities where
             MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration = parsedDynamicRegistration }
       _ -> Left ("Unrecognized MonikerClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON MonikerClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (monikerClientCapabilitiesDynamicRegistration x)]
+
 data MonikerClientCapabilities = MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

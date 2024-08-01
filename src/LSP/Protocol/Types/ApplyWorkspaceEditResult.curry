@@ -19,6 +19,17 @@ instance FromJSON ApplyWorkspaceEditResult where
                                      , applyWorkspaceEditResultFailedChange = parsedFailedChange }
       _ -> Left ("Unrecognized ApplyWorkspaceEditResult value: " ++ ppJSON j)
 
+instance ToJSON ApplyWorkspaceEditResult where
+  toJSON x =
+    object
+     [(.=) "applied" (applyWorkspaceEditResultApplied x),  (.?=)
+                                                            "failureReason"
+                                                            (applyWorkspaceEditResultFailureReason
+                                                              x),  (.?=)
+                                                                    "failedChange"
+                                                                    (applyWorkspaceEditResultFailedChange
+                                                                      x)]
+
 data ApplyWorkspaceEditResult = ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied :: Bool
                                                          , applyWorkspaceEditResultFailureReason :: Maybe String
                                                          , applyWorkspaceEditResultFailedChange :: Maybe Int }

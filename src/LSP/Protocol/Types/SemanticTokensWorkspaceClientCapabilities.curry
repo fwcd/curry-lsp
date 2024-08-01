@@ -18,6 +18,12 @@ instance FromJSON SemanticTokensWorkspaceClientCapabilities where
          ("Unrecognized SemanticTokensWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON SemanticTokensWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (semanticTokensWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data SemanticTokensWorkspaceClientCapabilities = SemanticTokensWorkspaceClientCapabilities { semanticTokensWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

@@ -15,6 +15,10 @@ instance FromJSON InlineValueOptions where
             InlineValueOptions { inlineValueOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized InlineValueOptions value: " ++ ppJSON j)
 
+instance ToJSON InlineValueOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (inlineValueOptionsWorkDoneProgress x)]
+
 data InlineValueOptions = InlineValueOptions { inlineValueOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

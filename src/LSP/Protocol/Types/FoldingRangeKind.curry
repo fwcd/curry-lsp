@@ -15,6 +15,13 @@ instance FromJSON FoldingRangeKind where
          "region" -> Right FoldingRangeKindRegion
          _ -> Left ("Unrecognized FoldingRangeKind value: " ++ ppJSON j)
 
+instance ToJSON FoldingRangeKind where
+  toJSON x =
+    case x of
+      FoldingRangeKindComment -> toJSON "comment"
+      FoldingRangeKindImports -> toJSON "imports"
+      FoldingRangeKindRegion -> toJSON "region"
+
 data FoldingRangeKind = FoldingRangeKindComment
                       | FoldingRangeKindImports
                       | FoldingRangeKindRegion

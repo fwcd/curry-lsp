@@ -19,6 +19,12 @@ instance FromJSON ColorInformation where
                              , colorInformationColor = parsedColor }
       _ -> Left ("Unrecognized ColorInformation value: " ++ ppJSON j)
 
+instance ToJSON ColorInformation where
+  toJSON x =
+    object
+     [(.=) "range" (colorInformationRange x),  (.=) "color"
+                                                (colorInformationColor x)]
+
 data ColorInformation = ColorInformation { colorInformationRange :: Range
                                          , colorInformationColor :: Color }
  deriving (Show,Eq)

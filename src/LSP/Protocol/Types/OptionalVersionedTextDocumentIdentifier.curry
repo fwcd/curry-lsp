@@ -21,6 +21,14 @@ instance FromJSON OptionalVersionedTextDocumentIdentifier where
          ("Unrecognized OptionalVersionedTextDocumentIdentifier value: "
            ++ ppJSON j)
 
+instance ToJSON OptionalVersionedTextDocumentIdentifier where
+  toJSON x =
+    object
+     [(.=) "uri" (optionalVersionedTextDocumentIdentifierUri x),  (.=)
+                                                                   "version"
+                                                                   (optionalVersionedTextDocumentIdentifierVersion
+                                                                     x)]
+
 data OptionalVersionedTextDocumentIdentifier = OptionalVersionedTextDocumentIdentifier { optionalVersionedTextDocumentIdentifierUri :: DocumentUri
                                                                                        , optionalVersionedTextDocumentIdentifierVersion :: Either Int () }
  deriving (Show,Eq)

@@ -17,6 +17,12 @@ instance FromJSON DiagnosticServerCancellationData where
         Left
          ("Unrecognized DiagnosticServerCancellationData value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticServerCancellationData where
+  toJSON x =
+    object
+     [(.=) "retriggerRequest"
+       (diagnosticServerCancellationDataRetriggerRequest x)]
+
 data DiagnosticServerCancellationData = DiagnosticServerCancellationData { diagnosticServerCancellationDataRetriggerRequest :: Bool }
  deriving (Show,Eq)
 

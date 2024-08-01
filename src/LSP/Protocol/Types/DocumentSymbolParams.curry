@@ -23,6 +23,17 @@ instance FromJSON DocumentSymbolParams where
                                  , documentSymbolParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized DocumentSymbolParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentSymbolParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (documentSymbolParamsWorkDoneToken x),  (.?=)
+                                                                     "partialResultToken"
+                                                                     (documentSymbolParamsPartialResultToken
+                                                                       x),  (.=)
+                                                                             "textDocument"
+                                                                             (documentSymbolParamsTextDocument
+                                                                               x)]
+
 data DocumentSymbolParams = DocumentSymbolParams { documentSymbolParamsWorkDoneToken :: Maybe ProgressToken
                                                  , documentSymbolParamsPartialResultToken :: Maybe ProgressToken
                                                  , documentSymbolParamsTextDocument :: TextDocumentIdentifier }

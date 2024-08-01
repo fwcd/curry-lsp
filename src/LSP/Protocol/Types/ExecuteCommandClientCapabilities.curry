@@ -19,6 +19,12 @@ instance FromJSON ExecuteCommandClientCapabilities where
         Left
          ("Unrecognized ExecuteCommandClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON ExecuteCommandClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (executeCommandClientCapabilitiesDynamicRegistration x)]
+
 data ExecuteCommandClientCapabilities = ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

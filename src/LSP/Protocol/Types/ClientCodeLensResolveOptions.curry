@@ -16,6 +16,10 @@ instance FromJSON ClientCodeLensResolveOptions where
       _ ->
         Left ("Unrecognized ClientCodeLensResolveOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientCodeLensResolveOptions where
+  toJSON x =
+    object [(.=) "properties" (clientCodeLensResolveOptionsProperties x)]
+
 data ClientCodeLensResolveOptions = ClientCodeLensResolveOptions { clientCodeLensResolveOptionsProperties :: [String] }
  deriving (Show,Eq)
 

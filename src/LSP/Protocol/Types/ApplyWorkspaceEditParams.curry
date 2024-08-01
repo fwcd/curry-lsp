@@ -21,6 +21,16 @@ instance FromJSON ApplyWorkspaceEditParams where
                                      , applyWorkspaceEditParamsMetadata = parsedMetadata }
       _ -> Left ("Unrecognized ApplyWorkspaceEditParams value: " ++ ppJSON j)
 
+instance ToJSON ApplyWorkspaceEditParams where
+  toJSON x =
+    object
+     [(.?=) "label" (applyWorkspaceEditParamsLabel x),  (.=) "edit"
+                                                         (applyWorkspaceEditParamsEdit
+                                                           x),  (.?=)
+                                                                 "metadata"
+                                                                 (applyWorkspaceEditParamsMetadata
+                                                                   x)]
+
 data ApplyWorkspaceEditParams = ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel :: Maybe String
                                                          , applyWorkspaceEditParamsEdit :: WorkspaceEdit
                                                          , applyWorkspaceEditParamsMetadata :: Maybe WorkspaceEditMetadata }

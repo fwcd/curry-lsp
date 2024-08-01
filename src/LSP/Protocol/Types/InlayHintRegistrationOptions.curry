@@ -23,6 +23,21 @@ instance FromJSON InlayHintRegistrationOptions where
       _ ->
         Left ("Unrecognized InlayHintRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON InlayHintRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (inlayHintRegistrationOptionsWorkDoneProgress x),  (.?=)
+                                                           "resolveProvider"
+                                                           (inlayHintRegistrationOptionsResolveProvider
+                                                             x),  (.=)
+                                                                   "documentSelector"
+                                                                   (inlayHintRegistrationOptionsDocumentSelector
+                                                                     x),  (.?=)
+                                                                           "id"
+                                                                           (inlayHintRegistrationOptionsId
+                                                                             x)]
+
 data InlayHintRegistrationOptions = InlayHintRegistrationOptions { inlayHintRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                  , inlayHintRegistrationOptionsResolveProvider :: Maybe Bool
                                                                  , inlayHintRegistrationOptionsDocumentSelector :: Either DocumentSelector ()

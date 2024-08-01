@@ -21,6 +21,13 @@ instance FromJSON ClientSemanticTokensRequestOptions where
          ("Unrecognized ClientSemanticTokensRequestOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientSemanticTokensRequestOptions where
+  toJSON x =
+    object
+     [(.?=) "range" (clientSemanticTokensRequestOptionsRange x),  (.?=) "full"
+                                                                   (clientSemanticTokensRequestOptionsFull
+                                                                     x)]
+
 data ClientSemanticTokensRequestOptions = ClientSemanticTokensRequestOptions { clientSemanticTokensRequestOptionsRange :: Maybe (Either Bool ())
                                                                              , clientSemanticTokensRequestOptionsFull :: Maybe (Either Bool ClientSemanticTokensRequestFullDelta) }
  deriving (Show,Eq)

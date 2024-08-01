@@ -17,6 +17,14 @@ instance FromJSON WorkspaceSymbolOptions where
                                    , workspaceSymbolOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized WorkspaceSymbolOptions value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceSymbolOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (workspaceSymbolOptionsWorkDoneProgress x),  (.?=) "resolveProvider"
+                                                     (workspaceSymbolOptionsResolveProvider
+                                                       x)]
+
 data WorkspaceSymbolOptions = WorkspaceSymbolOptions { workspaceSymbolOptionsWorkDoneProgress :: Maybe Bool
                                                      , workspaceSymbolOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

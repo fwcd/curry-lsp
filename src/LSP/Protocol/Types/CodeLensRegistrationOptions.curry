@@ -21,6 +21,18 @@ instance FromJSON CodeLensRegistrationOptions where
       _ ->
         Left ("Unrecognized CodeLensRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON CodeLensRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (codeLensRegistrationOptionsDocumentSelector x),  (.?=)
+                                                          "workDoneProgress"
+                                                          (codeLensRegistrationOptionsWorkDoneProgress
+                                                            x),  (.?=)
+                                                                  "resolveProvider"
+                                                                  (codeLensRegistrationOptionsResolveProvider
+                                                                    x)]
+
 data CodeLensRegistrationOptions = CodeLensRegistrationOptions { codeLensRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                , codeLensRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                , codeLensRegistrationOptionsResolveProvider :: Maybe Bool }

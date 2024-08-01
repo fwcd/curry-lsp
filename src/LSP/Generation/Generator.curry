@@ -104,9 +104,10 @@ metaStructureToProg s = do
   fs <- mapM (metaPropertyToField mname name) props
   derivs <- asks geStandardDerivings
   fromJSONInst <- flatMetaStructureToFromJSONInstance mname name s'
+  toJSONInst <- flatMetaStructureToToJSONInstance mname name s'
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
-      insts = [fromJSONInst]
+      insts = [fromJSONInst, toJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
@@ -125,13 +126,14 @@ metaEnumerationToProg e = do
   stdDerivs <- asks geStandardDerivings
   enumDerivs <- asks geStandardEnumDerivings
   fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
+  toJSONInst <- metaEnumerationToToJSONInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
-      insts = [fromJSONInst]
+      insts = [fromJSONInst, toJSONInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
--- | Converts a meta structure to a FromJSON instance.
+-- | Converts a flattened meta structure to a FromJSON instance.
 flatMetaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 flatMetaStructureToFromJSONInstance mname prefix s' = do
   let name = escapeName $ msName s'
@@ -139,7 +141,7 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
-      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
+      sig = ACB.emptyClassType $ fromJSONType texp
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
@@ -165,10 +167,33 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
 
+-- | Converts a flattened meta structure to a ToJSON instance.
+flatMetaStructureToToJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+flatMetaStructureToToJSONInstance mname prefix s' = do
+  let name = escapeName $ msName s'
+      ctx = AC.CContext []
+      qn = (mname, name)
+      texp = ACB.baseType qn
+      vis = AC.Public
+      sig = ACB.emptyClassType $ toJSONType texp
+      xVar = (0, "x")
+      fieldExprs = [ACB.applyF (kvOperatorForMetaProperty p) [ACB.string2ac (mpName p), ACB.applyF (mname, fieldName prefix (mpName p)) [AC.CVar xVar]] | p <- msProperties s']
+      expr = ACB.applyF objectQName [AC.CList fieldExprs]
+      rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
+      fdecls = [fdecl]
+  return $ AC.CInstance toJSONClassQName ctx texp fdecls
+
 -- | Picks the correct lookupFromJSON method for the given property.
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
 lookupFromJSONForMetaProperty p | isOptional = lookupMaybeFromJSONQName
                                 | otherwise  = lookupFromJSONQName
+  where isOptional = fromMaybe False $ mpOptional p
+
+-- | Picks the correct kv operator for the given property.
+kvOperatorForMetaProperty :: MetaProperty -> AC.QName
+kvOperatorForMetaProperty p | isOptional = optionalKvOperatorQName
+                            | otherwise  = kvOperatorQName
   where isOptional = fromMaybe False $ mpOptional p
 
 -- | Converts a meta enumeration to a FromJSON instance.
@@ -180,7 +205,7 @@ metaEnumerationToFromJSONInstance mname prefix e = do
       ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
-      sig = ACB.emptyClassType $ fromJSONType $ ACB.baseType qn
+      sig = ACB.emptyClassType $ fromJSONType texp
       jVar = (0, "j")
       rawVar = (1, "raw")
       anonVar = (2, "_")
@@ -204,6 +229,27 @@ metaEnumerationToFromJSONInstance mname prefix e = do
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+
+-- | Converts a meta enumeration to a ToJSON instance.
+metaEnumerationToToJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToToJSONInstance mname prefix e = do
+  let name = escapeName $ meName e
+      ctx = AC.CContext []
+      qn = (mname, name)
+      texp = ACB.baseType qn
+      vis = AC.Public
+      sig = ACB.emptyClassType $ toJSONType texp
+      xVar = (0, "x")
+      vals = meValues e
+      valLits = metaEnumerationValueToLit . mevValue <$> vals
+      valLitExprs = AC.CLit <$> valLits
+      valQNames = (,) mname . enumValueName prefix . mevName <$> vals
+      arms = zipWith (\q v -> (AC.CPComb q [], AC.CSimpleRhs (ACB.applyF toJSONQName [v]) [])) valQNames valLitExprs
+      expr = AC.CCase AC.CRigid (AC.CVar xVar) arms
+      rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
+      fdecls = [fdecl]
+  return $ AC.CInstance toJSONClassQName ctx texp fdecls
 
 -- | Converts a meta enumeration value to a Curry literal.
 metaEnumerationValueToLit :: JValue -> AC.CLiteral
@@ -320,9 +366,17 @@ jObjectQName = ("JSON.Data", "JObject")
 fromJSONType :: AC.CTypeExpr -> AC.CTypeExpr
 fromJSONType ty = AC.CFuncType (ACB.baseType jValueQName) (eitherType ACB.stringType ty)
 
+-- | The toJSON function type expr with the given result type.
+toJSONType :: AC.CTypeExpr -> AC.CTypeExpr
+toJSONType ty = AC.CFuncType ty (ACB.baseType jValueQName)
+
 -- | The fromJSON function name.
 fromJSONQName :: AC.QName
 fromJSONQName = ("LSP.Utils.JSON", "fromJSON")
+
+-- | The toJSON function name.
+toJSONQName :: AC.QName
+toJSONQName = ("LSP.Utils.JSON", "toJSON")
 
 -- | The lookupFromJSON function name.
 lookupFromJSONQName :: AC.QName
@@ -331,6 +385,18 @@ lookupFromJSONQName = ("LSP.Utils.JSON", "lookupFromJSON")
 -- | The lookupMaybeFromJSON function name.
 lookupMaybeFromJSONQName :: AC.QName
 lookupMaybeFromJSONQName = ("LSP.Utils.JSON", "lookupMaybeFromJSON")
+
+-- | The object function name.
+objectQName :: AC.QName
+objectQName = ("LSP.Utils.JSON", "object")
+
+-- | The key value operator name.
+kvOperatorQName :: AC.QName
+kvOperatorQName = ("LSP.Utils.JSON", "(.=)")
+
+-- | The optional key value operator name.
+optionalKvOperatorQName :: AC.QName
+optionalKvOperatorQName = ("LSP.Utils.JSON", "(.?=)")
 
 -- | The ppJSON function name.
 ppJSONQName :: AC.QName

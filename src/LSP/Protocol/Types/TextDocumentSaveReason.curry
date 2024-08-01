@@ -15,6 +15,13 @@ instance FromJSON TextDocumentSaveReason where
          3 -> Right TextDocumentSaveReasonFocusOut
          _ -> Left ("Unrecognized TextDocumentSaveReason value: " ++ ppJSON j)
 
+instance ToJSON TextDocumentSaveReason where
+  toJSON x =
+    case x of
+      TextDocumentSaveReasonManual -> toJSON 1
+      TextDocumentSaveReasonAfterDelay -> toJSON 2
+      TextDocumentSaveReasonFocusOut -> toJSON 3
+
 data TextDocumentSaveReason = TextDocumentSaveReasonManual
                             | TextDocumentSaveReasonAfterDelay
                             | TextDocumentSaveReasonFocusOut

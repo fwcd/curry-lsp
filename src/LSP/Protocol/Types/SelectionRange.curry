@@ -18,6 +18,12 @@ instance FromJSON SelectionRange where
                            , selectionRangeParent = parsedParent }
       _ -> Left ("Unrecognized SelectionRange value: " ++ ppJSON j)
 
+instance ToJSON SelectionRange where
+  toJSON x =
+    object
+     [(.=) "range" (selectionRangeRange x),  (.?=) "parent"
+                                              (selectionRangeParent x)]
+
 data SelectionRange = SelectionRange { selectionRangeRange :: Range
                                      , selectionRangeParent :: Maybe SelectionRange }
  deriving (Show,Eq)

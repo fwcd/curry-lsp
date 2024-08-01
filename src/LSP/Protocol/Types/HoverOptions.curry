@@ -15,6 +15,10 @@ instance FromJSON HoverOptions where
             HoverOptions { hoverOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized HoverOptions value: " ++ ppJSON j)
 
+instance ToJSON HoverOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (hoverOptionsWorkDoneProgress x)]
+
 data HoverOptions = HoverOptions { hoverOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

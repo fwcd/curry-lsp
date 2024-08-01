@@ -17,6 +17,9 @@ instance FromJSON ShowDocumentClientCapabilities where
         Left
          ("Unrecognized ShowDocumentClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON ShowDocumentClientCapabilities where
+  toJSON x = object [(.=) "support" (showDocumentClientCapabilitiesSupport x)]
+
 data ShowDocumentClientCapabilities = ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport :: Bool }
  deriving (Show,Eq)
 

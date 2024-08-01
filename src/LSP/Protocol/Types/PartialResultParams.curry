@@ -18,6 +18,11 @@ instance FromJSON PartialResultParams where
             PartialResultParams { partialResultParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized PartialResultParams value: " ++ ppJSON j)
 
+instance ToJSON PartialResultParams where
+  toJSON x =
+    object
+     [(.?=) "partialResultToken" (partialResultParamsPartialResultToken x)]
+
 data PartialResultParams = PartialResultParams { partialResultParamsPartialResultToken :: Maybe ProgressToken }
  deriving (Show,Eq)
 

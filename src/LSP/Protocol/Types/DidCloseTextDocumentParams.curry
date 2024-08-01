@@ -17,6 +17,10 @@ instance FromJSON DidCloseTextDocumentParams where
       _ ->
         Left ("Unrecognized DidCloseTextDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON DidCloseTextDocumentParams where
+  toJSON x =
+    object [(.=) "textDocument" (didCloseTextDocumentParamsTextDocument x)]
+
 data DidCloseTextDocumentParams = DidCloseTextDocumentParams { didCloseTextDocumentParamsTextDocument :: TextDocumentIdentifier }
  deriving (Show,Eq)
 

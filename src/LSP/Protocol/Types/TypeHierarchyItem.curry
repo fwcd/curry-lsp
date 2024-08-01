@@ -33,6 +33,29 @@ instance FromJSON TypeHierarchyItem where
                               , typeHierarchyItemData = parsedData }
       _ -> Left ("Unrecognized TypeHierarchyItem value: " ++ ppJSON j)
 
+instance ToJSON TypeHierarchyItem where
+  toJSON x =
+    object
+     [(.=) "name" (typeHierarchyItemName x),  (.=) "kind"
+                                               (typeHierarchyItemKind
+                                                 x),  (.?=) "tags"
+                                                       (typeHierarchyItemTags
+                                                         x),  (.?=) "detail"
+                                                               (typeHierarchyItemDetail
+                                                                 x),  (.=)
+                                                                       "uri"
+                                                                       (typeHierarchyItemUri
+                                                                         x),  (.=)
+                                                                               "range"
+                                                                               (typeHierarchyItemRange
+                                                                                 x),  (.=)
+                                                                                       "selectionRange"
+                                                                                       (typeHierarchyItemSelectionRange
+                                                                                         x),  (.?=)
+                                                                                               "data"
+                                                                                               (typeHierarchyItemData
+                                                                                                 x)]
+
 data TypeHierarchyItem = TypeHierarchyItem { typeHierarchyItemName :: String
                                            , typeHierarchyItemKind :: SymbolKind
                                            , typeHierarchyItemTags :: Maybe [SymbolTag]

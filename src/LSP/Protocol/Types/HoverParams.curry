@@ -22,6 +22,16 @@ instance FromJSON HoverParams where
                         , hoverParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized HoverParams value: " ++ ppJSON j)
 
+instance ToJSON HoverParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (hoverParamsTextDocument x),  (.=) "position"
+                                                         (hoverParamsPosition
+                                                           x),  (.?=)
+                                                                 "workDoneToken"
+                                                                 (hoverParamsWorkDoneToken
+                                                                   x)]
+
 data HoverParams = HoverParams { hoverParamsTextDocument :: TextDocumentIdentifier
                                , hoverParamsPosition :: Position
                                , hoverParamsWorkDoneToken :: Maybe ProgressToken }

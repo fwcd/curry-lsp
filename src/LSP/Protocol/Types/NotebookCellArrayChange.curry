@@ -20,6 +20,15 @@ instance FromJSON NotebookCellArrayChange where
                                     , notebookCellArrayChangeCells = parsedCells }
       _ -> Left ("Unrecognized NotebookCellArrayChange value: " ++ ppJSON j)
 
+instance ToJSON NotebookCellArrayChange where
+  toJSON x =
+    object
+     [(.=) "start" (notebookCellArrayChangeStart x),  (.=) "deleteCount"
+                                                       (notebookCellArrayChangeDeleteCount
+                                                         x),  (.?=) "cells"
+                                                               (notebookCellArrayChangeCells
+                                                                 x)]
+
 data NotebookCellArrayChange = NotebookCellArrayChange { notebookCellArrayChangeStart :: Int
                                                        , notebookCellArrayChangeDeleteCount :: Int
                                                        , notebookCellArrayChangeCells :: Maybe [NotebookCell] }

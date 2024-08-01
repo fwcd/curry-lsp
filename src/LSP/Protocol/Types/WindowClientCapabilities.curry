@@ -21,6 +21,17 @@ instance FromJSON WindowClientCapabilities where
                                      , windowClientCapabilitiesShowDocument = parsedShowDocument }
       _ -> Left ("Unrecognized WindowClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON WindowClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (windowClientCapabilitiesWorkDoneProgress x),  (.?=) "showMessage"
+                                                       (windowClientCapabilitiesShowMessage
+                                                         x),  (.?=)
+                                                               "showDocument"
+                                                               (windowClientCapabilitiesShowDocument
+                                                                 x)]
+
 data WindowClientCapabilities = WindowClientCapabilities { windowClientCapabilitiesWorkDoneProgress :: Maybe Bool
                                                          , windowClientCapabilitiesShowMessage :: Maybe ShowMessageRequestClientCapabilities
                                                          , windowClientCapabilitiesShowDocument :: Maybe ShowDocumentClientCapabilities }

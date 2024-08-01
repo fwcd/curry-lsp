@@ -23,6 +23,17 @@ instance FromJSON SemanticTokensParams where
                                  , semanticTokensParamsTextDocument = parsedTextDocument }
       _ -> Left ("Unrecognized SemanticTokensParams value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (semanticTokensParamsWorkDoneToken x),  (.?=)
+                                                                     "partialResultToken"
+                                                                     (semanticTokensParamsPartialResultToken
+                                                                       x),  (.=)
+                                                                             "textDocument"
+                                                                             (semanticTokensParamsTextDocument
+                                                                               x)]
+
 data SemanticTokensParams = SemanticTokensParams { semanticTokensParamsWorkDoneToken :: Maybe ProgressToken
                                                  , semanticTokensParamsPartialResultToken :: Maybe ProgressToken
                                                  , semanticTokensParamsTextDocument :: TextDocumentIdentifier }

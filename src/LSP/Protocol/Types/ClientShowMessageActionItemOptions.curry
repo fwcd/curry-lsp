@@ -20,6 +20,12 @@ instance FromJSON ClientShowMessageActionItemOptions where
          ("Unrecognized ClientShowMessageActionItemOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientShowMessageActionItemOptions where
+  toJSON x =
+    object
+     [(.?=) "additionalPropertiesSupport"
+       (clientShowMessageActionItemOptionsAdditionalPropertiesSupport x)]
+
 data ClientShowMessageActionItemOptions = ClientShowMessageActionItemOptions { clientShowMessageActionItemOptionsAdditionalPropertiesSupport :: Maybe Bool }
  deriving (Show,Eq)
 

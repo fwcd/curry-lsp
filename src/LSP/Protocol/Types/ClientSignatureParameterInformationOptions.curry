@@ -20,6 +20,12 @@ instance FromJSON ClientSignatureParameterInformationOptions where
          ("Unrecognized ClientSignatureParameterInformationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON ClientSignatureParameterInformationOptions where
+  toJSON x =
+    object
+     [(.?=) "labelOffsetSupport"
+       (clientSignatureParameterInformationOptionsLabelOffsetSupport x)]
+
 data ClientSignatureParameterInformationOptions = ClientSignatureParameterInformationOptions { clientSignatureParameterInformationOptionsLabelOffsetSupport :: Maybe Bool }
  deriving (Show,Eq)
 

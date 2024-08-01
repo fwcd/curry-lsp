@@ -22,6 +22,14 @@ instance FromJSON NotebookDocumentFilterWithNotebook where
          ("Unrecognized NotebookDocumentFilterWithNotebook value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentFilterWithNotebook where
+  toJSON x =
+    object
+     [(.=) "notebook" (notebookDocumentFilterWithNotebookNotebook x),  (.?=)
+                                                                        "cells"
+                                                                        (notebookDocumentFilterWithNotebookCells
+                                                                          x)]
+
 data NotebookDocumentFilterWithNotebook = NotebookDocumentFilterWithNotebook { notebookDocumentFilterWithNotebookNotebook :: Either String NotebookDocumentFilter
                                                                              , notebookDocumentFilterWithNotebookCells :: Maybe [NotebookCellLanguage] }
  deriving (Show,Eq)

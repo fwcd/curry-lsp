@@ -18,6 +18,12 @@ instance FromJSON PreviousResultId where
                              , previousResultIdValue = parsedValue }
       _ -> Left ("Unrecognized PreviousResultId value: " ++ ppJSON j)
 
+instance ToJSON PreviousResultId where
+  toJSON x =
+    object
+     [(.=) "uri" (previousResultIdUri x),  (.=) "value"
+                                            (previousResultIdValue x)]
+
 data PreviousResultId = PreviousResultId { previousResultIdUri :: DocumentUri
                                          , previousResultIdValue :: String }
  deriving (Show,Eq)

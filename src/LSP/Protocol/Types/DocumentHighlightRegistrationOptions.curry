@@ -21,6 +21,15 @@ instance FromJSON DocumentHighlightRegistrationOptions where
          ("Unrecognized DocumentHighlightRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentHighlightRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentHighlightRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                   "workDoneProgress"
+                                                                   (documentHighlightRegistrationOptionsWorkDoneProgress
+                                                                     x)]
+
 data DocumentHighlightRegistrationOptions = DocumentHighlightRegistrationOptions { documentHighlightRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                  , documentHighlightRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

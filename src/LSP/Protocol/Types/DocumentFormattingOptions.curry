@@ -15,6 +15,11 @@ instance FromJSON DocumentFormattingOptions where
             DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DocumentFormattingOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentFormattingOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (documentFormattingOptionsWorkDoneProgress x)]
+
 data DocumentFormattingOptions = DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

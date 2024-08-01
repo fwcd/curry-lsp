@@ -19,6 +19,12 @@ instance FromJSON CallHierarchyClientCapabilities where
         Left
          ("Unrecognized CallHierarchyClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON CallHierarchyClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (callHierarchyClientCapabilitiesDynamicRegistration x)]
+
 data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

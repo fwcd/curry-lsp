@@ -22,6 +22,17 @@ instance FromJSON LinkedEditingRangeParams where
                                      , linkedEditingRangeParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized LinkedEditingRangeParams value: " ++ ppJSON j)
 
+instance ToJSON LinkedEditingRangeParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (linkedEditingRangeParamsTextDocument x),  (.=)
+                                                                      "position"
+                                                                      (linkedEditingRangeParamsPosition
+                                                                        x),  (.?=)
+                                                                              "workDoneToken"
+                                                                              (linkedEditingRangeParamsWorkDoneToken
+                                                                                x)]
+
 data LinkedEditingRangeParams = LinkedEditingRangeParams { linkedEditingRangeParamsTextDocument :: TextDocumentIdentifier
                                                          , linkedEditingRangeParamsPosition :: Position
                                                          , linkedEditingRangeParamsWorkDoneToken :: Maybe ProgressToken }

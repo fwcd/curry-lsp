@@ -26,6 +26,18 @@ instance FromJSON SignatureHelpClientCapabilities where
         Left
          ("Unrecognized SignatureHelpClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (signatureHelpClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                 "signatureInformation"
+                                                                 (signatureHelpClientCapabilitiesSignatureInformation
+                                                                   x),  (.?=)
+                                                                         "contextSupport"
+                                                                         (signatureHelpClientCapabilitiesContextSupport
+                                                                           x)]
+
 data SignatureHelpClientCapabilities = SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                        , signatureHelpClientCapabilitiesSignatureInformation :: Maybe ClientSignatureInformationOptions
                                                                        , signatureHelpClientCapabilitiesContextSupport :: Maybe Bool }

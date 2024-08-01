@@ -21,6 +21,14 @@ instance FromJSON VersionedNotebookDocumentIdentifier where
          ("Unrecognized VersionedNotebookDocumentIdentifier value: "
            ++ ppJSON j)
 
+instance ToJSON VersionedNotebookDocumentIdentifier where
+  toJSON x =
+    object
+     [(.=) "version" (versionedNotebookDocumentIdentifierVersion x),  (.=)
+                                                                       "uri"
+                                                                       (versionedNotebookDocumentIdentifierUri
+                                                                         x)]
+
 data VersionedNotebookDocumentIdentifier = VersionedNotebookDocumentIdentifier { versionedNotebookDocumentIdentifierVersion :: Int
                                                                                , versionedNotebookDocumentIdentifierUri :: Uri }
  deriving (Show,Eq)

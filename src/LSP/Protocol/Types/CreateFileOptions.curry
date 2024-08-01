@@ -17,6 +17,14 @@ instance FromJSON CreateFileOptions where
                               , createFileOptionsIgnoreIfExists = parsedIgnoreIfExists }
       _ -> Left ("Unrecognized CreateFileOptions value: " ++ ppJSON j)
 
+instance ToJSON CreateFileOptions where
+  toJSON x =
+    object
+     [(.?=) "overwrite" (createFileOptionsOverwrite x),  (.?=)
+                                                          "ignoreIfExists"
+                                                          (createFileOptionsIgnoreIfExists
+                                                            x)]
+
 data CreateFileOptions = CreateFileOptions { createFileOptionsOverwrite :: Maybe Bool
                                            , createFileOptionsIgnoreIfExists :: Maybe Bool }
  deriving (Show,Eq)

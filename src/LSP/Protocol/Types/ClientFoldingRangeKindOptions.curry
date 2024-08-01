@@ -18,6 +18,10 @@ instance FromJSON ClientFoldingRangeKindOptions where
         Left
          ("Unrecognized ClientFoldingRangeKindOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientFoldingRangeKindOptions where
+  toJSON x =
+    object [(.?=) "valueSet" (clientFoldingRangeKindOptionsValueSet x)]
+
 data ClientFoldingRangeKindOptions = ClientFoldingRangeKindOptions { clientFoldingRangeKindOptionsValueSet :: Maybe [FoldingRangeKind] }
  deriving (Show,Eq)
 

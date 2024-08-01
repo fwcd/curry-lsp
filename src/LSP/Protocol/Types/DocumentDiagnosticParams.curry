@@ -27,6 +27,23 @@ instance FromJSON DocumentDiagnosticParams where
                                      , documentDiagnosticParamsPreviousResultId = parsedPreviousResultId }
       _ -> Left ("Unrecognized DocumentDiagnosticParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentDiagnosticParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (documentDiagnosticParamsWorkDoneToken x),  (.?=)
+                                                                         "partialResultToken"
+                                                                         (documentDiagnosticParamsPartialResultToken
+                                                                           x),  (.=)
+                                                                                 "textDocument"
+                                                                                 (documentDiagnosticParamsTextDocument
+                                                                                   x),  (.?=)
+                                                                                         "identifier"
+                                                                                         (documentDiagnosticParamsIdentifier
+                                                                                           x),  (.?=)
+                                                                                                 "previousResultId"
+                                                                                                 (documentDiagnosticParamsPreviousResultId
+                                                                                                   x)]
+
 data DocumentDiagnosticParams = DocumentDiagnosticParams { documentDiagnosticParamsWorkDoneToken :: Maybe ProgressToken
                                                          , documentDiagnosticParamsPartialResultToken :: Maybe ProgressToken
                                                          , documentDiagnosticParamsTextDocument :: TextDocumentIdentifier

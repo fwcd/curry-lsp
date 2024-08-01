@@ -19,6 +19,13 @@ instance FromJSON FileSystemWatcher where
                               , fileSystemWatcherKind = parsedKind }
       _ -> Left ("Unrecognized FileSystemWatcher value: " ++ ppJSON j)
 
+instance ToJSON FileSystemWatcher where
+  toJSON x =
+    object
+     [(.=) "globPattern" (fileSystemWatcherGlobPattern x),  (.?=) "kind"
+                                                             (fileSystemWatcherKind
+                                                               x)]
+
 data FileSystemWatcher = FileSystemWatcher { fileSystemWatcherGlobPattern :: GlobPattern
                                            , fileSystemWatcherKind :: Maybe WatchKind }
  deriving (Show,Eq)

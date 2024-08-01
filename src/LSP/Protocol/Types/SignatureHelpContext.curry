@@ -25,6 +25,20 @@ instance FromJSON SignatureHelpContext where
                                  , signatureHelpContextActiveSignatureHelp = parsedActiveSignatureHelp }
       _ -> Left ("Unrecognized SignatureHelpContext value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpContext where
+  toJSON x =
+    object
+     [(.=) "triggerKind" (signatureHelpContextTriggerKind x),  (.?=)
+                                                                "triggerCharacter"
+                                                                (signatureHelpContextTriggerCharacter
+                                                                  x),  (.=)
+                                                                        "isRetrigger"
+                                                                        (signatureHelpContextIsRetrigger
+                                                                          x),  (.?=)
+                                                                                "activeSignatureHelp"
+                                                                                (signatureHelpContextActiveSignatureHelp
+                                                                                  x)]
+
 data SignatureHelpContext = SignatureHelpContext { signatureHelpContextTriggerKind :: SignatureHelpTriggerKind
                                                  , signatureHelpContextTriggerCharacter :: Maybe String
                                                  , signatureHelpContextIsRetrigger :: Bool

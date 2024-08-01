@@ -22,6 +22,15 @@ instance FromJSON WorkspaceFoldersServerCapabilities where
          ("Unrecognized WorkspaceFoldersServerCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON WorkspaceFoldersServerCapabilities where
+  toJSON x =
+    object
+     [(.?=) "supported"
+       (workspaceFoldersServerCapabilitiesSupported x),  (.?=)
+                                                          "changeNotifications"
+                                                          (workspaceFoldersServerCapabilitiesChangeNotifications
+                                                            x)]
+
 data WorkspaceFoldersServerCapabilities = WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported :: Maybe Bool
                                                                              , workspaceFoldersServerCapabilitiesChangeNotifications :: Maybe (Either String Bool) }
  deriving (Show,Eq)

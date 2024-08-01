@@ -24,6 +24,20 @@ instance FromJSON DiagnosticOptions where
                               , diagnosticOptionsWorkspaceDiagnostics = parsedWorkspaceDiagnostics }
       _ -> Left ("Unrecognized DiagnosticOptions value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (diagnosticOptionsWorkDoneProgress x),  (.?=)
+                                                                        "identifier"
+                                                                        (diagnosticOptionsIdentifier
+                                                                          x),  (.=)
+                                                                                "interFileDependencies"
+                                                                                (diagnosticOptionsInterFileDependencies
+                                                                                  x),  (.=)
+                                                                                        "workspaceDiagnostics"
+                                                                                        (diagnosticOptionsWorkspaceDiagnostics
+                                                                                          x)]
+
 data DiagnosticOptions = DiagnosticOptions { diagnosticOptionsWorkDoneProgress :: Maybe Bool
                                            , diagnosticOptionsIdentifier :: Maybe String
                                            , diagnosticOptionsInterFileDependencies :: Bool

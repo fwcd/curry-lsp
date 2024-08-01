@@ -21,6 +21,17 @@ instance FromJSON CompletionList where
                            , completionListItems = parsedItems }
       _ -> Left ("Unrecognized CompletionList value: " ++ ppJSON j)
 
+instance ToJSON CompletionList where
+  toJSON x =
+    object
+     [(.=) "isIncomplete" (completionListIsIncomplete x),  (.?=)
+                                                            "itemDefaults"
+                                                            (completionListItemDefaults
+                                                              x),  (.=)
+                                                                    "items"
+                                                                    (completionListItems
+                                                                      x)]
+
 data CompletionList = CompletionList { completionListIsIncomplete :: Bool
                                      , completionListItemDefaults :: Maybe CompletionItemDefaults
                                      , completionListItems :: [CompletionItem] }

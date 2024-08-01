@@ -15,6 +15,9 @@ instance FromJSON CodeActionDisabled where
             CodeActionDisabled { codeActionDisabledReason = parsedReason }
       _ -> Left ("Unrecognized CodeActionDisabled value: " ++ ppJSON j)
 
+instance ToJSON CodeActionDisabled where
+  toJSON x = object [(.=) "reason" (codeActionDisabledReason x)]
+
 data CodeActionDisabled = CodeActionDisabled { codeActionDisabledReason :: String }
  deriving (Show,Eq)
 

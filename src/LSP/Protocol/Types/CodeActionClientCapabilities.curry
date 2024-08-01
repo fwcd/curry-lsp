@@ -42,6 +42,33 @@ instance FromJSON CodeActionClientCapabilities where
       _ ->
         Left ("Unrecognized CodeActionClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON CodeActionClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (codeActionClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                              "codeActionLiteralSupport"
+                                                              (codeActionClientCapabilitiesCodeActionLiteralSupport
+                                                                x),  (.?=)
+                                                                      "isPreferredSupport"
+                                                                      (codeActionClientCapabilitiesIsPreferredSupport
+                                                                        x),  (.?=)
+                                                                              "disabledSupport"
+                                                                              (codeActionClientCapabilitiesDisabledSupport
+                                                                                x),  (.?=)
+                                                                                      "dataSupport"
+                                                                                      (codeActionClientCapabilitiesDataSupport
+                                                                                        x),  (.?=)
+                                                                                              "resolveSupport"
+                                                                                              (codeActionClientCapabilitiesResolveSupport
+                                                                                                x),  (.?=)
+                                                                                                      "honorsChangeAnnotations"
+                                                                                                      (codeActionClientCapabilitiesHonorsChangeAnnotations
+                                                                                                        x),  (.?=)
+                                                                                                              "documentationSupport"
+                                                                                                              (codeActionClientCapabilitiesDocumentationSupport
+                                                                                                                x)]
+
 data CodeActionClientCapabilities = CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , codeActionClientCapabilitiesCodeActionLiteralSupport :: Maybe ClientCodeActionLiteralOptions
                                                                  , codeActionClientCapabilitiesIsPreferredSupport :: Maybe Bool

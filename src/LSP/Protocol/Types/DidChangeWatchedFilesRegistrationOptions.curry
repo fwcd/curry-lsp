@@ -19,6 +19,11 @@ instance FromJSON DidChangeWatchedFilesRegistrationOptions where
          ("Unrecognized DidChangeWatchedFilesRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DidChangeWatchedFilesRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "watchers" (didChangeWatchedFilesRegistrationOptionsWatchers x)]
+
 data DidChangeWatchedFilesRegistrationOptions = DidChangeWatchedFilesRegistrationOptions { didChangeWatchedFilesRegistrationOptionsWatchers :: [FileSystemWatcher] }
  deriving (Show,Eq)
 

@@ -15,6 +15,11 @@ instance FromJSON DocumentHighlightOptions where
             DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized DocumentHighlightOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentHighlightOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (documentHighlightOptionsWorkDoneProgress x)]
+
 data DocumentHighlightOptions = DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

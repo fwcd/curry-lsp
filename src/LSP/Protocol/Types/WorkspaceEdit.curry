@@ -29,6 +29,16 @@ instance FromJSON WorkspaceEdit where
                           , workspaceEditChangeAnnotations = parsedChangeAnnotations }
       _ -> Left ("Unrecognized WorkspaceEdit value: " ++ ppJSON j)
 
+instance ToJSON WorkspaceEdit where
+  toJSON x =
+    object
+     [(.?=) "changes" (workspaceEditChanges x),  (.?=) "documentChanges"
+                                                  (workspaceEditDocumentChanges
+                                                    x),  (.?=)
+                                                          "changeAnnotations"
+                                                          (workspaceEditChangeAnnotations
+                                                            x)]
+
 data WorkspaceEdit = WorkspaceEdit { workspaceEditChanges :: Maybe (Map DocumentUri [TextEdit])
                                    , workspaceEditDocumentChanges :: Maybe [Either (Either (Either TextDocumentEdit CreateFile) RenameFile) DeleteFile]
                                    , workspaceEditChangeAnnotations :: Maybe (Map ChangeAnnotationIdentifier ChangeAnnotation) }

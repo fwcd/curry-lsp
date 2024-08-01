@@ -30,6 +30,21 @@ instance FromJSON GeneralClientCapabilities where
                                       , generalClientCapabilitiesPositionEncodings = parsedPositionEncodings }
       _ -> Left ("Unrecognized GeneralClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON GeneralClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "staleRequestSupport"
+       (generalClientCapabilitiesStaleRequestSupport x),  (.?=)
+                                                           "regularExpressions"
+                                                           (generalClientCapabilitiesRegularExpressions
+                                                             x),  (.?=)
+                                                                   "markdown"
+                                                                   (generalClientCapabilitiesMarkdown
+                                                                     x),  (.?=)
+                                                                           "positionEncodings"
+                                                                           (generalClientCapabilitiesPositionEncodings
+                                                                             x)]
+
 data GeneralClientCapabilities = GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport :: Maybe StaleRequestSupportOptions
                                                            , generalClientCapabilitiesRegularExpressions :: Maybe RegularExpressionsClientCapabilities
                                                            , generalClientCapabilitiesMarkdown :: Maybe MarkdownClientCapabilities

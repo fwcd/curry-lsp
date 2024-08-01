@@ -22,6 +22,18 @@ instance FromJSON FoldingRangeRegistrationOptions where
         Left
          ("Unrecognized FoldingRangeRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON FoldingRangeRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (foldingRangeRegistrationOptionsDocumentSelector x),  (.?=)
+                                                              "workDoneProgress"
+                                                              (foldingRangeRegistrationOptionsWorkDoneProgress
+                                                                x),  (.?=)
+                                                                      "id"
+                                                                      (foldingRangeRegistrationOptionsId
+                                                                        x)]
+
 data FoldingRangeRegistrationOptions = FoldingRangeRegistrationOptions { foldingRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                        , foldingRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                        , foldingRangeRegistrationOptionsId :: Maybe String }

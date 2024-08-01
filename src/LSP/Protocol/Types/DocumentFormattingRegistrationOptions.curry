@@ -21,6 +21,15 @@ instance FromJSON DocumentFormattingRegistrationOptions where
          ("Unrecognized DocumentFormattingRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON DocumentFormattingRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (documentFormattingRegistrationOptionsDocumentSelector x),  (.?=)
+                                                                    "workDoneProgress"
+                                                                    (documentFormattingRegistrationOptionsWorkDoneProgress
+                                                                      x)]
+
 data DocumentFormattingRegistrationOptions = DocumentFormattingRegistrationOptions { documentFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , documentFormattingRegistrationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

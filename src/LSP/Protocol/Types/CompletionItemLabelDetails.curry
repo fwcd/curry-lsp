@@ -18,6 +18,14 @@ instance FromJSON CompletionItemLabelDetails where
       _ ->
         Left ("Unrecognized CompletionItemLabelDetails value: " ++ ppJSON j)
 
+instance ToJSON CompletionItemLabelDetails where
+  toJSON x =
+    object
+     [(.?=) "detail" (completionItemLabelDetailsDetail x),  (.?=)
+                                                             "description"
+                                                             (completionItemLabelDetailsDescription
+                                                               x)]
+
 data CompletionItemLabelDetails = CompletionItemLabelDetails { completionItemLabelDetailsDetail :: Maybe String
                                                              , completionItemLabelDetailsDescription :: Maybe String }
  deriving (Show,Eq)

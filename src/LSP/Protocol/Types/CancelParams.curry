@@ -14,6 +14,9 @@ instance FromJSON CancelParams where
            return CancelParams { cancelParamsId = parsedId }
       _ -> Left ("Unrecognized CancelParams value: " ++ ppJSON j)
 
+instance ToJSON CancelParams where
+  toJSON x = object [(.=) "id" (cancelParamsId x)]
+
 data CancelParams = CancelParams { cancelParamsId :: Either Int String }
  deriving (Show,Eq)
 

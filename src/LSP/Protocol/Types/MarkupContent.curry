@@ -18,6 +18,11 @@ instance FromJSON MarkupContent where
                           , markupContentValue = parsedValue }
       _ -> Left ("Unrecognized MarkupContent value: " ++ ppJSON j)
 
+instance ToJSON MarkupContent where
+  toJSON x =
+    object
+     [(.=) "kind" (markupContentKind x),  (.=) "value" (markupContentValue x)]
+
 data MarkupContent = MarkupContent { markupContentKind :: MarkupKind
                                    , markupContentValue :: String }
  deriving (Show,Eq)

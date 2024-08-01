@@ -18,6 +18,12 @@ instance FromJSON CodeLensWorkspaceClientCapabilities where
          ("Unrecognized CodeLensWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON CodeLensWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (codeLensWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data CodeLensWorkspaceClientCapabilities = CodeLensWorkspaceClientCapabilities { codeLensWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

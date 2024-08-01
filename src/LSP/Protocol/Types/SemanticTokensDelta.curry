@@ -18,6 +18,13 @@ instance FromJSON SemanticTokensDelta where
                                 , semanticTokensDeltaEdits = parsedEdits }
       _ -> Left ("Unrecognized SemanticTokensDelta value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensDelta where
+  toJSON x =
+    object
+     [(.?=) "resultId" (semanticTokensDeltaResultId x),  (.=) "edits"
+                                                          (semanticTokensDeltaEdits
+                                                            x)]
+
 data SemanticTokensDelta = SemanticTokensDelta { semanticTokensDeltaResultId :: Maybe String
                                                , semanticTokensDeltaEdits :: [SemanticTokensEdit] }
  deriving (Show,Eq)

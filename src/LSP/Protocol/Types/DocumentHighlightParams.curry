@@ -26,6 +26,20 @@ instance FromJSON DocumentHighlightParams where
                                     , documentHighlightParamsPartialResultToken = parsedPartialResultToken }
       _ -> Left ("Unrecognized DocumentHighlightParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentHighlightParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (documentHighlightParamsTextDocument x),  (.=)
+                                                                     "position"
+                                                                     (documentHighlightParamsPosition
+                                                                       x),  (.?=)
+                                                                             "workDoneToken"
+                                                                             (documentHighlightParamsWorkDoneToken
+                                                                               x),  (.?=)
+                                                                                     "partialResultToken"
+                                                                                     (documentHighlightParamsPartialResultToken
+                                                                                       x)]
+
 data DocumentHighlightParams = DocumentHighlightParams { documentHighlightParamsTextDocument :: TextDocumentIdentifier
                                                        , documentHighlightParamsPosition :: Position
                                                        , documentHighlightParamsWorkDoneToken :: Maybe ProgressToken

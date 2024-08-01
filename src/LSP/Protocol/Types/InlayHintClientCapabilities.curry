@@ -21,6 +21,15 @@ instance FromJSON InlayHintClientCapabilities where
       _ ->
         Left ("Unrecognized InlayHintClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON InlayHintClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (inlayHintClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                             "resolveSupport"
+                                                             (inlayHintClientCapabilitiesResolveSupport
+                                                               x)]
+
 data InlayHintClientCapabilities = InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                , inlayHintClientCapabilitiesResolveSupport :: Maybe ClientInlayHintResolveOptions }
  deriving (Show,Eq)

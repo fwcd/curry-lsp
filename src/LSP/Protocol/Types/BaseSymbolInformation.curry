@@ -23,6 +23,18 @@ instance FromJSON BaseSymbolInformation where
                                   , baseSymbolInformationContainerName = parsedContainerName }
       _ -> Left ("Unrecognized BaseSymbolInformation value: " ++ ppJSON j)
 
+instance ToJSON BaseSymbolInformation where
+  toJSON x =
+    object
+     [(.=) "name" (baseSymbolInformationName x),  (.=) "kind"
+                                                   (baseSymbolInformationKind
+                                                     x),  (.?=) "tags"
+                                                           (baseSymbolInformationTags
+                                                             x),  (.?=)
+                                                                   "containerName"
+                                                                   (baseSymbolInformationContainerName
+                                                                     x)]
+
 data BaseSymbolInformation = BaseSymbolInformation { baseSymbolInformationName :: String
                                                    , baseSymbolInformationKind :: SymbolKind
                                                    , baseSymbolInformationTags :: Maybe [SymbolTag]

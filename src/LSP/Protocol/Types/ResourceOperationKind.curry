@@ -15,6 +15,13 @@ instance FromJSON ResourceOperationKind where
          "delete" -> Right ResourceOperationKindDelete
          _ -> Left ("Unrecognized ResourceOperationKind value: " ++ ppJSON j)
 
+instance ToJSON ResourceOperationKind where
+  toJSON x =
+    case x of
+      ResourceOperationKindCreate -> toJSON "create"
+      ResourceOperationKindRename -> toJSON "rename"
+      ResourceOperationKindDelete -> toJSON "delete"
+
 data ResourceOperationKind = ResourceOperationKindCreate
                            | ResourceOperationKindRename
                            | ResourceOperationKindDelete

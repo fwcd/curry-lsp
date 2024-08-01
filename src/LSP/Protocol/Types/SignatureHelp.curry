@@ -20,6 +20,16 @@ instance FromJSON SignatureHelp where
                           , signatureHelpActiveParameter = parsedActiveParameter }
       _ -> Left ("Unrecognized SignatureHelp value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelp where
+  toJSON x =
+    object
+     [(.=) "signatures" (signatureHelpSignatures x),  (.?=) "activeSignature"
+                                                       (signatureHelpActiveSignature
+                                                         x),  (.?=)
+                                                               "activeParameter"
+                                                               (signatureHelpActiveParameter
+                                                                 x)]
+
 data SignatureHelp = SignatureHelp { signatureHelpSignatures :: [SignatureInformation]
                                    , signatureHelpActiveSignature :: Maybe Int
                                    , signatureHelpActiveParameter :: Maybe (Either Int ()) }

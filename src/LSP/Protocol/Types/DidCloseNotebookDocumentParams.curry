@@ -21,6 +21,15 @@ instance FromJSON DidCloseNotebookDocumentParams where
         Left
          ("Unrecognized DidCloseNotebookDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON DidCloseNotebookDocumentParams where
+  toJSON x =
+    object
+     [(.=) "notebookDocument"
+       (didCloseNotebookDocumentParamsNotebookDocument x),  (.=)
+                                                             "cellTextDocuments"
+                                                             (didCloseNotebookDocumentParamsCellTextDocuments
+                                                               x)]
+
 data DidCloseNotebookDocumentParams = DidCloseNotebookDocumentParams { didCloseNotebookDocumentParamsNotebookDocument :: NotebookDocumentIdentifier
                                                                      , didCloseNotebookDocumentParamsCellTextDocuments :: [TextDocumentIdentifier] }
  deriving (Show,Eq)

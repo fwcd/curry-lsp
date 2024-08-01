@@ -29,6 +29,22 @@ instance FromJSON CompletionParams where
                              , completionParamsContext = parsedContext }
       _ -> Left ("Unrecognized CompletionParams value: " ++ ppJSON j)
 
+instance ToJSON CompletionParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (completionParamsTextDocument x),  (.=) "position"
+                                                              (completionParamsPosition
+                                                                x),  (.?=)
+                                                                      "workDoneToken"
+                                                                      (completionParamsWorkDoneToken
+                                                                        x),  (.?=)
+                                                                              "partialResultToken"
+                                                                              (completionParamsPartialResultToken
+                                                                                x),  (.?=)
+                                                                                      "context"
+                                                                                      (completionParamsContext
+                                                                                        x)]
+
 data CompletionParams = CompletionParams { completionParamsTextDocument :: TextDocumentIdentifier
                                          , completionParamsPosition :: Position
                                          , completionParamsWorkDoneToken :: Maybe ProgressToken

@@ -26,6 +26,19 @@ instance FromJSON DocumentOnTypeFormattingParams where
         Left
          ("Unrecognized DocumentOnTypeFormattingParams value: " ++ ppJSON j)
 
+instance ToJSON DocumentOnTypeFormattingParams where
+  toJSON x =
+    object
+     [(.=) "textDocument"
+       (documentOnTypeFormattingParamsTextDocument x),  (.=) "position"
+                                                         (documentOnTypeFormattingParamsPosition
+                                                           x),  (.=) "ch"
+                                                                 (documentOnTypeFormattingParamsCh
+                                                                   x),  (.=)
+                                                                         "options"
+                                                                         (documentOnTypeFormattingParamsOptions
+                                                                           x)]
+
 data DocumentOnTypeFormattingParams = DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument :: TextDocumentIdentifier
                                                                      , documentOnTypeFormattingParamsPosition :: Position
                                                                      , documentOnTypeFormattingParamsCh :: String

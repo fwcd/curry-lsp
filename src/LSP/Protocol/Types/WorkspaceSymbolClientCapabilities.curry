@@ -29,6 +29,21 @@ instance FromJSON WorkspaceSymbolClientCapabilities where
          ("Unrecognized WorkspaceSymbolClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON WorkspaceSymbolClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (workspaceSymbolClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                   "symbolKind"
+                                                                   (workspaceSymbolClientCapabilitiesSymbolKind
+                                                                     x),  (.?=)
+                                                                           "tagSupport"
+                                                                           (workspaceSymbolClientCapabilitiesTagSupport
+                                                                             x),  (.?=)
+                                                                                   "resolveSupport"
+                                                                                   (workspaceSymbolClientCapabilitiesResolveSupport
+                                                                                     x)]
+
 data WorkspaceSymbolClientCapabilities = WorkspaceSymbolClientCapabilities { workspaceSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                            , workspaceSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions
                                                                            , workspaceSymbolClientCapabilitiesTagSupport :: Maybe ClientSymbolTagOptions

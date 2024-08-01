@@ -20,6 +20,12 @@ instance FromJSON LinkedEditingRangeClientCapabilities where
          ("Unrecognized LinkedEditingRangeClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON LinkedEditingRangeClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (linkedEditingRangeClientCapabilitiesDynamicRegistration x)]
+
 data LinkedEditingRangeClientCapabilities = LinkedEditingRangeClientCapabilities { linkedEditingRangeClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

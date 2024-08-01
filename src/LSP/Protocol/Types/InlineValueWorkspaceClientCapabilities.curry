@@ -18,6 +18,12 @@ instance FromJSON InlineValueWorkspaceClientCapabilities where
          ("Unrecognized InlineValueWorkspaceClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON InlineValueWorkspaceClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "refreshSupport"
+       (inlineValueWorkspaceClientCapabilitiesRefreshSupport x)]
+
 data InlineValueWorkspaceClientCapabilities = InlineValueWorkspaceClientCapabilities { inlineValueWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)
 

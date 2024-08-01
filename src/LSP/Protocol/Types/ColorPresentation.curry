@@ -22,6 +22,16 @@ instance FromJSON ColorPresentation where
                               , colorPresentationAdditionalTextEdits = parsedAdditionalTextEdits }
       _ -> Left ("Unrecognized ColorPresentation value: " ++ ppJSON j)
 
+instance ToJSON ColorPresentation where
+  toJSON x =
+    object
+     [(.=) "label" (colorPresentationLabel x),  (.?=) "textEdit"
+                                                 (colorPresentationTextEdit
+                                                   x),  (.?=)
+                                                         "additionalTextEdits"
+                                                         (colorPresentationAdditionalTextEdits
+                                                           x)]
+
 data ColorPresentation = ColorPresentation { colorPresentationLabel :: String
                                            , colorPresentationTextEdit :: Maybe TextEdit
                                            , colorPresentationAdditionalTextEdits :: Maybe [TextEdit] }

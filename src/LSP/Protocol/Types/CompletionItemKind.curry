@@ -37,6 +37,35 @@ instance FromJSON CompletionItemKind where
          25 -> Right CompletionItemKindTypeParameter
          _ -> Left ("Unrecognized CompletionItemKind value: " ++ ppJSON j)
 
+instance ToJSON CompletionItemKind where
+  toJSON x =
+    case x of
+      CompletionItemKindText -> toJSON 1
+      CompletionItemKindMethod -> toJSON 2
+      CompletionItemKindFunction -> toJSON 3
+      CompletionItemKindConstructor -> toJSON 4
+      CompletionItemKindField -> toJSON 5
+      CompletionItemKindVariable -> toJSON 6
+      CompletionItemKindClass -> toJSON 7
+      CompletionItemKindInterface -> toJSON 8
+      CompletionItemKindModule -> toJSON 9
+      CompletionItemKindProperty -> toJSON 10
+      CompletionItemKindUnit -> toJSON 11
+      CompletionItemKindValue -> toJSON 12
+      CompletionItemKindEnum -> toJSON 13
+      CompletionItemKindKeyword -> toJSON 14
+      CompletionItemKindSnippet -> toJSON 15
+      CompletionItemKindColor -> toJSON 16
+      CompletionItemKindFile -> toJSON 17
+      CompletionItemKindReference -> toJSON 18
+      CompletionItemKindFolder -> toJSON 19
+      CompletionItemKindEnumMember -> toJSON 20
+      CompletionItemKindConstant -> toJSON 21
+      CompletionItemKindStruct -> toJSON 22
+      CompletionItemKindEvent -> toJSON 23
+      CompletionItemKindOperator -> toJSON 24
+      CompletionItemKindTypeParameter -> toJSON 25
+
 data CompletionItemKind = CompletionItemKindText
                         | CompletionItemKindMethod
                         | CompletionItemKindFunction

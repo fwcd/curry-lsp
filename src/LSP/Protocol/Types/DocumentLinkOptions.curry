@@ -17,6 +17,14 @@ instance FromJSON DocumentLinkOptions where
                                 , documentLinkOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized DocumentLinkOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentLinkOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (documentLinkOptionsWorkDoneProgress x),  (.?=)
+                                                                          "resolveProvider"
+                                                                          (documentLinkOptionsResolveProvider
+                                                                            x)]
+
 data DocumentLinkOptions = DocumentLinkOptions { documentLinkOptionsWorkDoneProgress :: Maybe Bool
                                                , documentLinkOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

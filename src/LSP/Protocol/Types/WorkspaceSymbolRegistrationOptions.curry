@@ -20,6 +20,15 @@ instance FromJSON WorkspaceSymbolRegistrationOptions where
          ("Unrecognized WorkspaceSymbolRegistrationOptions value: "
            ++ ppJSON j)
 
+instance ToJSON WorkspaceSymbolRegistrationOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (workspaceSymbolRegistrationOptionsWorkDoneProgress x),  (.?=)
+                                                                 "resolveProvider"
+                                                                 (workspaceSymbolRegistrationOptionsResolveProvider
+                                                                   x)]
+
 data WorkspaceSymbolRegistrationOptions = WorkspaceSymbolRegistrationOptions { workspaceSymbolRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                              , workspaceSymbolRegistrationOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

@@ -25,6 +25,17 @@ instance FromJSON NotebookDocumentCellChangeStructure where
          ("Unrecognized NotebookDocumentCellChangeStructure value: "
            ++ ppJSON j)
 
+instance ToJSON NotebookDocumentCellChangeStructure where
+  toJSON x =
+    object
+     [(.=) "array" (notebookDocumentCellChangeStructureArray x),  (.?=)
+                                                                   "didOpen"
+                                                                   (notebookDocumentCellChangeStructureDidOpen
+                                                                     x),  (.?=)
+                                                                           "didClose"
+                                                                           (notebookDocumentCellChangeStructureDidClose
+                                                                             x)]
+
 data NotebookDocumentCellChangeStructure = NotebookDocumentCellChangeStructure { notebookDocumentCellChangeStructureArray :: NotebookCellArrayChange
                                                                                , notebookDocumentCellChangeStructureDidOpen :: Maybe [TextDocumentItem]
                                                                                , notebookDocumentCellChangeStructureDidClose :: Maybe [TextDocumentIdentifier] }

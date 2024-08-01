@@ -16,6 +16,10 @@ instance FromJSON WorkDoneProgressParams where
             WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized WorkDoneProgressParams value: " ++ ppJSON j)
 
+instance ToJSON WorkDoneProgressParams where
+  toJSON x =
+    object [(.?=) "workDoneToken" (workDoneProgressParamsWorkDoneToken x)]
+
 data WorkDoneProgressParams = WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken :: Maybe ProgressToken }
  deriving (Show,Eq)
 

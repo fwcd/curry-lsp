@@ -25,6 +25,20 @@ instance FromJSON SignatureHelpParams where
                                 , signatureHelpParamsContext = parsedContext }
       _ -> Left ("Unrecognized SignatureHelpParams value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (signatureHelpParamsTextDocument x),  (.=)
+                                                                 "position"
+                                                                 (signatureHelpParamsPosition
+                                                                   x),  (.?=)
+                                                                         "workDoneToken"
+                                                                         (signatureHelpParamsWorkDoneToken
+                                                                           x),  (.?=)
+                                                                                 "context"
+                                                                                 (signatureHelpParamsContext
+                                                                                   x)]
+
 data SignatureHelpParams = SignatureHelpParams { signatureHelpParamsTextDocument :: TextDocumentIdentifier
                                                , signatureHelpParamsPosition :: Position
                                                , signatureHelpParamsWorkDoneToken :: Maybe ProgressToken

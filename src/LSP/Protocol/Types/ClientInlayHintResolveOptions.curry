@@ -17,6 +17,10 @@ instance FromJSON ClientInlayHintResolveOptions where
         Left
          ("Unrecognized ClientInlayHintResolveOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientInlayHintResolveOptions where
+  toJSON x =
+    object [(.=) "properties" (clientInlayHintResolveOptionsProperties x)]
+
 data ClientInlayHintResolveOptions = ClientInlayHintResolveOptions { clientInlayHintResolveOptionsProperties :: [String] }
  deriving (Show,Eq)
 

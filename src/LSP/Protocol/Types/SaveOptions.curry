@@ -14,6 +14,9 @@ instance FromJSON SaveOptions where
            return SaveOptions { saveOptionsIncludeText = parsedIncludeText }
       _ -> Left ("Unrecognized SaveOptions value: " ++ ppJSON j)
 
+instance ToJSON SaveOptions where
+  toJSON x = object [(.?=) "includeText" (saveOptionsIncludeText x)]
+
 data SaveOptions = SaveOptions { saveOptionsIncludeText :: Maybe Bool }
  deriving (Show,Eq)
 

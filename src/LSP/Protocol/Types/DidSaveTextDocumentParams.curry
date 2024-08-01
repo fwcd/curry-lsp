@@ -18,6 +18,14 @@ instance FromJSON DidSaveTextDocumentParams where
                                       , didSaveTextDocumentParamsText = parsedText }
       _ -> Left ("Unrecognized DidSaveTextDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON DidSaveTextDocumentParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (didSaveTextDocumentParamsTextDocument x),  (.?=)
+                                                                       "text"
+                                                                       (didSaveTextDocumentParamsText
+                                                                         x)]
+
 data DidSaveTextDocumentParams = DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument :: TextDocumentIdentifier
                                                            , didSaveTextDocumentParamsText :: Maybe String }
  deriving (Show,Eq)

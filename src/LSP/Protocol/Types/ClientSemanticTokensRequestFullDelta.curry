@@ -18,6 +18,10 @@ instance FromJSON ClientSemanticTokensRequestFullDelta where
          ("Unrecognized ClientSemanticTokensRequestFullDelta value: "
            ++ ppJSON j)
 
+instance ToJSON ClientSemanticTokensRequestFullDelta where
+  toJSON x =
+    object [(.?=) "delta" (clientSemanticTokensRequestFullDeltaDelta x)]
+
 data ClientSemanticTokensRequestFullDelta = ClientSemanticTokensRequestFullDelta { clientSemanticTokensRequestFullDeltaDelta :: Maybe Bool }
  deriving (Show,Eq)
 

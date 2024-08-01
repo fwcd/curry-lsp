@@ -17,6 +17,11 @@ instance FromJSON FileRename where
                        , fileRenameNewUri = parsedNewUri }
       _ -> Left ("Unrecognized FileRename value: " ++ ppJSON j)
 
+instance ToJSON FileRename where
+  toJSON x =
+    object
+     [(.=) "oldUri" (fileRenameOldUri x),  (.=) "newUri" (fileRenameNewUri x)]
+
 data FileRename = FileRename { fileRenameOldUri :: String
                              , fileRenameNewUri :: String }
  deriving (Show,Eq)

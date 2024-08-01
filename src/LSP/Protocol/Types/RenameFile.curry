@@ -26,6 +26,21 @@ instance FromJSON RenameFile where
                        , renameFileOptions = parsedOptions }
       _ -> Left ("Unrecognized RenameFile value: " ++ ppJSON j)
 
+instance ToJSON RenameFile where
+  toJSON x =
+    object
+     [(.=) "kind" (renameFileKind x),  (.?=) "annotationId"
+                                        (renameFileAnnotationId x),  (.=)
+                                                                      "oldUri"
+                                                                      (renameFileOldUri
+                                                                        x),  (.=)
+                                                                              "newUri"
+                                                                              (renameFileNewUri
+                                                                                x),  (.?=)
+                                                                                      "options"
+                                                                                      (renameFileOptions
+                                                                                        x)]
+
 data RenameFile = RenameFile { renameFileKind :: String
                              , renameFileAnnotationId :: Maybe ChangeAnnotationIdentifier
                              , renameFileOldUri :: DocumentUri

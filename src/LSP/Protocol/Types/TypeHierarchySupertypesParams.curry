@@ -25,6 +25,17 @@ instance FromJSON TypeHierarchySupertypesParams where
         Left
          ("Unrecognized TypeHierarchySupertypesParams value: " ++ ppJSON j)
 
+instance ToJSON TypeHierarchySupertypesParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken"
+       (typeHierarchySupertypesParamsWorkDoneToken x),  (.?=)
+                                                         "partialResultToken"
+                                                         (typeHierarchySupertypesParamsPartialResultToken
+                                                           x),  (.=) "item"
+                                                                 (typeHierarchySupertypesParamsItem
+                                                                   x)]
+
 data TypeHierarchySupertypesParams = TypeHierarchySupertypesParams { typeHierarchySupertypesParamsWorkDoneToken :: Maybe ProgressToken
                                                                    , typeHierarchySupertypesParamsPartialResultToken :: Maybe ProgressToken
                                                                    , typeHierarchySupertypesParamsItem :: TypeHierarchyItem }

@@ -22,6 +22,17 @@ instance FromJSON PrepareRenameParams where
                                 , prepareRenameParamsWorkDoneToken = parsedWorkDoneToken }
       _ -> Left ("Unrecognized PrepareRenameParams value: " ++ ppJSON j)
 
+instance ToJSON PrepareRenameParams where
+  toJSON x =
+    object
+     [(.=) "textDocument" (prepareRenameParamsTextDocument x),  (.=)
+                                                                 "position"
+                                                                 (prepareRenameParamsPosition
+                                                                   x),  (.?=)
+                                                                         "workDoneToken"
+                                                                         (prepareRenameParamsWorkDoneToken
+                                                                           x)]
+
 data PrepareRenameParams = PrepareRenameParams { prepareRenameParamsTextDocument :: TextDocumentIdentifier
                                                , prepareRenameParamsPosition :: Position
                                                , prepareRenameParamsWorkDoneToken :: Maybe ProgressToken }

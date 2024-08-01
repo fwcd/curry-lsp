@@ -21,6 +21,15 @@ instance FromJSON TypeDefinitionClientCapabilities where
         Left
          ("Unrecognized TypeDefinitionClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON TypeDefinitionClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (typeDefinitionClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                  "linkSupport"
+                                                                  (typeDefinitionClientCapabilitiesLinkSupport
+                                                                    x)]
+
 data TypeDefinitionClientCapabilities = TypeDefinitionClientCapabilities { typeDefinitionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , typeDefinitionClientCapabilitiesLinkSupport :: Maybe Bool }
  deriving (Show,Eq)

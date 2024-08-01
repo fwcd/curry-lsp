@@ -28,6 +28,23 @@ instance FromJSON CompletionItemDefaults where
                                    , completionItemDefaultsData = parsedData }
       _ -> Left ("Unrecognized CompletionItemDefaults value: " ++ ppJSON j)
 
+instance ToJSON CompletionItemDefaults where
+  toJSON x =
+    object
+     [(.?=) "commitCharacters"
+       (completionItemDefaultsCommitCharacters x),  (.?=) "editRange"
+                                                     (completionItemDefaultsEditRange
+                                                       x),  (.?=)
+                                                             "insertTextFormat"
+                                                             (completionItemDefaultsInsertTextFormat
+                                                               x),  (.?=)
+                                                                     "insertTextMode"
+                                                                     (completionItemDefaultsInsertTextMode
+                                                                       x),  (.?=)
+                                                                             "data"
+                                                                             (completionItemDefaultsData
+                                                                               x)]
+
 data CompletionItemDefaults = CompletionItemDefaults { completionItemDefaultsCommitCharacters :: Maybe [String]
                                                      , completionItemDefaultsEditRange :: Maybe (Either Range EditRangeWithInsertReplace)
                                                      , completionItemDefaultsInsertTextFormat :: Maybe InsertTextFormat

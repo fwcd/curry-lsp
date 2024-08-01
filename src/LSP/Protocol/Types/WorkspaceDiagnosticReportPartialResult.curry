@@ -19,6 +19,10 @@ instance FromJSON WorkspaceDiagnosticReportPartialResult where
          ("Unrecognized WorkspaceDiagnosticReportPartialResult value: "
            ++ ppJSON j)
 
+instance ToJSON WorkspaceDiagnosticReportPartialResult where
+  toJSON x =
+    object [(.=) "items" (workspaceDiagnosticReportPartialResultItems x)]
+
 data WorkspaceDiagnosticReportPartialResult = WorkspaceDiagnosticReportPartialResult { workspaceDiagnosticReportPartialResultItems :: [WorkspaceDocumentDiagnosticReport] }
  deriving (Show,Eq)
 

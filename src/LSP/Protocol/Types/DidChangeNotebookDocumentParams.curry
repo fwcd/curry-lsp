@@ -21,6 +21,14 @@ instance FromJSON DidChangeNotebookDocumentParams where
         Left
          ("Unrecognized DidChangeNotebookDocumentParams value: " ++ ppJSON j)
 
+instance ToJSON DidChangeNotebookDocumentParams where
+  toJSON x =
+    object
+     [(.=) "notebookDocument"
+       (didChangeNotebookDocumentParamsNotebookDocument x),  (.=) "change"
+                                                              (didChangeNotebookDocumentParamsChange
+                                                                x)]
+
 data DidChangeNotebookDocumentParams = DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument :: VersionedNotebookDocumentIdentifier
                                                                        , didChangeNotebookDocumentParamsChange :: NotebookDocumentChangeEvent }
  deriving (Show,Eq)

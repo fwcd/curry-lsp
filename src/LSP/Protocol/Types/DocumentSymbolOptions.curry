@@ -17,6 +17,14 @@ instance FromJSON DocumentSymbolOptions where
                                   , documentSymbolOptionsLabel = parsedLabel }
       _ -> Left ("Unrecognized DocumentSymbolOptions value: " ++ ppJSON j)
 
+instance ToJSON DocumentSymbolOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress"
+       (documentSymbolOptionsWorkDoneProgress x),  (.?=) "label"
+                                                    (documentSymbolOptionsLabel
+                                                      x)]
+
 data DocumentSymbolOptions = DocumentSymbolOptions { documentSymbolOptionsWorkDoneProgress :: Maybe Bool
                                                    , documentSymbolOptionsLabel :: Maybe String }
  deriving (Show,Eq)

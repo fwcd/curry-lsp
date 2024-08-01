@@ -19,6 +19,13 @@ instance FromJSON EditRangeWithInsertReplace where
       _ ->
         Left ("Unrecognized EditRangeWithInsertReplace value: " ++ ppJSON j)
 
+instance ToJSON EditRangeWithInsertReplace where
+  toJSON x =
+    object
+     [(.=) "insert" (editRangeWithInsertReplaceInsert x),  (.=) "replace"
+                                                            (editRangeWithInsertReplaceReplace
+                                                              x)]
+
 data EditRangeWithInsertReplace = EditRangeWithInsertReplace { editRangeWithInsertReplaceInsert :: Range
                                                              , editRangeWithInsertReplaceReplace :: Range }
  deriving (Show,Eq)

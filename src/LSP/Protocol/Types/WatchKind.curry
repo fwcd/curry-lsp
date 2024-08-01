@@ -15,6 +15,13 @@ instance FromJSON WatchKind where
          4 -> Right WatchKindDelete
          _ -> Left ("Unrecognized WatchKind value: " ++ ppJSON j)
 
+instance ToJSON WatchKind where
+  toJSON x =
+    case x of
+      WatchKindCreate -> toJSON 1
+      WatchKindChange -> toJSON 2
+      WatchKindDelete -> toJSON 4
+
 data WatchKind = WatchKindCreate | WatchKindChange | WatchKindDelete
  deriving (Show,Eq,Enum,Bounded,Ord)
 

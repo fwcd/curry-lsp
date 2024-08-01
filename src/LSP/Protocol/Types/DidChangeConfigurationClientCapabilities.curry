@@ -20,6 +20,12 @@ instance FromJSON DidChangeConfigurationClientCapabilities where
          ("Unrecognized DidChangeConfigurationClientCapabilities value: "
            ++ ppJSON j)
 
+instance ToJSON DidChangeConfigurationClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (didChangeConfigurationClientCapabilitiesDynamicRegistration x)]
+
 data DidChangeConfigurationClientCapabilities = DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)
 

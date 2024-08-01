@@ -4,13 +4,15 @@ module LSP.Utils.JSON
   , stringFromJSON, arrayFromJSON, objectFromJSON, maybeFromJSON, boolFromJSON, integralFromJSON, fractionalFromJSON
   , lookupFromJSON, lookupObjectFromJSON, lookupMaybeFromJSON
   , lookupPathFromJSON
+  , (.=), (.?=), (<#>)
+  , object
   ) where
 
 import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 import JSON.Parser ( parseJSON )
 import JSON.Pretty ( ppJSON )
-import LSP.Utils.General ( lookup', rightToMaybe )
+import LSP.Utils.General ( lookup', rightToMaybe, fromRight' )
 
 class FromJSON a where
   -- | Converts from a JSON value to the type.
@@ -43,11 +45,20 @@ class ToJSON a where
 instance FromJSON Bool where
   fromJSON = boolFromJSON
 
+instance ToJSON Bool where
+  toJSON = boolToJSON
+
 instance FromJSON Int where
   fromJSON = integralFromJSON
 
+instance ToJSON Int where
+  toJSON = integralToJSON
+
 instance FromJSON Float where
   fromJSON = fractionalFromJSON
+
+instance ToJSON Float where
+  toJSON = realToJSON
 
 instance FromJSON a => FromJSON [a] where
   fromJSON = listFromJSON
@@ -92,6 +103,15 @@ instance (FromJSON a, FromJSON b, FromJSON c) => FromJSON (a, b, c) where
 instance (FromJSON a, FromJSON b, FromJSON c, FromJSON d) => FromJSON (a, b, c, d) where
   fromJSON j = (,,,) <$> fromJSON j <*> fromJSON j <*> fromJSON j <*> fromJSON j
 
+instance (ToJSON a, ToJSON b) => ToJSON (a, b) where
+  toJSON (x, y) = JArray [toJSON x, toJSON y]
+
+instance (ToJSON a, ToJSON b, ToJSON c) => ToJSON (a, b, c) where
+  toJSON (x, y, z) = JArray [toJSON x, toJSON y, toJSON z]
+
+instance (ToJSON a, ToJSON b, ToJSON c, ToJSON d) => ToJSON (a, b, c, d) where
+  toJSON (x, y, z, w) = JArray [toJSON x, toJSON y, toJSON z, toJSON w]
+
 instance FromJSON Char where
   fromJSON j = case j of
     JString [c] -> Right c
@@ -107,7 +127,8 @@ instance ToJSON Char where
 instance (Ord k, FromJSON k, FromJSON v) => FromJSON (M.Map k v) where
   fromJSON = (M.fromList <$>) . objectFromJSON
 
--- TODO: ToJSON instance for Map
+instance (Ord k, ToJSON k, ToJSON v) => ToJSON (M.Map k v) where
+  toJSON = objectToJSON . M.toList
 
 -- Parses a boolean value from JSON.
 boolFromJSON :: JValue -> Either String Bool
@@ -116,17 +137,31 @@ boolFromJSON j = case j of
   JFalse -> Right False
   _ -> Left $ "Expected boolean but was: " ++ ppJSON j
 
+-- Converts a boolean value to JSON.
+boolToJSON :: Bool -> JValue
+boolToJSON b = case b of
+  False -> JFalse
+  True -> JTrue
+
 -- Parses an integral value from JSON.
 integralFromJSON :: Integral a => JValue -> Either String a
 integralFromJSON j = case j of
   JNumber f -> Right $ round f
   _ -> Left $ "Expected integral but was: " ++ ppJSON j
 
+-- Converts an integral value to JSON.
+integralToJSON :: Integral a => a -> JValue
+integralToJSON x = JNumber (toFloat x)
+
 -- Parses a fractional value from JSON.
 fractionalFromJSON :: Fractional a => JValue -> Either String a
 fractionalFromJSON j = case j of
   JNumber f -> Right $ fromFloat f
   _ -> Left $ "Expected fractional but was: " ++ ppJSON j
+
+-- Converts a real value to JSON.
+realToJSON :: Real a => a -> JValue
+realToJSON x = JNumber (toFloat x)
 
 -- Parses a string from JSON.
 stringFromJSON :: JValue -> Either String String
@@ -143,6 +178,10 @@ objectFromJSON :: (FromJSON k, FromJSON v) => JValue -> Either String [(k, v)]
 objectFromJSON j = case j of
   JObject vs -> mapM (\(k, v) -> (,) <$> fromJSON (JString k) <*> fromJSON v) vs
   _ -> Left $ "Expected object but was: " ++ ppJSON j
+
+-- Converts an object to JSON.
+objectToJSON :: (Ord k, ToJSON k, ToJSON v) => [(k, v)] -> JValue
+objectToJSON kvs = JObject $ (\(k, v) -> (fromRight' (stringFromJSON (toJSON k)), toJSON v)) <$> kvs
 
 -- Parses an array from JSON.
 arrayFromJSON :: FromJSON a => JValue -> Either String [a]
@@ -198,3 +237,27 @@ lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either Stri
 lookupMaybeFromJSON k vs = case lookup k vs of
   Just x  -> fromJSON x
   Nothing -> Right Nothing
+
+infixr 8 .=, .?=
+infixr 4 <#>
+
+-- Constructs a JSON object with a single key-value pair.
+(.=) :: ToJSON a => String -> a -> JValue
+(.=) k v = JObject [(k, toJSON v)]
+
+-- Constructs a JSON object with a single optional key-value pair.
+(.?=) :: ToJSON a => String -> Maybe a -> JValue
+(.?=) k v = JObject $ case v of
+  Just v' -> [(k, toJSON v')]
+  Nothing -> []
+
+-- Combines JSON objects.
+(<#>) :: JValue -> JValue -> JValue
+(<#>) v1 v2 = case (v1, v2) of
+  (JObject kvs1, JObject kvs2) -> JObject (kvs1 ++ kvs2)
+  _ -> error $ "(<#>) requires two JObjects, but got " ++ show v1 ++ ", " ++ show v2
+
+-- Flattens a list of objects (e.g. key value pairs created with (.=)).
+-- Discards any values that are not objects.
+object :: [JValue] -> JValue
+object vs = JObject [kv | JObject kvs <- vs, kv <- kvs]

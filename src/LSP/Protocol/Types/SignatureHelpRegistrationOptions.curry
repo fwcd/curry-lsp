@@ -27,6 +27,21 @@ instance FromJSON SignatureHelpRegistrationOptions where
         Left
          ("Unrecognized SignatureHelpRegistrationOptions value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpRegistrationOptions where
+  toJSON x =
+    object
+     [(.=) "documentSelector"
+       (signatureHelpRegistrationOptionsDocumentSelector x),  (.?=)
+                                                               "workDoneProgress"
+                                                               (signatureHelpRegistrationOptionsWorkDoneProgress
+                                                                 x),  (.?=)
+                                                                       "triggerCharacters"
+                                                                       (signatureHelpRegistrationOptionsTriggerCharacters
+                                                                         x),  (.?=)
+                                                                               "retriggerCharacters"
+                                                                               (signatureHelpRegistrationOptionsRetriggerCharacters
+                                                                                 x)]
+
 data SignatureHelpRegistrationOptions = SignatureHelpRegistrationOptions { signatureHelpRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , signatureHelpRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                          , signatureHelpRegistrationOptionsTriggerCharacters :: Maybe [String]

@@ -17,6 +17,11 @@ instance FromJSON StringValue where
                         , stringValueValue = parsedValue }
       _ -> Left ("Unrecognized StringValue value: " ++ ppJSON j)
 
+instance ToJSON StringValue where
+  toJSON x =
+    object
+     [(.=) "kind" (stringValueKind x),  (.=) "value" (stringValueValue x)]
+
 data StringValue = StringValue { stringValueKind :: String
                                , stringValueValue :: String }
  deriving (Show,Eq)

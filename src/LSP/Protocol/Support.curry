@@ -6,7 +6,7 @@ module LSP.Protocol.Support
   ) where
 
 import JSON.Data ( JValue (..) )
-import LSP.Utils.JSON ( FromJSON (..), stringFromJSON )
+import LSP.Utils.JSON ( FromJSON (..), ToJSON (..) )
 
 -- | A uniform resource identifier (URI).
 newtype Uri = Uri { getUri :: String }
@@ -19,4 +19,7 @@ type DocumentUri = Uri
 type LSPAny = JValue
 
 instance FromJSON Uri where
-  fromJSON = (Uri <$>) . stringFromJSON
+  fromJSON = (Uri <$>) . fromJSON
+
+instance ToJSON Uri where
+  toJSON = toJSON . getUri

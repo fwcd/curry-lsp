@@ -16,6 +16,9 @@ instance FromJSON ClientSymbolKindOptions where
             ClientSymbolKindOptions { clientSymbolKindOptionsValueSet = parsedValueSet }
       _ -> Left ("Unrecognized ClientSymbolKindOptions value: " ++ ppJSON j)
 
+instance ToJSON ClientSymbolKindOptions where
+  toJSON x = object [(.?=) "valueSet" (clientSymbolKindOptionsValueSet x)]
+
 data ClientSymbolKindOptions = ClientSymbolKindOptions { clientSymbolKindOptionsValueSet :: Maybe [SymbolKind] }
  deriving (Show,Eq)
 

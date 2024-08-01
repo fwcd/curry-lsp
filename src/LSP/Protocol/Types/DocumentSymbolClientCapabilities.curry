@@ -31,6 +31,24 @@ instance FromJSON DocumentSymbolClientCapabilities where
         Left
          ("Unrecognized DocumentSymbolClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DocumentSymbolClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (documentSymbolClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                                  "symbolKind"
+                                                                  (documentSymbolClientCapabilitiesSymbolKind
+                                                                    x),  (.?=)
+                                                                          "hierarchicalDocumentSymbolSupport"
+                                                                          (documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport
+                                                                            x),  (.?=)
+                                                                                  "tagSupport"
+                                                                                  (documentSymbolClientCapabilitiesTagSupport
+                                                                                    x),  (.?=)
+                                                                                          "labelSupport"
+                                                                                          (documentSymbolClientCapabilitiesLabelSupport
+                                                                                            x)]
+
 data DocumentSymbolClientCapabilities = DocumentSymbolClientCapabilities { documentSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , documentSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions
                                                                          , documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport :: Maybe Bool

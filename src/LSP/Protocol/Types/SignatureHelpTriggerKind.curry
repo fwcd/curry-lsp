@@ -16,6 +16,13 @@ instance FromJSON SignatureHelpTriggerKind where
          _ ->
            Left ("Unrecognized SignatureHelpTriggerKind value: " ++ ppJSON j)
 
+instance ToJSON SignatureHelpTriggerKind where
+  toJSON x =
+    case x of
+      SignatureHelpTriggerKindInvoked -> toJSON 1
+      SignatureHelpTriggerKindTriggerCharacter -> toJSON 2
+      SignatureHelpTriggerKindContentChange -> toJSON 3
+
 data SignatureHelpTriggerKind = SignatureHelpTriggerKindInvoked
                               | SignatureHelpTriggerKindTriggerCharacter
                               | SignatureHelpTriggerKindContentChange

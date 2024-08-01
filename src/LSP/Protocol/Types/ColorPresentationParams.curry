@@ -29,6 +29,23 @@ instance FromJSON ColorPresentationParams where
                                     , colorPresentationParamsRange = parsedRange }
       _ -> Left ("Unrecognized ColorPresentationParams value: " ++ ppJSON j)
 
+instance ToJSON ColorPresentationParams where
+  toJSON x =
+    object
+     [(.?=) "workDoneToken" (colorPresentationParamsWorkDoneToken x),  (.?=)
+                                                                        "partialResultToken"
+                                                                        (colorPresentationParamsPartialResultToken
+                                                                          x),  (.=)
+                                                                                "textDocument"
+                                                                                (colorPresentationParamsTextDocument
+                                                                                  x),  (.=)
+                                                                                        "color"
+                                                                                        (colorPresentationParamsColor
+                                                                                          x),  (.=)
+                                                                                                "range"
+                                                                                                (colorPresentationParamsRange
+                                                                                                  x)]
+
 data ColorPresentationParams = ColorPresentationParams { colorPresentationParamsWorkDoneToken :: Maybe ProgressToken
                                                        , colorPresentationParamsPartialResultToken :: Maybe ProgressToken
                                                        , colorPresentationParamsTextDocument :: TextDocumentIdentifier

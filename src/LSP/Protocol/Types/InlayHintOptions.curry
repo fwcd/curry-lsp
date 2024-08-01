@@ -17,6 +17,14 @@ instance FromJSON InlayHintOptions where
                              , inlayHintOptionsResolveProvider = parsedResolveProvider }
       _ -> Left ("Unrecognized InlayHintOptions value: " ++ ppJSON j)
 
+instance ToJSON InlayHintOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (inlayHintOptionsWorkDoneProgress x),  (.?=)
+                                                                       "resolveProvider"
+                                                                       (inlayHintOptionsResolveProvider
+                                                                         x)]
+
 data InlayHintOptions = InlayHintOptions { inlayHintOptionsWorkDoneProgress :: Maybe Bool
                                          , inlayHintOptionsResolveProvider :: Maybe Bool }
  deriving (Show,Eq)

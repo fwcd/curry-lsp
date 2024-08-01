@@ -16,6 +16,14 @@ instance FromJSON DiagnosticSeverity where
          4 -> Right DiagnosticSeverityHint
          _ -> Left ("Unrecognized DiagnosticSeverity value: " ++ ppJSON j)
 
+instance ToJSON DiagnosticSeverity where
+  toJSON x =
+    case x of
+      DiagnosticSeverityError -> toJSON 1
+      DiagnosticSeverityWarning -> toJSON 2
+      DiagnosticSeverityInformation -> toJSON 3
+      DiagnosticSeverityHint -> toJSON 4
+
 data DiagnosticSeverity = DiagnosticSeverityError
                         | DiagnosticSeverityWarning
                         | DiagnosticSeverityInformation

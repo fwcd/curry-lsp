@@ -27,6 +27,23 @@ instance FromJSON CompletionOptions where
                               , completionOptionsCompletionItem = parsedCompletionItem }
       _ -> Left ("Unrecognized CompletionOptions value: " ++ ppJSON j)
 
+instance ToJSON CompletionOptions where
+  toJSON x =
+    object
+     [(.?=) "workDoneProgress" (completionOptionsWorkDoneProgress x),  (.?=)
+                                                                        "triggerCharacters"
+                                                                        (completionOptionsTriggerCharacters
+                                                                          x),  (.?=)
+                                                                                "allCommitCharacters"
+                                                                                (completionOptionsAllCommitCharacters
+                                                                                  x),  (.?=)
+                                                                                        "resolveProvider"
+                                                                                        (completionOptionsResolveProvider
+                                                                                          x),  (.?=)
+                                                                                                "completionItem"
+                                                                                                (completionOptionsCompletionItem
+                                                                                                  x)]
+
 data CompletionOptions = CompletionOptions { completionOptionsWorkDoneProgress :: Maybe Bool
                                            , completionOptionsTriggerCharacters :: Maybe [String]
                                            , completionOptionsAllCommitCharacters :: Maybe [String]

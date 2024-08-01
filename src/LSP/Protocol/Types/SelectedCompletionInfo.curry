@@ -18,6 +18,13 @@ instance FromJSON SelectedCompletionInfo where
                                    , selectedCompletionInfoText = parsedText }
       _ -> Left ("Unrecognized SelectedCompletionInfo value: " ++ ppJSON j)
 
+instance ToJSON SelectedCompletionInfo where
+  toJSON x =
+    object
+     [(.=) "range" (selectedCompletionInfoRange x),  (.=) "text"
+                                                      (selectedCompletionInfoText
+                                                        x)]
+
 data SelectedCompletionInfo = SelectedCompletionInfo { selectedCompletionInfoRange :: Range
                                                      , selectedCompletionInfoText :: String }
  deriving (Show,Eq)

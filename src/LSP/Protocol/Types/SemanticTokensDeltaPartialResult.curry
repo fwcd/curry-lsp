@@ -18,6 +18,9 @@ instance FromJSON SemanticTokensDeltaPartialResult where
         Left
          ("Unrecognized SemanticTokensDeltaPartialResult value: " ++ ppJSON j)
 
+instance ToJSON SemanticTokensDeltaPartialResult where
+  toJSON x = object [(.=) "edits" (semanticTokensDeltaPartialResultEdits x)]
+
 data SemanticTokensDeltaPartialResult = SemanticTokensDeltaPartialResult { semanticTokensDeltaPartialResultEdits :: [SemanticTokensEdit] }
  deriving (Show,Eq)
 

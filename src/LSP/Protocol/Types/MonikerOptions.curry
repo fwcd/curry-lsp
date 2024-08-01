@@ -15,6 +15,10 @@ instance FromJSON MonikerOptions where
             MonikerOptions { monikerOptionsWorkDoneProgress = parsedWorkDoneProgress }
       _ -> Left ("Unrecognized MonikerOptions value: " ++ ppJSON j)
 
+instance ToJSON MonikerOptions where
+  toJSON x =
+    object [(.?=) "workDoneProgress" (monikerOptionsWorkDoneProgress x)]
+
 data MonikerOptions = MonikerOptions { monikerOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)
 

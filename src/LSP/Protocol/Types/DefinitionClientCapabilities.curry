@@ -20,6 +20,15 @@ instance FromJSON DefinitionClientCapabilities where
       _ ->
         Left ("Unrecognized DefinitionClientCapabilities value: " ++ ppJSON j)
 
+instance ToJSON DefinitionClientCapabilities where
+  toJSON x =
+    object
+     [(.?=) "dynamicRegistration"
+       (definitionClientCapabilitiesDynamicRegistration x),  (.?=)
+                                                              "linkSupport"
+                                                              (definitionClientCapabilitiesLinkSupport
+                                                                x)]
+
 data DefinitionClientCapabilities = DefinitionClientCapabilities { definitionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , definitionClientCapabilitiesLinkSupport :: Maybe Bool }
  deriving (Show,Eq)
