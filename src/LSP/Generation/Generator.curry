@@ -11,6 +11,7 @@ import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import qualified LSP.Generation.AbstractCurry.Types as AC
+import qualified LSP.Generation.AbstractCurry.Select as ACS
 import qualified LSP.Generation.AbstractCurry.Build as ACB
 import qualified LSP.Generation.AbstractCurry.Pretty as ACP
 import LSP.Generation.Deps
@@ -80,8 +81,8 @@ metaModelToProgs m = do
   aliases <- catMaybes <$> mapM metaAliasToProg (mmTypeAliases m)
   mprefix <- asks geModulePrefix
   let progs = structs ++ enums ++ aliases
-      umbrella = mkUmbrellaProg mprefix (progName <$> progs)
-  return $ keyBy progName <$> (umbrella : progs)
+      umbrella = mkUmbrellaProg mprefix (ACS.progName <$> progs)
+  return $ keyBy ACS.progName <$> (umbrella : progs)
 
 -- | Generates an umbrella module that reexports the given modules.
 mkUmbrellaProg :: String -> [String] -> AC.CurryProg
@@ -286,10 +287,6 @@ typeName ty = snd $ case ty of
   AC.CType    n _ _ _ _ -> n
   AC.CTypeSyn n _ _ _   -> n
   AC.CNewType n _ _ _ _ -> n
-
--- | Extracts the module name from the given program.
-progName :: AC.CurryProg -> String
-progName (AC.CurryProg name _ _ _ _ _ _ _) = name
 
 -- | An identifier from the LSP.Protocol.Support module.
 support :: String -> AC.QName
