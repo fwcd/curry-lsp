@@ -10,7 +10,9 @@ import LSP.Utils.General ( unions, unionMap )
 -- TODO: It would be nice to turn this into a type class, which would also let
 -- us model CField more cleanly without requiring CExpr. Curry doesn't support
 -- instances on type aliases etc. (which would be needed for QName/String), so
--- we cannot do this without FlexibleInstances etc.
+-- we cannot do this directly without FlexibleInstances etc. We might be able to
+-- use a similar trick as FromJSON which has a listFromJSON method in the
+-- class though.
 
 -- | Extracts the module dependencies from the given type declaration.
 typeDeclModuleDeps :: AC.CTypeDecl -> S.Set String
