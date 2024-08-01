@@ -94,7 +94,7 @@ metaStructureToProg s = do
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-      imps = requiredImports mname $ typeDeclToImports ty -- TODO: Standard imports?
+      imps = requiredImports mname $ typeDeclModuleDeps ty
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
@@ -115,7 +115,7 @@ metaEnumerationToProg e = do
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-      imps = requiredImports mname $ typeDeclToImports ty -- TODO: Standard imports?
+      imps = requiredImports mname $ typeDeclModuleDeps ty
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
@@ -220,7 +220,7 @@ metaAliasToProg a = do
   let maybeTy = case M.lookup name btas of
         Just _  -> Nothing -- Skip built-in type aliases (e.g. LSPAny)
         Nothing -> Just $ AC.CTypeSyn qn vis [] texp
-      imps = requiredImports mname $ unions $ typeDeclToImports <$> maybeToList maybeTy
+      imps = requiredImports mname $ unions $ typeDeclModuleDeps <$> maybeToList maybeTy
   return $ (\ty -> AC.CurryProg mname imps Nothing [] [] [ty] [] []) <$> maybeTy
 
 -- | Converts a meta property to a Curry record field declaration.
