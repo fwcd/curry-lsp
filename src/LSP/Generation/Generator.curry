@@ -102,7 +102,7 @@ metaStructureToProg s = do
   let cdecl = AC.CRecord qn vis fs
       ty = AC.CType qn vis [] [cdecl] derivs
       insts = [fromJSONInst]
-      imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
+      imps = requiredImports mname $ typeDeclToImports ty -- TODO: Standard imports?
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta enumeration to a Curry program.
@@ -123,7 +123,7 @@ metaEnumerationToProg e = do
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
       insts = [fromJSONInst]
-      imps = S.toList $ typeDeclToImports ty -- TODO: Standard imports?
+      imps = requiredImports mname $ typeDeclToImports ty -- TODO: Standard imports?
   return $ AC.CurryProg mname imps Nothing [] insts [ty] [] []
 
 -- | Converts a meta structure to a FromJSON instance.
@@ -274,6 +274,11 @@ metaBaseTypeToTypeExpr b = case b of
   MetaBaseTypeNull        -> ACB.unitType
   MetaBaseTypeDocumentUri -> ACB.baseType $ support "DocumentUri"
   MetaBaseTypeUri         -> ACB.baseType $ support "Uri"
+
+-- | Orders and filters out the required imports for the given module.
+requiredImports :: String -> S.Set String -> [String]
+requiredImports mname = filter isRequired . S.toList
+  where isRequired m = m /= AC.preludeName && m /= mname
 
 -- | Extracts the required imports from the given type declaration.
 typeDeclToImports :: AC.CTypeDecl -> S.Set String
