@@ -44,11 +44,20 @@ class ToJSON a where
 instance FromJSON Bool where
   fromJSON = boolFromJSON
 
+instance ToJSON Bool where
+  toJSON = boolToJSON
+
 instance FromJSON Int where
   fromJSON = integralFromJSON
 
+instance ToJSON Int where
+  toJSON = integralToJSON
+
 instance FromJSON Float where
   fromJSON = fractionalFromJSON
+
+instance ToJSON Float where
+  toJSON = realToJSON
 
 instance FromJSON a => FromJSON [a] where
   fromJSON = listFromJSON
@@ -117,17 +126,31 @@ boolFromJSON j = case j of
   JFalse -> Right False
   _ -> Left $ "Expected boolean but was: " ++ ppJSON j
 
+-- Converts a boolean value to JSON.
+boolToJSON :: Bool -> JValue
+boolToJSON b = case b of
+  False -> JFalse
+  True -> JTrue
+
 -- Parses an integral value from JSON.
 integralFromJSON :: Integral a => JValue -> Either String a
 integralFromJSON j = case j of
   JNumber f -> Right $ round f
   _ -> Left $ "Expected integral but was: " ++ ppJSON j
 
+-- Converts an integral value to JSON.
+integralToJSON :: Integral a => a -> JValue
+integralToJSON x = JNumber (toFloat x)
+
 -- Parses a fractional value from JSON.
 fractionalFromJSON :: Fractional a => JValue -> Either String a
 fractionalFromJSON j = case j of
   JNumber f -> Right $ fromFloat f
   _ -> Left $ "Expected fractional but was: " ++ ppJSON j
+
+-- Converts a real value to JSON.
+realToJSON :: Real a => a -> JValue
+realToJSON x = JNumber (toFloat x)
 
 -- Parses a string from JSON.
 stringFromJSON :: JValue -> Either String String
@@ -199,6 +222,9 @@ lookupMaybeFromJSON :: FromJSON a => String -> [(String, JValue)] -> Either Stri
 lookupMaybeFromJSON k vs = case lookup k vs of
   Just x  -> fromJSON x
   Nothing -> Right Nothing
+
+infixr 8 .=, .?=
+infixr 4 <#>
 
 -- Constructs a JSON object with a single key-value pair.
 (.=) :: ToJSON a => String -> a -> JValue
