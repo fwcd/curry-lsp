@@ -12,7 +12,7 @@ import qualified Data.Set as S
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
-import LSP.Generation.Imports
+import LSP.Generation.Dependencies
 import LSP.Generation.Model
 import LSP.Utils.General ( capitalize, uncapitalize, replaceSingle, (<$.>), unions )
 

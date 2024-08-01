@@ -1,4 +1,4 @@
-module LSP.Generation.Imports
+module LSP.Generation.Dependencies
   ( typeDeclToImports
   , instanceDeclToImports
   ) where
