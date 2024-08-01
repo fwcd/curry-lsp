@@ -94,10 +94,12 @@ mkUmbrellaProg mname mods = AC.CurryProg mname mods mods Nothing [] [] [] [] []
 metaStructureToProg :: MetaStructure -> GM AC.CurryProg
 metaStructureToProg s = do
   mprefix <- asks geModulePrefix
-  let name = escapeName $ msName s
+  structs <- asks geMetaStructures
+  let s' = flattenMetaStructure structs s
+      name = escapeName $ msName s'
       mname = qualWith mprefix name
       qn = (mname, name)
-      props = msProperties s
+      props = msProperties s'
       vis = AC.Public
   fs <- mapM (metaPropertyToField mname name) props
   derivs <- asks geStandardDerivings
@@ -132,7 +134,9 @@ metaEnumerationToProg e = do
 -- | Converts a meta structure to a FromJSON instance.
 metaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 metaStructureToFromJSONInstance mname prefix s = do
-  let name = escapeName $ msName s
+  structs <- asks geMetaStructures
+  let s' = flattenMetaStructure structs s
+      name = escapeName $ msName s'
       qn = (mname, name)
       ctx = AC.CContext []
       vis = AC.Public
@@ -141,9 +145,9 @@ metaStructureToFromJSONInstance mname prefix s = do
       jVar = (0, "j")
       vsVar = (1, "vs")
       anonVar = (2, "_")
-      fieldNames = mpName <$> msProperties s
+      fieldNames = mpName <$> msProperties s'
       fieldVars = zip [3..] $ (("parsed" ++) . capitalize) <$> fieldNames
-      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s
+      fieldStmts = zipWith (\v p -> AC.CSPat (AC.CPVar v) $ ACB.applyF (lookupFromJSONForMetaProperty p) [ACB.string2ac $ mpName p, AC.CVar vsVar]) fieldVars $ msProperties s'
       fields = zip (((,) mname . fieldName prefix) <$> fieldNames) $ AC.CVar <$> fieldVars
       stmts = fieldStmts ++ [AC.CSExpr $ ACB.applyF (AC.pre "return") [AC.CRecConstr qn fields]]
       errMsg = ACB.applyF (AC.pre "++") [ACB.string2ac $ "Unrecognized " ++ name ++ " value: ", ACB.applyF ppJSONQName [AC.CVar jVar]]

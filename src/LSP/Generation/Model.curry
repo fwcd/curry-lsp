@@ -10,9 +10,12 @@ module LSP.Generation.Model
   , MetaEnumeration (..)
   , MetaTypeAlias (..)
   , MetaModel (..)
+  , flattenMetaStructure
   ) where
 
-import Data.Maybe ( fromMaybe )
+import Data.List ( nub )
+import Data.Maybe ( fromMaybe, maybeToList )
+import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 import JSON.Pretty ( ppJSON )
 import LSP.Utils.JSON ( FromJSON (..)
@@ -123,6 +126,20 @@ data MetaModel = MetaModel
   , mmTypeAliases :: [MetaTypeAlias]
   }
   deriving (Show, Eq)
+
+-- Utilities
+
+flattenMetaStructure :: M.Map String MetaStructure -> MetaStructure -> MetaStructure
+flattenMetaStructure structs s = s
+  { msProperties = nub $ inheritedProps ++ msProperties s
+  , msExtends = []
+  , msMixins = []
+  }
+  where
+    inheritedProps = do
+      MetaTypeReference n <- msExtends s ++ msMixins s
+      s' <- maybeToList $ M.lookup n structs
+      msProperties $ flattenMetaStructure structs s'
 
 -- JSON conversions
 
@@ -307,4 +324,3 @@ instance FromJSON MetaTypeAlias where
         , mtaDocumentation = doc
         }
     _ -> Left $ "Unrecognized MetaTypeAlias value: " ++ ppJSON j
-
