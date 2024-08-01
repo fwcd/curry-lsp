@@ -6,8 +6,7 @@ import qualified AbstractCurry.Types as AC
 import qualified AbstractCurry.Build as ACB
 import qualified AbstractCurry.Pretty as ACP
 import Control.Monad ( join )
-import Control.Monad.Trans.State ( State, evalState, gets )
-import Control.Monad.Trans.Reader ( ReaderT (..), asks )
+import Control.Monad.Trans.Reader ( Reader, runReader, asks )
 import qualified Data.Map as M
 import qualified Data.Set as S
 import Data.Maybe ( fromMaybe, maybeToList, catMaybes )
@@ -27,12 +26,7 @@ data GeneratorEnv = GeneratorEnv
   , geStandardEnumDerivings :: [AC.QName]
   }
 
--- | Internal (read/write) generator state.
-data GeneratorState = GeneratorState
-  { gsStructMap :: M.Map String MetaStructure
-  }
-
-type GM = ReaderT GeneratorEnv (State GeneratorState)
+type GM = Reader GeneratorEnv
 
 -- | Creates the generator environment.
 generatorEnv :: GeneratorEnv
@@ -59,21 +53,15 @@ generatorEnv = GeneratorEnv
     ]
   }
 
--- | Creates the initial generator state.
-initialGeneratorState :: MetaModel -> GeneratorState
-initialGeneratorState m = GeneratorState
-  { gsStructMap = M.fromList $ (\s -> (escapeName (msName s), s)) <$> mmStructures m
-  }
-
--- | Runs the generator monad on the given model.
-evalGM :: GM a -> MetaModel -> a
-evalGM x m = evalState (runReaderT x generatorEnv) (initialGeneratorState m)
+-- | Runs the generator monad.
+runGM :: GM a -> a
+runGM x = runReader x generatorEnv
 
 -- | Converts a meta structure to prettyprinted Curry programs, keyed by module.
 metaModelToPrettyProgs :: String -> MetaModel -> [(String, String)]
 metaModelToPrettyProgs prefix m = prettyWithModuleName <$> progs
   where
-    progs = evalGM (metaModelToProgs prefix m) m
+    progs = runGM (metaModelToProgs prefix m)
     prettyWithModuleName prog@(AC.CurryProg name _ _ _ _ _ _ _) = (name, unlines [pragmas, body])
       where
         -- Disable qualification since instances are not generated correctly
