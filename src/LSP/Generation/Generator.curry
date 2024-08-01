@@ -131,7 +131,7 @@ metaEnumerationToProg e = do
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
--- | Converts a meta structure to a FromJSON instance.
+-- | Converts a flattened meta structure to a FromJSON instance.
 flatMetaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 flatMetaStructureToFromJSONInstance mname prefix s' = do
   let name = escapeName $ msName s'
@@ -164,6 +164,11 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+
+-- | Converts a flattened meta structure to a ToJSON instance.
+flatMetaStructureToToJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
+flatMetaStructureToToJSONInstance mname prefix s' = do
+  -- TODO
 
 -- | Picks the correct lookupFromJSON method for the given property.
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName

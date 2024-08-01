@@ -244,5 +244,6 @@ infixr 4 <#>
   _ -> error $ "(<#>) requires two JObjects, but got " ++ show v1 ++ ", " ++ show v2
 
 -- Flattens a list of objects (e.g. key value pairs created with (.=)).
+-- Discards any values that are not objects.
 object :: [JValue] -> JValue
 object vs = JObject [kv | JObject kvs <- vs, kv <- kvs]
