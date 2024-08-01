@@ -22,4 +22,4 @@ instance FromJSON Uri where
   fromJSON = (Uri <$>) . fromJSON
 
 instance ToJSON Uri where
-  toJSON (Uri s) = toJSON s
+  toJSON = toJSON . getUri
