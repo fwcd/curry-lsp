@@ -3,7 +3,8 @@ module LSP.Utils.General
   , lookup', fromJust', fromRight'
   , rightToMaybe, maybeToRight
   , capitalize, uncapitalize
-  , replace, replaceSingle, unions
+  , replace, replaceSingle
+  , unions, unionMap
   , (<.$>), (<$.>)
   ) where
 
@@ -65,6 +66,10 @@ replaceSingle y ys (x:xs) | x == y    = ys ++ xs
 -- | The union over all sets.
 unions :: Ord a => [S.Set a] -> S.Set a
 unions = foldr S.union S.empty
+
+-- | Maps and forms a union. Analogous to concatMap for lists.
+unionMap :: Ord b => (a -> S.Set b) -> [a] -> S.Set b
+unionMap f = unions . map f
 
 -- | Maps over the first element of a tuple.
 (<.$>) :: Functor f => (a -> c) -> f (a, b) -> f (c, b)
