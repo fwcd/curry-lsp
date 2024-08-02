@@ -4,6 +4,7 @@ module LSP.Protocol.Types.Position where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Position where
@@ -21,6 +22,9 @@ instance ToJSON Position where
   toJSON x =
     object
      [(.=) "line" (positionLine x),  (.=) "character" (positionCharacter x)]
+
+instance Default Position where
+  def = Position { positionLine = def, positionCharacter = def }
 
 data Position = Position { positionLine :: Int, positionCharacter :: Int }
  deriving (Show,Eq)

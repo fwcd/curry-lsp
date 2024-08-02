@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.InlineCompletionTriggerKind
 import LSP.Protocol.Types.SelectedCompletionInfo
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionContext where
@@ -28,6 +29,11 @@ instance ToJSON InlineCompletionContext where
                                                                    "selectedCompletionInfo"
                                                                    (inlineCompletionContextSelectedCompletionInfo
                                                                      x)]
+
+instance Default InlineCompletionContext where
+  def =
+    InlineCompletionContext { inlineCompletionContextTriggerKind = def
+                            , inlineCompletionContextSelectedCompletionInfo = def }
 
 data InlineCompletionContext = InlineCompletionContext { inlineCompletionContextTriggerKind :: InlineCompletionTriggerKind
                                                        , inlineCompletionContextSelectedCompletionInfo :: Maybe SelectedCompletionInfo }

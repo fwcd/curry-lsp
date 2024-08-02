@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SelectionRange where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectionRange where
@@ -23,6 +24,10 @@ instance ToJSON SelectionRange where
     object
      [(.=) "range" (selectionRangeRange x),  (.?=) "parent"
                                               (selectionRangeParent x)]
+
+instance Default SelectionRange where
+  def =
+    SelectionRange { selectionRangeRange = def, selectionRangeParent = def }
 
 data SelectionRange = SelectionRange { selectionRangeRange :: Range
                                      , selectionRangeParent :: Maybe SelectionRange }

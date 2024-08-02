@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidCloseTextDocumentParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidCloseTextDocumentParams where
@@ -20,6 +21,10 @@ instance FromJSON DidCloseTextDocumentParams where
 instance ToJSON DidCloseTextDocumentParams where
   toJSON x =
     object [(.=) "textDocument" (didCloseTextDocumentParamsTextDocument x)]
+
+instance Default DidCloseTextDocumentParams where
+  def =
+    DidCloseTextDocumentParams { didCloseTextDocumentParamsTextDocument = def }
 
 data DidCloseTextDocumentParams = DidCloseTextDocumentParams { didCloseTextDocumentParamsTextDocument :: TextDocumentIdentifier }
  deriving (Show,Eq)

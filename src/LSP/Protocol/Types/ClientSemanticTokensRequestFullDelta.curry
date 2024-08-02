@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientSemanticTokensRequestFullDelta where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientSemanticTokensRequestFullDelta where
@@ -21,6 +22,10 @@ instance FromJSON ClientSemanticTokensRequestFullDelta where
 instance ToJSON ClientSemanticTokensRequestFullDelta where
   toJSON x =
     object [(.?=) "delta" (clientSemanticTokensRequestFullDeltaDelta x)]
+
+instance Default ClientSemanticTokensRequestFullDelta where
+  def =
+    ClientSemanticTokensRequestFullDelta { clientSemanticTokensRequestFullDeltaDelta = def }
 
 data ClientSemanticTokensRequestFullDelta = ClientSemanticTokensRequestFullDelta { clientSemanticTokensRequestFullDeltaDelta :: Maybe Bool }
  deriving (Show,Eq)

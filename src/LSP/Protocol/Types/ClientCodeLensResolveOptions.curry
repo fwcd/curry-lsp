@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientCodeLensResolveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCodeLensResolveOptions where
@@ -19,6 +20,10 @@ instance FromJSON ClientCodeLensResolveOptions where
 instance ToJSON ClientCodeLensResolveOptions where
   toJSON x =
     object [(.=) "properties" (clientCodeLensResolveOptionsProperties x)]
+
+instance Default ClientCodeLensResolveOptions where
+  def =
+    ClientCodeLensResolveOptions { clientCodeLensResolveOptionsProperties = def }
 
 data ClientCodeLensResolveOptions = ClientCodeLensResolveOptions { clientCodeLensResolveOptionsProperties :: [String] }
  deriving (Show,Eq)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ShowMessageParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MessageType
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowMessageParams where
@@ -23,6 +24,11 @@ instance ToJSON ShowMessageParams where
     object
      [(.=) "type" (showMessageParamsType x),  (.=) "message"
                                                (showMessageParamsMessage x)]
+
+instance Default ShowMessageParams where
+  def =
+    ShowMessageParams { showMessageParamsType = def
+                      , showMessageParamsMessage = def }
 
 data ShowMessageParams = ShowMessageParams { showMessageParamsType :: MessageType
                                            , showMessageParamsMessage :: String }

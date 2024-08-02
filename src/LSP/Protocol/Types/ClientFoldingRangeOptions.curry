@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientFoldingRangeOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientFoldingRangeOptions where
@@ -18,6 +19,10 @@ instance FromJSON ClientFoldingRangeOptions where
 instance ToJSON ClientFoldingRangeOptions where
   toJSON x =
     object [(.?=) "collapsedText" (clientFoldingRangeOptionsCollapsedText x)]
+
+instance Default ClientFoldingRangeOptions where
+  def =
+    ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText = def }
 
 data ClientFoldingRangeOptions = ClientFoldingRangeOptions { clientFoldingRangeOptionsCollapsedText :: Maybe Bool }
  deriving (Show,Eq)

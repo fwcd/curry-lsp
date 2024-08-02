@@ -8,6 +8,7 @@ import LSP.Protocol.Types.CompletionContext
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionParams where
@@ -44,6 +45,14 @@ instance ToJSON CompletionParams where
                                                                                       "context"
                                                                                       (completionParamsContext
                                                                                         x)]
+
+instance Default CompletionParams where
+  def =
+    CompletionParams { completionParamsTextDocument = def
+                     , completionParamsPosition = def
+                     , completionParamsWorkDoneToken = def
+                     , completionParamsPartialResultToken = def
+                     , completionParamsContext = def }
 
 data CompletionParams = CompletionParams { completionParamsTextDocument :: TextDocumentIdentifier
                                          , completionParamsPosition :: Position

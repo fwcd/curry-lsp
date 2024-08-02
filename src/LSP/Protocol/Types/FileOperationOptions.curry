@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FileOperationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileOperationRegistrationOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationOptions where
@@ -44,6 +45,15 @@ instance ToJSON FileOperationOptions where
                                                                                              "willDelete"
                                                                                              (fileOperationOptionsWillDelete
                                                                                                x)]
+
+instance Default FileOperationOptions where
+  def =
+    FileOperationOptions { fileOperationOptionsDidCreate = def
+                         , fileOperationOptionsWillCreate = def
+                         , fileOperationOptionsDidRename = def
+                         , fileOperationOptionsWillRename = def
+                         , fileOperationOptionsDidDelete = def
+                         , fileOperationOptionsWillDelete = def }
 
 data FileOperationOptions = FileOperationOptions { fileOperationOptionsDidCreate :: Maybe FileOperationRegistrationOptions
                                                  , fileOperationOptionsWillCreate :: Maybe FileOperationRegistrationOptions

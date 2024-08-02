@@ -4,6 +4,7 @@ module LSP.Protocol.Types.StaleRequestSupportOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON StaleRequestSupportOptions where
@@ -27,6 +28,11 @@ instance ToJSON StaleRequestSupportOptions where
                                                             "retryOnContentModified"
                                                             (staleRequestSupportOptionsRetryOnContentModified
                                                               x)]
+
+instance Default StaleRequestSupportOptions where
+  def =
+    StaleRequestSupportOptions { staleRequestSupportOptionsCancel = def
+                               , staleRequestSupportOptionsRetryOnContentModified = def }
 
 data StaleRequestSupportOptions = StaleRequestSupportOptions { staleRequestSupportOptionsCancel :: Bool
                                                              , staleRequestSupportOptionsRetryOnContentModified :: [String] }

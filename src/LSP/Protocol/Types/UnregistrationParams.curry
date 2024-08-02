@@ -5,6 +5,7 @@ module LSP.Protocol.Types.UnregistrationParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Unregistration
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON UnregistrationParams where
@@ -19,6 +20,9 @@ instance FromJSON UnregistrationParams where
 instance ToJSON UnregistrationParams where
   toJSON x =
     object [(.=) "unregisterations" (unregistrationParamsUnregisterations x)]
+
+instance Default UnregistrationParams where
+  def = UnregistrationParams { unregistrationParamsUnregisterations = def }
 
 data UnregistrationParams = UnregistrationParams { unregistrationParamsUnregisterations :: [Unregistration] }
  deriving (Show,Eq)

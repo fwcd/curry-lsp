@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientSemanticTokensRequestOptions
 import LSP.Protocol.Types.TokenFormat
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensClientCapabilities where
@@ -74,6 +75,18 @@ instance ToJSON SemanticTokensClientCapabilities where
                                                                                                                           "augmentsSyntaxTokens"
                                                                                                                           (semanticTokensClientCapabilitiesAugmentsSyntaxTokens
                                                                                                                             x)]
+
+instance Default SemanticTokensClientCapabilities where
+  def =
+    SemanticTokensClientCapabilities { semanticTokensClientCapabilitiesDynamicRegistration = def
+                                     , semanticTokensClientCapabilitiesRequests = def
+                                     , semanticTokensClientCapabilitiesTokenTypes = def
+                                     , semanticTokensClientCapabilitiesTokenModifiers = def
+                                     , semanticTokensClientCapabilitiesFormats = def
+                                     , semanticTokensClientCapabilitiesOverlappingTokenSupport = def
+                                     , semanticTokensClientCapabilitiesMultilineTokenSupport = def
+                                     , semanticTokensClientCapabilitiesServerCancelSupport = def
+                                     , semanticTokensClientCapabilitiesAugmentsSyntaxTokens = def }
 
 data SemanticTokensClientCapabilities = SemanticTokensClientCapabilities { semanticTokensClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , semanticTokensClientCapabilitiesRequests :: ClientSemanticTokensRequestOptions

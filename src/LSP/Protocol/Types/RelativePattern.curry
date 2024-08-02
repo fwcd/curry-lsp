@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Pattern
 import LSP.Protocol.Types.WorkspaceFolder
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RelativePattern where
@@ -25,6 +26,11 @@ instance ToJSON RelativePattern where
     object
      [(.=) "baseUri" (relativePatternBaseUri x),  (.=) "pattern"
                                                    (relativePatternPattern x)]
+
+instance Default RelativePattern where
+  def =
+    RelativePattern { relativePatternBaseUri = def
+                    , relativePatternPattern = def }
 
 data RelativePattern = RelativePattern { relativePatternBaseUri :: Either WorkspaceFolder Uri
                                        , relativePatternPattern :: Pattern }

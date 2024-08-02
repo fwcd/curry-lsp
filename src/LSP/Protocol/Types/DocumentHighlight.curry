@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentHighlightKind
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlight where
@@ -24,6 +25,11 @@ instance ToJSON DocumentHighlight where
     object
      [(.=) "range" (documentHighlightRange x),  (.?=) "kind"
                                                  (documentHighlightKind x)]
+
+instance Default DocumentHighlight where
+  def =
+    DocumentHighlight { documentHighlightRange = def
+                      , documentHighlightKind = def }
 
 data DocumentHighlight = DocumentHighlight { documentHighlightRange :: Range
                                            , documentHighlightKind :: Maybe DocumentHighlightKind }

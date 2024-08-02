@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.ChangeAnnotationsSupportOptions
 import LSP.Protocol.Types.FailureHandlingKind
 import LSP.Protocol.Types.ResourceOperationKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceEditClientCapabilities where
@@ -63,6 +64,16 @@ instance ToJSON WorkspaceEditClientCapabilities where
                                                                                                      "snippetEditSupport"
                                                                                                      (workspaceEditClientCapabilitiesSnippetEditSupport
                                                                                                        x)]
+
+instance Default WorkspaceEditClientCapabilities where
+  def =
+    WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges = def
+                                    , workspaceEditClientCapabilitiesResourceOperations = def
+                                    , workspaceEditClientCapabilitiesFailureHandling = def
+                                    , workspaceEditClientCapabilitiesNormalizesLineEndings = def
+                                    , workspaceEditClientCapabilitiesChangeAnnotationSupport = def
+                                    , workspaceEditClientCapabilitiesMetadataSupport = def
+                                    , workspaceEditClientCapabilitiesSnippetEditSupport = def }
 
 data WorkspaceEditClientCapabilities = WorkspaceEditClientCapabilities { workspaceEditClientCapabilitiesDocumentChanges :: Maybe Bool
                                                                        , workspaceEditClientCapabilitiesResourceOperations :: Maybe [ResourceOperationKind]

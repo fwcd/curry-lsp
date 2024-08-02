@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentContentChangeEvent
 import LSP.Protocol.Types.VersionedTextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeTextDocumentParams where
@@ -27,6 +28,11 @@ instance ToJSON DidChangeTextDocumentParams where
                                                                          "contentChanges"
                                                                          (didChangeTextDocumentParamsContentChanges
                                                                            x)]
+
+instance Default DidChangeTextDocumentParams where
+  def =
+    DidChangeTextDocumentParams { didChangeTextDocumentParamsTextDocument = def
+                                , didChangeTextDocumentParamsContentChanges = def }
 
 data DidChangeTextDocumentParams = DidChangeTextDocumentParams { didChangeTextDocumentParamsTextDocument :: VersionedTextDocumentIdentifier
                                                                , didChangeTextDocumentParamsContentChanges :: [TextDocumentContentChangeEvent] }

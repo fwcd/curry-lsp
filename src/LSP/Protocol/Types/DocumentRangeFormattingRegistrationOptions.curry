@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentRangeFormattingRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentRangeFormattingRegistrationOptions where
@@ -34,6 +35,12 @@ instance ToJSON DocumentRangeFormattingRegistrationOptions where
                                                                                  "rangesSupport"
                                                                                  (documentRangeFormattingRegistrationOptionsRangesSupport
                                                                                    x)]
+
+instance Default DocumentRangeFormattingRegistrationOptions where
+  def =
+    DocumentRangeFormattingRegistrationOptions { documentRangeFormattingRegistrationOptionsDocumentSelector = def
+                                               , documentRangeFormattingRegistrationOptionsWorkDoneProgress = def
+                                               , documentRangeFormattingRegistrationOptionsRangesSupport = def }
 
 data DocumentRangeFormattingRegistrationOptions = DocumentRangeFormattingRegistrationOptions { documentRangeFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                              , documentRangeFormattingRegistrationOptionsWorkDoneProgress :: Maybe Bool

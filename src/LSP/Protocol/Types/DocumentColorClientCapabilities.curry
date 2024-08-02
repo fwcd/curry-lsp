@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentColorClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentColorClientCapabilities where
@@ -24,6 +25,10 @@ instance ToJSON DocumentColorClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (documentColorClientCapabilitiesDynamicRegistration x)]
+
+instance Default DocumentColorClientCapabilities where
+  def =
+    DocumentColorClientCapabilities { documentColorClientCapabilitiesDynamicRegistration = def }
 
 data DocumentColorClientCapabilities = DocumentColorClientCapabilities { documentColorClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

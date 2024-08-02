@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextEdit where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextEdit where
@@ -22,6 +23,9 @@ instance ToJSON TextEdit where
   toJSON x =
     object
      [(.=) "range" (textEditRange x),  (.=) "newText" (textEditNewText x)]
+
+instance Default TextEdit where
+  def = TextEdit { textEditRange = def, textEditNewText = def }
 
 data TextEdit = TextEdit { textEditRange :: Range, textEditNewText :: String }
  deriving (Show,Eq)

@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Protocol.Types.TextDocumentSaveReason
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WillSaveTextDocumentParams where
@@ -27,6 +28,11 @@ instance ToJSON WillSaveTextDocumentParams where
                                                                         "reason"
                                                                         (willSaveTextDocumentParamsReason
                                                                           x)]
+
+instance Default WillSaveTextDocumentParams where
+  def =
+    WillSaveTextDocumentParams { willSaveTextDocumentParamsTextDocument = def
+                               , willSaveTextDocumentParamsReason = def }
 
 data WillSaveTextDocumentParams = WillSaveTextDocumentParams { willSaveTextDocumentParamsTextDocument :: TextDocumentIdentifier
                                                              , willSaveTextDocumentParamsReason :: TextDocumentSaveReason }

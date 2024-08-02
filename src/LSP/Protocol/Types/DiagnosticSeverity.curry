@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DiagnosticSeverity where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticSeverity where
@@ -23,6 +24,9 @@ instance ToJSON DiagnosticSeverity where
       DiagnosticSeverityWarning -> toJSON 2
       DiagnosticSeverityInformation -> toJSON 3
       DiagnosticSeverityHint -> toJSON 4
+
+instance Default DiagnosticSeverity where
+  def = DiagnosticSeverityError
 
 data DiagnosticSeverity = DiagnosticSeverityError
                         | DiagnosticSeverityWarning

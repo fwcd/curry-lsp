@@ -4,6 +4,7 @@ module LSP.Protocol.Types.LinkedEditingRangeClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LinkedEditingRangeClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON LinkedEditingRangeClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (linkedEditingRangeClientCapabilitiesDynamicRegistration x)]
+
+instance Default LinkedEditingRangeClientCapabilities where
+  def =
+    LinkedEditingRangeClientCapabilities { linkedEditingRangeClientCapabilitiesDynamicRegistration = def }
 
 data LinkedEditingRangeClientCapabilities = LinkedEditingRangeClientCapabilities { linkedEditingRangeClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

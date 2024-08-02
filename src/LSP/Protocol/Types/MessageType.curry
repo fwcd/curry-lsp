@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MessageType where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MessageType where
@@ -25,6 +26,9 @@ instance ToJSON MessageType where
       MessageTypeInfo -> toJSON 3
       MessageTypeLog -> toJSON 4
       MessageTypeDebug -> toJSON 5
+
+instance Default MessageType where
+  def = MessageTypeError
 
 data MessageType = MessageTypeError
                  | MessageTypeWarning

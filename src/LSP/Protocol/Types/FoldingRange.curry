@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FoldingRange where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FoldingRangeKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRange where
@@ -43,6 +44,15 @@ instance ToJSON FoldingRange where
                                                                                     "collapsedText"
                                                                                     (foldingRangeCollapsedText
                                                                                       x)]
+
+instance Default FoldingRange where
+  def =
+    FoldingRange { foldingRangeStartLine = def
+                 , foldingRangeStartCharacter = def
+                 , foldingRangeEndLine = def
+                 , foldingRangeEndCharacter = def
+                 , foldingRangeKind = def
+                 , foldingRangeCollapsedText = def }
 
 data FoldingRange = FoldingRange { foldingRangeStartLine :: Int
                                  , foldingRangeStartCharacter :: Maybe Int

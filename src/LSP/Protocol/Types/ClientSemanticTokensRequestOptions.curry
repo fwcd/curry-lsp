@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientSemanticTokensRequestOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientSemanticTokensRequestFullDelta
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientSemanticTokensRequestOptions where
@@ -27,6 +28,11 @@ instance ToJSON ClientSemanticTokensRequestOptions where
      [(.?=) "range" (clientSemanticTokensRequestOptionsRange x),  (.?=) "full"
                                                                    (clientSemanticTokensRequestOptionsFull
                                                                      x)]
+
+instance Default ClientSemanticTokensRequestOptions where
+  def =
+    ClientSemanticTokensRequestOptions { clientSemanticTokensRequestOptionsRange = def
+                                       , clientSemanticTokensRequestOptionsFull = def }
 
 data ClientSemanticTokensRequestOptions = ClientSemanticTokensRequestOptions { clientSemanticTokensRequestOptionsRange :: Maybe (Either Bool ())
                                                                              , clientSemanticTokensRequestOptionsFull :: Maybe (Either Bool ClientSemanticTokensRequestFullDelta) }

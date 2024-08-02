@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentSymbol where
@@ -55,6 +56,17 @@ instance ToJSON DocumentSymbol where
                                                                                                                 "children"
                                                                                                                 (documentSymbolChildren
                                                                                                                   x)]
+
+instance Default DocumentSymbol where
+  def =
+    DocumentSymbol { documentSymbolName = def
+                   , documentSymbolDetail = def
+                   , documentSymbolKind = def
+                   , documentSymbolTags = def
+                   , documentSymbolDeprecated = def
+                   , documentSymbolRange = def
+                   , documentSymbolSelectionRange = def
+                   , documentSymbolChildren = def }
 
 data DocumentSymbol = DocumentSymbol { documentSymbolName :: String
                                      , documentSymbolDetail :: Maybe String

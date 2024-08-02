@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MessageActionItem
 import LSP.Protocol.Types.MessageType
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowMessageRequestParams where
@@ -29,6 +30,12 @@ instance ToJSON ShowMessageRequestParams where
                                                         x),  (.?=) "actions"
                                                               (showMessageRequestParamsActions
                                                                 x)]
+
+instance Default ShowMessageRequestParams where
+  def =
+    ShowMessageRequestParams { showMessageRequestParamsType = def
+                             , showMessageRequestParamsMessage = def
+                             , showMessageRequestParamsActions = def }
 
 data ShowMessageRequestParams = ShowMessageRequestParams { showMessageRequestParamsType :: MessageType
                                                          , showMessageRequestParamsMessage :: String

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DiagnosticWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON DiagnosticWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (diagnosticWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default DiagnosticWorkspaceClientCapabilities where
+  def =
+    DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data DiagnosticWorkspaceClientCapabilities = DiagnosticWorkspaceClientCapabilities { diagnosticWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

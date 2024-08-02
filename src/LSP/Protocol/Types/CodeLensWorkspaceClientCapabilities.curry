@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CodeLensWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeLensWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON CodeLensWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (codeLensWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default CodeLensWorkspaceClientCapabilities where
+  def =
+    CodeLensWorkspaceClientCapabilities { codeLensWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data CodeLensWorkspaceClientCapabilities = CodeLensWorkspaceClientCapabilities { codeLensWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

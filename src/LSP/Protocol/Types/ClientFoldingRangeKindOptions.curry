@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientFoldingRangeKindOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FoldingRangeKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientFoldingRangeKindOptions where
@@ -21,6 +22,10 @@ instance FromJSON ClientFoldingRangeKindOptions where
 instance ToJSON ClientFoldingRangeKindOptions where
   toJSON x =
     object [(.?=) "valueSet" (clientFoldingRangeKindOptionsValueSet x)]
+
+instance Default ClientFoldingRangeKindOptions where
+  def =
+    ClientFoldingRangeKindOptions { clientFoldingRangeKindOptionsValueSet = def }
 
 data ClientFoldingRangeKindOptions = ClientFoldingRangeKindOptions { clientFoldingRangeKindOptionsValueSet :: Maybe [FoldingRangeKind] }
  deriving (Show,Eq)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineValueVariableLookup where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueVariableLookup where
@@ -30,6 +31,12 @@ instance ToJSON InlineValueVariableLookup where
                                                                  "caseSensitiveLookup"
                                                                  (inlineValueVariableLookupCaseSensitiveLookup
                                                                    x)]
+
+instance Default InlineValueVariableLookup where
+  def =
+    InlineValueVariableLookup { inlineValueVariableLookupRange = def
+                              , inlineValueVariableLookupVariableName = def
+                              , inlineValueVariableLookupCaseSensitiveLookup = def }
 
 data InlineValueVariableLookup = InlineValueVariableLookup { inlineValueVariableLookupRange :: Range
                                                            , inlineValueVariableLookupVariableName :: Maybe String

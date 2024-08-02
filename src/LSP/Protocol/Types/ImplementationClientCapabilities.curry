@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ImplementationClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ImplementationClientCapabilities where
@@ -29,6 +30,11 @@ instance ToJSON ImplementationClientCapabilities where
                                                                   "linkSupport"
                                                                   (implementationClientCapabilitiesLinkSupport
                                                                     x)]
+
+instance Default ImplementationClientCapabilities where
+  def =
+    ImplementationClientCapabilities { implementationClientCapabilitiesDynamicRegistration = def
+                                     , implementationClientCapabilitiesLinkSupport = def }
 
 data ImplementationClientCapabilities = ImplementationClientCapabilities { implementationClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , implementationClientCapabilitiesLinkSupport :: Maybe Bool }

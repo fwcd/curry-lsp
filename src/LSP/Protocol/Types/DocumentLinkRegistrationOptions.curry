@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentLinkRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentLinkRegistrationOptions where
@@ -33,6 +34,12 @@ instance ToJSON DocumentLinkRegistrationOptions where
                                                                       "resolveProvider"
                                                                       (documentLinkRegistrationOptionsResolveProvider
                                                                         x)]
+
+instance Default DocumentLinkRegistrationOptions where
+  def =
+    DocumentLinkRegistrationOptions { documentLinkRegistrationOptionsDocumentSelector = def
+                                    , documentLinkRegistrationOptionsWorkDoneProgress = def
+                                    , documentLinkRegistrationOptionsResolveProvider = def }
 
 data DocumentLinkRegistrationOptions = DocumentLinkRegistrationOptions { documentLinkRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                        , documentLinkRegistrationOptionsWorkDoneProgress :: Maybe Bool

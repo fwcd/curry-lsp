@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DiagnosticServerCancellationData where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticServerCancellationData where
@@ -22,6 +23,10 @@ instance ToJSON DiagnosticServerCancellationData where
     object
      [(.=) "retriggerRequest"
        (diagnosticServerCancellationDataRetriggerRequest x)]
+
+instance Default DiagnosticServerCancellationData where
+  def =
+    DiagnosticServerCancellationData { diagnosticServerCancellationDataRetriggerRequest = def }
 
 data DiagnosticServerCancellationData = DiagnosticServerCancellationData { diagnosticServerCancellationDataRetriggerRequest :: Bool }
  deriving (Show,Eq)

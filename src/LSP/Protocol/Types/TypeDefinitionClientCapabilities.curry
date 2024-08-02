@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TypeDefinitionClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeDefinitionClientCapabilities where
@@ -29,6 +30,11 @@ instance ToJSON TypeDefinitionClientCapabilities where
                                                                   "linkSupport"
                                                                   (typeDefinitionClientCapabilitiesLinkSupport
                                                                     x)]
+
+instance Default TypeDefinitionClientCapabilities where
+  def =
+    TypeDefinitionClientCapabilities { typeDefinitionClientCapabilitiesDynamicRegistration = def
+                                     , typeDefinitionClientCapabilitiesLinkSupport = def }
 
 data TypeDefinitionClientCapabilities = TypeDefinitionClientCapabilities { typeDefinitionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , typeDefinitionClientCapabilitiesLinkSupport :: Maybe Bool }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensEdit where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensEdit where
@@ -27,6 +28,12 @@ instance ToJSON SemanticTokensEdit where
                                                     x),  (.?=) "data"
                                                           (semanticTokensEditData
                                                             x)]
+
+instance Default SemanticTokensEdit where
+  def =
+    SemanticTokensEdit { semanticTokensEditStart = def
+                       , semanticTokensEditDeleteCount = def
+                       , semanticTokensEditData = def }
 
 data SemanticTokensEdit = SemanticTokensEdit { semanticTokensEditStart :: Int
                                              , semanticTokensEditDeleteCount :: Int

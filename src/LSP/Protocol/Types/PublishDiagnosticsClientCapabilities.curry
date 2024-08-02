@@ -5,6 +5,7 @@ module LSP.Protocol.Types.PublishDiagnosticsClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientDiagnosticsTagOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PublishDiagnosticsClientCapabilities where
@@ -48,6 +49,14 @@ instance ToJSON PublishDiagnosticsClientCapabilities where
                                                                                              "versionSupport"
                                                                                              (publishDiagnosticsClientCapabilitiesVersionSupport
                                                                                                x)]
+
+instance Default PublishDiagnosticsClientCapabilities where
+  def =
+    PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation = def
+                                         , publishDiagnosticsClientCapabilitiesTagSupport = def
+                                         , publishDiagnosticsClientCapabilitiesCodeDescriptionSupport = def
+                                         , publishDiagnosticsClientCapabilitiesDataSupport = def
+                                         , publishDiagnosticsClientCapabilitiesVersionSupport = def }
 
 data PublishDiagnosticsClientCapabilities = PublishDiagnosticsClientCapabilities { publishDiagnosticsClientCapabilitiesRelatedInformation :: Maybe Bool
                                                                                  , publishDiagnosticsClientCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions

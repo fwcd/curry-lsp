@@ -10,6 +10,7 @@ import LSP.Protocol.Types.CodeActionKind
 import LSP.Protocol.Types.Command
 import LSP.Protocol.Types.Diagnostic
 import LSP.Protocol.Types.WorkspaceEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeAction where
@@ -58,6 +59,17 @@ instance ToJSON CodeAction where
                                                                                                         "data"
                                                                                                         (codeActionData
                                                                                                           x)]
+
+instance Default CodeAction where
+  def =
+    CodeAction { codeActionTitle = def
+               , codeActionKind = def
+               , codeActionDiagnostics = def
+               , codeActionIsPreferred = def
+               , codeActionDisabled = def
+               , codeActionEdit = def
+               , codeActionCommand = def
+               , codeActionData = def }
 
 data CodeAction = CodeAction { codeActionTitle :: String
                              , codeActionKind :: Maybe CodeActionKind

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.PreviousResultId where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PreviousResultId where
@@ -23,6 +24,11 @@ instance ToJSON PreviousResultId where
     object
      [(.=) "uri" (previousResultIdUri x),  (.=) "value"
                                             (previousResultIdValue x)]
+
+instance Default PreviousResultId where
+  def =
+    PreviousResultId { previousResultIdUri = def
+                     , previousResultIdValue = def }
 
 data PreviousResultId = PreviousResultId { previousResultIdUri :: DocumentUri
                                          , previousResultIdValue :: String }

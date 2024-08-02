@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CallHierarchyPrepareParams where
@@ -33,6 +34,12 @@ instance ToJSON CallHierarchyPrepareParams where
                                                                                 "workDoneToken"
                                                                                 (callHierarchyPrepareParamsWorkDoneToken
                                                                                   x)]
+
+instance Default CallHierarchyPrepareParams where
+  def =
+    CallHierarchyPrepareParams { callHierarchyPrepareParamsTextDocument = def
+                               , callHierarchyPrepareParamsPosition = def
+                               , callHierarchyPrepareParamsWorkDoneToken = def }
 
 data CallHierarchyPrepareParams = CallHierarchyPrepareParams { callHierarchyPrepareParamsTextDocument :: TextDocumentIdentifier
                                                              , callHierarchyPrepareParamsPosition :: Position

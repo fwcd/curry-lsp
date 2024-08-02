@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ReferenceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ReferenceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON ReferenceClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (referenceClientCapabilitiesDynamicRegistration x)]
+
+instance Default ReferenceClientCapabilities where
+  def =
+    ReferenceClientCapabilities { referenceClientCapabilitiesDynamicRegistration = def }
 
 data ReferenceClientCapabilities = ReferenceClientCapabilities { referenceClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.HoverRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON HoverRegistrationOptions where
@@ -25,6 +26,11 @@ instance ToJSON HoverRegistrationOptions where
        (hoverRegistrationOptionsDocumentSelector x),  (.?=) "workDoneProgress"
                                                        (hoverRegistrationOptionsWorkDoneProgress
                                                          x)]
+
+instance Default HoverRegistrationOptions where
+  def =
+    HoverRegistrationOptions { hoverRegistrationOptionsDocumentSelector = def
+                             , hoverRegistrationOptionsWorkDoneProgress = def }
 
 data HoverRegistrationOptions = HoverRegistrationOptions { hoverRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                          , hoverRegistrationOptionsWorkDoneProgress :: Maybe Bool }

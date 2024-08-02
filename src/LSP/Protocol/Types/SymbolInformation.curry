@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Location
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SymbolInformation where
@@ -45,6 +46,15 @@ instance ToJSON SymbolInformation where
                                                                                "location"
                                                                                (symbolInformationLocation
                                                                                  x)]
+
+instance Default SymbolInformation where
+  def =
+    SymbolInformation { symbolInformationName = def
+                      , symbolInformationKind = def
+                      , symbolInformationTags = def
+                      , symbolInformationContainerName = def
+                      , symbolInformationDeprecated = def
+                      , symbolInformationLocation = def }
 
 data SymbolInformation = SymbolInformation { symbolInformationName :: String
                                            , symbolInformationKind :: SymbolKind

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TextDocumentSaveReason where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentSaveReason where
@@ -21,6 +22,9 @@ instance ToJSON TextDocumentSaveReason where
       TextDocumentSaveReasonManual -> toJSON 1
       TextDocumentSaveReasonAfterDelay -> toJSON 2
       TextDocumentSaveReasonFocusOut -> toJSON 3
+
+instance Default TextDocumentSaveReason where
+  def = TextDocumentSaveReasonManual
 
 data TextDocumentSaveReason = TextDocumentSaveReasonManual
                             | TextDocumentSaveReasonAfterDelay

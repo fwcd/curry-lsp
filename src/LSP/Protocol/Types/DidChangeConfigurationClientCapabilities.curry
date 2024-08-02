@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DidChangeConfigurationClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeConfigurationClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON DidChangeConfigurationClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (didChangeConfigurationClientCapabilitiesDynamicRegistration x)]
+
+instance Default DidChangeConfigurationClientCapabilities where
+  def =
+    DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration = def }
 
 data DidChangeConfigurationClientCapabilities = DidChangeConfigurationClientCapabilities { didChangeConfigurationClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

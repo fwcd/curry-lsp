@@ -4,6 +4,7 @@ module LSP.Protocol.Types.LinkedEditingRangeOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LinkedEditingRangeOptions where
@@ -19,6 +20,10 @@ instance ToJSON LinkedEditingRangeOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (linkedEditingRangeOptionsWorkDoneProgress x)]
+
+instance Default LinkedEditingRangeOptions where
+  def =
+    LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress = def }
 
 data LinkedEditingRangeOptions = LinkedEditingRangeOptions { linkedEditingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

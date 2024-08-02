@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentHighlightKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightKind where
@@ -21,6 +22,9 @@ instance ToJSON DocumentHighlightKind where
       DocumentHighlightKindText -> toJSON 1
       DocumentHighlightKindRead -> toJSON 2
       DocumentHighlightKindWrite -> toJSON 3
+
+instance Default DocumentHighlightKind where
+  def = DocumentHighlightKindText
 
 data DocumentHighlightKind = DocumentHighlightKindText
                            | DocumentHighlightKindRead

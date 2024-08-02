@@ -5,6 +5,7 @@ module LSP.Protocol.Types.NotebookCellArrayChange where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookCell
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookCellArrayChange where
@@ -28,6 +29,12 @@ instance ToJSON NotebookCellArrayChange where
                                                          x),  (.?=) "cells"
                                                                (notebookCellArrayChangeCells
                                                                  x)]
+
+instance Default NotebookCellArrayChange where
+  def =
+    NotebookCellArrayChange { notebookCellArrayChangeStart = def
+                            , notebookCellArrayChangeDeleteCount = def
+                            , notebookCellArrayChangeCells = def }
 
 data NotebookCellArrayChange = NotebookCellArrayChange { notebookCellArrayChangeStart :: Int
                                                        , notebookCellArrayChangeDeleteCount :: Int

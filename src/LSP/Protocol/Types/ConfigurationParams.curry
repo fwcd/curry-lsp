@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ConfigurationParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ConfigurationItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ConfigurationParams where
@@ -18,6 +19,9 @@ instance FromJSON ConfigurationParams where
 
 instance ToJSON ConfigurationParams where
   toJSON x = object [(.=) "items" (configurationParamsItems x)]
+
+instance Default ConfigurationParams where
+  def = ConfigurationParams { configurationParamsItems = def }
 
 data ConfigurationParams = ConfigurationParams { configurationParamsItems :: [ConfigurationItem] }
  deriving (Show,Eq)

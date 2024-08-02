@@ -8,6 +8,7 @@ import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.ReferenceContext
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ReferenceParams where
@@ -44,6 +45,14 @@ instance ToJSON ReferenceParams where
                                                                                      "context"
                                                                                      (referenceParamsContext
                                                                                        x)]
+
+instance Default ReferenceParams where
+  def =
+    ReferenceParams { referenceParamsTextDocument = def
+                    , referenceParamsPosition = def
+                    , referenceParamsWorkDoneToken = def
+                    , referenceParamsPartialResultToken = def
+                    , referenceParamsContext = def }
 
 data ReferenceParams = ReferenceParams { referenceParamsTextDocument :: TextDocumentIdentifier
                                        , referenceParamsPosition :: Position

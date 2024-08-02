@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentColorParams where
@@ -33,6 +34,12 @@ instance ToJSON DocumentColorParams where
                                                                             "textDocument"
                                                                             (documentColorParamsTextDocument
                                                                               x)]
+
+instance Default DocumentColorParams where
+  def =
+    DocumentColorParams { documentColorParamsWorkDoneToken = def
+                        , documentColorParamsPartialResultToken = def
+                        , documentColorParamsTextDocument = def }
 
 data DocumentColorParams = DocumentColorParams { documentColorParamsWorkDoneToken :: Maybe ProgressToken
                                                , documentColorParamsPartialResultToken :: Maybe ProgressToken

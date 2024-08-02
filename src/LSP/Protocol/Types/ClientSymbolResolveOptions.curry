@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientSymbolResolveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientSymbolResolveOptions where
@@ -19,6 +20,10 @@ instance FromJSON ClientSymbolResolveOptions where
 instance ToJSON ClientSymbolResolveOptions where
   toJSON x =
     object [(.=) "properties" (clientSymbolResolveOptionsProperties x)]
+
+instance Default ClientSymbolResolveOptions where
+  def =
+    ClientSymbolResolveOptions { clientSymbolResolveOptionsProperties = def }
 
 data ClientSymbolResolveOptions = ClientSymbolResolveOptions { clientSymbolResolveOptionsProperties :: [String] }
  deriving (Show,Eq)

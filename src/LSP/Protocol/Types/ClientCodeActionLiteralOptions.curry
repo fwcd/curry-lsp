@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientCodeActionLiteralOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientCodeActionKindOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCodeActionLiteralOptions where
@@ -22,6 +23,10 @@ instance ToJSON ClientCodeActionLiteralOptions where
   toJSON x =
     object
      [(.=) "codeActionKind" (clientCodeActionLiteralOptionsCodeActionKind x)]
+
+instance Default ClientCodeActionLiteralOptions where
+  def =
+    ClientCodeActionLiteralOptions { clientCodeActionLiteralOptionsCodeActionKind = def }
 
 data ClientCodeActionLiteralOptions = ClientCodeActionLiteralOptions { clientCodeActionLiteralOptionsCodeActionKind :: ClientCodeActionKindOptions }
  deriving (Show,Eq)

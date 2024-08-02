@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CallHierarchyClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CallHierarchyClientCapabilities where
@@ -24,6 +25,10 @@ instance ToJSON CallHierarchyClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (callHierarchyClientCapabilitiesDynamicRegistration x)]
+
+instance Default CallHierarchyClientCapabilities where
+  def =
+    CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration = def }
 
 data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities { callHierarchyClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

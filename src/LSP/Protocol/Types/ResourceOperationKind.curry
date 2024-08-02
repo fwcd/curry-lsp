@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ResourceOperationKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ResourceOperationKind where
@@ -21,6 +22,9 @@ instance ToJSON ResourceOperationKind where
       ResourceOperationKindCreate -> toJSON "create"
       ResourceOperationKindRename -> toJSON "rename"
       ResourceOperationKindDelete -> toJSON "delete"
+
+instance Default ResourceOperationKind where
+  def = ResourceOperationKindCreate
 
 data ResourceOperationKind = ResourceOperationKindCreate
                            | ResourceOperationKindRename

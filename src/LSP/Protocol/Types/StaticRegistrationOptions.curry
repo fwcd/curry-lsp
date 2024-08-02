@@ -4,6 +4,7 @@ module LSP.Protocol.Types.StaticRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON StaticRegistrationOptions where
@@ -17,6 +18,9 @@ instance FromJSON StaticRegistrationOptions where
 
 instance ToJSON StaticRegistrationOptions where
   toJSON x = object [(.?=) "id" (staticRegistrationOptionsId x)]
+
+instance Default StaticRegistrationOptions where
+  def = StaticRegistrationOptions { staticRegistrationOptionsId = def }
 
 data StaticRegistrationOptions = StaticRegistrationOptions { staticRegistrationOptionsId :: Maybe String }
  deriving (Show,Eq)

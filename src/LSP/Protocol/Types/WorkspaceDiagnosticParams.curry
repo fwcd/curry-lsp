@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.PreviousResultId
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceDiagnosticParams where
@@ -38,6 +39,13 @@ instance ToJSON WorkspaceDiagnosticParams where
                                                                                           "previousResultIds"
                                                                                           (workspaceDiagnosticParamsPreviousResultIds
                                                                                             x)]
+
+instance Default WorkspaceDiagnosticParams where
+  def =
+    WorkspaceDiagnosticParams { workspaceDiagnosticParamsWorkDoneToken = def
+                              , workspaceDiagnosticParamsPartialResultToken = def
+                              , workspaceDiagnosticParamsIdentifier = def
+                              , workspaceDiagnosticParamsPreviousResultIds = def }
 
 data WorkspaceDiagnosticParams = WorkspaceDiagnosticParams { workspaceDiagnosticParamsWorkDoneToken :: Maybe ProgressToken
                                                            , workspaceDiagnosticParamsPartialResultToken :: Maybe ProgressToken

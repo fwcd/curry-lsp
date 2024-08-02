@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.WorkspaceEdit
 import LSP.Protocol.Types.WorkspaceEditMetadata
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ApplyWorkspaceEditParams where
@@ -30,6 +31,12 @@ instance ToJSON ApplyWorkspaceEditParams where
                                                                  "metadata"
                                                                  (applyWorkspaceEditParamsMetadata
                                                                    x)]
+
+instance Default ApplyWorkspaceEditParams where
+  def =
+    ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel = def
+                             , applyWorkspaceEditParamsEdit = def
+                             , applyWorkspaceEditParamsMetadata = def }
 
 data ApplyWorkspaceEditParams = ApplyWorkspaceEditParams { applyWorkspaceEditParamsLabel :: Maybe String
                                                          , applyWorkspaceEditParamsEdit :: WorkspaceEdit

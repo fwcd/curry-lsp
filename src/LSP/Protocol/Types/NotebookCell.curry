@@ -8,6 +8,7 @@ import LSP.Protocol.Support
 import LSP.Protocol.Types.ExecutionSummary
 import LSP.Protocol.Types.LSPObject
 import LSP.Protocol.Types.NotebookCellKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookCell where
@@ -36,6 +37,13 @@ instance ToJSON NotebookCell where
                                                                               "executionSummary"
                                                                               (notebookCellExecutionSummary
                                                                                 x)]
+
+instance Default NotebookCell where
+  def =
+    NotebookCell { notebookCellKind = def
+                 , notebookCellDocument = def
+                 , notebookCellMetadata = def
+                 , notebookCellExecutionSummary = def }
 
 data NotebookCell = NotebookCell { notebookCellKind :: NotebookCellKind
                                  , notebookCellDocument :: DocumentUri

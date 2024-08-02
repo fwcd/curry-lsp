@@ -5,6 +5,7 @@ module LSP.Protocol.Types.PrepareRenamePlaceholder where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PrepareRenamePlaceholder where
@@ -24,6 +25,11 @@ instance ToJSON PrepareRenamePlaceholder where
      [(.=) "range" (prepareRenamePlaceholderRange x),  (.=) "placeholder"
                                                         (prepareRenamePlaceholderPlaceholder
                                                           x)]
+
+instance Default PrepareRenamePlaceholder where
+  def =
+    PrepareRenamePlaceholder { prepareRenamePlaceholderRange = def
+                             , prepareRenamePlaceholderPlaceholder = def }
 
 data PrepareRenamePlaceholder = PrepareRenamePlaceholder { prepareRenamePlaceholderRange :: Range
                                                          , prepareRenamePlaceholderPlaceholder :: String }

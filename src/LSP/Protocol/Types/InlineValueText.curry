@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineValueText where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueText where
@@ -23,6 +24,10 @@ instance ToJSON InlineValueText where
     object
      [(.=) "range" (inlineValueTextRange x),  (.=) "text"
                                                (inlineValueTextText x)]
+
+instance Default InlineValueText where
+  def =
+    InlineValueText { inlineValueTextRange = def, inlineValueTextText = def }
 
 data InlineValueText = InlineValueText { inlineValueTextRange :: Range
                                        , inlineValueTextText :: String }

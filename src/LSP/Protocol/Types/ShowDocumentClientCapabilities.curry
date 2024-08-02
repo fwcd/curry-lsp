@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ShowDocumentClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowDocumentClientCapabilities where
@@ -19,6 +20,10 @@ instance FromJSON ShowDocumentClientCapabilities where
 
 instance ToJSON ShowDocumentClientCapabilities where
   toJSON x = object [(.=) "support" (showDocumentClientCapabilitiesSupport x)]
+
+instance Default ShowDocumentClientCapabilities where
+  def =
+    ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport = def }
 
 data ShowDocumentClientCapabilities = ShowDocumentClientCapabilities { showDocumentClientCapabilitiesSupport :: Bool }
  deriving (Show,Eq)

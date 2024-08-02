@@ -4,6 +4,7 @@ module LSP.Protocol.Types.Unregistration where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Unregistration where
@@ -21,6 +22,9 @@ instance ToJSON Unregistration where
   toJSON x =
     object
      [(.=) "id" (unregistrationId x),  (.=) "method" (unregistrationMethod x)]
+
+instance Default Unregistration where
+  def = Unregistration { unregistrationId = def, unregistrationMethod = def }
 
 data Unregistration = Unregistration { unregistrationId :: String
                                      , unregistrationMethod :: String }

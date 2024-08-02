@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientCodeActionResolveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCodeActionResolveOptions where
@@ -20,6 +21,10 @@ instance FromJSON ClientCodeActionResolveOptions where
 instance ToJSON ClientCodeActionResolveOptions where
   toJSON x =
     object [(.=) "properties" (clientCodeActionResolveOptionsProperties x)]
+
+instance Default ClientCodeActionResolveOptions where
+  def =
+    ClientCodeActionResolveOptions { clientCodeActionResolveOptionsProperties = def }
 
 data ClientCodeActionResolveOptions = ClientCodeActionResolveOptions { clientCodeActionResolveOptionsProperties :: [String] }
  deriving (Show,Eq)

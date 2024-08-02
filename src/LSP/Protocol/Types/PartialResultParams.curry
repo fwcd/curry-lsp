@@ -5,6 +5,7 @@ module LSP.Protocol.Types.PartialResultParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PartialResultParams where
@@ -22,6 +23,9 @@ instance ToJSON PartialResultParams where
   toJSON x =
     object
      [(.?=) "partialResultToken" (partialResultParamsPartialResultToken x)]
+
+instance Default PartialResultParams where
+  def = PartialResultParams { partialResultParamsPartialResultToken = def }
 
 data PartialResultParams = PartialResultParams { partialResultParamsPartialResultToken :: Maybe ProgressToken }
  deriving (Show,Eq)

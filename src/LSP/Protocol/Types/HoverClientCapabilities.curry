@@ -5,6 +5,7 @@ module LSP.Protocol.Types.HoverClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MarkupKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON HoverClientCapabilities where
@@ -27,6 +28,11 @@ instance ToJSON HoverClientCapabilities where
        (hoverClientCapabilitiesDynamicRegistration x),  (.?=) "contentFormat"
                                                          (hoverClientCapabilitiesContentFormat
                                                            x)]
+
+instance Default HoverClientCapabilities where
+  def =
+    HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration = def
+                            , hoverClientCapabilitiesContentFormat = def }
 
 data HoverClientCapabilities = HoverClientCapabilities { hoverClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                        , hoverClientCapabilitiesContentFormat :: Maybe [MarkupKind] }

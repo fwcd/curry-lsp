@@ -5,6 +5,7 @@ module LSP.Protocol.Types.RenameClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.PrepareSupportDefaultBehavior
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameClientCapabilities where
@@ -42,6 +43,13 @@ instance ToJSON RenameClientCapabilities where
                                                                           "honorsChangeAnnotations"
                                                                           (renameClientCapabilitiesHonorsChangeAnnotations
                                                                             x)]
+
+instance Default RenameClientCapabilities where
+  def =
+    RenameClientCapabilities { renameClientCapabilitiesDynamicRegistration = def
+                             , renameClientCapabilitiesPrepareSupport = def
+                             , renameClientCapabilitiesPrepareSupportDefaultBehavior = def
+                             , renameClientCapabilitiesHonorsChangeAnnotations = def }
 
 data RenameClientCapabilities = RenameClientCapabilities { renameClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                          , renameClientCapabilitiesPrepareSupport :: Maybe Bool

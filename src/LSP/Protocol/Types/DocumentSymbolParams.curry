@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentSymbolParams where
@@ -33,6 +34,12 @@ instance ToJSON DocumentSymbolParams where
                                                                              "textDocument"
                                                                              (documentSymbolParamsTextDocument
                                                                                x)]
+
+instance Default DocumentSymbolParams where
+  def =
+    DocumentSymbolParams { documentSymbolParamsWorkDoneToken = def
+                         , documentSymbolParamsPartialResultToken = def
+                         , documentSymbolParamsTextDocument = def }
 
 data DocumentSymbolParams = DocumentSymbolParams { documentSymbolParamsWorkDoneToken :: Maybe ProgressToken
                                                  , documentSymbolParamsPartialResultToken :: Maybe ProgressToken

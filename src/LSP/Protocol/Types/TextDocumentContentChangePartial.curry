@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextDocumentContentChangePartial where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentContentChangePartial where
@@ -32,6 +33,12 @@ instance ToJSON TextDocumentContentChangePartial where
                                                                         "text"
                                                                         (textDocumentContentChangePartialText
                                                                           x)]
+
+instance Default TextDocumentContentChangePartial where
+  def =
+    TextDocumentContentChangePartial { textDocumentContentChangePartialRange = def
+                                     , textDocumentContentChangePartialRangeLength = def
+                                     , textDocumentContentChangePartialText = def }
 
 data TextDocumentContentChangePartial = TextDocumentContentChangePartial { textDocumentContentChangePartialRange :: Range
                                                                          , textDocumentContentChangePartialRangeLength :: Maybe Int

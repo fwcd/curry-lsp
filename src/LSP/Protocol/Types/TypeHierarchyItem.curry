@@ -8,6 +8,7 @@ import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeHierarchyItem where
@@ -55,6 +56,17 @@ instance ToJSON TypeHierarchyItem where
                                                                                                "data"
                                                                                                (typeHierarchyItemData
                                                                                                  x)]
+
+instance Default TypeHierarchyItem where
+  def =
+    TypeHierarchyItem { typeHierarchyItemName = def
+                      , typeHierarchyItemKind = def
+                      , typeHierarchyItemTags = def
+                      , typeHierarchyItemDetail = def
+                      , typeHierarchyItemUri = def
+                      , typeHierarchyItemRange = def
+                      , typeHierarchyItemSelectionRange = def
+                      , typeHierarchyItemData = def }
 
 data TypeHierarchyItem = TypeHierarchyItem { typeHierarchyItemName :: String
                                            , typeHierarchyItemKind :: SymbolKind

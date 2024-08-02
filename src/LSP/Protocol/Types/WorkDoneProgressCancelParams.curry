@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkDoneProgressCancelParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkDoneProgressCancelParams where
@@ -19,6 +20,10 @@ instance FromJSON WorkDoneProgressCancelParams where
 
 instance ToJSON WorkDoneProgressCancelParams where
   toJSON x = object [(.=) "token" (workDoneProgressCancelParamsToken x)]
+
+instance Default WorkDoneProgressCancelParams where
+  def =
+    WorkDoneProgressCancelParams { workDoneProgressCancelParamsToken = def }
 
 data WorkDoneProgressCancelParams = WorkDoneProgressCancelParams { workDoneProgressCancelParamsToken :: ProgressToken }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SelectionRangeOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectionRangeOptions where
@@ -19,6 +20,9 @@ instance ToJSON SelectionRangeOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (selectionRangeOptionsWorkDoneProgress x)]
+
+instance Default SelectionRangeOptions where
+  def = SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress = def }
 
 data SelectionRangeOptions = SelectionRangeOptions { selectionRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

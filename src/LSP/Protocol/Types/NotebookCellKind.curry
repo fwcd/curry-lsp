@@ -4,6 +4,7 @@ module LSP.Protocol.Types.NotebookCellKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookCellKind where
@@ -19,6 +20,9 @@ instance ToJSON NotebookCellKind where
     case x of
       NotebookCellKindMarkup -> toJSON 1
       NotebookCellKindCode -> toJSON 2
+
+instance Default NotebookCellKind where
+  def = NotebookCellKindMarkup
 
 data NotebookCellKind = NotebookCellKindMarkup | NotebookCellKindCode
  deriving (Show,Eq,Enum,Bounded,Ord)

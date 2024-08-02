@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MonikerKind
 import LSP.Protocol.Types.UniquenessLevel
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Moniker where
@@ -33,6 +34,13 @@ instance ToJSON Moniker where
                                                                           "kind"
                                                                           (monikerKind
                                                                             x)]
+
+instance Default Moniker where
+  def =
+    Moniker { monikerScheme = def
+            , monikerIdentifier = def
+            , monikerUnique = def
+            , monikerKind = def }
 
 data Moniker = Moniker { monikerScheme :: String
                        , monikerIdentifier :: String

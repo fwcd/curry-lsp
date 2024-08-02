@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TypeHierarchyItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeHierarchySubtypesParams where
@@ -34,6 +35,12 @@ instance ToJSON TypeHierarchySubtypesParams where
                                                          x),  (.=) "item"
                                                                (typeHierarchySubtypesParamsItem
                                                                  x)]
+
+instance Default TypeHierarchySubtypesParams where
+  def =
+    TypeHierarchySubtypesParams { typeHierarchySubtypesParamsWorkDoneToken = def
+                                , typeHierarchySubtypesParamsPartialResultToken = def
+                                , typeHierarchySubtypesParamsItem = def }
 
 data TypeHierarchySubtypesParams = TypeHierarchySubtypesParams { typeHierarchySubtypesParamsWorkDoneToken :: Maybe ProgressToken
                                                                , typeHierarchySubtypesParamsPartialResultToken :: Maybe ProgressToken

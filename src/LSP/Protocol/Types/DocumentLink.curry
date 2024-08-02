@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentLink where
@@ -34,6 +35,13 @@ instance ToJSON DocumentLink where
                                                                               "data"
                                                                               (documentLinkData
                                                                                 x)]
+
+instance Default DocumentLink where
+  def =
+    DocumentLink { documentLinkRange = def
+                 , documentLinkTarget = def
+                 , documentLinkTooltip = def
+                 , documentLinkData = def }
 
 data DocumentLink = DocumentLink { documentLinkRange :: Range
                                  , documentLinkTarget :: Maybe Uri

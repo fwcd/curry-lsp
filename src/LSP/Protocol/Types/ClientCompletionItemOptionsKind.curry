@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientCompletionItemOptionsKind where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CompletionItemKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCompletionItemOptionsKind where
@@ -21,6 +22,10 @@ instance FromJSON ClientCompletionItemOptionsKind where
 instance ToJSON ClientCompletionItemOptionsKind where
   toJSON x =
     object [(.?=) "valueSet" (clientCompletionItemOptionsKindValueSet x)]
+
+instance Default ClientCompletionItemOptionsKind where
+  def =
+    ClientCompletionItemOptionsKind { clientCompletionItemOptionsKindValueSet = def }
 
 data ClientCompletionItemOptionsKind = ClientCompletionItemOptionsKind { clientCompletionItemOptionsKindValueSet :: Maybe [CompletionItemKind] }
  deriving (Show,Eq)

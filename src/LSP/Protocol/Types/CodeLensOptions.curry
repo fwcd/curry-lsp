@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CodeLensOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeLensOptions where
@@ -24,6 +25,11 @@ instance ToJSON CodeLensOptions where
                                                                       "resolveProvider"
                                                                       (codeLensOptionsResolveProvider
                                                                         x)]
+
+instance Default CodeLensOptions where
+  def =
+    CodeLensOptions { codeLensOptionsWorkDoneProgress = def
+                    , codeLensOptionsResolveProvider = def }
 
 data CodeLensOptions = CodeLensOptions { codeLensOptionsWorkDoneProgress :: Maybe Bool
                                        , codeLensOptionsResolveProvider :: Maybe Bool }

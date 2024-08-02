@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidChangeWatchedFilesRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileSystemWatcher
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeWatchedFilesRegistrationOptions where
@@ -23,6 +24,10 @@ instance ToJSON DidChangeWatchedFilesRegistrationOptions where
   toJSON x =
     object
      [(.=) "watchers" (didChangeWatchedFilesRegistrationOptionsWatchers x)]
+
+instance Default DidChangeWatchedFilesRegistrationOptions where
+  def =
+    DidChangeWatchedFilesRegistrationOptions { didChangeWatchedFilesRegistrationOptionsWatchers = def }
 
 data DidChangeWatchedFilesRegistrationOptions = DidChangeWatchedFilesRegistrationOptions { didChangeWatchedFilesRegistrationOptionsWatchers :: [FileSystemWatcher] }
  deriving (Show,Eq)

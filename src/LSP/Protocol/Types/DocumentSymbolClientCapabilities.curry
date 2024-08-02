@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientSymbolKindOptions
 import LSP.Protocol.Types.ClientSymbolTagOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentSymbolClientCapabilities where
@@ -48,6 +49,14 @@ instance ToJSON DocumentSymbolClientCapabilities where
                                                                                           "labelSupport"
                                                                                           (documentSymbolClientCapabilitiesLabelSupport
                                                                                             x)]
+
+instance Default DocumentSymbolClientCapabilities where
+  def =
+    DocumentSymbolClientCapabilities { documentSymbolClientCapabilitiesDynamicRegistration = def
+                                     , documentSymbolClientCapabilitiesSymbolKind = def
+                                     , documentSymbolClientCapabilitiesHierarchicalDocumentSymbolSupport = def
+                                     , documentSymbolClientCapabilitiesTagSupport = def
+                                     , documentSymbolClientCapabilitiesLabelSupport = def }
 
 data DocumentSymbolClientCapabilities = DocumentSymbolClientCapabilities { documentSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                          , documentSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions

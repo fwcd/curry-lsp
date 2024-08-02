@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DidChangeWatchedFilesClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeWatchedFilesClientCapabilities where
@@ -32,6 +33,11 @@ instance ToJSON DidChangeWatchedFilesClientCapabilities where
                                                                          "relativePatternSupport"
                                                                          (didChangeWatchedFilesClientCapabilitiesRelativePatternSupport
                                                                            x)]
+
+instance Default DidChangeWatchedFilesClientCapabilities where
+  def =
+    DidChangeWatchedFilesClientCapabilities { didChangeWatchedFilesClientCapabilitiesDynamicRegistration = def
+                                            , didChangeWatchedFilesClientCapabilitiesRelativePatternSupport = def }
 
 data DidChangeWatchedFilesClientCapabilities = DidChangeWatchedFilesClientCapabilities { didChangeWatchedFilesClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                        , didChangeWatchedFilesClientCapabilitiesRelativePatternSupport :: Maybe Bool }

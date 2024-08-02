@@ -8,6 +8,7 @@ import LSP.Protocol.Types.ClientCompletionItemInsertTextModeOptions
 import LSP.Protocol.Types.ClientCompletionItemResolveOptions
 import LSP.Protocol.Types.CompletionItemTagOptions
 import LSP.Protocol.Types.MarkupKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCompletionItemOptions where
@@ -81,6 +82,19 @@ instance ToJSON ClientCompletionItemOptions where
                                                                                                                         "labelDetailsSupport"
                                                                                                                         (clientCompletionItemOptionsLabelDetailsSupport
                                                                                                                           x)]
+
+instance Default ClientCompletionItemOptions where
+  def =
+    ClientCompletionItemOptions { clientCompletionItemOptionsSnippetSupport = def
+                                , clientCompletionItemOptionsCommitCharactersSupport = def
+                                , clientCompletionItemOptionsDocumentationFormat = def
+                                , clientCompletionItemOptionsDeprecatedSupport = def
+                                , clientCompletionItemOptionsPreselectSupport = def
+                                , clientCompletionItemOptionsTagSupport = def
+                                , clientCompletionItemOptionsInsertReplaceSupport = def
+                                , clientCompletionItemOptionsResolveSupport = def
+                                , clientCompletionItemOptionsInsertTextModeSupport = def
+                                , clientCompletionItemOptionsLabelDetailsSupport = def }
 
 data ClientCompletionItemOptions = ClientCompletionItemOptions { clientCompletionItemOptionsSnippetSupport :: Maybe Bool
                                                                , clientCompletionItemOptionsCommitCharactersSupport :: Maybe Bool

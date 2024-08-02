@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileOperationPatternOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationPatternOptions where
@@ -19,6 +20,10 @@ instance FromJSON FileOperationPatternOptions where
 instance ToJSON FileOperationPatternOptions where
   toJSON x =
     object [(.?=) "ignoreCase" (fileOperationPatternOptionsIgnoreCase x)]
+
+instance Default FileOperationPatternOptions where
+  def =
+    FileOperationPatternOptions { fileOperationPatternOptionsIgnoreCase = def }
 
 data FileOperationPatternOptions = FileOperationPatternOptions { fileOperationPatternOptionsIgnoreCase :: Maybe Bool }
  deriving (Show,Eq)

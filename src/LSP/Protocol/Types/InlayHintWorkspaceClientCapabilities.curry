@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlayHintWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON InlayHintWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (inlayHintWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default InlayHintWorkspaceClientCapabilities where
+  def =
+    InlayHintWorkspaceClientCapabilities { inlayHintWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data InlayHintWorkspaceClientCapabilities = InlayHintWorkspaceClientCapabilities { inlayHintWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

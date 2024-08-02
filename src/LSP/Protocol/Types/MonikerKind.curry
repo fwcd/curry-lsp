@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MonikerKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MonikerKind where
@@ -21,6 +22,9 @@ instance ToJSON MonikerKind where
       MonikerKindImport -> toJSON "import"
       MonikerKindExport -> toJSON "export"
       MonikerKindLocal -> toJSON "local"
+
+instance Default MonikerKind where
+  def = MonikerKindImport
 
 data MonikerKind = MonikerKindImport | MonikerKindExport | MonikerKindLocal
  deriving (Show,Eq,Enum,Bounded,Ord)

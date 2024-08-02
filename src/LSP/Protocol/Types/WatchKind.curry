@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WatchKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WatchKind where
@@ -21,6 +22,9 @@ instance ToJSON WatchKind where
       WatchKindCreate -> toJSON 1
       WatchKindChange -> toJSON 2
       WatchKindDelete -> toJSON 4
+
+instance Default WatchKind where
+  def = WatchKindCreate
 
 data WatchKind = WatchKindCreate | WatchKindChange | WatchKindDelete
  deriving (Show,Eq,Enum,Bounded,Ord)

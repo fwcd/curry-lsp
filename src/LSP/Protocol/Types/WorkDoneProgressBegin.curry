@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WorkDoneProgressBegin where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkDoneProgressBegin where
@@ -37,6 +38,14 @@ instance ToJSON WorkDoneProgressBegin where
                                                                            "percentage"
                                                                            (workDoneProgressBeginPercentage
                                                                              x)]
+
+instance Default WorkDoneProgressBegin where
+  def =
+    WorkDoneProgressBegin { workDoneProgressBeginKind = def
+                          , workDoneProgressBeginTitle = def
+                          , workDoneProgressBeginCancellable = def
+                          , workDoneProgressBeginMessage = def
+                          , workDoneProgressBeginPercentage = def }
 
 data WorkDoneProgressBegin = WorkDoneProgressBegin { workDoneProgressBeginKind :: String
                                                    , workDoneProgressBeginTitle :: String

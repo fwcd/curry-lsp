@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CodeActionKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionKind where
@@ -37,6 +38,9 @@ instance ToJSON CodeActionKind where
       CodeActionKindSourceOrganizeImports -> toJSON "source.organizeImports"
       CodeActionKindSourceFixAll -> toJSON "source.fixAll"
       CodeActionKindNotebook -> toJSON "notebook"
+
+instance Default CodeActionKind where
+  def = CodeActionKindEmpty
 
 data CodeActionKind = CodeActionKindEmpty
                     | CodeActionKindQuickFix

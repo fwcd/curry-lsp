@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.DeleteFileOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DeleteFile where
@@ -35,6 +36,13 @@ instance ToJSON DeleteFile where
                                                                               "options"
                                                                               (deleteFileOptions
                                                                                 x)]
+
+instance Default DeleteFile where
+  def =
+    DeleteFile { deleteFileKind = def
+               , deleteFileAnnotationId = def
+               , deleteFileUri = def
+               , deleteFileOptions = def }
 
 data DeleteFile = DeleteFile { deleteFileKind :: String
                              , deleteFileAnnotationId :: Maybe ChangeAnnotationIdentifier

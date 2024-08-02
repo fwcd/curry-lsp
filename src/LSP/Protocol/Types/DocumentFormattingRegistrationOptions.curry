@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentFormattingRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentFormattingRegistrationOptions where
@@ -29,6 +30,11 @@ instance ToJSON DocumentFormattingRegistrationOptions where
                                                                     "workDoneProgress"
                                                                     (documentFormattingRegistrationOptionsWorkDoneProgress
                                                                       x)]
+
+instance Default DocumentFormattingRegistrationOptions where
+  def =
+    DocumentFormattingRegistrationOptions { documentFormattingRegistrationOptionsDocumentSelector = def
+                                          , documentFormattingRegistrationOptionsWorkDoneProgress = def }
 
 data DocumentFormattingRegistrationOptions = DocumentFormattingRegistrationOptions { documentFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , documentFormattingRegistrationOptionsWorkDoneProgress :: Maybe Bool }

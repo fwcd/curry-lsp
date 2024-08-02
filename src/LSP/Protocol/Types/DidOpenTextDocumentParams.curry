@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidOpenTextDocumentParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidOpenTextDocumentParams where
@@ -19,6 +20,10 @@ instance FromJSON DidOpenTextDocumentParams where
 instance ToJSON DidOpenTextDocumentParams where
   toJSON x =
     object [(.=) "textDocument" (didOpenTextDocumentParamsTextDocument x)]
+
+instance Default DidOpenTextDocumentParams where
+  def =
+    DidOpenTextDocumentParams { didOpenTextDocumentParamsTextDocument = def }
 
 data DidOpenTextDocumentParams = DidOpenTextDocumentParams { didOpenTextDocumentParamsTextDocument :: TextDocumentItem }
  deriving (Show,Eq)

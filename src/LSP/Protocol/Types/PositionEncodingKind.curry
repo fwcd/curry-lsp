@@ -4,6 +4,7 @@ module LSP.Protocol.Types.PositionEncodingKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PositionEncodingKind where
@@ -21,6 +22,9 @@ instance ToJSON PositionEncodingKind where
       PositionEncodingKindUTF8 -> toJSON "utf-8"
       PositionEncodingKindUTF16 -> toJSON "utf-16"
       PositionEncodingKindUTF32 -> toJSON "utf-32"
+
+instance Default PositionEncodingKind where
+  def = PositionEncodingKindUTF8
 
 data PositionEncodingKind = PositionEncodingKindUTF8
                           | PositionEncodingKindUTF16

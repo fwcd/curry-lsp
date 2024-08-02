@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FailureHandlingKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FailureHandlingKind where
@@ -25,6 +26,9 @@ instance ToJSON FailureHandlingKind where
       FailureHandlingKindTextOnlyTransactional ->
         toJSON "textOnlyTransactional"
       FailureHandlingKindUndo -> toJSON "undo"
+
+instance Default FailureHandlingKind where
+  def = FailureHandlingKindAbort
 
 data FailureHandlingKind = FailureHandlingKindAbort
                          | FailureHandlingKindTransactional

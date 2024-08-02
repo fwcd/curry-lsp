@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CompletionListCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionListCapabilities where
@@ -19,6 +20,10 @@ instance FromJSON CompletionListCapabilities where
 instance ToJSON CompletionListCapabilities where
   toJSON x =
     object [(.?=) "itemDefaults" (completionListCapabilitiesItemDefaults x)]
+
+instance Default CompletionListCapabilities where
+  def =
+    CompletionListCapabilities { completionListCapabilitiesItemDefaults = def }
 
 data CompletionListCapabilities = CompletionListCapabilities { completionListCapabilitiesItemDefaults :: Maybe [String] }
  deriving (Show,Eq)

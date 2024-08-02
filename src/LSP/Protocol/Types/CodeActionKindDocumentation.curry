@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CodeActionKind
 import LSP.Protocol.Types.Command
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionKindDocumentation where
@@ -26,6 +27,11 @@ instance ToJSON CodeActionKindDocumentation where
      [(.=) "kind" (codeActionKindDocumentationKind x),  (.=) "command"
                                                          (codeActionKindDocumentationCommand
                                                            x)]
+
+instance Default CodeActionKindDocumentation where
+  def =
+    CodeActionKindDocumentation { codeActionKindDocumentationKind = def
+                                , codeActionKindDocumentationCommand = def }
 
 data CodeActionKindDocumentation = CodeActionKindDocumentation { codeActionKindDocumentationKind :: CodeActionKind
                                                                , codeActionKindDocumentationCommand :: Command }

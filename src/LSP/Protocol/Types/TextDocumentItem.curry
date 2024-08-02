@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.LanguageKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentItem where
@@ -33,6 +34,13 @@ instance ToJSON TextDocumentItem where
                                                       x),  (.=) "text"
                                                             (textDocumentItemText
                                                               x)]
+
+instance Default TextDocumentItem where
+  def =
+    TextDocumentItem { textDocumentItemUri = def
+                     , textDocumentItemLanguageId = def
+                     , textDocumentItemVersion = def
+                     , textDocumentItemText = def }
 
 data TextDocumentItem = TextDocumentItem { textDocumentItemUri :: DocumentUri
                                          , textDocumentItemLanguageId :: LanguageKind

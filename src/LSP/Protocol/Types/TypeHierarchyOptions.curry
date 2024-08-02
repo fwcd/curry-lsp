@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TypeHierarchyOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeHierarchyOptions where
@@ -18,6 +19,9 @@ instance FromJSON TypeHierarchyOptions where
 instance ToJSON TypeHierarchyOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (typeHierarchyOptionsWorkDoneProgress x)]
+
+instance Default TypeHierarchyOptions where
+  def = TypeHierarchyOptions { typeHierarchyOptionsWorkDoneProgress = def }
 
 data TypeHierarchyOptions = TypeHierarchyOptions { typeHierarchyOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

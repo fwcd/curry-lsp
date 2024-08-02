@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DiagnosticTag where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticTag where
@@ -19,6 +20,9 @@ instance ToJSON DiagnosticTag where
     case x of
       DiagnosticTagUnnecessary -> toJSON 1
       DiagnosticTagDeprecated -> toJSON 2
+
+instance Default DiagnosticTag where
+  def = DiagnosticTagUnnecessary
 
 data DiagnosticTag = DiagnosticTagUnnecessary | DiagnosticTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)

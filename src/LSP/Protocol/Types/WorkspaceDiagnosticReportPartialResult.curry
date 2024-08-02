@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceDiagnosticReportPartialResult where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.WorkspaceDocumentDiagnosticReport
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceDiagnosticReportPartialResult where
@@ -22,6 +23,10 @@ instance FromJSON WorkspaceDiagnosticReportPartialResult where
 instance ToJSON WorkspaceDiagnosticReportPartialResult where
   toJSON x =
     object [(.=) "items" (workspaceDiagnosticReportPartialResultItems x)]
+
+instance Default WorkspaceDiagnosticReportPartialResult where
+  def =
+    WorkspaceDiagnosticReportPartialResult { workspaceDiagnosticReportPartialResultItems = def }
 
 data WorkspaceDiagnosticReportPartialResult = WorkspaceDiagnosticReportPartialResult { workspaceDiagnosticReportPartialResultItems :: [WorkspaceDocumentDiagnosticReport] }
  deriving (Show,Eq)

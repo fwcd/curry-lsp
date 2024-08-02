@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FoldingRangeWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON FoldingRangeWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (foldingRangeWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default FoldingRangeWorkspaceClientCapabilities where
+  def =
+    FoldingRangeWorkspaceClientCapabilities { foldingRangeWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data FoldingRangeWorkspaceClientCapabilities = FoldingRangeWorkspaceClientCapabilities { foldingRangeWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

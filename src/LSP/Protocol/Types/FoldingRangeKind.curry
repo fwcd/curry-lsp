@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FoldingRangeKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeKind where
@@ -21,6 +22,9 @@ instance ToJSON FoldingRangeKind where
       FoldingRangeKindComment -> toJSON "comment"
       FoldingRangeKindImports -> toJSON "imports"
       FoldingRangeKindRegion -> toJSON "region"
+
+instance Default FoldingRangeKind where
+  def = FoldingRangeKindComment
 
 data FoldingRangeKind = FoldingRangeKindComment
                       | FoldingRangeKindImports

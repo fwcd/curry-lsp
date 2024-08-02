@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ChangeAnnotation where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ChangeAnnotation where
@@ -28,6 +29,12 @@ instance ToJSON ChangeAnnotation where
                                                   x),  (.?=) "description"
                                                         (changeAnnotationDescription
                                                           x)]
+
+instance Default ChangeAnnotation where
+  def =
+    ChangeAnnotation { changeAnnotationLabel = def
+                     , changeAnnotationNeedsConfirmation = def
+                     , changeAnnotationDescription = def }
 
 data ChangeAnnotation = ChangeAnnotation { changeAnnotationLabel :: String
                                          , changeAnnotationNeedsConfirmation :: Maybe Bool

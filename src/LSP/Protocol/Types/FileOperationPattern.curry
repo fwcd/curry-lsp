@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileOperationPatternKind
 import LSP.Protocol.Types.FileOperationPatternOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationPattern where
@@ -29,6 +30,12 @@ instance ToJSON FileOperationPattern where
                                                     x),  (.?=) "options"
                                                           (fileOperationPatternOptions
                                                             x)]
+
+instance Default FileOperationPattern where
+  def =
+    FileOperationPattern { fileOperationPatternGlob = def
+                         , fileOperationPatternMatches = def
+                         , fileOperationPatternOptions = def }
 
 data FileOperationPattern = FileOperationPattern { fileOperationPatternGlob :: String
                                                  , fileOperationPatternMatches :: Maybe FileOperationPatternKind

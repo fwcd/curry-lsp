@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceFoldersInitializeParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.WorkspaceFolder
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceFoldersInitializeParams where
@@ -23,6 +24,10 @@ instance ToJSON WorkspaceFoldersInitializeParams where
     object
      [(.?=) "workspaceFolders"
        (workspaceFoldersInitializeParamsWorkspaceFolders x)]
+
+instance Default WorkspaceFoldersInitializeParams where
+  def =
+    WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders = def }
 
 data WorkspaceFoldersInitializeParams = WorkspaceFoldersInitializeParams { workspaceFoldersInitializeParamsWorkspaceFolders :: Maybe (Either [WorkspaceFolder] ()) }
  deriving (Show,Eq)

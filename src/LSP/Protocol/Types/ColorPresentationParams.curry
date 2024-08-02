@@ -8,6 +8,7 @@ import LSP.Protocol.Types.Color
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ColorPresentationParams where
@@ -45,6 +46,14 @@ instance ToJSON ColorPresentationParams where
                                                                                                 "range"
                                                                                                 (colorPresentationParamsRange
                                                                                                   x)]
+
+instance Default ColorPresentationParams where
+  def =
+    ColorPresentationParams { colorPresentationParamsWorkDoneToken = def
+                            , colorPresentationParamsPartialResultToken = def
+                            , colorPresentationParamsTextDocument = def
+                            , colorPresentationParamsColor = def
+                            , colorPresentationParamsRange = def }
 
 data ColorPresentationParams = ColorPresentationParams { colorPresentationParamsWorkDoneToken :: Maybe ProgressToken
                                                        , colorPresentationParamsPartialResultToken :: Maybe ProgressToken

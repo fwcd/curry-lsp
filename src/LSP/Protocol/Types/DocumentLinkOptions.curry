@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentLinkOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentLinkOptions where
@@ -24,6 +25,11 @@ instance ToJSON DocumentLinkOptions where
                                                                           "resolveProvider"
                                                                           (documentLinkOptionsResolveProvider
                                                                             x)]
+
+instance Default DocumentLinkOptions where
+  def =
+    DocumentLinkOptions { documentLinkOptionsWorkDoneProgress = def
+                        , documentLinkOptionsResolveProvider = def }
 
 data DocumentLinkOptions = DocumentLinkOptions { documentLinkOptionsWorkDoneProgress :: Maybe Bool
                                                , documentLinkOptionsResolveProvider :: Maybe Bool }

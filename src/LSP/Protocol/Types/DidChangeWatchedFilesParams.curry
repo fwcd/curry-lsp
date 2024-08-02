@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidChangeWatchedFilesParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileEvent
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeWatchedFilesParams where
@@ -19,6 +20,10 @@ instance FromJSON DidChangeWatchedFilesParams where
 
 instance ToJSON DidChangeWatchedFilesParams where
   toJSON x = object [(.=) "changes" (didChangeWatchedFilesParamsChanges x)]
+
+instance Default DidChangeWatchedFilesParams where
+  def =
+    DidChangeWatchedFilesParams { didChangeWatchedFilesParamsChanges = def }
 
 data DidChangeWatchedFilesParams = DidChangeWatchedFilesParams { didChangeWatchedFilesParamsChanges :: [FileEvent] }
  deriving (Show,Eq)

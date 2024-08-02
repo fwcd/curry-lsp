@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DeleteFileOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DeleteFileOptions where
@@ -25,6 +26,11 @@ instance ToJSON DeleteFileOptions where
                                                           "ignoreIfNotExists"
                                                           (deleteFileOptionsIgnoreIfNotExists
                                                             x)]
+
+instance Default DeleteFileOptions where
+  def =
+    DeleteFileOptions { deleteFileOptionsRecursive = def
+                      , deleteFileOptionsIgnoreIfNotExists = def }
 
 data DeleteFileOptions = DeleteFileOptions { deleteFileOptionsRecursive :: Maybe Bool
                                            , deleteFileOptionsIgnoreIfNotExists :: Maybe Bool }

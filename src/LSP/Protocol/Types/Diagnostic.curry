@@ -10,6 +10,7 @@ import LSP.Protocol.Types.DiagnosticRelatedInformation
 import LSP.Protocol.Types.DiagnosticSeverity
 import LSP.Protocol.Types.DiagnosticTag
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Diagnostic where
@@ -65,6 +66,18 @@ instance ToJSON Diagnostic where
                                                                                                                     "data"
                                                                                                                     (diagnosticData
                                                                                                                       x)]
+
+instance Default Diagnostic where
+  def =
+    Diagnostic { diagnosticRange = def
+               , diagnosticSeverity = def
+               , diagnosticCode = def
+               , diagnosticCodeDescription = def
+               , diagnosticSource = def
+               , diagnosticMessage = def
+               , diagnosticTags = def
+               , diagnosticRelatedInformation = def
+               , diagnosticData = def }
 
 data Diagnostic = Diagnostic { diagnosticRange :: Range
                              , diagnosticSeverity :: Maybe DiagnosticSeverity

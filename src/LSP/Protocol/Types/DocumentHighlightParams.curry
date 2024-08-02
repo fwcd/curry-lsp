@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightParams where
@@ -39,6 +40,13 @@ instance ToJSON DocumentHighlightParams where
                                                                                      "partialResultToken"
                                                                                      (documentHighlightParamsPartialResultToken
                                                                                        x)]
+
+instance Default DocumentHighlightParams where
+  def =
+    DocumentHighlightParams { documentHighlightParamsTextDocument = def
+                            , documentHighlightParamsPosition = def
+                            , documentHighlightParamsWorkDoneToken = def
+                            , documentHighlightParamsPartialResultToken = def }
 
 data DocumentHighlightParams = DocumentHighlightParams { documentHighlightParamsTextDocument :: TextDocumentIdentifier
                                                        , documentHighlightParamsPosition :: Position

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlayHintOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintOptions where
@@ -24,6 +25,11 @@ instance ToJSON InlayHintOptions where
                                                                        "resolveProvider"
                                                                        (inlayHintOptionsResolveProvider
                                                                          x)]
+
+instance Default InlayHintOptions where
+  def =
+    InlayHintOptions { inlayHintOptionsWorkDoneProgress = def
+                     , inlayHintOptionsResolveProvider = def }
 
 data InlayHintOptions = InlayHintOptions { inlayHintOptionsWorkDoneProgress :: Maybe Bool
                                          , inlayHintOptionsResolveProvider :: Maybe Bool }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.LanguageKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LanguageKind where
@@ -137,6 +138,9 @@ instance ToJSON LanguageKind where
       LanguageKindXML -> toJSON "xml"
       LanguageKindXSL -> toJSON "xsl"
       LanguageKindYAML -> toJSON "yaml"
+
+instance Default LanguageKind where
+  def = LanguageKindABAP
 
 data LanguageKind = LanguageKindABAP
                   | LanguageKindWindowsBat

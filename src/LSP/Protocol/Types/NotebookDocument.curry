@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.LSPObject
 import LSP.Protocol.Types.NotebookCell
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocument where
@@ -39,6 +40,14 @@ instance ToJSON NotebookDocument where
                                                                     "cells"
                                                                     (notebookDocumentCells
                                                                       x)]
+
+instance Default NotebookDocument where
+  def =
+    NotebookDocument { notebookDocumentUri = def
+                     , notebookDocumentNotebookType = def
+                     , notebookDocumentVersion = def
+                     , notebookDocumentMetadata = def
+                     , notebookDocumentCells = def }
 
 data NotebookDocument = NotebookDocument { notebookDocumentUri :: Uri
                                          , notebookDocumentNotebookType :: String

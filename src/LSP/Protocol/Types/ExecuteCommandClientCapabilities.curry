@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ExecuteCommandClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ExecuteCommandClientCapabilities where
@@ -24,6 +25,10 @@ instance ToJSON ExecuteCommandClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (executeCommandClientCapabilitiesDynamicRegistration x)]
+
+instance Default ExecuteCommandClientCapabilities where
+  def =
+    ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration = def }
 
 data ExecuteCommandClientCapabilities = ExecuteCommandClientCapabilities { executeCommandClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidSaveNotebookDocumentParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidSaveNotebookDocumentParams where
@@ -23,6 +24,10 @@ instance ToJSON DidSaveNotebookDocumentParams where
     object
      [(.=) "notebookDocument"
        (didSaveNotebookDocumentParamsNotebookDocument x)]
+
+instance Default DidSaveNotebookDocumentParams where
+  def =
+    DidSaveNotebookDocumentParams { didSaveNotebookDocumentParamsNotebookDocument = def }
 
 data DidSaveNotebookDocumentParams = DidSaveNotebookDocumentParams { didSaveNotebookDocumentParamsNotebookDocument :: NotebookDocumentIdentifier }
  deriving (Show,Eq)

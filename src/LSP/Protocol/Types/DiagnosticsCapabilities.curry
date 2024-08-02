@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DiagnosticsCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientDiagnosticsTagOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticsCapabilities where
@@ -39,6 +40,13 @@ instance ToJSON DiagnosticsCapabilities where
                                                                         "dataSupport"
                                                                         (diagnosticsCapabilitiesDataSupport
                                                                           x)]
+
+instance Default DiagnosticsCapabilities where
+  def =
+    DiagnosticsCapabilities { diagnosticsCapabilitiesRelatedInformation = def
+                            , diagnosticsCapabilitiesTagSupport = def
+                            , diagnosticsCapabilitiesCodeDescriptionSupport = def
+                            , diagnosticsCapabilitiesDataSupport = def }
 
 data DiagnosticsCapabilities = DiagnosticsCapabilities { diagnosticsCapabilitiesRelatedInformation :: Maybe Bool
                                                        , diagnosticsCapabilitiesTagSupport :: Maybe ClientDiagnosticsTagOptions

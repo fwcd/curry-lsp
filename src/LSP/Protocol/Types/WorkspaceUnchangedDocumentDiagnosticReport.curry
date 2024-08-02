@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceUnchangedDocumentDiagnosticReport where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceUnchangedDocumentDiagnosticReport where
@@ -38,6 +39,13 @@ instance ToJSON WorkspaceUnchangedDocumentDiagnosticReport where
                                                                                         "version"
                                                                                         (workspaceUnchangedDocumentDiagnosticReportVersion
                                                                                           x)]
+
+instance Default WorkspaceUnchangedDocumentDiagnosticReport where
+  def =
+    WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportKind = def
+                                               , workspaceUnchangedDocumentDiagnosticReportResultId = def
+                                               , workspaceUnchangedDocumentDiagnosticReportUri = def
+                                               , workspaceUnchangedDocumentDiagnosticReportVersion = def }
 
 data WorkspaceUnchangedDocumentDiagnosticReport = WorkspaceUnchangedDocumentDiagnosticReport { workspaceUnchangedDocumentDiagnosticReportKind :: String
                                                                                              , workspaceUnchangedDocumentDiagnosticReportResultId :: String

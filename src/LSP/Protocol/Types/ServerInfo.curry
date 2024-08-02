@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ServerInfo where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ServerInfo where
@@ -21,6 +22,9 @@ instance ToJSON ServerInfo where
   toJSON x =
     object
      [(.=) "name" (serverInfoName x),  (.?=) "version" (serverInfoVersion x)]
+
+instance Default ServerInfo where
+  def = ServerInfo { serverInfoName = def, serverInfoVersion = def }
 
 data ServerInfo = ServerInfo { serverInfoName :: String
                              , serverInfoVersion :: Maybe String }

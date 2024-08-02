@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ExecuteCommandParams where
@@ -31,6 +32,12 @@ instance ToJSON ExecuteCommandParams where
                                                                              "arguments"
                                                                              (executeCommandParamsArguments
                                                                                x)]
+
+instance Default ExecuteCommandParams where
+  def =
+    ExecuteCommandParams { executeCommandParamsWorkDoneToken = def
+                         , executeCommandParamsCommand = def
+                         , executeCommandParamsArguments = def }
 
 data ExecuteCommandParams = ExecuteCommandParams { executeCommandParamsWorkDoneToken :: Maybe ProgressToken
                                                  , executeCommandParamsCommand :: String

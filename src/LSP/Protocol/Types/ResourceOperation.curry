@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ResourceOperation where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ResourceOperation where
@@ -24,6 +25,11 @@ instance ToJSON ResourceOperation where
      [(.=) "kind" (resourceOperationKind x),  (.?=) "annotationId"
                                                (resourceOperationAnnotationId
                                                  x)]
+
+instance Default ResourceOperation where
+  def =
+    ResourceOperation { resourceOperationKind = def
+                      , resourceOperationAnnotationId = def }
 
 data ResourceOperation = ResourceOperation { resourceOperationKind :: String
                                            , resourceOperationAnnotationId :: Maybe ChangeAnnotationIdentifier }

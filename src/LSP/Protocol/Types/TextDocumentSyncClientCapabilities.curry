@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TextDocumentSyncClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentSyncClientCapabilities where
@@ -41,6 +42,13 @@ instance ToJSON TextDocumentSyncClientCapabilities where
                                                                                     "didSave"
                                                                                     (textDocumentSyncClientCapabilitiesDidSave
                                                                                       x)]
+
+instance Default TextDocumentSyncClientCapabilities where
+  def =
+    TextDocumentSyncClientCapabilities { textDocumentSyncClientCapabilitiesDynamicRegistration = def
+                                       , textDocumentSyncClientCapabilitiesWillSave = def
+                                       , textDocumentSyncClientCapabilitiesWillSaveWaitUntil = def
+                                       , textDocumentSyncClientCapabilitiesDidSave = def }
 
 data TextDocumentSyncClientCapabilities = TextDocumentSyncClientCapabilities { textDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                              , textDocumentSyncClientCapabilitiesWillSave :: Maybe Bool

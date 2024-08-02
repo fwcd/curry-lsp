@@ -4,6 +4,7 @@ module LSP.Protocol.Types.LSPErrorCodes where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LSPErrorCodes where
@@ -23,6 +24,9 @@ instance ToJSON LSPErrorCodes where
       LSPErrorCodesServerCancelled -> toJSON (-32802)
       LSPErrorCodesContentModified -> toJSON (-32801)
       LSPErrorCodesRequestCancelled -> toJSON (-32800)
+
+instance Default LSPErrorCodes where
+  def = LSPErrorCodesRequestFailed
 
 data LSPErrorCodes = LSPErrorCodesRequestFailed
                    | LSPErrorCodesServerCancelled

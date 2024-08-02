@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ShowDocumentClientCapabilities
 import LSP.Protocol.Types.ShowMessageRequestClientCapabilities
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WindowClientCapabilities where
@@ -31,6 +32,12 @@ instance ToJSON WindowClientCapabilities where
                                                                "showDocument"
                                                                (windowClientCapabilitiesShowDocument
                                                                  x)]
+
+instance Default WindowClientCapabilities where
+  def =
+    WindowClientCapabilities { windowClientCapabilitiesWorkDoneProgress = def
+                             , windowClientCapabilitiesShowMessage = def
+                             , windowClientCapabilitiesShowDocument = def }
 
 data WindowClientCapabilities = WindowClientCapabilities { windowClientCapabilitiesWorkDoneProgress :: Maybe Bool
                                                          , windowClientCapabilitiesShowMessage :: Maybe ShowMessageRequestClientCapabilities

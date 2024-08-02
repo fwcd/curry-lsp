@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileOperationOptions
 import LSP.Protocol.Types.WorkspaceFoldersServerCapabilities
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceOptions where
@@ -26,6 +27,11 @@ instance ToJSON WorkspaceOptions where
                                                                        "fileOperations"
                                                                        (workspaceOptionsFileOperations
                                                                          x)]
+
+instance Default WorkspaceOptions where
+  def =
+    WorkspaceOptions { workspaceOptionsWorkspaceFolders = def
+                     , workspaceOptionsFileOperations = def }
 
 data WorkspaceOptions = WorkspaceOptions { workspaceOptionsWorkspaceFolders :: Maybe WorkspaceFoldersServerCapabilities
                                          , workspaceOptionsFileOperations :: Maybe FileOperationOptions }

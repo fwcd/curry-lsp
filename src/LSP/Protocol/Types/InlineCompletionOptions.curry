@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlineCompletionOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionOptions where
@@ -19,6 +20,10 @@ instance ToJSON InlineCompletionOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (inlineCompletionOptionsWorkDoneProgress x)]
+
+instance Default InlineCompletionOptions where
+  def =
+    InlineCompletionOptions { inlineCompletionOptionsWorkDoneProgress = def }
 
 data InlineCompletionOptions = InlineCompletionOptions { inlineCompletionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

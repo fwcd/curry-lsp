@@ -4,6 +4,7 @@ module LSP.Protocol.Types.PrepareSupportDefaultBehavior where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PrepareSupportDefaultBehavior where
@@ -17,6 +18,9 @@ instance FromJSON PrepareSupportDefaultBehavior where
 
 instance ToJSON PrepareSupportDefaultBehavior where
   toJSON x = case x of PrepareSupportDefaultBehaviorIdentifier -> toJSON 1
+
+instance Default PrepareSupportDefaultBehavior where
+  def = PrepareSupportDefaultBehaviorIdentifier
 
 data PrepareSupportDefaultBehavior = PrepareSupportDefaultBehaviorIdentifier
  deriving (Show,Eq,Enum,Bounded,Ord)

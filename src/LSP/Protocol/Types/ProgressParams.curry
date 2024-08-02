@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ProgressParams where
@@ -24,6 +25,10 @@ instance ToJSON ProgressParams where
     object
      [(.=) "token" (progressParamsToken x),  (.=) "value"
                                               (progressParamsValue x)]
+
+instance Default ProgressParams where
+  def =
+    ProgressParams { progressParamsToken = def, progressParamsValue = def }
 
 data ProgressParams = ProgressParams { progressParamsToken :: ProgressToken
                                      , progressParamsValue :: LSPAny }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ExecuteCommandRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ExecuteCommandRegistrationOptions where
@@ -27,6 +28,11 @@ instance ToJSON ExecuteCommandRegistrationOptions where
        (executeCommandRegistrationOptionsWorkDoneProgress x),  (.=) "commands"
                                                                 (executeCommandRegistrationOptionsCommands
                                                                   x)]
+
+instance Default ExecuteCommandRegistrationOptions where
+  def =
+    ExecuteCommandRegistrationOptions { executeCommandRegistrationOptionsWorkDoneProgress = def
+                                      , executeCommandRegistrationOptionsCommands = def }
 
 data ExecuteCommandRegistrationOptions = ExecuteCommandRegistrationOptions { executeCommandRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , executeCommandRegistrationOptionsCommands :: [String] }

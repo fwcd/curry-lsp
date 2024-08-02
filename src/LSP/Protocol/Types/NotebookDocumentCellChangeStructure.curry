@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.NotebookCellArrayChange
 import LSP.Protocol.Types.TextDocumentIdentifier
 import LSP.Protocol.Types.TextDocumentItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentCellChangeStructure where
@@ -35,6 +36,12 @@ instance ToJSON NotebookDocumentCellChangeStructure where
                                                                            "didClose"
                                                                            (notebookDocumentCellChangeStructureDidClose
                                                                              x)]
+
+instance Default NotebookDocumentCellChangeStructure where
+  def =
+    NotebookDocumentCellChangeStructure { notebookDocumentCellChangeStructureArray = def
+                                        , notebookDocumentCellChangeStructureDidOpen = def
+                                        , notebookDocumentCellChangeStructureDidClose = def }
 
 data NotebookDocumentCellChangeStructure = NotebookDocumentCellChangeStructure { notebookDocumentCellChangeStructureArray :: NotebookCellArrayChange
                                                                                , notebookDocumentCellChangeStructureDidOpen :: Maybe [TextDocumentItem]

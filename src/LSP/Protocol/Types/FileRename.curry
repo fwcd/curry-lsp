@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileRename where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileRename where
@@ -21,6 +22,9 @@ instance ToJSON FileRename where
   toJSON x =
     object
      [(.=) "oldUri" (fileRenameOldUri x),  (.=) "newUri" (fileRenameNewUri x)]
+
+instance Default FileRename where
+  def = FileRename { fileRenameOldUri = def, fileRenameNewUri = def }
 
 data FileRename = FileRename { fileRenameOldUri :: String
                              , fileRenameNewUri :: String }

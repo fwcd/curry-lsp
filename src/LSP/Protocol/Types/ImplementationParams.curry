@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ImplementationParams where
@@ -39,6 +40,13 @@ instance ToJSON ImplementationParams where
                                                                                   "partialResultToken"
                                                                                   (implementationParamsPartialResultToken
                                                                                     x)]
+
+instance Default ImplementationParams where
+  def =
+    ImplementationParams { implementationParamsTextDocument = def
+                         , implementationParamsPosition = def
+                         , implementationParamsWorkDoneToken = def
+                         , implementationParamsPartialResultToken = def }
 
 data ImplementationParams = ImplementationParams { implementationParamsTextDocument :: TextDocumentIdentifier
                                                  , implementationParamsPosition :: Position

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ShowMessageRequestClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientShowMessageActionItemOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowMessageRequestClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON ShowMessageRequestClientCapabilities where
     object
      [(.?=) "messageActionItem"
        (showMessageRequestClientCapabilitiesMessageActionItem x)]
+
+instance Default ShowMessageRequestClientCapabilities where
+  def =
+    ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem = def }
 
 data ShowMessageRequestClientCapabilities = ShowMessageRequestClientCapabilities { showMessageRequestClientCapabilitiesMessageActionItem :: Maybe ClientShowMessageActionItemOptions }
  deriving (Show,Eq)

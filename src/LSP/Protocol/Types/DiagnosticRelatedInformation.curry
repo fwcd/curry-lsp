@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DiagnosticRelatedInformation where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Location
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticRelatedInformation where
@@ -26,6 +27,11 @@ instance ToJSON DiagnosticRelatedInformation where
                                                                   "message"
                                                                   (diagnosticRelatedInformationMessage
                                                                     x)]
+
+instance Default DiagnosticRelatedInformation where
+  def =
+    DiagnosticRelatedInformation { diagnosticRelatedInformationLocation = def
+                                 , diagnosticRelatedInformationMessage = def }
 
 data DiagnosticRelatedInformation = DiagnosticRelatedInformation { diagnosticRelatedInformationLocation :: Location
                                                                  , diagnosticRelatedInformationMessage :: String }

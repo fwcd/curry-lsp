@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineValueEvaluatableExpression where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueEvaluatableExpression where
@@ -27,6 +28,11 @@ instance ToJSON InlineValueEvaluatableExpression where
                                                                 "expression"
                                                                 (inlineValueEvaluatableExpressionExpression
                                                                   x)]
+
+instance Default InlineValueEvaluatableExpression where
+  def =
+    InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange = def
+                                     , inlineValueEvaluatableExpressionExpression = def }
 
 data InlineValueEvaluatableExpression = InlineValueEvaluatableExpression { inlineValueEvaluatableExpressionRange :: Range
                                                                          , inlineValueEvaluatableExpressionExpression :: Maybe String }

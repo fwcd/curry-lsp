@@ -13,6 +13,7 @@ import LSP.Protocol.Types.DeleteFile
 import LSP.Protocol.Types.RenameFile
 import LSP.Protocol.Types.TextDocumentEdit
 import LSP.Protocol.Types.TextEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceEdit where
@@ -38,6 +39,12 @@ instance ToJSON WorkspaceEdit where
                                                           "changeAnnotations"
                                                           (workspaceEditChangeAnnotations
                                                             x)]
+
+instance Default WorkspaceEdit where
+  def =
+    WorkspaceEdit { workspaceEditChanges = def
+                  , workspaceEditDocumentChanges = def
+                  , workspaceEditChangeAnnotations = def }
 
 data WorkspaceEdit = WorkspaceEdit { workspaceEditChanges :: Maybe (Map DocumentUri [TextEdit])
                                    , workspaceEditDocumentChanges :: Maybe [Either (Either (Either TextDocumentEdit CreateFile) RenameFile) DeleteFile]

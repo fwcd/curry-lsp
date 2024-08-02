@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeLensParams where
@@ -33,6 +34,12 @@ instance ToJSON CodeLensParams where
                                                                        "textDocument"
                                                                        (codeLensParamsTextDocument
                                                                          x)]
+
+instance Default CodeLensParams where
+  def =
+    CodeLensParams { codeLensParamsWorkDoneToken = def
+                   , codeLensParamsPartialResultToken = def
+                   , codeLensParamsTextDocument = def }
 
 data CodeLensParams = CodeLensParams { codeLensParamsWorkDoneToken :: Maybe ProgressToken
                                      , codeLensParamsPartialResultToken :: Maybe ProgressToken

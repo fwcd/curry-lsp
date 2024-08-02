@@ -4,6 +4,7 @@ module LSP.Protocol.Types.NotebookDocumentSyncClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentSyncClientCapabilities where
@@ -32,6 +33,11 @@ instance ToJSON NotebookDocumentSyncClientCapabilities where
                                                                         "executionSummarySupport"
                                                                         (notebookDocumentSyncClientCapabilitiesExecutionSummarySupport
                                                                           x)]
+
+instance Default NotebookDocumentSyncClientCapabilities where
+  def =
+    NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration = def
+                                           , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport = def }
 
 data NotebookDocumentSyncClientCapabilities = NotebookDocumentSyncClientCapabilities { notebookDocumentSyncClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                      , notebookDocumentSyncClientCapabilitiesExecutionSummarySupport :: Maybe Bool }

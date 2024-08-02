@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InitializedParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InitializedParams where
@@ -14,6 +15,9 @@ instance FromJSON InitializedParams where
 
 instance ToJSON InitializedParams where
   toJSON x = object []
+
+instance Default InitializedParams where
+  def = InitializedParams {  }
 
 data InitializedParams = InitializedParams {  }
  deriving (Show,Eq)

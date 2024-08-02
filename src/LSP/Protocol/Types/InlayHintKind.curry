@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlayHintKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintKind where
@@ -19,6 +20,9 @@ instance ToJSON InlayHintKind where
     case x of
       InlayHintKindType -> toJSON 1
       InlayHintKindParameter -> toJSON 2
+
+instance Default InlayHintKind where
+  def = InlayHintKindType
 
 data InlayHintKind = InlayHintKindType | InlayHintKindParameter
  deriving (Show,Eq,Enum,Bounded,Ord)

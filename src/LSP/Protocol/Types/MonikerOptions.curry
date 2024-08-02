@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MonikerOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MonikerOptions where
@@ -18,6 +19,9 @@ instance FromJSON MonikerOptions where
 instance ToJSON MonikerOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (monikerOptionsWorkDoneProgress x)]
+
+instance Default MonikerOptions where
+  def = MonikerOptions { monikerOptionsWorkDoneProgress = def }
 
 data MonikerOptions = MonikerOptions { monikerOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ShowDocumentResult where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowDocumentResult where
@@ -17,6 +18,9 @@ instance FromJSON ShowDocumentResult where
 
 instance ToJSON ShowDocumentResult where
   toJSON x = object [(.=) "success" (showDocumentResultSuccess x)]
+
+instance Default ShowDocumentResult where
+  def = ShowDocumentResult { showDocumentResultSuccess = def }
 
 data ShowDocumentResult = ShowDocumentResult { showDocumentResultSuccess :: Bool }
  deriving (Show,Eq)

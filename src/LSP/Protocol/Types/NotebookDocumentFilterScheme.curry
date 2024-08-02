@@ -5,6 +5,7 @@ module LSP.Protocol.Types.NotebookDocumentFilterScheme where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.GlobPattern
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentFilterScheme where
@@ -31,6 +32,12 @@ instance ToJSON NotebookDocumentFilterScheme where
                                                                                    "pattern"
                                                                                    (notebookDocumentFilterSchemePattern
                                                                                      x)]
+
+instance Default NotebookDocumentFilterScheme where
+  def =
+    NotebookDocumentFilterScheme { notebookDocumentFilterSchemeNotebookType = def
+                                 , notebookDocumentFilterSchemeScheme = def
+                                 , notebookDocumentFilterSchemePattern = def }
 
 data NotebookDocumentFilterScheme = NotebookDocumentFilterScheme { notebookDocumentFilterSchemeNotebookType :: Maybe String
                                                                  , notebookDocumentFilterSchemeScheme :: String

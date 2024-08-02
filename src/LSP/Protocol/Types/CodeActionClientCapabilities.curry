@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientCodeActionLiteralOptions
 import LSP.Protocol.Types.ClientCodeActionResolveOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionClientCapabilities where
@@ -68,6 +69,17 @@ instance ToJSON CodeActionClientCapabilities where
                                                                                                               "documentationSupport"
                                                                                                               (codeActionClientCapabilitiesDocumentationSupport
                                                                                                                 x)]
+
+instance Default CodeActionClientCapabilities where
+  def =
+    CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration = def
+                                 , codeActionClientCapabilitiesCodeActionLiteralSupport = def
+                                 , codeActionClientCapabilitiesIsPreferredSupport = def
+                                 , codeActionClientCapabilitiesDisabledSupport = def
+                                 , codeActionClientCapabilitiesDataSupport = def
+                                 , codeActionClientCapabilitiesResolveSupport = def
+                                 , codeActionClientCapabilitiesHonorsChangeAnnotations = def
+                                 , codeActionClientCapabilitiesDocumentationSupport = def }
 
 data CodeActionClientCapabilities = CodeActionClientCapabilities { codeActionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , codeActionClientCapabilitiesCodeActionLiteralSupport :: Maybe ClientCodeActionLiteralOptions

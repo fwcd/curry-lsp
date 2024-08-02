@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CompletionOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ServerCompletionItemOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionOptions where
@@ -43,6 +44,14 @@ instance ToJSON CompletionOptions where
                                                                                                 "completionItem"
                                                                                                 (completionOptionsCompletionItem
                                                                                                   x)]
+
+instance Default CompletionOptions where
+  def =
+    CompletionOptions { completionOptionsWorkDoneProgress = def
+                      , completionOptionsTriggerCharacters = def
+                      , completionOptionsAllCommitCharacters = def
+                      , completionOptionsResolveProvider = def
+                      , completionOptionsCompletionItem = def }
 
 data CompletionOptions = CompletionOptions { completionOptionsWorkDoneProgress :: Maybe Bool
                                            , completionOptionsTriggerCharacters :: Maybe [String]

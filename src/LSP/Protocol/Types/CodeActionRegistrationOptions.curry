@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.CodeActionKind
 import LSP.Protocol.Types.CodeActionKindDocumentation
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionRegistrationOptions where
@@ -45,6 +46,14 @@ instance ToJSON CodeActionRegistrationOptions where
                                                                                     "resolveProvider"
                                                                                     (codeActionRegistrationOptionsResolveProvider
                                                                                       x)]
+
+instance Default CodeActionRegistrationOptions where
+  def =
+    CodeActionRegistrationOptions { codeActionRegistrationOptionsDocumentSelector = def
+                                  , codeActionRegistrationOptionsWorkDoneProgress = def
+                                  , codeActionRegistrationOptionsCodeActionKinds = def
+                                  , codeActionRegistrationOptionsDocumentation = def
+                                  , codeActionRegistrationOptionsResolveProvider = def }
 
 data CodeActionRegistrationOptions = CodeActionRegistrationOptions { codeActionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , codeActionRegistrationOptionsWorkDoneProgress :: Maybe Bool

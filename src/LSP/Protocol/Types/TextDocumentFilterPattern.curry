@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextDocumentFilterPattern where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.GlobPattern
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentFilterPattern where
@@ -29,6 +30,12 @@ instance ToJSON TextDocumentFilterPattern where
                                                                         "pattern"
                                                                         (textDocumentFilterPatternPattern
                                                                           x)]
+
+instance Default TextDocumentFilterPattern where
+  def =
+    TextDocumentFilterPattern { textDocumentFilterPatternLanguage = def
+                              , textDocumentFilterPatternScheme = def
+                              , textDocumentFilterPatternPattern = def }
 
 data TextDocumentFilterPattern = TextDocumentFilterPattern { textDocumentFilterPatternLanguage :: Maybe String
                                                            , textDocumentFilterPatternScheme :: Maybe String

@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookCellLanguage
 import LSP.Protocol.Types.NotebookDocumentFilter
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentFilterWithNotebook where
@@ -29,6 +30,11 @@ instance ToJSON NotebookDocumentFilterWithNotebook where
                                                                         "cells"
                                                                         (notebookDocumentFilterWithNotebookCells
                                                                           x)]
+
+instance Default NotebookDocumentFilterWithNotebook where
+  def =
+    NotebookDocumentFilterWithNotebook { notebookDocumentFilterWithNotebookNotebook = def
+                                       , notebookDocumentFilterWithNotebookCells = def }
 
 data NotebookDocumentFilterWithNotebook = NotebookDocumentFilterWithNotebook { notebookDocumentFilterWithNotebookNotebook :: Either String NotebookDocumentFilter
                                                                              , notebookDocumentFilterWithNotebookCells :: Maybe [NotebookCellLanguage] }

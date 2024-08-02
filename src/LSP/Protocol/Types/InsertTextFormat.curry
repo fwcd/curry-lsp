@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InsertTextFormat where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InsertTextFormat where
@@ -19,6 +20,9 @@ instance ToJSON InsertTextFormat where
     case x of
       InsertTextFormatPlainText -> toJSON 1
       InsertTextFormatSnippet -> toJSON 2
+
+instance Default InsertTextFormat where
+  def = InsertTextFormatPlainText
 
 data InsertTextFormat = InsertTextFormatPlainText | InsertTextFormatSnippet
  deriving (Show,Eq,Enum,Bounded,Ord)

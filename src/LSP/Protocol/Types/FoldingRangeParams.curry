@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeParams where
@@ -33,6 +34,12 @@ instance ToJSON FoldingRangeParams where
                                                                            "textDocument"
                                                                            (foldingRangeParamsTextDocument
                                                                              x)]
+
+instance Default FoldingRangeParams where
+  def =
+    FoldingRangeParams { foldingRangeParamsWorkDoneToken = def
+                       , foldingRangeParamsPartialResultToken = def
+                       , foldingRangeParamsTextDocument = def }
 
 data FoldingRangeParams = FoldingRangeParams { foldingRangeParamsWorkDoneToken :: Maybe ProgressToken
                                              , foldingRangeParamsPartialResultToken :: Maybe ProgressToken

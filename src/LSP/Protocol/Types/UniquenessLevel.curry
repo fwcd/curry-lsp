@@ -4,6 +4,7 @@ module LSP.Protocol.Types.UniquenessLevel where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON UniquenessLevel where
@@ -25,6 +26,9 @@ instance ToJSON UniquenessLevel where
       UniquenessLevelGroup -> toJSON "group"
       UniquenessLevelScheme -> toJSON "scheme"
       UniquenessLevelGlobal -> toJSON "global"
+
+instance Default UniquenessLevel where
+  def = UniquenessLevelDocument
 
 data UniquenessLevel = UniquenessLevelDocument
                      | UniquenessLevelProject

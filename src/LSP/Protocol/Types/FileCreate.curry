@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileCreate where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileCreate where
@@ -16,6 +17,9 @@ instance FromJSON FileCreate where
 
 instance ToJSON FileCreate where
   toJSON x = object [(.=) "uri" (fileCreateUri x)]
+
+instance Default FileCreate where
+  def = FileCreate { fileCreateUri = def }
 
 data FileCreate = FileCreate { fileCreateUri :: String }
  deriving (Show,Eq)

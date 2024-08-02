@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.FileChangeType
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileEvent where
@@ -21,6 +22,9 @@ instance FromJSON FileEvent where
 instance ToJSON FileEvent where
   toJSON x =
     object [(.=) "uri" (fileEventUri x),  (.=) "type" (fileEventType x)]
+
+instance Default FileEvent where
+  def = FileEvent { fileEventUri = def, fileEventType = def }
 
 data FileEvent = FileEvent { fileEventUri :: DocumentUri
                            , fileEventType :: FileChangeType }

@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentPositionParams where
@@ -27,6 +28,11 @@ instance ToJSON TextDocumentPositionParams where
                                                                         "position"
                                                                         (textDocumentPositionParamsPosition
                                                                           x)]
+
+instance Default TextDocumentPositionParams where
+  def =
+    TextDocumentPositionParams { textDocumentPositionParamsTextDocument = def
+                               , textDocumentPositionParamsPosition = def }
 
 data TextDocumentPositionParams = TextDocumentPositionParams { textDocumentPositionParamsTextDocument :: TextDocumentIdentifier
                                                              , textDocumentPositionParamsPosition :: Position }

@@ -16,6 +16,7 @@ import LSP.Protocol.Types.InlineValueWorkspaceClientCapabilities
 import LSP.Protocol.Types.SemanticTokensWorkspaceClientCapabilities
 import LSP.Protocol.Types.WorkspaceEditClientCapabilities
 import LSP.Protocol.Types.WorkspaceSymbolClientCapabilities
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceClientCapabilities where
@@ -106,6 +107,24 @@ instance ToJSON WorkspaceClientCapabilities where
                                                                                                                                                                             "foldingRange"
                                                                                                                                                                             (workspaceClientCapabilitiesFoldingRange
                                                                                                                                                                               x)]
+
+instance Default WorkspaceClientCapabilities where
+  def =
+    WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit = def
+                                , workspaceClientCapabilitiesWorkspaceEdit = def
+                                , workspaceClientCapabilitiesDidChangeConfiguration = def
+                                , workspaceClientCapabilitiesDidChangeWatchedFiles = def
+                                , workspaceClientCapabilitiesSymbol = def
+                                , workspaceClientCapabilitiesExecuteCommand = def
+                                , workspaceClientCapabilitiesWorkspaceFolders = def
+                                , workspaceClientCapabilitiesConfiguration = def
+                                , workspaceClientCapabilitiesSemanticTokens = def
+                                , workspaceClientCapabilitiesCodeLens = def
+                                , workspaceClientCapabilitiesFileOperations = def
+                                , workspaceClientCapabilitiesInlineValue = def
+                                , workspaceClientCapabilitiesInlayHint = def
+                                , workspaceClientCapabilitiesDiagnostics = def
+                                , workspaceClientCapabilitiesFoldingRange = def }
 
 data WorkspaceClientCapabilities = WorkspaceClientCapabilities { workspaceClientCapabilitiesApplyEdit :: Maybe Bool
                                                                , workspaceClientCapabilitiesWorkspaceEdit :: Maybe WorkspaceEditClientCapabilities

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.LinkedEditingRangeRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LinkedEditingRangeRegistrationOptions where
@@ -34,6 +35,12 @@ instance ToJSON LinkedEditingRangeRegistrationOptions where
                                                                             "id"
                                                                             (linkedEditingRangeRegistrationOptionsId
                                                                               x)]
+
+instance Default LinkedEditingRangeRegistrationOptions where
+  def =
+    LinkedEditingRangeRegistrationOptions { linkedEditingRangeRegistrationOptionsDocumentSelector = def
+                                          , linkedEditingRangeRegistrationOptionsWorkDoneProgress = def
+                                          , linkedEditingRangeRegistrationOptionsId = def }
 
 data LinkedEditingRangeRegistrationOptions = LinkedEditingRangeRegistrationOptions { linkedEditingRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , linkedEditingRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ExecuteCommandOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ExecuteCommandOptions where
@@ -24,6 +25,11 @@ instance ToJSON ExecuteCommandOptions where
        (executeCommandOptionsWorkDoneProgress x),  (.=) "commands"
                                                     (executeCommandOptionsCommands
                                                       x)]
+
+instance Default ExecuteCommandOptions where
+  def =
+    ExecuteCommandOptions { executeCommandOptionsWorkDoneProgress = def
+                          , executeCommandOptionsCommands = def }
 
 data ExecuteCommandOptions = ExecuteCommandOptions { executeCommandOptionsWorkDoneProgress :: Maybe Bool
                                                    , executeCommandOptionsCommands :: [String] }

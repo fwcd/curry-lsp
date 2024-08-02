@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Diagnostic
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceFullDocumentDiagnosticReport where
@@ -44,6 +45,14 @@ instance ToJSON WorkspaceFullDocumentDiagnosticReport where
                                                                                            "version"
                                                                                            (workspaceFullDocumentDiagnosticReportVersion
                                                                                              x)]
+
+instance Default WorkspaceFullDocumentDiagnosticReport where
+  def =
+    WorkspaceFullDocumentDiagnosticReport { workspaceFullDocumentDiagnosticReportKind = def
+                                          , workspaceFullDocumentDiagnosticReportResultId = def
+                                          , workspaceFullDocumentDiagnosticReportItems = def
+                                          , workspaceFullDocumentDiagnosticReportUri = def
+                                          , workspaceFullDocumentDiagnosticReportVersion = def }
 
 data WorkspaceFullDocumentDiagnosticReport = WorkspaceFullDocumentDiagnosticReport { workspaceFullDocumentDiagnosticReportKind :: String
                                                                                    , workspaceFullDocumentDiagnosticReportResultId :: Maybe String

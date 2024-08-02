@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WorkspaceFoldersServerCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceFoldersServerCapabilities where
@@ -30,6 +31,11 @@ instance ToJSON WorkspaceFoldersServerCapabilities where
                                                           "changeNotifications"
                                                           (workspaceFoldersServerCapabilitiesChangeNotifications
                                                             x)]
+
+instance Default WorkspaceFoldersServerCapabilities where
+  def =
+    WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported = def
+                                       , workspaceFoldersServerCapabilitiesChangeNotifications = def }
 
 data WorkspaceFoldersServerCapabilities = WorkspaceFoldersServerCapabilities { workspaceFoldersServerCapabilitiesSupported :: Maybe Bool
                                                                              , workspaceFoldersServerCapabilitiesChangeNotifications :: Maybe (Either String Bool) }

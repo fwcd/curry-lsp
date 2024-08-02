@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlineValueClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueClientCapabilities where
@@ -24,6 +25,10 @@ instance ToJSON InlineValueClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (inlineValueClientCapabilitiesDynamicRegistration x)]
+
+instance Default InlineValueClientCapabilities where
+  def =
+    InlineValueClientCapabilities { inlineValueClientCapabilitiesDynamicRegistration = def }
 
 data InlineValueClientCapabilities = InlineValueClientCapabilities { inlineValueClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

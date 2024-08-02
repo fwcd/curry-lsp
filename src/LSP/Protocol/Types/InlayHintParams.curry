@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintParams where
@@ -32,6 +33,12 @@ instance ToJSON InlayHintParams where
                                                                         "range"
                                                                         (inlayHintParamsRange
                                                                           x)]
+
+instance Default InlayHintParams where
+  def =
+    InlayHintParams { inlayHintParamsWorkDoneToken = def
+                    , inlayHintParamsTextDocument = def
+                    , inlayHintParamsRange = def }
 
 data InlayHintParams = InlayHintParams { inlayHintParamsWorkDoneToken :: Maybe ProgressToken
                                        , inlayHintParamsTextDocument :: TextDocumentIdentifier

@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
 import LSP.Protocol.Types.SemanticTokensFullDelta
 import LSP.Protocol.Types.SemanticTokensLegend
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensRegistrationOptions where
@@ -51,6 +52,15 @@ instance ToJSON SemanticTokensRegistrationOptions where
                                                                                                 "id"
                                                                                                 (semanticTokensRegistrationOptionsId
                                                                                                   x)]
+
+instance Default SemanticTokensRegistrationOptions where
+  def =
+    SemanticTokensRegistrationOptions { semanticTokensRegistrationOptionsDocumentSelector = def
+                                      , semanticTokensRegistrationOptionsWorkDoneProgress = def
+                                      , semanticTokensRegistrationOptionsLegend = def
+                                      , semanticTokensRegistrationOptionsRange = def
+                                      , semanticTokensRegistrationOptionsFull = def
+                                      , semanticTokensRegistrationOptionsId = def }
 
 data SemanticTokensRegistrationOptions = SemanticTokensRegistrationOptions { semanticTokensRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , semanticTokensRegistrationOptionsWorkDoneProgress :: Maybe Bool

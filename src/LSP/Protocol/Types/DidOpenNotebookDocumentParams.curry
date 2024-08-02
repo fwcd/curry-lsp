@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookDocument
 import LSP.Protocol.Types.TextDocumentItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidOpenNotebookDocumentParams where
@@ -29,6 +30,11 @@ instance ToJSON DidOpenNotebookDocumentParams where
                                                             "cellTextDocuments"
                                                             (didOpenNotebookDocumentParamsCellTextDocuments
                                                               x)]
+
+instance Default DidOpenNotebookDocumentParams where
+  def =
+    DidOpenNotebookDocumentParams { didOpenNotebookDocumentParamsNotebookDocument = def
+                                  , didOpenNotebookDocumentParamsCellTextDocuments = def }
 
 data DidOpenNotebookDocumentParams = DidOpenNotebookDocumentParams { didOpenNotebookDocumentParamsNotebookDocument :: NotebookDocument
                                                                    , didOpenNotebookDocumentParamsCellTextDocuments :: [TextDocumentItem] }

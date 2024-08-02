@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensPartialResult where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensPartialResult where
@@ -18,6 +19,9 @@ instance FromJSON SemanticTokensPartialResult where
 
 instance ToJSON SemanticTokensPartialResult where
   toJSON x = object [(.=) "data" (semanticTokensPartialResultData x)]
+
+instance Default SemanticTokensPartialResult where
+  def = SemanticTokensPartialResult { semanticTokensPartialResultData = def }
 
 data SemanticTokensPartialResult = SemanticTokensPartialResult { semanticTokensPartialResultData :: [Int] }
  deriving (Show,Eq)

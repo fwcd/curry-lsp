@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CompletionItem
 import LSP.Protocol.Types.CompletionItemDefaults
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionList where
@@ -31,6 +32,12 @@ instance ToJSON CompletionList where
                                                                     "items"
                                                                     (completionListItems
                                                                       x)]
+
+instance Default CompletionList where
+  def =
+    CompletionList { completionListIsIncomplete = def
+                   , completionListItemDefaults = def
+                   , completionListItems = def }
 
 data CompletionList = CompletionList { completionListIsIncomplete :: Bool
                                      , completionListItemDefaults :: Maybe CompletionItemDefaults

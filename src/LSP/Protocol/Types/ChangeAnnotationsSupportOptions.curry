@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ChangeAnnotationsSupportOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ChangeAnnotationsSupportOptions where
@@ -21,6 +22,10 @@ instance ToJSON ChangeAnnotationsSupportOptions where
   toJSON x =
     object
      [(.?=) "groupsOnLabel" (changeAnnotationsSupportOptionsGroupsOnLabel x)]
+
+instance Default ChangeAnnotationsSupportOptions where
+  def =
+    ChangeAnnotationsSupportOptions { changeAnnotationsSupportOptionsGroupsOnLabel = def }
 
 data ChangeAnnotationsSupportOptions = ChangeAnnotationsSupportOptions { changeAnnotationsSupportOptionsGroupsOnLabel :: Maybe Bool }
  deriving (Show,Eq)

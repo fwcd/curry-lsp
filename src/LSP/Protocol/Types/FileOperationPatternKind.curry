@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileOperationPatternKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationPatternKind where
@@ -20,6 +21,9 @@ instance ToJSON FileOperationPatternKind where
     case x of
       FileOperationPatternKindFile -> toJSON "file"
       FileOperationPatternKindFolder -> toJSON "folder"
+
+instance Default FileOperationPatternKind where
+  def = FileOperationPatternKindFile
 
 data FileOperationPatternKind = FileOperationPatternKindFile
                               | FileOperationPatternKindFolder

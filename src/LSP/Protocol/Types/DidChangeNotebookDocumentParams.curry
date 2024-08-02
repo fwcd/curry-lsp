@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookDocumentChangeEvent
 import LSP.Protocol.Types.VersionedNotebookDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeNotebookDocumentParams where
@@ -28,6 +29,11 @@ instance ToJSON DidChangeNotebookDocumentParams where
        (didChangeNotebookDocumentParamsNotebookDocument x),  (.=) "change"
                                                               (didChangeNotebookDocumentParamsChange
                                                                 x)]
+
+instance Default DidChangeNotebookDocumentParams where
+  def =
+    DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument = def
+                                    , didChangeNotebookDocumentParamsChange = def }
 
 data DidChangeNotebookDocumentParams = DidChangeNotebookDocumentParams { didChangeNotebookDocumentParamsNotebookDocument :: VersionedNotebookDocumentIdentifier
                                                                        , didChangeNotebookDocumentParamsChange :: NotebookDocumentChangeEvent }

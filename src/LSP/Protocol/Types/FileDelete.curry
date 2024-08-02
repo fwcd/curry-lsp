@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileDelete where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileDelete where
@@ -16,6 +17,9 @@ instance FromJSON FileDelete where
 
 instance ToJSON FileDelete where
   toJSON x = object [(.=) "uri" (fileDeleteUri x)]
+
+instance Default FileDelete where
+  def = FileDelete { fileDeleteUri = def }
 
 data FileDelete = FileDelete { fileDeleteUri :: String }
  deriving (Show,Eq)

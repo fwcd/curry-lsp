@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WorkspaceEditMetadata where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceEditMetadata where
@@ -18,6 +19,9 @@ instance FromJSON WorkspaceEditMetadata where
 instance ToJSON WorkspaceEditMetadata where
   toJSON x =
     object [(.?=) "isRefactoring" (workspaceEditMetadataIsRefactoring x)]
+
+instance Default WorkspaceEditMetadata where
+  def = WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring = def }
 
 data WorkspaceEditMetadata = WorkspaceEditMetadata { workspaceEditMetadataIsRefactoring :: Maybe Bool }
  deriving (Show,Eq)

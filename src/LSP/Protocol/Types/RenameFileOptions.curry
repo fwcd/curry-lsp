@@ -4,6 +4,7 @@ module LSP.Protocol.Types.RenameFileOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameFileOptions where
@@ -24,6 +25,11 @@ instance ToJSON RenameFileOptions where
                                                           "ignoreIfExists"
                                                           (renameFileOptionsIgnoreIfExists
                                                             x)]
+
+instance Default RenameFileOptions where
+  def =
+    RenameFileOptions { renameFileOptionsOverwrite = def
+                      , renameFileOptionsIgnoreIfExists = def }
 
 data RenameFileOptions = RenameFileOptions { renameFileOptionsOverwrite :: Maybe Bool
                                            , renameFileOptionsIgnoreIfExists :: Maybe Bool }

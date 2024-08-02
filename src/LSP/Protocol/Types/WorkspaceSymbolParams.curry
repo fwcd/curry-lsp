@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceSymbolParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbolParams where
@@ -32,6 +33,12 @@ instance ToJSON WorkspaceSymbolParams where
                                                                               "query"
                                                                               (workspaceSymbolParamsQuery
                                                                                 x)]
+
+instance Default WorkspaceSymbolParams where
+  def =
+    WorkspaceSymbolParams { workspaceSymbolParamsWorkDoneToken = def
+                          , workspaceSymbolParamsPartialResultToken = def
+                          , workspaceSymbolParamsQuery = def }
 
 data WorkspaceSymbolParams = WorkspaceSymbolParams { workspaceSymbolParamsWorkDoneToken :: Maybe ProgressToken
                                                    , workspaceSymbolParamsPartialResultToken :: Maybe ProgressToken

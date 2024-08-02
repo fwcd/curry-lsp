@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MarkdownClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MarkdownClientCapabilities where
@@ -29,6 +30,12 @@ instance ToJSON MarkdownClientCapabilities where
                                                                     "allowedTags"
                                                                     (markdownClientCapabilitiesAllowedTags
                                                                       x)]
+
+instance Default MarkdownClientCapabilities where
+  def =
+    MarkdownClientCapabilities { markdownClientCapabilitiesParser = def
+                               , markdownClientCapabilitiesVersion = def
+                               , markdownClientCapabilitiesAllowedTags = def }
 
 data MarkdownClientCapabilities = MarkdownClientCapabilities { markdownClientCapabilitiesParser :: String
                                                              , markdownClientCapabilitiesVersion :: Maybe String

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ColorPresentation where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ColorPresentation where
@@ -31,6 +32,12 @@ instance ToJSON ColorPresentation where
                                                          "additionalTextEdits"
                                                          (colorPresentationAdditionalTextEdits
                                                            x)]
+
+instance Default ColorPresentation where
+  def =
+    ColorPresentation { colorPresentationLabel = def
+                      , colorPresentationTextEdit = def
+                      , colorPresentationAdditionalTextEdits = def }
 
 data ColorPresentation = ColorPresentation { colorPresentationLabel :: String
                                            , colorPresentationTextEdit :: Maybe TextEdit

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FoldingRangeOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeOptions where
@@ -18,6 +19,9 @@ instance FromJSON FoldingRangeOptions where
 instance ToJSON FoldingRangeOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (foldingRangeOptionsWorkDoneProgress x)]
+
+instance Default FoldingRangeOptions where
+  def = FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress = def }
 
 data FoldingRangeOptions = FoldingRangeOptions { foldingRangeOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

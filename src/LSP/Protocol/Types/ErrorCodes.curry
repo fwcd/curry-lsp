@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ErrorCodes where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ErrorCodes where
@@ -29,6 +30,9 @@ instance ToJSON ErrorCodes where
       ErrorCodesInternalError -> toJSON (-32603)
       ErrorCodesServerNotInitialized -> toJSON (-32002)
       ErrorCodesUnknownErrorCode -> toJSON (-32001)
+
+instance Default ErrorCodes where
+  def = ErrorCodesParseError
 
 data ErrorCodes = ErrorCodesParseError
                 | ErrorCodesInvalidRequest

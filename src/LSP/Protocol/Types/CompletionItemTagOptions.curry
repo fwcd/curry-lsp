@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CompletionItemTagOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CompletionItemTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItemTagOptions where
@@ -18,6 +19,9 @@ instance FromJSON CompletionItemTagOptions where
 
 instance ToJSON CompletionItemTagOptions where
   toJSON x = object [(.=) "valueSet" (completionItemTagOptionsValueSet x)]
+
+instance Default CompletionItemTagOptions where
+  def = CompletionItemTagOptions { completionItemTagOptionsValueSet = def }
 
 data CompletionItemTagOptions = CompletionItemTagOptions { completionItemTagOptionsValueSet :: [CompletionItemTag] }
  deriving (Show,Eq)

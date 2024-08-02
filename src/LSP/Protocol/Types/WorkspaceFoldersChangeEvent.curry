@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceFoldersChangeEvent where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.WorkspaceFolder
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceFoldersChangeEvent where
@@ -25,6 +26,11 @@ instance ToJSON WorkspaceFoldersChangeEvent where
      [(.=) "added" (workspaceFoldersChangeEventAdded x),  (.=) "removed"
                                                            (workspaceFoldersChangeEventRemoved
                                                              x)]
+
+instance Default WorkspaceFoldersChangeEvent where
+  def =
+    WorkspaceFoldersChangeEvent { workspaceFoldersChangeEventAdded = def
+                                , workspaceFoldersChangeEventRemoved = def }
 
 data WorkspaceFoldersChangeEvent = WorkspaceFoldersChangeEvent { workspaceFoldersChangeEventAdded :: [WorkspaceFolder]
                                                                , workspaceFoldersChangeEventRemoved :: [WorkspaceFolder] }

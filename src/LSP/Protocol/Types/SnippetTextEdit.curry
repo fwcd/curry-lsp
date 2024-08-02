@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.StringValue
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SnippetTextEdit where
@@ -30,6 +31,12 @@ instance ToJSON SnippetTextEdit where
                                                  x),  (.?=) "annotationId"
                                                        (snippetTextEditAnnotationId
                                                          x)]
+
+instance Default SnippetTextEdit where
+  def =
+    SnippetTextEdit { snippetTextEditRange = def
+                    , snippetTextEditSnippet = def
+                    , snippetTextEditAnnotationId = def }
 
 data SnippetTextEdit = SnippetTextEdit { snippetTextEditRange :: Range
                                        , snippetTextEditSnippet :: StringValue

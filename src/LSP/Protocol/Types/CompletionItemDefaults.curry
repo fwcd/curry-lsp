@@ -9,6 +9,7 @@ import LSP.Protocol.Types.EditRangeWithInsertReplace
 import LSP.Protocol.Types.InsertTextFormat
 import LSP.Protocol.Types.InsertTextMode
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItemDefaults where
@@ -44,6 +45,14 @@ instance ToJSON CompletionItemDefaults where
                                                                              "data"
                                                                              (completionItemDefaultsData
                                                                                x)]
+
+instance Default CompletionItemDefaults where
+  def =
+    CompletionItemDefaults { completionItemDefaultsCommitCharacters = def
+                           , completionItemDefaultsEditRange = def
+                           , completionItemDefaultsInsertTextFormat = def
+                           , completionItemDefaultsInsertTextMode = def
+                           , completionItemDefaultsData = def }
 
 data CompletionItemDefaults = CompletionItemDefaults { completionItemDefaultsCommitCharacters :: Maybe [String]
                                                      , completionItemDefaultsEditRange :: Maybe (Either Range EditRangeWithInsertReplace)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CodeDescription where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeDescription where
@@ -17,6 +18,9 @@ instance FromJSON CodeDescription where
 
 instance ToJSON CodeDescription where
   toJSON x = object [(.=) "href" (codeDescriptionHref x)]
+
+instance Default CodeDescription where
+  def = CodeDescription { codeDescriptionHref = def }
 
 data CodeDescription = CodeDescription { codeDescriptionHref :: Uri }
  deriving (Show,Eq)

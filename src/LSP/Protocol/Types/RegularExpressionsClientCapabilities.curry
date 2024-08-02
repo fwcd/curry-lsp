@@ -5,6 +5,7 @@ module LSP.Protocol.Types.RegularExpressionsClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.RegularExpressionEngineKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RegularExpressionsClientCapabilities where
@@ -28,6 +29,11 @@ instance ToJSON RegularExpressionsClientCapabilities where
                                                                       "version"
                                                                       (regularExpressionsClientCapabilitiesVersion
                                                                         x)]
+
+instance Default RegularExpressionsClientCapabilities where
+  def =
+    RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine = def
+                                         , regularExpressionsClientCapabilitiesVersion = def }
 
 data RegularExpressionsClientCapabilities = RegularExpressionsClientCapabilities { regularExpressionsClientCapabilitiesEngine :: RegularExpressionEngineKind
                                                                                  , regularExpressionsClientCapabilitiesVersion :: Maybe String }

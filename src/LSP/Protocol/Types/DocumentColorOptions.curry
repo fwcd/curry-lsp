@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentColorOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentColorOptions where
@@ -18,6 +19,9 @@ instance FromJSON DocumentColorOptions where
 instance ToJSON DocumentColorOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (documentColorOptionsWorkDoneProgress x)]
+
+instance Default DocumentColorOptions where
+  def = DocumentColorOptions { documentColorOptionsWorkDoneProgress = def }
 
 data DocumentColorOptions = DocumentColorOptions { documentColorOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

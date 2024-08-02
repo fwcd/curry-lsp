@@ -5,6 +5,7 @@ module LSP.Protocol.Types.Registration where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Registration where
@@ -28,6 +29,12 @@ instance ToJSON Registration where
                                                                 "registerOptions"
                                                                 (registrationRegisterOptions
                                                                   x)]
+
+instance Default Registration where
+  def =
+    Registration { registrationId = def
+                 , registrationMethod = def
+                 , registrationRegisterOptions = def }
 
 data Registration = Registration { registrationId :: String
                                  , registrationMethod :: String

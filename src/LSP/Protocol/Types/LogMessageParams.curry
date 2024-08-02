@@ -5,6 +5,7 @@ module LSP.Protocol.Types.LogMessageParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MessageType
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LogMessageParams where
@@ -23,6 +24,11 @@ instance ToJSON LogMessageParams where
     object
      [(.=) "type" (logMessageParamsType x),  (.=) "message"
                                               (logMessageParamsMessage x)]
+
+instance Default LogMessageParams where
+  def =
+    LogMessageParams { logMessageParamsType = def
+                     , logMessageParamsMessage = def }
 
 data LogMessageParams = LogMessageParams { logMessageParamsType :: MessageType
                                          , logMessageParamsMessage :: String }

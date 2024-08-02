@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlineValueWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON InlineValueWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (inlineValueWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default InlineValueWorkspaceClientCapabilities where
+  def =
+    InlineValueWorkspaceClientCapabilities { inlineValueWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data InlineValueWorkspaceClientCapabilities = InlineValueWorkspaceClientCapabilities { inlineValueWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

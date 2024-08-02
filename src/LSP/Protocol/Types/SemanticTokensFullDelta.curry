@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensFullDelta where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensFullDelta where
@@ -17,6 +18,9 @@ instance FromJSON SemanticTokensFullDelta where
 
 instance ToJSON SemanticTokensFullDelta where
   toJSON x = object [(.?=) "delta" (semanticTokensFullDeltaDelta x)]
+
+instance Default SemanticTokensFullDelta where
+  def = SemanticTokensFullDelta { semanticTokensFullDeltaDelta = def }
 
 data SemanticTokensFullDelta = SemanticTokensFullDelta { semanticTokensFullDeltaDelta :: Maybe Bool }
  deriving (Show,Eq)
