@@ -139,7 +139,6 @@ flatMetaStructureToFromJSONInstance :: String -> String -> MetaStructure -> GM A
 flatMetaStructureToFromJSONInstance mname prefix s' = do
   let name = escapeName $ msName s'
       qn = (mname, name)
-      ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
       sig = ACB.emptyClassType $ fromJSONType texp
@@ -166,13 +165,12 @@ flatMetaStructureToFromJSONInstance mname prefix s' = do
       rule = AC.CRule [AC.CPVar jVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
-  return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+  return $ AC.CInstance fromJSONClassQName (AC.CContext []) texp fdecls
 
 -- | Converts a flattened meta structure to a ToJSON instance.
 flatMetaStructureToToJSONInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 flatMetaStructureToToJSONInstance mname prefix s' = do
   let name = escapeName $ msName s'
-      ctx = AC.CContext []
       qn = (mname, name)
       texp = ACB.baseType qn
       vis = AC.Public
@@ -183,13 +181,12 @@ flatMetaStructureToToJSONInstance mname prefix s' = do
       rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
-  return $ AC.CInstance toJSONClassQName ctx texp fdecls
+  return $ AC.CInstance toJSONClassQName (AC.CContext []) texp fdecls
 
 -- | Converts a flattened meta structure to a Default instance.
 flatMetaStructureToDefaultInstance :: String -> String -> MetaStructure -> GM AC.CInstanceDecl
 flatMetaStructureToDefaultInstance mname prefix s' = do
   let name = escapeName $ msName s'
-      ctx = AC.CContext []
       qn = (mname, name)
       texp = ACB.baseType qn
       vis = AC.Public
@@ -200,7 +197,7 @@ flatMetaStructureToDefaultInstance mname prefix s' = do
       rule = AC.CRule [] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc defQName 1 vis sig [rule]
       fdecls = [fdecl]
-  return $ AC.CInstance defaultClassQName ctx texp fdecls
+  return $ AC.CInstance defaultClassQName (AC.CContext []) texp fdecls
 
 -- | Picks the correct lookupFromJSON method for the given property.
 lookupFromJSONForMetaProperty :: MetaProperty -> AC.QName
@@ -220,7 +217,6 @@ metaEnumerationToFromJSONInstance mname prefix e = do
   ty <- metaTypeToTypeExpr $ meType e
   let name = escapeName $ meName e
       qn = (mname, name)
-      ctx = AC.CContext []
       vis = AC.Public
       texp = ACB.baseType qn
       sig = ACB.emptyClassType $ fromJSONType texp
@@ -246,13 +242,12 @@ metaEnumerationToFromJSONInstance mname prefix e = do
       rule = AC.CRule [AC.CPVar jVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc fromJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
-  return $ AC.CInstance fromJSONClassQName ctx texp fdecls
+  return $ AC.CInstance fromJSONClassQName (AC.CContext []) texp fdecls
 
 -- | Converts a meta enumeration to a ToJSON instance.
 metaEnumerationToToJSONInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
 metaEnumerationToToJSONInstance mname prefix e = do
   let name = escapeName $ meName e
-      ctx = AC.CContext []
       qn = (mname, name)
       texp = ACB.baseType qn
       vis = AC.Public
@@ -267,7 +262,7 @@ metaEnumerationToToJSONInstance mname prefix e = do
       rule = AC.CRule [AC.CPVar xVar] (AC.CSimpleRhs expr [])
       fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
-  return $ AC.CInstance toJSONClassQName ctx texp fdecls
+  return $ AC.CInstance toJSONClassQName (AC.CContext []) texp fdecls
 
 -- | Converts a meta enumeration value to a Curry literal.
 metaEnumerationValueToLit :: JValue -> AC.CLiteral
