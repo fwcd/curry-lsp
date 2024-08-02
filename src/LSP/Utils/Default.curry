@@ -2,6 +2,8 @@ module LSP.Utils.Default
   ( Default (..)
   ) where
 
+import JSON.Data ( JValue (..) )
+
 class Default a where
   -- | A default value.
   def :: a
@@ -45,3 +47,6 @@ instance (Default a, Default b, Default c, Default d) => Default (a, b, c, d) wh
 
 instance Default b => Default (Either a b) where
   def = Right def
+
+instance Default JValue where
+  def = JNull
