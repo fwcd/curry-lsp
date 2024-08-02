@@ -128,9 +128,10 @@ metaEnumerationToProg e = do
   enumDerivs <- asks geStandardEnumDerivings
   fromJSONInst <- metaEnumerationToFromJSONInstance mname name e
   toJSONInst <- metaEnumerationToToJSONInstance mname name e
+  defaultInst <- metaEnumerationToDefaultInstance mname name e
   let derivs = stdDerivs ++ enumDerivs
       ty = AC.CType qn vis [] cdecls derivs
-      insts = [fromJSONInst, toJSONInst]
+      insts = [fromJSONInst, toJSONInst, defaultInst]
       imps = requiredImports mname $ S.union (typeDeclModuleDeps ty) (unionMap instanceDeclModuleDeps insts)
   return $ AC.CurryProg mname [] imps Nothing [] insts [ty] [] []
 
@@ -263,6 +264,22 @@ metaEnumerationToToJSONInstance mname prefix e = do
       fdecl = AC.CFunc toJSONQName 1 vis sig [rule]
       fdecls = [fdecl]
   return $ AC.CInstance toJSONClassQName (AC.CContext []) texp fdecls
+
+-- | Converts a meta enumeration to a Default instance.
+metaEnumerationToDefaultInstance :: String -> String -> MetaEnumeration -> GM AC.CInstanceDecl
+metaEnumerationToDefaultInstance mname prefix e = do
+  let name = escapeName $ meName e
+      qn = (mname, name)
+      texp = ACB.baseType qn
+      vis = AC.Public
+      sig = ACB.emptyClassType $ toJSONType texp
+      -- TODO: Throw an error if we encounter an empty enumeration (instead of just using head)?
+      defVal = (,) mname . enumValueName prefix . mevName . head $ meValues e
+      expr = AC.CSymbol defVal
+      rule = AC.CRule [] (AC.CSimpleRhs expr [])
+      fdecl = AC.CFunc defQName 1 vis sig [rule]
+      fdecls = [fdecl]
+  return $ AC.CInstance defaultClassQName (AC.CContext []) texp fdecls
 
 -- | Converts a meta enumeration value to a Curry literal.
 metaEnumerationValueToLit :: JValue -> AC.CLiteral
