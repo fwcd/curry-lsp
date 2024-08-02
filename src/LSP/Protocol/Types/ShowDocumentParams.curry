@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ShowDocumentParams where
@@ -33,6 +34,13 @@ instance ToJSON ShowDocumentParams where
                                                         x),  (.?=) "selection"
                                                               (showDocumentParamsSelection
                                                                 x)]
+
+instance Default ShowDocumentParams where
+  def =
+    ShowDocumentParams { showDocumentParamsUri = def
+                       , showDocumentParamsExternal = def
+                       , showDocumentParamsTakeFocus = def
+                       , showDocumentParamsSelection = def }
 
 data ShowDocumentParams = ShowDocumentParams { showDocumentParamsUri :: Uri
                                              , showDocumentParamsExternal :: Maybe Bool

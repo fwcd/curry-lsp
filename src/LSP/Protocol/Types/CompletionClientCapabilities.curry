@@ -8,6 +8,7 @@ import LSP.Protocol.Types.ClientCompletionItemOptions
 import LSP.Protocol.Types.ClientCompletionItemOptionsKind
 import LSP.Protocol.Types.CompletionListCapabilities
 import LSP.Protocol.Types.InsertTextMode
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionClientCapabilities where
@@ -54,6 +55,15 @@ instance ToJSON CompletionClientCapabilities where
                                                                                               "completionList"
                                                                                               (completionClientCapabilitiesCompletionList
                                                                                                 x)]
+
+instance Default CompletionClientCapabilities where
+  def =
+    CompletionClientCapabilities { completionClientCapabilitiesDynamicRegistration = def
+                                 , completionClientCapabilitiesCompletionItem = def
+                                 , completionClientCapabilitiesCompletionItemKind = def
+                                 , completionClientCapabilitiesInsertTextMode = def
+                                 , completionClientCapabilitiesContextSupport = def
+                                 , completionClientCapabilitiesCompletionList = def }
 
 data CompletionClientCapabilities = CompletionClientCapabilities { completionClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                  , completionClientCapabilitiesCompletionItem :: Maybe ClientCompletionItemOptions

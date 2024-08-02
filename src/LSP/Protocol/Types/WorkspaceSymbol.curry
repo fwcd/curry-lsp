@@ -9,6 +9,7 @@ import LSP.Protocol.Types.Location
 import LSP.Protocol.Types.LocationUriOnly
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbol where
@@ -47,6 +48,15 @@ instance ToJSON WorkspaceSymbol where
                                                                                                 "data"
                                                                                                 (workspaceSymbolData
                                                                                                   x)]
+
+instance Default WorkspaceSymbol where
+  def =
+    WorkspaceSymbol { workspaceSymbolName = def
+                    , workspaceSymbolKind = def
+                    , workspaceSymbolTags = def
+                    , workspaceSymbolContainerName = def
+                    , workspaceSymbolLocation = def
+                    , workspaceSymbolData = def }
 
 data WorkspaceSymbol = WorkspaceSymbol { workspaceSymbolName :: String
                                        , workspaceSymbolKind :: SymbolKind

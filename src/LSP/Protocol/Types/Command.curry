@@ -5,6 +5,7 @@ module LSP.Protocol.Types.Command where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Command where
@@ -32,6 +33,13 @@ instance ToJSON Command where
                                                                      "arguments"
                                                                      (commandArguments
                                                                        x)]
+
+instance Default Command where
+  def =
+    Command { commandTitle = def
+            , commandTooltip = def
+            , commandCommand = def
+            , commandArguments = def }
 
 data Command = Command { commandTitle :: String
                        , commandTooltip :: Maybe String

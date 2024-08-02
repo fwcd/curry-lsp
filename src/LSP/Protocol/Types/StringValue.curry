@@ -4,6 +4,7 @@ module LSP.Protocol.Types.StringValue where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON StringValue where
@@ -21,6 +22,9 @@ instance ToJSON StringValue where
   toJSON x =
     object
      [(.=) "kind" (stringValueKind x),  (.=) "value" (stringValueValue x)]
+
+instance Default StringValue where
+  def = StringValue { stringValueKind = def, stringValueValue = def }
 
 data StringValue = StringValue { stringValueKind :: String
                                , stringValueValue :: String }

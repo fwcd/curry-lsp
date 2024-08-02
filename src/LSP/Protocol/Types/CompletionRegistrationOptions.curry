@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
 import LSP.Protocol.Types.ServerCompletionItemOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionRegistrationOptions where
@@ -52,6 +53,15 @@ instance ToJSON CompletionRegistrationOptions where
                                                                                             "completionItem"
                                                                                             (completionRegistrationOptionsCompletionItem
                                                                                               x)]
+
+instance Default CompletionRegistrationOptions where
+  def =
+    CompletionRegistrationOptions { completionRegistrationOptionsDocumentSelector = def
+                                  , completionRegistrationOptionsWorkDoneProgress = def
+                                  , completionRegistrationOptionsTriggerCharacters = def
+                                  , completionRegistrationOptionsAllCommitCharacters = def
+                                  , completionRegistrationOptionsResolveProvider = def
+                                  , completionRegistrationOptionsCompletionItem = def }
 
 data CompletionRegistrationOptions = CompletionRegistrationOptions { completionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , completionRegistrationOptionsWorkDoneProgress :: Maybe Bool

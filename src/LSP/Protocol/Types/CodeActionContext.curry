@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.CodeActionKind
 import LSP.Protocol.Types.CodeActionTriggerKind
 import LSP.Protocol.Types.Diagnostic
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionContext where
@@ -31,6 +32,12 @@ instance ToJSON CodeActionContext where
                                                                      "triggerKind"
                                                                      (codeActionContextTriggerKind
                                                                        x)]
+
+instance Default CodeActionContext where
+  def =
+    CodeActionContext { codeActionContextDiagnostics = def
+                      , codeActionContextOnly = def
+                      , codeActionContextTriggerKind = def }
 
 data CodeActionContext = CodeActionContext { codeActionContextDiagnostics :: [Diagnostic]
                                            , codeActionContextOnly :: Maybe [CodeActionKind]

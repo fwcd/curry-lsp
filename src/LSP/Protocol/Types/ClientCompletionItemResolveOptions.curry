@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientCompletionItemResolveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCompletionItemResolveOptions where
@@ -22,6 +23,10 @@ instance ToJSON ClientCompletionItemResolveOptions where
   toJSON x =
     object
      [(.=) "properties" (clientCompletionItemResolveOptionsProperties x)]
+
+instance Default ClientCompletionItemResolveOptions where
+  def =
+    ClientCompletionItemResolveOptions { clientCompletionItemResolveOptionsProperties = def }
 
 data ClientCompletionItemResolveOptions = ClientCompletionItemResolveOptions { clientCompletionItemResolveOptionsProperties :: [String] }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.Color where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Color where
@@ -30,6 +31,13 @@ instance ToJSON Color where
                                                                        "alpha"
                                                                        (colorAlpha
                                                                          x)]
+
+instance Default Color where
+  def =
+    Color { colorRed = def
+          , colorGreen = def
+          , colorBlue = def
+          , colorAlpha = def }
 
 data Color = Color { colorRed :: Float
                    , colorGreen :: Float

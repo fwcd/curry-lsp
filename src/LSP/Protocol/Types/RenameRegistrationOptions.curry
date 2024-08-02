@@ -5,6 +5,7 @@ module LSP.Protocol.Types.RenameRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameRegistrationOptions where
@@ -31,6 +32,12 @@ instance ToJSON RenameRegistrationOptions where
                                                                 "prepareProvider"
                                                                 (renameRegistrationOptionsPrepareProvider
                                                                   x)]
+
+instance Default RenameRegistrationOptions where
+  def =
+    RenameRegistrationOptions { renameRegistrationOptionsDocumentSelector = def
+                              , renameRegistrationOptionsWorkDoneProgress = def
+                              , renameRegistrationOptionsPrepareProvider = def }
 
 data RenameRegistrationOptions = RenameRegistrationOptions { renameRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                            , renameRegistrationOptionsWorkDoneProgress :: Maybe Bool

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FormattingOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FormattingOptions where
@@ -43,6 +44,14 @@ instance ToJSON FormattingOptions where
                                                                              "trimFinalNewlines"
                                                                              (formattingOptionsTrimFinalNewlines
                                                                                x)]
+
+instance Default FormattingOptions where
+  def =
+    FormattingOptions { formattingOptionsTabSize = def
+                      , formattingOptionsInsertSpaces = def
+                      , formattingOptionsTrimTrailingWhitespace = def
+                      , formattingOptionsInsertFinalNewline = def
+                      , formattingOptionsTrimFinalNewlines = def }
 
 data FormattingOptions = FormattingOptions { formattingOptionsTabSize :: Int
                                            , formattingOptionsInsertSpaces :: Bool

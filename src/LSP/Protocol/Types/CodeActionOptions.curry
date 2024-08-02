@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CodeActionKind
 import LSP.Protocol.Types.CodeActionKindDocumentation
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionOptions where
@@ -36,6 +37,13 @@ instance ToJSON CodeActionOptions where
                                                                                         "resolveProvider"
                                                                                         (codeActionOptionsResolveProvider
                                                                                           x)]
+
+instance Default CodeActionOptions where
+  def =
+    CodeActionOptions { codeActionOptionsWorkDoneProgress = def
+                      , codeActionOptionsCodeActionKinds = def
+                      , codeActionOptionsDocumentation = def
+                      , codeActionOptionsResolveProvider = def }
 
 data CodeActionOptions = CodeActionOptions { codeActionOptionsWorkDoneProgress :: Maybe Bool
                                            , codeActionOptionsCodeActionKinds :: Maybe [CodeActionKind]

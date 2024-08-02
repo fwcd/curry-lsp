@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientSymbolTagOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientSymbolTagOptions where
@@ -18,6 +19,9 @@ instance FromJSON ClientSymbolTagOptions where
 
 instance ToJSON ClientSymbolTagOptions where
   toJSON x = object [(.=) "valueSet" (clientSymbolTagOptionsValueSet x)]
+
+instance Default ClientSymbolTagOptions where
+  def = ClientSymbolTagOptions { clientSymbolTagOptionsValueSet = def }
 
 data ClientSymbolTagOptions = ClientSymbolTagOptions { clientSymbolTagOptionsValueSet :: [SymbolTag] }
  deriving (Show,Eq)

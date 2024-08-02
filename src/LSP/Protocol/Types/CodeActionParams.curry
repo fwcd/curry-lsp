@@ -8,6 +8,7 @@ import LSP.Protocol.Types.CodeActionContext
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionParams where
@@ -45,6 +46,14 @@ instance ToJSON CodeActionParams where
                                                                                          "context"
                                                                                          (codeActionParamsContext
                                                                                            x)]
+
+instance Default CodeActionParams where
+  def =
+    CodeActionParams { codeActionParamsWorkDoneToken = def
+                     , codeActionParamsPartialResultToken = def
+                     , codeActionParamsTextDocument = def
+                     , codeActionParamsRange = def
+                     , codeActionParamsContext = def }
 
 data CodeActionParams = CodeActionParams { codeActionParamsWorkDoneToken :: Maybe ProgressToken
                                          , codeActionParamsPartialResultToken :: Maybe ProgressToken

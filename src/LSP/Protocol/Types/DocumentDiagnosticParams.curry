@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentDiagnosticParams where
@@ -43,6 +44,14 @@ instance ToJSON DocumentDiagnosticParams where
                                                                                                  "previousResultId"
                                                                                                  (documentDiagnosticParamsPreviousResultId
                                                                                                    x)]
+
+instance Default DocumentDiagnosticParams where
+  def =
+    DocumentDiagnosticParams { documentDiagnosticParamsWorkDoneToken = def
+                             , documentDiagnosticParamsPartialResultToken = def
+                             , documentDiagnosticParamsTextDocument = def
+                             , documentDiagnosticParamsIdentifier = def
+                             , documentDiagnosticParamsPreviousResultId = def }
 
 data DocumentDiagnosticParams = DocumentDiagnosticParams { documentDiagnosticParamsWorkDoneToken :: Maybe ProgressToken
                                                          , documentDiagnosticParamsPartialResultToken :: Maybe ProgressToken

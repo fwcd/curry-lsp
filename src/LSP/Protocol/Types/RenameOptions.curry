@@ -4,6 +4,7 @@ module LSP.Protocol.Types.RenameOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameOptions where
@@ -24,6 +25,11 @@ instance ToJSON RenameOptions where
                                                                     "prepareProvider"
                                                                     (renameOptionsPrepareProvider
                                                                       x)]
+
+instance Default RenameOptions where
+  def =
+    RenameOptions { renameOptionsWorkDoneProgress = def
+                  , renameOptionsPrepareProvider = def }
 
 data RenameOptions = RenameOptions { renameOptionsWorkDoneProgress :: Maybe Bool
                                    , renameOptionsPrepareProvider :: Maybe Bool }

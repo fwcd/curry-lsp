@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.FormattingOptions
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentFormattingParams where
@@ -32,6 +33,12 @@ instance ToJSON DocumentFormattingParams where
                                                                                  "options"
                                                                                  (documentFormattingParamsOptions
                                                                                    x)]
+
+instance Default DocumentFormattingParams where
+  def =
+    DocumentFormattingParams { documentFormattingParamsWorkDoneToken = def
+                             , documentFormattingParamsTextDocument = def
+                             , documentFormattingParamsOptions = def }
 
 data DocumentFormattingParams = DocumentFormattingParams { documentFormattingParamsWorkDoneToken :: Maybe ProgressToken
                                                          , documentFormattingParamsTextDocument :: TextDocumentIdentifier

@@ -10,6 +10,7 @@ import LSP.Protocol.Types.NotebookDocumentClientCapabilities
 import LSP.Protocol.Types.TextDocumentClientCapabilities
 import LSP.Protocol.Types.WindowClientCapabilities
 import LSP.Protocol.Types.WorkspaceClientCapabilities
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientCapabilities where
@@ -49,6 +50,15 @@ instance ToJSON ClientCapabilities where
                                                                                            "experimental"
                                                                                            (clientCapabilitiesExperimental
                                                                                              x)]
+
+instance Default ClientCapabilities where
+  def =
+    ClientCapabilities { clientCapabilitiesWorkspace = def
+                       , clientCapabilitiesTextDocument = def
+                       , clientCapabilitiesNotebookDocument = def
+                       , clientCapabilitiesWindow = def
+                       , clientCapabilitiesGeneral = def
+                       , clientCapabilitiesExperimental = def }
 
 data ClientCapabilities = ClientCapabilities { clientCapabilitiesWorkspace :: Maybe WorkspaceClientCapabilities
                                              , clientCapabilitiesTextDocument :: Maybe TextDocumentClientCapabilities

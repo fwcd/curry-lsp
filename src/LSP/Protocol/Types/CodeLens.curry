@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Command
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeLens where
@@ -29,6 +30,12 @@ instance ToJSON CodeLens where
                                         (codeLensCommand x),  (.?=) "data"
                                                                (codeLensData
                                                                  x)]
+
+instance Default CodeLens where
+  def =
+    CodeLens { codeLensRange = def
+             , codeLensCommand = def
+             , codeLensData = def }
 
 data CodeLens = CodeLens { codeLensRange :: Range
                          , codeLensCommand :: Maybe Command

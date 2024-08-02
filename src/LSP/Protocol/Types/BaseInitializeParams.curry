@@ -9,6 +9,7 @@ import LSP.Protocol.Types.ClientCapabilities
 import LSP.Protocol.Types.ClientInfo
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TraceValue
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON BaseInitializeParams where
@@ -66,6 +67,18 @@ instance ToJSON BaseInitializeParams where
                                                                                                                              "trace"
                                                                                                                              (baseInitializeParamsTrace
                                                                                                                                x)]
+
+instance Default BaseInitializeParams where
+  def =
+    BaseInitializeParams { baseInitializeParamsWorkDoneToken = def
+                         , baseInitializeParamsProcessId = def
+                         , baseInitializeParamsClientInfo = def
+                         , baseInitializeParamsLocale = def
+                         , baseInitializeParamsRootPath = def
+                         , baseInitializeParamsRootUri = def
+                         , baseInitializeParamsCapabilities = def
+                         , baseInitializeParamsInitializationOptions = def
+                         , baseInitializeParamsTrace = def }
 
 data BaseInitializeParams = BaseInitializeParams { baseInitializeParamsWorkDoneToken :: Maybe ProgressToken
                                                  , baseInitializeParamsProcessId :: Either Int ()

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DiagnosticOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticOptions where
@@ -37,6 +38,13 @@ instance ToJSON DiagnosticOptions where
                                                                                         "workspaceDiagnostics"
                                                                                         (diagnosticOptionsWorkspaceDiagnostics
                                                                                           x)]
+
+instance Default DiagnosticOptions where
+  def =
+    DiagnosticOptions { diagnosticOptionsWorkDoneProgress = def
+                      , diagnosticOptionsIdentifier = def
+                      , diagnosticOptionsInterFileDependencies = def
+                      , diagnosticOptionsWorkspaceDiagnostics = def }
 
 data DiagnosticOptions = DiagnosticOptions { diagnosticOptionsWorkDoneProgress :: Maybe Bool
                                            , diagnosticOptionsIdentifier :: Maybe String

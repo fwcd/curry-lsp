@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CallHierarchyItem
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CallHierarchyIncomingCallsParams where
@@ -35,6 +36,12 @@ instance ToJSON CallHierarchyIncomingCallsParams where
                                                               x),  (.=) "item"
                                                                     (callHierarchyIncomingCallsParamsItem
                                                                       x)]
+
+instance Default CallHierarchyIncomingCallsParams where
+  def =
+    CallHierarchyIncomingCallsParams { callHierarchyIncomingCallsParamsWorkDoneToken = def
+                                     , callHierarchyIncomingCallsParamsPartialResultToken = def
+                                     , callHierarchyIncomingCallsParamsItem = def }
 
 data CallHierarchyIncomingCallsParams = CallHierarchyIncomingCallsParams { callHierarchyIncomingCallsParamsWorkDoneToken :: Maybe ProgressToken
                                                                          , callHierarchyIncomingCallsParamsPartialResultToken :: Maybe ProgressToken

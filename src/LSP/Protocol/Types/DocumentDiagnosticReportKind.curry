@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentDiagnosticReportKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentDiagnosticReportKind where
@@ -21,6 +22,9 @@ instance ToJSON DocumentDiagnosticReportKind where
     case x of
       DocumentDiagnosticReportKindFull -> toJSON "full"
       DocumentDiagnosticReportKindUnchanged -> toJSON "unchanged"
+
+instance Default DocumentDiagnosticReportKind where
+  def = DocumentDiagnosticReportKindFull
 
 data DocumentDiagnosticReportKind = DocumentDiagnosticReportKindFull
                                   | DocumentDiagnosticReportKindUnchanged

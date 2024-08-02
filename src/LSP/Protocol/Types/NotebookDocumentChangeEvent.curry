@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.LSPObject
 import LSP.Protocol.Types.NotebookDocumentCellChanges
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentChangeEvent where
@@ -26,6 +27,11 @@ instance ToJSON NotebookDocumentChangeEvent where
      [(.?=) "metadata" (notebookDocumentChangeEventMetadata x),  (.?=) "cells"
                                                                   (notebookDocumentChangeEventCells
                                                                     x)]
+
+instance Default NotebookDocumentChangeEvent where
+  def =
+    NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata = def
+                                , notebookDocumentChangeEventCells = def }
 
 data NotebookDocumentChangeEvent = NotebookDocumentChangeEvent { notebookDocumentChangeEventMetadata :: Maybe LSPObject
                                                                , notebookDocumentChangeEventCells :: Maybe NotebookDocumentCellChanges }

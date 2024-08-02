@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.ClientSymbolKindOptions
 import LSP.Protocol.Types.ClientSymbolResolveOptions
 import LSP.Protocol.Types.ClientSymbolTagOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbolClientCapabilities where
@@ -43,6 +44,13 @@ instance ToJSON WorkspaceSymbolClientCapabilities where
                                                                                    "resolveSupport"
                                                                                    (workspaceSymbolClientCapabilitiesResolveSupport
                                                                                      x)]
+
+instance Default WorkspaceSymbolClientCapabilities where
+  def =
+    WorkspaceSymbolClientCapabilities { workspaceSymbolClientCapabilitiesDynamicRegistration = def
+                                      , workspaceSymbolClientCapabilitiesSymbolKind = def
+                                      , workspaceSymbolClientCapabilitiesTagSupport = def
+                                      , workspaceSymbolClientCapabilitiesResolveSupport = def }
 
 data WorkspaceSymbolClientCapabilities = WorkspaceSymbolClientCapabilities { workspaceSymbolClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                            , workspaceSymbolClientCapabilitiesSymbolKind :: Maybe ClientSymbolKindOptions

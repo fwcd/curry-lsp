@@ -56,6 +56,7 @@ import LSP.Protocol.Types.TypeHierarchyOptions
 import LSP.Protocol.Types.TypeHierarchyRegistrationOptions
 import LSP.Protocol.Types.WorkspaceOptions
 import LSP.Protocol.Types.WorkspaceSymbolOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ServerCapabilities where
@@ -299,6 +300,45 @@ instance ToJSON ServerCapabilities where
                                                                                                                                                                                                                                                                                                                                                          "experimental"
                                                                                                                                                                                                                                                                                                                                                          (serverCapabilitiesExperimental
                                                                                                                                                                                                                                                                                                                                                            x)]
+
+instance Default ServerCapabilities where
+  def =
+    ServerCapabilities { serverCapabilitiesPositionEncoding = def
+                       , serverCapabilitiesTextDocumentSync = def
+                       , serverCapabilitiesNotebookDocumentSync = def
+                       , serverCapabilitiesCompletionProvider = def
+                       , serverCapabilitiesHoverProvider = def
+                       , serverCapabilitiesSignatureHelpProvider = def
+                       , serverCapabilitiesDeclarationProvider = def
+                       , serverCapabilitiesDefinitionProvider = def
+                       , serverCapabilitiesTypeDefinitionProvider = def
+                       , serverCapabilitiesImplementationProvider = def
+                       , serverCapabilitiesReferencesProvider = def
+                       , serverCapabilitiesDocumentHighlightProvider = def
+                       , serverCapabilitiesDocumentSymbolProvider = def
+                       , serverCapabilitiesCodeActionProvider = def
+                       , serverCapabilitiesCodeLensProvider = def
+                       , serverCapabilitiesDocumentLinkProvider = def
+                       , serverCapabilitiesColorProvider = def
+                       , serverCapabilitiesWorkspaceSymbolProvider = def
+                       , serverCapabilitiesDocumentFormattingProvider = def
+                       , serverCapabilitiesDocumentRangeFormattingProvider = def
+                       , serverCapabilitiesDocumentOnTypeFormattingProvider = def
+                       , serverCapabilitiesRenameProvider = def
+                       , serverCapabilitiesFoldingRangeProvider = def
+                       , serverCapabilitiesSelectionRangeProvider = def
+                       , serverCapabilitiesExecuteCommandProvider = def
+                       , serverCapabilitiesCallHierarchyProvider = def
+                       , serverCapabilitiesLinkedEditingRangeProvider = def
+                       , serverCapabilitiesSemanticTokensProvider = def
+                       , serverCapabilitiesMonikerProvider = def
+                       , serverCapabilitiesTypeHierarchyProvider = def
+                       , serverCapabilitiesInlineValueProvider = def
+                       , serverCapabilitiesInlayHintProvider = def
+                       , serverCapabilitiesDiagnosticProvider = def
+                       , serverCapabilitiesInlineCompletionProvider = def
+                       , serverCapabilitiesWorkspace = def
+                       , serverCapabilitiesExperimental = def }
 
 data ServerCapabilities = ServerCapabilities { serverCapabilitiesPositionEncoding :: Maybe PositionEncodingKind
                                              , serverCapabilitiesTextDocumentSync :: Maybe (Either TextDocumentSyncOptions TextDocumentSyncKind)

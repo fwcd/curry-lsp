@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextDocumentIdentifier where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentIdentifier where
@@ -18,6 +19,9 @@ instance FromJSON TextDocumentIdentifier where
 
 instance ToJSON TextDocumentIdentifier where
   toJSON x = object [(.=) "uri" (textDocumentIdentifierUri x)]
+
+instance Default TextDocumentIdentifier where
+  def = TextDocumentIdentifier { textDocumentIdentifierUri = def }
 
 data TextDocumentIdentifier = TextDocumentIdentifier { textDocumentIdentifierUri :: DocumentUri }
  deriving (Show,Eq)

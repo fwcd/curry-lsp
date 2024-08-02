@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientFoldingRangeKindOptions
 import LSP.Protocol.Types.ClientFoldingRangeOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeClientCapabilities where
@@ -46,6 +47,14 @@ instance ToJSON FoldingRangeClientCapabilities where
                                                                                         "foldingRange"
                                                                                         (foldingRangeClientCapabilitiesFoldingRange
                                                                                           x)]
+
+instance Default FoldingRangeClientCapabilities where
+  def =
+    FoldingRangeClientCapabilities { foldingRangeClientCapabilitiesDynamicRegistration = def
+                                   , foldingRangeClientCapabilitiesRangeLimit = def
+                                   , foldingRangeClientCapabilitiesLineFoldingOnly = def
+                                   , foldingRangeClientCapabilitiesFoldingRangeKind = def
+                                   , foldingRangeClientCapabilitiesFoldingRange = def }
 
 data FoldingRangeClientCapabilities = FoldingRangeClientCapabilities { foldingRangeClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                      , foldingRangeClientCapabilitiesRangeLimit :: Maybe Int

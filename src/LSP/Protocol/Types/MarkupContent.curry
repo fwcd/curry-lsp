@@ -5,6 +5,7 @@ module LSP.Protocol.Types.MarkupContent where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MarkupKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MarkupContent where
@@ -22,6 +23,9 @@ instance ToJSON MarkupContent where
   toJSON x =
     object
      [(.=) "kind" (markupContentKind x),  (.=) "value" (markupContentValue x)]
+
+instance Default MarkupContent where
+  def = MarkupContent { markupContentKind = def, markupContentValue = def }
 
 data MarkupContent = MarkupContent { markupContentKind :: MarkupKind
                                    , markupContentValue :: String }

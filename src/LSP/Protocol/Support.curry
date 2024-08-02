@@ -6,6 +6,7 @@ module LSP.Protocol.Support
   ) where
 
 import JSON.Data ( JValue (..) )
+import LSP.Utils.Default ( Default (..) )
 import LSP.Utils.JSON ( FromJSON (..), ToJSON (..) )
 
 -- | A uniform resource identifier (URI).
@@ -23,3 +24,6 @@ instance FromJSON Uri where
 
 instance ToJSON Uri where
   toJSON = toJSON . getUri
+
+instance Default Uri where
+  def = Uri "dummy://"

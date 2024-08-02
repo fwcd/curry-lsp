@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SymbolTag where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SymbolTag where
@@ -15,6 +16,9 @@ instance FromJSON SymbolTag where
 
 instance ToJSON SymbolTag where
   toJSON x = case x of SymbolTagDeprecated -> toJSON 1
+
+instance Default SymbolTag where
+  def = SymbolTagDeprecated
 
 data SymbolTag = SymbolTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)

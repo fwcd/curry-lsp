@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkspaceFolder where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceFolder where
@@ -22,6 +23,10 @@ instance ToJSON WorkspaceFolder where
   toJSON x =
     object
      [(.=) "uri" (workspaceFolderUri x),  (.=) "name" (workspaceFolderName x)]
+
+instance Default WorkspaceFolder where
+  def =
+    WorkspaceFolder { workspaceFolderUri = def, workspaceFolderName = def }
 
 data WorkspaceFolder = WorkspaceFolder { workspaceFolderUri :: Uri
                                        , workspaceFolderName :: String }

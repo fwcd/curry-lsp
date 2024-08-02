@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SignatureHelp
 import LSP.Protocol.Types.SignatureHelpTriggerKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpContext where
@@ -38,6 +39,13 @@ instance ToJSON SignatureHelpContext where
                                                                                 "activeSignatureHelp"
                                                                                 (signatureHelpContextActiveSignatureHelp
                                                                                   x)]
+
+instance Default SignatureHelpContext where
+  def =
+    SignatureHelpContext { signatureHelpContextTriggerKind = def
+                         , signatureHelpContextTriggerCharacter = def
+                         , signatureHelpContextIsRetrigger = def
+                         , signatureHelpContextActiveSignatureHelp = def }
 
 data SignatureHelpContext = SignatureHelpContext { signatureHelpContextTriggerKind :: SignatureHelpTriggerKind
                                                  , signatureHelpContextTriggerCharacter :: Maybe String

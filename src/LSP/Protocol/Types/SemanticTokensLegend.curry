@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensLegend where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensLegend where
@@ -24,6 +25,11 @@ instance ToJSON SemanticTokensLegend where
                                                               "tokenModifiers"
                                                               (semanticTokensLegendTokenModifiers
                                                                 x)]
+
+instance Default SemanticTokensLegend where
+  def =
+    SemanticTokensLegend { semanticTokensLegendTokenTypes = def
+                         , semanticTokensLegendTokenModifiers = def }
 
 data SemanticTokensLegend = SemanticTokensLegend { semanticTokensLegendTokenTypes :: [String]
                                                  , semanticTokensLegendTokenModifiers :: [String] }

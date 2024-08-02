@@ -5,6 +5,7 @@ module LSP.Protocol.Types.MonikerRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MonikerRegistrationOptions where
@@ -27,6 +28,11 @@ instance ToJSON MonikerRegistrationOptions where
                                                          "workDoneProgress"
                                                          (monikerRegistrationOptionsWorkDoneProgress
                                                            x)]
+
+instance Default MonikerRegistrationOptions where
+  def =
+    MonikerRegistrationOptions { monikerRegistrationOptionsDocumentSelector = def
+                               , monikerRegistrationOptionsWorkDoneProgress = def }
 
 data MonikerRegistrationOptions = MonikerRegistrationOptions { monikerRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                              , monikerRegistrationOptionsWorkDoneProgress :: Maybe Bool }

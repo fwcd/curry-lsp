@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FoldingRangeRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FoldingRangeRegistrationOptions where
@@ -33,6 +34,12 @@ instance ToJSON FoldingRangeRegistrationOptions where
                                                                       "id"
                                                                       (foldingRangeRegistrationOptionsId
                                                                         x)]
+
+instance Default FoldingRangeRegistrationOptions where
+  def =
+    FoldingRangeRegistrationOptions { foldingRangeRegistrationOptionsDocumentSelector = def
+                                    , foldingRangeRegistrationOptionsWorkDoneProgress = def
+                                    , foldingRangeRegistrationOptionsId = def }
 
 data FoldingRangeRegistrationOptions = FoldingRangeRegistrationOptions { foldingRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                        , foldingRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool

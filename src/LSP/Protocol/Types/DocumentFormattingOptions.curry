@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentFormattingOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentFormattingOptions where
@@ -19,6 +20,10 @@ instance ToJSON DocumentFormattingOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (documentFormattingOptionsWorkDoneProgress x)]
+
+instance Default DocumentFormattingOptions where
+  def =
+    DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress = def }
 
 data DocumentFormattingOptions = DocumentFormattingOptions { documentFormattingOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

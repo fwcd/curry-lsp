@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LinkedEditingRangeParams where
@@ -32,6 +33,12 @@ instance ToJSON LinkedEditingRangeParams where
                                                                               "workDoneToken"
                                                                               (linkedEditingRangeParamsWorkDoneToken
                                                                                 x)]
+
+instance Default LinkedEditingRangeParams where
+  def =
+    LinkedEditingRangeParams { linkedEditingRangeParamsTextDocument = def
+                             , linkedEditingRangeParamsPosition = def
+                             , linkedEditingRangeParamsWorkDoneToken = def }
 
 data LinkedEditingRangeParams = LinkedEditingRangeParams { linkedEditingRangeParamsTextDocument :: TextDocumentIdentifier
                                                          , linkedEditingRangeParamsPosition :: Position

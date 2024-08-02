@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ConfigurationItem where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ConfigurationItem where
@@ -24,6 +25,11 @@ instance ToJSON ConfigurationItem where
      [(.?=) "scopeUri" (configurationItemScopeUri x),  (.?=) "section"
                                                         (configurationItemSection
                                                           x)]
+
+instance Default ConfigurationItem where
+  def =
+    ConfigurationItem { configurationItemScopeUri = def
+                      , configurationItemSection = def }
 
 data ConfigurationItem = ConfigurationItem { configurationItemScopeUri :: Maybe Uri
                                            , configurationItemSection :: Maybe String }

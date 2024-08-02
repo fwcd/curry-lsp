@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CompletionItemTag where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItemTag where
@@ -15,6 +16,9 @@ instance FromJSON CompletionItemTag where
 
 instance ToJSON CompletionItemTag where
   toJSON x = case x of CompletionItemTagDeprecated -> toJSON 1
+
+instance Default CompletionItemTag where
+  def = CompletionItemTagDeprecated
 
 data CompletionItemTag = CompletionItemTagDeprecated
  deriving (Show,Eq,Enum,Bounded,Ord)

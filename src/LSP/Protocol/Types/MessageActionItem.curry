@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MessageActionItem where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MessageActionItem where
@@ -16,6 +17,9 @@ instance FromJSON MessageActionItem where
 
 instance ToJSON MessageActionItem where
   toJSON x = object [(.=) "title" (messageActionItemTitle x)]
+
+instance Default MessageActionItem where
+  def = MessageActionItem { messageActionItemTitle = def }
 
 data MessageActionItem = MessageActionItem { messageActionItemTitle :: String }
  deriving (Show,Eq)

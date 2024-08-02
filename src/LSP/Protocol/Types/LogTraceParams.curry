@@ -4,6 +4,7 @@ module LSP.Protocol.Types.LogTraceParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LogTraceParams where
@@ -22,6 +23,11 @@ instance ToJSON LogTraceParams where
     object
      [(.=) "message" (logTraceParamsMessage x),  (.?=) "verbose"
                                                   (logTraceParamsVerbose x)]
+
+instance Default LogTraceParams where
+  def =
+    LogTraceParams { logTraceParamsMessage = def
+                   , logTraceParamsVerbose = def }
 
 data LogTraceParams = LogTraceParams { logTraceParamsMessage :: String
                                      , logTraceParamsVerbose :: Maybe String }

@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentContentChangeEvent
 import LSP.Protocol.Types.VersionedTextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentCellContentChanges where
@@ -29,6 +30,11 @@ instance ToJSON NotebookDocumentCellContentChanges where
                                                                         "changes"
                                                                         (notebookDocumentCellContentChangesChanges
                                                                           x)]
+
+instance Default NotebookDocumentCellContentChanges where
+  def =
+    NotebookDocumentCellContentChanges { notebookDocumentCellContentChangesDocument = def
+                                       , notebookDocumentCellContentChangesChanges = def }
 
 data NotebookDocumentCellContentChanges = NotebookDocumentCellContentChanges { notebookDocumentCellContentChangesDocument :: VersionedTextDocumentIdentifier
                                                                              , notebookDocumentCellContentChangesChanges :: [TextDocumentContentChangeEvent] }

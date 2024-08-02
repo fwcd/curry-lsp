@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Command
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.StringValue
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionItem where
@@ -37,6 +38,13 @@ instance ToJSON InlineCompletionItem where
                                                                               "command"
                                                                               (inlineCompletionItemCommand
                                                                                 x)]
+
+instance Default InlineCompletionItem where
+  def =
+    InlineCompletionItem { inlineCompletionItemInsertText = def
+                         , inlineCompletionItemFilterText = def
+                         , inlineCompletionItemRange = def
+                         , inlineCompletionItemCommand = def }
 
 data InlineCompletionItem = InlineCompletionItem { inlineCompletionItemInsertText :: Either String StringValue
                                                  , inlineCompletionItemFilterText :: Maybe String

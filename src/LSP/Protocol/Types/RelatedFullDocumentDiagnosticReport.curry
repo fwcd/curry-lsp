@@ -9,6 +9,7 @@ import LSP.Protocol.Support
 import LSP.Protocol.Types.Diagnostic
 import LSP.Protocol.Types.FullDocumentDiagnosticReport
 import LSP.Protocol.Types.UnchangedDocumentDiagnosticReport
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RelatedFullDocumentDiagnosticReport where
@@ -42,6 +43,13 @@ instance ToJSON RelatedFullDocumentDiagnosticReport where
                                                                                  "relatedDocuments"
                                                                                  (relatedFullDocumentDiagnosticReportRelatedDocuments
                                                                                    x)]
+
+instance Default RelatedFullDocumentDiagnosticReport where
+  def =
+    RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportKind = def
+                                        , relatedFullDocumentDiagnosticReportResultId = def
+                                        , relatedFullDocumentDiagnosticReportItems = def
+                                        , relatedFullDocumentDiagnosticReportRelatedDocuments = def }
 
 data RelatedFullDocumentDiagnosticReport = RelatedFullDocumentDiagnosticReport { relatedFullDocumentDiagnosticReportKind :: String
                                                                                , relatedFullDocumentDiagnosticReportResultId :: Maybe String

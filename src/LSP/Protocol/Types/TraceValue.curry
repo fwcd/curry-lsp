@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TraceValue where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TraceValue where
@@ -21,6 +22,9 @@ instance ToJSON TraceValue where
       TraceValueOff -> toJSON "off"
       TraceValueMessages -> toJSON "messages"
       TraceValueVerbose -> toJSON "verbose"
+
+instance Default TraceValue where
+  def = TraceValueOff
 
 data TraceValue = TraceValueOff | TraceValueMessages | TraceValueVerbose
  deriving (Show,Eq,Enum,Bounded,Ord)

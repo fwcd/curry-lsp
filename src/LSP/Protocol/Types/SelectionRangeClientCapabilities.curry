@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SelectionRangeClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectionRangeClientCapabilities where
@@ -24,6 +25,10 @@ instance ToJSON SelectionRangeClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (selectionRangeClientCapabilitiesDynamicRegistration x)]
+
+instance Default SelectionRangeClientCapabilities where
+  def =
+    SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration = def }
 
 data SelectionRangeClientCapabilities = SelectionRangeClientCapabilities { selectionRangeClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

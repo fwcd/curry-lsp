@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SelectionRangeRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectionRangeRegistrationOptions where
@@ -34,6 +35,12 @@ instance ToJSON SelectionRangeRegistrationOptions where
                                                                         "id"
                                                                         (selectionRangeRegistrationOptionsId
                                                                           x)]
+
+instance Default SelectionRangeRegistrationOptions where
+  def =
+    SelectionRangeRegistrationOptions { selectionRangeRegistrationOptionsWorkDoneProgress = def
+                                      , selectionRangeRegistrationOptionsDocumentSelector = def
+                                      , selectionRangeRegistrationOptionsId = def }
 
 data SelectionRangeRegistrationOptions = SelectionRangeRegistrationOptions { selectionRangeRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                            , selectionRangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()

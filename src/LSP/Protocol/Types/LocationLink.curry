@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LocationLink where
@@ -39,6 +40,13 @@ instance ToJSON LocationLink where
                                                                                            "targetSelectionRange"
                                                                                            (locationLinkTargetSelectionRange
                                                                                              x)]
+
+instance Default LocationLink where
+  def =
+    LocationLink { locationLinkOriginSelectionRange = def
+                 , locationLinkTargetUri = def
+                 , locationLinkTargetRange = def
+                 , locationLinkTargetSelectionRange = def }
 
 data LocationLink = LocationLink { locationLinkOriginSelectionRange :: Maybe Range
                                  , locationLinkTargetUri :: DocumentUri

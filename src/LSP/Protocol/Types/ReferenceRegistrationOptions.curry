@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ReferenceRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ReferenceRegistrationOptions where
@@ -27,6 +28,11 @@ instance ToJSON ReferenceRegistrationOptions where
                                                            "workDoneProgress"
                                                            (referenceRegistrationOptionsWorkDoneProgress
                                                              x)]
+
+instance Default ReferenceRegistrationOptions where
+  def =
+    ReferenceRegistrationOptions { referenceRegistrationOptionsDocumentSelector = def
+                                 , referenceRegistrationOptionsWorkDoneProgress = def }
 
 data ReferenceRegistrationOptions = ReferenceRegistrationOptions { referenceRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                  , referenceRegistrationOptionsWorkDoneProgress :: Maybe Bool }

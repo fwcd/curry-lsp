@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MarkupKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MarkupKind where
@@ -19,6 +20,9 @@ instance ToJSON MarkupKind where
     case x of
       MarkupKindPlainText -> toJSON "plaintext"
       MarkupKindMarkdown -> toJSON "markdown"
+
+instance Default MarkupKind where
+  def = MarkupKindPlainText
 
 data MarkupKind = MarkupKindPlainText | MarkupKindMarkdown
  deriving (Show,Eq,Enum,Bounded,Ord)

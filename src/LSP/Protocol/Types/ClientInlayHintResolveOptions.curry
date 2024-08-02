@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientInlayHintResolveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientInlayHintResolveOptions where
@@ -20,6 +21,10 @@ instance FromJSON ClientInlayHintResolveOptions where
 instance ToJSON ClientInlayHintResolveOptions where
   toJSON x =
     object [(.=) "properties" (clientInlayHintResolveOptionsProperties x)]
+
+instance Default ClientInlayHintResolveOptions where
+  def =
+    ClientInlayHintResolveOptions { clientInlayHintResolveOptionsProperties = def }
 
 data ClientInlayHintResolveOptions = ClientInlayHintResolveOptions { clientInlayHintResolveOptionsProperties :: [String] }
  deriving (Show,Eq)

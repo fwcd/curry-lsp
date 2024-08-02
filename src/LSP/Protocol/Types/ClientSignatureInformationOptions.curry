@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientSignatureParameterInformationOptions
 import LSP.Protocol.Types.MarkupKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientSignatureInformationOptions where
@@ -48,6 +49,13 @@ instance ToJSON ClientSignatureInformationOptions where
                                                                                    "noActiveParameterSupport"
                                                                                    (clientSignatureInformationOptionsNoActiveParameterSupport
                                                                                      x)]
+
+instance Default ClientSignatureInformationOptions where
+  def =
+    ClientSignatureInformationOptions { clientSignatureInformationOptionsDocumentationFormat = def
+                                      , clientSignatureInformationOptionsParameterInformation = def
+                                      , clientSignatureInformationOptionsActiveParameterSupport = def
+                                      , clientSignatureInformationOptionsNoActiveParameterSupport = def }
 
 data ClientSignatureInformationOptions = ClientSignatureInformationOptions { clientSignatureInformationOptionsDocumentationFormat :: Maybe [MarkupKind]
                                                                            , clientSignatureInformationOptionsParameterInformation :: Maybe ClientSignatureParameterInformationOptions

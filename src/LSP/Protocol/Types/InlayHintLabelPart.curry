@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Command
 import LSP.Protocol.Types.Location
 import LSP.Protocol.Types.MarkupContent
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintLabelPart where
@@ -35,6 +36,13 @@ instance ToJSON InlayHintLabelPart where
                                                                   "command"
                                                                   (inlayHintLabelPartCommand
                                                                     x)]
+
+instance Default InlayHintLabelPart where
+  def =
+    InlayHintLabelPart { inlayHintLabelPartValue = def
+                       , inlayHintLabelPartTooltip = def
+                       , inlayHintLabelPartLocation = def
+                       , inlayHintLabelPartCommand = def }
 
 data InlayHintLabelPart = InlayHintLabelPart { inlayHintLabelPartValue :: String
                                              , inlayHintLabelPartTooltip :: Maybe (Either String MarkupContent)

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TypeHierarchyRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeHierarchyRegistrationOptions where
@@ -33,6 +34,12 @@ instance ToJSON TypeHierarchyRegistrationOptions where
                                                                        "id"
                                                                        (typeHierarchyRegistrationOptionsId
                                                                          x)]
+
+instance Default TypeHierarchyRegistrationOptions where
+  def =
+    TypeHierarchyRegistrationOptions { typeHierarchyRegistrationOptionsDocumentSelector = def
+                                     , typeHierarchyRegistrationOptionsWorkDoneProgress = def
+                                     , typeHierarchyRegistrationOptionsId = def }
 
 data TypeHierarchyRegistrationOptions = TypeHierarchyRegistrationOptions { typeHierarchyRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , typeHierarchyRegistrationOptionsWorkDoneProgress :: Maybe Bool

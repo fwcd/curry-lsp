@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CodeActionDisabled where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionDisabled where
@@ -17,6 +18,9 @@ instance FromJSON CodeActionDisabled where
 
 instance ToJSON CodeActionDisabled where
   toJSON x = object [(.=) "reason" (codeActionDisabledReason x)]
+
+instance Default CodeActionDisabled where
+  def = CodeActionDisabled { codeActionDisabledReason = def }
 
 data CodeActionDisabled = CodeActionDisabled { codeActionDisabledReason :: String }
  deriving (Show,Eq)

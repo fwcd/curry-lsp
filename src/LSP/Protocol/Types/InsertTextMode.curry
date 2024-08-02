@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InsertTextMode where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InsertTextMode where
@@ -19,6 +20,9 @@ instance ToJSON InsertTextMode where
     case x of
       InsertTextModeAsIs -> toJSON 1
       InsertTextModeAdjustIndentation -> toJSON 2
+
+instance Default InsertTextMode where
+  def = InsertTextModeAsIs
 
 data InsertTextMode = InsertTextModeAsIs | InsertTextModeAdjustIndentation
  deriving (Show,Eq,Enum,Bounded,Ord)

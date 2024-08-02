@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.RenameFileOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameFile where
@@ -40,6 +41,14 @@ instance ToJSON RenameFile where
                                                                                       "options"
                                                                                       (renameFileOptions
                                                                                         x)]
+
+instance Default RenameFile where
+  def =
+    RenameFile { renameFileKind = def
+               , renameFileAnnotationId = def
+               , renameFileOldUri = def
+               , renameFileNewUri = def
+               , renameFileOptions = def }
 
 data RenameFile = RenameFile { renameFileKind :: String
                              , renameFileAnnotationId :: Maybe ChangeAnnotationIdentifier

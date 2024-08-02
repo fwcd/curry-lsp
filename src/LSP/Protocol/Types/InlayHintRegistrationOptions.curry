@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlayHintRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintRegistrationOptions where
@@ -37,6 +38,13 @@ instance ToJSON InlayHintRegistrationOptions where
                                                                            "id"
                                                                            (inlayHintRegistrationOptionsId
                                                                              x)]
+
+instance Default InlayHintRegistrationOptions where
+  def =
+    InlayHintRegistrationOptions { inlayHintRegistrationOptionsWorkDoneProgress = def
+                                 , inlayHintRegistrationOptionsResolveProvider = def
+                                 , inlayHintRegistrationOptionsDocumentSelector = def
+                                 , inlayHintRegistrationOptionsId = def }
 
 data InlayHintRegistrationOptions = InlayHintRegistrationOptions { inlayHintRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                  , inlayHintRegistrationOptionsResolveProvider :: Maybe Bool

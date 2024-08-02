@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookDocumentFilterWithCells
 import LSP.Protocol.Types.NotebookDocumentFilterWithNotebook
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentSyncOptions where
@@ -27,6 +28,11 @@ instance ToJSON NotebookDocumentSyncOptions where
        (notebookDocumentSyncOptionsNotebookSelector x),  (.?=) "save"
                                                           (notebookDocumentSyncOptionsSave
                                                             x)]
+
+instance Default NotebookDocumentSyncOptions where
+  def =
+    NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector = def
+                                , notebookDocumentSyncOptionsSave = def }
 
 data NotebookDocumentSyncOptions = NotebookDocumentSyncOptions { notebookDocumentSyncOptionsNotebookSelector :: [Either NotebookDocumentFilterWithNotebook NotebookDocumentFilterWithCells]
                                                                , notebookDocumentSyncOptionsSave :: Maybe Bool }

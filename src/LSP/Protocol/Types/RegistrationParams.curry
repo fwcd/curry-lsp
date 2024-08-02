@@ -5,6 +5,7 @@ module LSP.Protocol.Types.RegistrationParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Registration
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RegistrationParams where
@@ -18,6 +19,9 @@ instance FromJSON RegistrationParams where
 
 instance ToJSON RegistrationParams where
   toJSON x = object [(.=) "registrations" (registrationParamsRegistrations x)]
+
+instance Default RegistrationParams where
+  def = RegistrationParams { registrationParamsRegistrations = def }
 
 data RegistrationParams = RegistrationParams { registrationParamsRegistrations :: [Registration] }
  deriving (Show,Eq)

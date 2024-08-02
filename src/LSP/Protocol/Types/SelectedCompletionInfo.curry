@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SelectedCompletionInfo where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectedCompletionInfo where
@@ -24,6 +25,11 @@ instance ToJSON SelectedCompletionInfo where
      [(.=) "range" (selectedCompletionInfoRange x),  (.=) "text"
                                                       (selectedCompletionInfoText
                                                         x)]
+
+instance Default SelectedCompletionInfo where
+  def =
+    SelectedCompletionInfo { selectedCompletionInfoRange = def
+                           , selectedCompletionInfoText = def }
 
 data SelectedCompletionInfo = SelectedCompletionInfo { selectedCompletionInfoRange :: Range
                                                      , selectedCompletionInfoText :: String }

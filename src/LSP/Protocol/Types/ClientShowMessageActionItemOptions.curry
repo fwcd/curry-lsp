@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ClientShowMessageActionItemOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientShowMessageActionItemOptions where
@@ -25,6 +26,10 @@ instance ToJSON ClientShowMessageActionItemOptions where
     object
      [(.?=) "additionalPropertiesSupport"
        (clientShowMessageActionItemOptionsAdditionalPropertiesSupport x)]
+
+instance Default ClientShowMessageActionItemOptions where
+  def =
+    ClientShowMessageActionItemOptions { clientShowMessageActionItemOptionsAdditionalPropertiesSupport = def }
 
 data ClientShowMessageActionItemOptions = ClientShowMessageActionItemOptions { clientShowMessageActionItemOptionsAdditionalPropertiesSupport :: Maybe Bool }
  deriving (Show,Eq)

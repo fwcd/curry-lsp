@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidChangeWorkspaceFoldersParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.WorkspaceFoldersChangeEvent
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeWorkspaceFoldersParams where
@@ -20,6 +21,10 @@ instance FromJSON DidChangeWorkspaceFoldersParams where
 
 instance ToJSON DidChangeWorkspaceFoldersParams where
   toJSON x = object [(.=) "event" (didChangeWorkspaceFoldersParamsEvent x)]
+
+instance Default DidChangeWorkspaceFoldersParams where
+  def =
+    DidChangeWorkspaceFoldersParams { didChangeWorkspaceFoldersParamsEvent = def }
 
 data DidChangeWorkspaceFoldersParams = DidChangeWorkspaceFoldersParams { didChangeWorkspaceFoldersParamsEvent :: WorkspaceFoldersChangeEvent }
  deriving (Show,Eq)

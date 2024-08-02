@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SetTraceParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TraceValue
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SetTraceParams where
@@ -17,6 +18,9 @@ instance FromJSON SetTraceParams where
 
 instance ToJSON SetTraceParams where
   toJSON x = object [(.=) "value" (setTraceParamsValue x)]
+
+instance Default SetTraceParams where
+  def = SetTraceParams { setTraceParamsValue = def }
 
 data SetTraceParams = SetTraceParams { setTraceParamsValue :: TraceValue }
  deriving (Show,Eq)

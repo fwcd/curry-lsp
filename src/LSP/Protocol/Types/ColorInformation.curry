@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Color
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ColorInformation where
@@ -24,6 +25,11 @@ instance ToJSON ColorInformation where
     object
      [(.=) "range" (colorInformationRange x),  (.=) "color"
                                                 (colorInformationColor x)]
+
+instance Default ColorInformation where
+  def =
+    ColorInformation { colorInformationRange = def
+                     , colorInformationColor = def }
 
 data ColorInformation = ColorInformation { colorInformationRange :: Range
                                          , colorInformationColor :: Color }

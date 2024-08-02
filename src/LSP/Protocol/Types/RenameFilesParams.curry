@@ -5,6 +5,7 @@ module LSP.Protocol.Types.RenameFilesParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileRename
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameFilesParams where
@@ -17,6 +18,9 @@ instance FromJSON RenameFilesParams where
 
 instance ToJSON RenameFilesParams where
   toJSON x = object [(.=) "files" (renameFilesParamsFiles x)]
+
+instance Default RenameFilesParams where
+  def = RenameFilesParams { renameFilesParamsFiles = def }
 
 data RenameFilesParams = RenameFilesParams { renameFilesParamsFiles :: [FileRename] }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ApplyWorkspaceEditResult where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ApplyWorkspaceEditResult where
@@ -29,6 +30,12 @@ instance ToJSON ApplyWorkspaceEditResult where
                                                                     "failedChange"
                                                                     (applyWorkspaceEditResultFailedChange
                                                                       x)]
+
+instance Default ApplyWorkspaceEditResult where
+  def =
+    ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied = def
+                             , applyWorkspaceEditResultFailureReason = def
+                             , applyWorkspaceEditResultFailedChange = def }
 
 data ApplyWorkspaceEditResult = ApplyWorkspaceEditResult { applyWorkspaceEditResultApplied :: Bool
                                                          , applyWorkspaceEditResultFailureReason :: Maybe String

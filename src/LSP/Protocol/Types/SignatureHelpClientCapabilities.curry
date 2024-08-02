@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SignatureHelpClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientSignatureInformationOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpClientCapabilities where
@@ -37,6 +38,12 @@ instance ToJSON SignatureHelpClientCapabilities where
                                                                          "contextSupport"
                                                                          (signatureHelpClientCapabilitiesContextSupport
                                                                            x)]
+
+instance Default SignatureHelpClientCapabilities where
+  def =
+    SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration = def
+                                    , signatureHelpClientCapabilitiesSignatureInformation = def
+                                    , signatureHelpClientCapabilitiesContextSupport = def }
 
 data SignatureHelpClientCapabilities = SignatureHelpClientCapabilities { signatureHelpClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                        , signatureHelpClientCapabilitiesSignatureInformation :: Maybe ClientSignatureInformationOptions

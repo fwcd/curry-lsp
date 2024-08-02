@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineValueContext where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueContext where
@@ -24,6 +25,11 @@ instance ToJSON InlineValueContext where
      [(.=) "frameId" (inlineValueContextFrameId x),  (.=) "stoppedLocation"
                                                       (inlineValueContextStoppedLocation
                                                         x)]
+
+instance Default InlineValueContext where
+  def =
+    InlineValueContext { inlineValueContextFrameId = def
+                       , inlineValueContextStoppedLocation = def }
 
 data InlineValueContext = InlineValueContext { inlineValueContextFrameId :: Int
                                              , inlineValueContextStoppedLocation :: Range }

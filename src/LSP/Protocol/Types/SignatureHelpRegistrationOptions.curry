@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SignatureHelpRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpRegistrationOptions where
@@ -41,6 +42,13 @@ instance ToJSON SignatureHelpRegistrationOptions where
                                                                                "retriggerCharacters"
                                                                                (signatureHelpRegistrationOptionsRetriggerCharacters
                                                                                  x)]
+
+instance Default SignatureHelpRegistrationOptions where
+  def =
+    SignatureHelpRegistrationOptions { signatureHelpRegistrationOptionsDocumentSelector = def
+                                     , signatureHelpRegistrationOptionsWorkDoneProgress = def
+                                     , signatureHelpRegistrationOptionsTriggerCharacters = def
+                                     , signatureHelpRegistrationOptionsRetriggerCharacters = def }
 
 data SignatureHelpRegistrationOptions = SignatureHelpRegistrationOptions { signatureHelpRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , signatureHelpRegistrationOptionsWorkDoneProgress :: Maybe Bool

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CompletionContext where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CompletionTriggerKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionContext where
@@ -25,6 +26,11 @@ instance ToJSON CompletionContext where
                                                              "triggerCharacter"
                                                              (completionContextTriggerCharacter
                                                                x)]
+
+instance Default CompletionContext where
+  def =
+    CompletionContext { completionContextTriggerKind = def
+                      , completionContextTriggerCharacter = def }
 
 data CompletionContext = CompletionContext { completionContextTriggerKind :: CompletionTriggerKind
                                            , completionContextTriggerCharacter :: Maybe String }

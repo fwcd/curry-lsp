@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ImplementationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ImplementationOptions where
@@ -19,6 +20,9 @@ instance ToJSON ImplementationOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (implementationOptionsWorkDoneProgress x)]
+
+instance Default ImplementationOptions where
+  def = ImplementationOptions { implementationOptionsWorkDoneProgress = def }
 
 data ImplementationOptions = ImplementationOptions { implementationOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

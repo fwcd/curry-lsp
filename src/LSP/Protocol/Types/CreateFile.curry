@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.CreateFileOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CreateFile where
@@ -35,6 +36,13 @@ instance ToJSON CreateFile where
                                                                               "options"
                                                                               (createFileOptions
                                                                                 x)]
+
+instance Default CreateFile where
+  def =
+    CreateFile { createFileKind = def
+               , createFileAnnotationId = def
+               , createFileUri = def
+               , createFileOptions = def }
 
 data CreateFile = CreateFile { createFileKind :: String
                              , createFileAnnotationId :: Maybe ChangeAnnotationIdentifier

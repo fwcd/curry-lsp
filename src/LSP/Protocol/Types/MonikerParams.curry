@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MonikerParams where
@@ -38,6 +39,13 @@ instance ToJSON MonikerParams where
                                                                            "partialResultToken"
                                                                            (monikerParamsPartialResultToken
                                                                              x)]
+
+instance Default MonikerParams where
+  def =
+    MonikerParams { monikerParamsTextDocument = def
+                  , monikerParamsPosition = def
+                  , monikerParamsWorkDoneToken = def
+                  , monikerParamsPartialResultToken = def }
 
 data MonikerParams = MonikerParams { monikerParamsTextDocument :: TextDocumentIdentifier
                                    , monikerParamsPosition :: Position

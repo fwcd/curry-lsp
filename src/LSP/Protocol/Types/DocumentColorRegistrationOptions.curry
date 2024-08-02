@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentColorRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentColorRegistrationOptions where
@@ -33,6 +34,12 @@ instance ToJSON DocumentColorRegistrationOptions where
                                                                        "id"
                                                                        (documentColorRegistrationOptionsId
                                                                          x)]
+
+instance Default DocumentColorRegistrationOptions where
+  def =
+    DocumentColorRegistrationOptions { documentColorRegistrationOptionsDocumentSelector = def
+                                     , documentColorRegistrationOptionsWorkDoneProgress = def
+                                     , documentColorRegistrationOptionsId = def }
 
 data DocumentColorRegistrationOptions = DocumentColorRegistrationOptions { documentColorRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                          , documentColorRegistrationOptionsWorkDoneProgress :: Maybe Bool

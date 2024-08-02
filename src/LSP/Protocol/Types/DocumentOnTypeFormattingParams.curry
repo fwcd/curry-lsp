@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.FormattingOptions
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentOnTypeFormattingParams where
@@ -38,6 +39,13 @@ instance ToJSON DocumentOnTypeFormattingParams where
                                                                          "options"
                                                                          (documentOnTypeFormattingParamsOptions
                                                                            x)]
+
+instance Default DocumentOnTypeFormattingParams where
+  def =
+    DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument = def
+                                   , documentOnTypeFormattingParamsPosition = def
+                                   , documentOnTypeFormattingParamsCh = def
+                                   , documentOnTypeFormattingParamsOptions = def }
 
 data DocumentOnTypeFormattingParams = DocumentOnTypeFormattingParams { documentOnTypeFormattingParamsTextDocument :: TextDocumentIdentifier
                                                                      , documentOnTypeFormattingParamsPosition :: Position

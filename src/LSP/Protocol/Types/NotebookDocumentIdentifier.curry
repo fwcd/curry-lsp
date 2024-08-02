@@ -5,6 +5,7 @@ module LSP.Protocol.Types.NotebookDocumentIdentifier where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentIdentifier where
@@ -19,6 +20,9 @@ instance FromJSON NotebookDocumentIdentifier where
 
 instance ToJSON NotebookDocumentIdentifier where
   toJSON x = object [(.=) "uri" (notebookDocumentIdentifierUri x)]
+
+instance Default NotebookDocumentIdentifier where
+  def = NotebookDocumentIdentifier { notebookDocumentIdentifierUri = def }
 
 data NotebookDocumentIdentifier = NotebookDocumentIdentifier { notebookDocumentIdentifierUri :: Uri }
  deriving (Show,Eq)

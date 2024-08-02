@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SaveOptions
 import LSP.Protocol.Types.TextDocumentSyncKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentSyncOptions where
@@ -41,6 +42,14 @@ instance ToJSON TextDocumentSyncOptions where
                                                                                         "save"
                                                                                         (textDocumentSyncOptionsSave
                                                                                           x)]
+
+instance Default TextDocumentSyncOptions where
+  def =
+    TextDocumentSyncOptions { textDocumentSyncOptionsOpenClose = def
+                            , textDocumentSyncOptionsChange = def
+                            , textDocumentSyncOptionsWillSave = def
+                            , textDocumentSyncOptionsWillSaveWaitUntil = def
+                            , textDocumentSyncOptionsSave = def }
 
 data TextDocumentSyncOptions = TextDocumentSyncOptions { textDocumentSyncOptionsOpenClose :: Maybe Bool
                                                        , textDocumentSyncOptionsChange :: Maybe TextDocumentSyncKind

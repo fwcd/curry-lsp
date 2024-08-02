@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WorkspaceSymbolRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkspaceSymbolRegistrationOptions where
@@ -28,6 +29,11 @@ instance ToJSON WorkspaceSymbolRegistrationOptions where
                                                                  "resolveProvider"
                                                                  (workspaceSymbolRegistrationOptionsResolveProvider
                                                                    x)]
+
+instance Default WorkspaceSymbolRegistrationOptions where
+  def =
+    WorkspaceSymbolRegistrationOptions { workspaceSymbolRegistrationOptionsWorkDoneProgress = def
+                                       , workspaceSymbolRegistrationOptionsResolveProvider = def }
 
 data WorkspaceSymbolRegistrationOptions = WorkspaceSymbolRegistrationOptions { workspaceSymbolRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                              , workspaceSymbolRegistrationOptionsResolveProvider :: Maybe Bool }

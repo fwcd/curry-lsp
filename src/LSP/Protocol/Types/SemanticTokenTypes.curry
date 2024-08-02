@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokenTypes where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokenTypes where
@@ -63,6 +64,9 @@ instance ToJSON SemanticTokenTypes where
       SemanticTokenTypesOperator -> toJSON "operator"
       SemanticTokenTypesDecorator -> toJSON "decorator"
       SemanticTokenTypesLabel -> toJSON "label"
+
+instance Default SemanticTokenTypes where
+  def = SemanticTokenTypesNamespace
 
 data SemanticTokenTypes = SemanticTokenTypesNamespace
                         | SemanticTokenTypesType

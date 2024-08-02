@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CompletionItemKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItemKind where
@@ -65,6 +66,9 @@ instance ToJSON CompletionItemKind where
       CompletionItemKindEvent -> toJSON 23
       CompletionItemKindOperator -> toJSON 24
       CompletionItemKindTypeParameter -> toJSON 25
+
+instance Default CompletionItemKind where
+  def = CompletionItemKindText
 
 data CompletionItemKind = CompletionItemKindText
                         | CompletionItemKindMethod

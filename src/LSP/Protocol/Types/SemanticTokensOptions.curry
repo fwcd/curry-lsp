@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SemanticTokensFullDelta
 import LSP.Protocol.Types.SemanticTokensLegend
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensOptions where
@@ -35,6 +36,13 @@ instance ToJSON SemanticTokensOptions where
                                                                     "full"
                                                                     (semanticTokensOptionsFull
                                                                       x)]
+
+instance Default SemanticTokensOptions where
+  def =
+    SemanticTokensOptions { semanticTokensOptionsWorkDoneProgress = def
+                          , semanticTokensOptionsLegend = def
+                          , semanticTokensOptionsRange = def
+                          , semanticTokensOptionsFull = def }
 
 data SemanticTokensOptions = SemanticTokensOptions { semanticTokensOptionsWorkDoneProgress :: Maybe Bool
                                                    , semanticTokensOptionsLegend :: SemanticTokensLegend

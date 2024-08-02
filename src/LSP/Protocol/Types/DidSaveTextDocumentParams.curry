@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidSaveTextDocumentParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidSaveTextDocumentParams where
@@ -25,6 +26,11 @@ instance ToJSON DidSaveTextDocumentParams where
                                                                        "text"
                                                                        (didSaveTextDocumentParamsText
                                                                          x)]
+
+instance Default DidSaveTextDocumentParams where
+  def =
+    DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument = def
+                              , didSaveTextDocumentParamsText = def }
 
 data DidSaveTextDocumentParams = DidSaveTextDocumentParams { didSaveTextDocumentParamsTextDocument :: TextDocumentIdentifier
                                                            , didSaveTextDocumentParamsText :: Maybe String }

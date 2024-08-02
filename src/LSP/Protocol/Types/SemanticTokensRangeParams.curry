@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensRangeParams where
@@ -39,6 +40,13 @@ instance ToJSON SemanticTokensRangeParams where
                                                                                           "range"
                                                                                           (semanticTokensRangeParamsRange
                                                                                             x)]
+
+instance Default SemanticTokensRangeParams where
+  def =
+    SemanticTokensRangeParams { semanticTokensRangeParamsWorkDoneToken = def
+                              , semanticTokensRangeParamsPartialResultToken = def
+                              , semanticTokensRangeParamsTextDocument = def
+                              , semanticTokensRangeParamsRange = def }
 
 data SemanticTokensRangeParams = SemanticTokensRangeParams { semanticTokensRangeParamsWorkDoneToken :: Maybe ProgressToken
                                                            , semanticTokensRangeParamsPartialResultToken :: Maybe ProgressToken

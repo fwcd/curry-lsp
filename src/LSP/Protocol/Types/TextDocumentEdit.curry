@@ -8,6 +8,7 @@ import LSP.Protocol.Types.AnnotatedTextEdit
 import LSP.Protocol.Types.OptionalVersionedTextDocumentIdentifier
 import LSP.Protocol.Types.SnippetTextEdit
 import LSP.Protocol.Types.TextEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentEdit where
@@ -27,6 +28,11 @@ instance ToJSON TextDocumentEdit where
      [(.=) "textDocument" (textDocumentEditTextDocument x),  (.=) "edits"
                                                               (textDocumentEditEdits
                                                                 x)]
+
+instance Default TextDocumentEdit where
+  def =
+    TextDocumentEdit { textDocumentEditTextDocument = def
+                     , textDocumentEditEdits = def }
 
 data TextDocumentEdit = TextDocumentEdit { textDocumentEditTextDocument :: OptionalVersionedTextDocumentIdentifier
                                          , textDocumentEditEdits :: [Either (Either TextEdit AnnotatedTextEdit) SnippetTextEdit] }

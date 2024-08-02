@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TokenFormat where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TokenFormat where
@@ -15,6 +16,9 @@ instance FromJSON TokenFormat where
 
 instance ToJSON TokenFormat where
   toJSON x = case x of TokenFormatRelative -> toJSON "relative"
+
+instance Default TokenFormat where
+  def = TokenFormatRelative
 
 data TokenFormat = TokenFormatRelative
  deriving (Show,Eq,Enum,Bounded,Ord)

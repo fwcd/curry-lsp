@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SelectionRangeParams where
@@ -39,6 +40,13 @@ instance ToJSON SelectionRangeParams where
                                                                                      "positions"
                                                                                      (selectionRangeParamsPositions
                                                                                        x)]
+
+instance Default SelectionRangeParams where
+  def =
+    SelectionRangeParams { selectionRangeParamsWorkDoneToken = def
+                         , selectionRangeParamsPartialResultToken = def
+                         , selectionRangeParamsTextDocument = def
+                         , selectionRangeParamsPositions = def }
 
 data SelectionRangeParams = SelectionRangeParams { selectionRangeParamsWorkDoneToken :: Maybe ProgressToken
                                                  , selectionRangeParamsPartialResultToken :: Maybe ProgressToken

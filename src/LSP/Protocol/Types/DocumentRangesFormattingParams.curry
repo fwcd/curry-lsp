@@ -8,6 +8,7 @@ import LSP.Protocol.Types.FormattingOptions
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentRangesFormattingParams where
@@ -39,6 +40,13 @@ instance ToJSON DocumentRangesFormattingParams where
                                                                           "options"
                                                                           (documentRangesFormattingParamsOptions
                                                                             x)]
+
+instance Default DocumentRangesFormattingParams where
+  def =
+    DocumentRangesFormattingParams { documentRangesFormattingParamsWorkDoneToken = def
+                                   , documentRangesFormattingParamsTextDocument = def
+                                   , documentRangesFormattingParamsRanges = def
+                                   , documentRangesFormattingParamsOptions = def }
 
 data DocumentRangesFormattingParams = DocumentRangesFormattingParams { documentRangesFormattingParamsWorkDoneToken :: Maybe ProgressToken
                                                                      , documentRangesFormattingParamsTextDocument :: TextDocumentIdentifier

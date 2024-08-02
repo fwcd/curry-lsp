@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SignatureHelpTriggerKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpTriggerKind where
@@ -22,6 +23,9 @@ instance ToJSON SignatureHelpTriggerKind where
       SignatureHelpTriggerKindInvoked -> toJSON 1
       SignatureHelpTriggerKindTriggerCharacter -> toJSON 2
       SignatureHelpTriggerKindContentChange -> toJSON 3
+
+instance Default SignatureHelpTriggerKind where
+  def = SignatureHelpTriggerKindInvoked
 
 data SignatureHelpTriggerKind = SignatureHelpTriggerKindInvoked
                               | SignatureHelpTriggerKindTriggerCharacter

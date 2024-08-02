@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ParameterInformation where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MarkupContent
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ParameterInformation where
@@ -24,6 +25,11 @@ instance ToJSON ParameterInformation where
      [(.=) "label" (parameterInformationLabel x),  (.?=) "documentation"
                                                     (parameterInformationDocumentation
                                                       x)]
+
+instance Default ParameterInformation where
+  def =
+    ParameterInformation { parameterInformationLabel = def
+                         , parameterInformationDocumentation = def }
 
 data ParameterInformation = ParameterInformation { parameterInformationLabel :: Either String (Int
                                                                                               ,Int)

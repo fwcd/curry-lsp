@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlineCompletionClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON InlineCompletionClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (inlineCompletionClientCapabilitiesDynamicRegistration x)]
+
+instance Default InlineCompletionClientCapabilities where
+  def =
+    InlineCompletionClientCapabilities { inlineCompletionClientCapabilitiesDynamicRegistration = def }
 
 data InlineCompletionClientCapabilities = InlineCompletionClientCapabilities { inlineCompletionClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

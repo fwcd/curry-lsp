@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FullDocumentDiagnosticReport where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Diagnostic
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FullDocumentDiagnosticReport where
@@ -29,6 +30,12 @@ instance ToJSON FullDocumentDiagnosticReport where
                                                             x),  (.=) "items"
                                                                   (fullDocumentDiagnosticReportItems
                                                                     x)]
+
+instance Default FullDocumentDiagnosticReport where
+  def =
+    FullDocumentDiagnosticReport { fullDocumentDiagnosticReportKind = def
+                                 , fullDocumentDiagnosticReportResultId = def
+                                 , fullDocumentDiagnosticReportItems = def }
 
 data FullDocumentDiagnosticReport = FullDocumentDiagnosticReport { fullDocumentDiagnosticReportKind :: String
                                                                  , fullDocumentDiagnosticReportResultId :: Maybe String

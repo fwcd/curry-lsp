@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ReferenceOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ReferenceOptions where
@@ -18,6 +19,9 @@ instance FromJSON ReferenceOptions where
 instance ToJSON ReferenceOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (referenceOptionsWorkDoneProgress x)]
+
+instance Default ReferenceOptions where
+  def = ReferenceOptions { referenceOptionsWorkDoneProgress = def }
 
 data ReferenceOptions = ReferenceOptions { referenceOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TypeDefinitionOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TypeDefinitionOptions where
@@ -19,6 +20,9 @@ instance ToJSON TypeDefinitionOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (typeDefinitionOptionsWorkDoneProgress x)]
+
+instance Default TypeDefinitionOptions where
+  def = TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress = def }
 
 data TypeDefinitionOptions = TypeDefinitionOptions { typeDefinitionOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

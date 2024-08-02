@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ServerCapabilities
 import LSP.Protocol.Types.ServerInfo
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InitializeResult where
@@ -26,6 +27,11 @@ instance ToJSON InitializeResult where
                                                               "serverInfo"
                                                               (initializeResultServerInfo
                                                                 x)]
+
+instance Default InitializeResult where
+  def =
+    InitializeResult { initializeResultCapabilities = def
+                     , initializeResultServerInfo = def }
 
 data InitializeResult = InitializeResult { initializeResultCapabilities :: ServerCapabilities
                                          , initializeResultServerInfo :: Maybe ServerInfo }

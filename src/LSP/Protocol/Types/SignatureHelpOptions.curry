@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SignatureHelpOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpOptions where
@@ -32,6 +33,12 @@ instance ToJSON SignatureHelpOptions where
                                                            "retriggerCharacters"
                                                            (signatureHelpOptionsRetriggerCharacters
                                                              x)]
+
+instance Default SignatureHelpOptions where
+  def =
+    SignatureHelpOptions { signatureHelpOptionsWorkDoneProgress = def
+                         , signatureHelpOptionsTriggerCharacters = def
+                         , signatureHelpOptionsRetriggerCharacters = def }
 
 data SignatureHelpOptions = SignatureHelpOptions { signatureHelpOptionsWorkDoneProgress :: Maybe Bool
                                                  , signatureHelpOptionsTriggerCharacters :: Maybe [String]

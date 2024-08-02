@@ -4,6 +4,7 @@ module LSP.Protocol.Types.InlineValueOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueOptions where
@@ -18,6 +19,9 @@ instance FromJSON InlineValueOptions where
 instance ToJSON InlineValueOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (inlineValueOptionsWorkDoneProgress x)]
+
+instance Default InlineValueOptions where
+  def = InlineValueOptions { inlineValueOptionsWorkDoneProgress = def }
 
 data InlineValueOptions = InlineValueOptions { inlineValueOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

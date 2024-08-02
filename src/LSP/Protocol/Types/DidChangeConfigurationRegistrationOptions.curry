@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DidChangeConfigurationRegistrationOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeConfigurationRegistrationOptions where
@@ -22,6 +23,10 @@ instance ToJSON DidChangeConfigurationRegistrationOptions where
   toJSON x =
     object
      [(.?=) "section" (didChangeConfigurationRegistrationOptionsSection x)]
+
+instance Default DidChangeConfigurationRegistrationOptions where
+  def =
+    DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection = def }
 
 data DidChangeConfigurationRegistrationOptions = DidChangeConfigurationRegistrationOptions { didChangeConfigurationRegistrationOptionsSection :: Maybe (Either String [String]) }
  deriving (Show,Eq)

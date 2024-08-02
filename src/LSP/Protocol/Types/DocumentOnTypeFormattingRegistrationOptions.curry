@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentOnTypeFormattingRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentOnTypeFormattingRegistrationOptions where
@@ -38,6 +39,12 @@ instance ToJSON DocumentOnTypeFormattingRegistrationOptions where
                                                                                   "moreTriggerCharacter"
                                                                                   (documentOnTypeFormattingRegistrationOptionsMoreTriggerCharacter
                                                                                     x)]
+
+instance Default DocumentOnTypeFormattingRegistrationOptions where
+  def =
+    DocumentOnTypeFormattingRegistrationOptions { documentOnTypeFormattingRegistrationOptionsDocumentSelector = def
+                                                , documentOnTypeFormattingRegistrationOptionsFirstTriggerCharacter = def
+                                                , documentOnTypeFormattingRegistrationOptionsMoreTriggerCharacter = def }
 
 data DocumentOnTypeFormattingRegistrationOptions = DocumentOnTypeFormattingRegistrationOptions { documentOnTypeFormattingRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                                , documentOnTypeFormattingRegistrationOptionsFirstTriggerCharacter :: String

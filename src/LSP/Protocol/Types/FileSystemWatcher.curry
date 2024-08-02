@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.GlobPattern
 import LSP.Protocol.Types.WatchKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileSystemWatcher where
@@ -25,6 +26,11 @@ instance ToJSON FileSystemWatcher where
      [(.=) "globPattern" (fileSystemWatcherGlobPattern x),  (.?=) "kind"
                                                              (fileSystemWatcherKind
                                                                x)]
+
+instance Default FileSystemWatcher where
+  def =
+    FileSystemWatcher { fileSystemWatcherGlobPattern = def
+                      , fileSystemWatcherKind = def }
 
 data FileSystemWatcher = FileSystemWatcher { fileSystemWatcherGlobPattern :: GlobPattern
                                            , fileSystemWatcherKind :: Maybe WatchKind }

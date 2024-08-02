@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TextDocumentSyncKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentSyncKind where
@@ -21,6 +22,9 @@ instance ToJSON TextDocumentSyncKind where
       TextDocumentSyncKindNone -> toJSON 0
       TextDocumentSyncKindFull -> toJSON 1
       TextDocumentSyncKindIncremental -> toJSON 2
+
+instance Default TextDocumentSyncKind where
+  def = TextDocumentSyncKindNone
 
 data TextDocumentSyncKind = TextDocumentSyncKindNone
                           | TextDocumentSyncKindFull

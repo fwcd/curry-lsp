@@ -4,6 +4,7 @@ module LSP.Protocol.Types.UnchangedDocumentDiagnosticReport where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON UnchangedDocumentDiagnosticReport where
@@ -26,6 +27,11 @@ instance ToJSON UnchangedDocumentDiagnosticReport where
      [(.=) "kind" (unchangedDocumentDiagnosticReportKind x),  (.=) "resultId"
                                                                (unchangedDocumentDiagnosticReportResultId
                                                                  x)]
+
+instance Default UnchangedDocumentDiagnosticReport where
+  def =
+    UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind = def
+                                      , unchangedDocumentDiagnosticReportResultId = def }
 
 data UnchangedDocumentDiagnosticReport = UnchangedDocumentDiagnosticReport { unchangedDocumentDiagnosticReportKind :: String
                                                                            , unchangedDocumentDiagnosticReportResultId :: String }

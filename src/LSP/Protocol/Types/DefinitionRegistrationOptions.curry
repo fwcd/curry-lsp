@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DefinitionRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DefinitionRegistrationOptions where
@@ -28,6 +29,11 @@ instance ToJSON DefinitionRegistrationOptions where
                                                             "workDoneProgress"
                                                             (definitionRegistrationOptionsWorkDoneProgress
                                                               x)]
+
+instance Default DefinitionRegistrationOptions where
+  def =
+    DefinitionRegistrationOptions { definitionRegistrationOptionsDocumentSelector = def
+                                  , definitionRegistrationOptionsWorkDoneProgress = def }
 
 data DefinitionRegistrationOptions = DefinitionRegistrationOptions { definitionRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , definitionRegistrationOptionsWorkDoneProgress :: Maybe Bool }

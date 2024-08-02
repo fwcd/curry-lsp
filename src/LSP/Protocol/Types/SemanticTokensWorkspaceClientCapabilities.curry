@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokensWorkspaceClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensWorkspaceClientCapabilities where
@@ -23,6 +24,10 @@ instance ToJSON SemanticTokensWorkspaceClientCapabilities where
     object
      [(.?=) "refreshSupport"
        (semanticTokensWorkspaceClientCapabilitiesRefreshSupport x)]
+
+instance Default SemanticTokensWorkspaceClientCapabilities where
+  def =
+    SemanticTokensWorkspaceClientCapabilities { semanticTokensWorkspaceClientCapabilitiesRefreshSupport = def }
 
 data SemanticTokensWorkspaceClientCapabilities = SemanticTokensWorkspaceClientCapabilities { semanticTokensWorkspaceClientCapabilitiesRefreshSupport :: Maybe Bool }
  deriving (Show,Eq)

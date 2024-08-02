@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ClientDiagnosticsTagOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DiagnosticTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ClientDiagnosticsTagOptions where
@@ -19,6 +20,10 @@ instance FromJSON ClientDiagnosticsTagOptions where
 
 instance ToJSON ClientDiagnosticsTagOptions where
   toJSON x = object [(.=) "valueSet" (clientDiagnosticsTagOptionsValueSet x)]
+
+instance Default ClientDiagnosticsTagOptions where
+  def =
+    ClientDiagnosticsTagOptions { clientDiagnosticsTagOptionsValueSet = def }
 
 data ClientDiagnosticsTagOptions = ClientDiagnosticsTagOptions { clientDiagnosticsTagOptionsValueSet :: [DiagnosticTag] }
  deriving (Show,Eq)

@@ -14,6 +14,7 @@ import LSP.Protocol.Types.InsertTextFormat
 import LSP.Protocol.Types.InsertTextMode
 import LSP.Protocol.Types.MarkupContent
 import LSP.Protocol.Types.TextEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItem where
@@ -118,6 +119,28 @@ instance ToJSON CompletionItem where
                                                                                                                                                                                       "data"
                                                                                                                                                                                       (completionItemData
                                                                                                                                                                                         x)]
+
+instance Default CompletionItem where
+  def =
+    CompletionItem { completionItemLabel = def
+                   , completionItemLabelDetails = def
+                   , completionItemKind = def
+                   , completionItemTags = def
+                   , completionItemDetail = def
+                   , completionItemDocumentation = def
+                   , completionItemDeprecated = def
+                   , completionItemPreselect = def
+                   , completionItemSortText = def
+                   , completionItemFilterText = def
+                   , completionItemInsertText = def
+                   , completionItemInsertTextFormat = def
+                   , completionItemInsertTextMode = def
+                   , completionItemTextEdit = def
+                   , completionItemTextEditText = def
+                   , completionItemAdditionalTextEdits = def
+                   , completionItemCommitCharacters = def
+                   , completionItemCommand = def
+                   , completionItemData = def }
 
 data CompletionItem = CompletionItem { completionItemLabel :: String
                                      , completionItemLabelDetails :: Maybe CompletionItemLabelDetails

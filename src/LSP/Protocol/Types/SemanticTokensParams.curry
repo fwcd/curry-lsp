@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensParams where
@@ -33,6 +34,12 @@ instance ToJSON SemanticTokensParams where
                                                                              "textDocument"
                                                                              (semanticTokensParamsTextDocument
                                                                                x)]
+
+instance Default SemanticTokensParams where
+  def =
+    SemanticTokensParams { semanticTokensParamsWorkDoneToken = def
+                         , semanticTokensParamsPartialResultToken = def
+                         , semanticTokensParamsTextDocument = def }
 
 data SemanticTokensParams = SemanticTokensParams { semanticTokensParamsWorkDoneToken :: Maybe ProgressToken
                                                  , semanticTokensParamsPartialResultToken :: Maybe ProgressToken

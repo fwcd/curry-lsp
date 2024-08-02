@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CreateFileOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CreateFileOptions where
@@ -24,6 +25,11 @@ instance ToJSON CreateFileOptions where
                                                           "ignoreIfExists"
                                                           (createFileOptionsIgnoreIfExists
                                                             x)]
+
+instance Default CreateFileOptions where
+  def =
+    CreateFileOptions { createFileOptionsOverwrite = def
+                      , createFileOptionsIgnoreIfExists = def }
 
 data CreateFileOptions = CreateFileOptions { createFileOptionsOverwrite :: Maybe Bool
                                            , createFileOptionsIgnoreIfExists :: Maybe Bool }

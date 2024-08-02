@@ -5,6 +5,7 @@ module LSP.Protocol.Types.LinkedEditingRanges where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON LinkedEditingRanges where
@@ -24,6 +25,11 @@ instance ToJSON LinkedEditingRanges where
      [(.=) "ranges" (linkedEditingRangesRanges x),  (.?=) "wordPattern"
                                                      (linkedEditingRangesWordPattern
                                                        x)]
+
+instance Default LinkedEditingRanges where
+  def =
+    LinkedEditingRanges { linkedEditingRangesRanges = def
+                        , linkedEditingRangesWordPattern = def }
 
 data LinkedEditingRanges = LinkedEditingRanges { linkedEditingRangesRanges :: [Range]
                                                , linkedEditingRangesWordPattern :: Maybe String }

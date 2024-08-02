@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON HoverParams where
@@ -31,6 +32,12 @@ instance ToJSON HoverParams where
                                                                  "workDoneToken"
                                                                  (hoverParamsWorkDoneToken
                                                                    x)]
+
+instance Default HoverParams where
+  def =
+    HoverParams { hoverParamsTextDocument = def
+                , hoverParamsPosition = def
+                , hoverParamsWorkDoneToken = def }
 
 data HoverParams = HoverParams { hoverParamsTextDocument :: TextDocumentIdentifier
                                , hoverParamsPosition :: Position

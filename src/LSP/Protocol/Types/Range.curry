@@ -5,6 +5,7 @@ module LSP.Protocol.Types.Range where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Position
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Range where
@@ -18,6 +19,9 @@ instance FromJSON Range where
 
 instance ToJSON Range where
   toJSON x = object [(.=) "start" (rangeStart x),  (.=) "end" (rangeEnd x)]
+
+instance Default Range where
+  def = Range { rangeStart = def, rangeEnd = def }
 
 data Range = Range { rangeStart :: Position, rangeEnd :: Position }
  deriving (Show,Eq)

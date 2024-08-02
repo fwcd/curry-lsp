@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentLinkClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentLinkClientCapabilities where
@@ -29,6 +30,11 @@ instance ToJSON DocumentLinkClientCapabilities where
                                                                 "tooltipSupport"
                                                                 (documentLinkClientCapabilitiesTooltipSupport
                                                                   x)]
+
+instance Default DocumentLinkClientCapabilities where
+  def =
+    DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration = def
+                                   , documentLinkClientCapabilitiesTooltipSupport = def }
 
 data DocumentLinkClientCapabilities = DocumentLinkClientCapabilities { documentLinkClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                      , documentLinkClientCapabilitiesTooltipSupport :: Maybe Bool }

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CodeLensRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeLensRegistrationOptions where
@@ -32,6 +33,12 @@ instance ToJSON CodeLensRegistrationOptions where
                                                                   "resolveProvider"
                                                                   (codeLensRegistrationOptionsResolveProvider
                                                                     x)]
+
+instance Default CodeLensRegistrationOptions where
+  def =
+    CodeLensRegistrationOptions { codeLensRegistrationOptionsDocumentSelector = def
+                                , codeLensRegistrationOptionsWorkDoneProgress = def
+                                , codeLensRegistrationOptionsResolveProvider = def }
 
 data CodeLensRegistrationOptions = CodeLensRegistrationOptions { codeLensRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                , codeLensRegistrationOptionsWorkDoneProgress :: Maybe Bool

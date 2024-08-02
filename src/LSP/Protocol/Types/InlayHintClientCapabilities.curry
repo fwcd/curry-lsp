@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlayHintClientCapabilities where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ClientInlayHintResolveOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHintClientCapabilities where
@@ -29,6 +30,11 @@ instance ToJSON InlayHintClientCapabilities where
                                                              "resolveSupport"
                                                              (inlayHintClientCapabilitiesResolveSupport
                                                                x)]
+
+instance Default InlayHintClientCapabilities where
+  def =
+    InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration = def
+                                , inlayHintClientCapabilitiesResolveSupport = def }
 
 data InlayHintClientCapabilities = InlayHintClientCapabilities { inlayHintClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                , inlayHintClientCapabilitiesResolveSupport :: Maybe ClientInlayHintResolveOptions }

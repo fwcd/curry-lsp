@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InsertReplaceEdit where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InsertReplaceEdit where
@@ -28,6 +29,12 @@ instance ToJSON InsertReplaceEdit where
                                                        x),  (.=) "replace"
                                                              (insertReplaceEditReplace
                                                                x)]
+
+instance Default InsertReplaceEdit where
+  def =
+    InsertReplaceEdit { insertReplaceEditNewText = def
+                      , insertReplaceEditInsert = def
+                      , insertReplaceEditReplace = def }
 
 data InsertReplaceEdit = InsertReplaceEdit { insertReplaceEditNewText :: String
                                            , insertReplaceEditInsert :: Range

@@ -10,6 +10,7 @@ import LSP.Protocol.Types.InlayHintLabelPart
 import LSP.Protocol.Types.MarkupContent
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.TextEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlayHint where
@@ -58,6 +59,17 @@ instance ToJSON InlayHint where
                                                                                                              "data"
                                                                                                              (inlayHintData
                                                                                                                x)]
+
+instance Default InlayHint where
+  def =
+    InlayHint { inlayHintPosition = def
+              , inlayHintLabel = def
+              , inlayHintKind = def
+              , inlayHintTextEdits = def
+              , inlayHintTooltip = def
+              , inlayHintPaddingLeft = def
+              , inlayHintPaddingRight = def
+              , inlayHintData = def }
 
 data InlayHint = InlayHint { inlayHintPosition :: Position
                            , inlayHintLabel :: Either String [InlayHintLabelPart]

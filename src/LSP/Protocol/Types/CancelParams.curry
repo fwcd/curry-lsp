@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CancelParams where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CancelParams where
@@ -16,6 +17,9 @@ instance FromJSON CancelParams where
 
 instance ToJSON CancelParams where
   toJSON x = object [(.=) "id" (cancelParamsId x)]
+
+instance Default CancelParams where
+  def = CancelParams { cancelParamsId = def }
 
 data CancelParams = CancelParams { cancelParamsId :: Either Int String }
  deriving (Show,Eq)

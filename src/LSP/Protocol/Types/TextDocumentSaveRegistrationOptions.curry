@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextDocumentSaveRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentSaveRegistrationOptions where
@@ -29,6 +30,11 @@ instance ToJSON TextDocumentSaveRegistrationOptions where
                                                                   "includeText"
                                                                   (textDocumentSaveRegistrationOptionsIncludeText
                                                                     x)]
+
+instance Default TextDocumentSaveRegistrationOptions where
+  def =
+    TextDocumentSaveRegistrationOptions { textDocumentSaveRegistrationOptionsDocumentSelector = def
+                                        , textDocumentSaveRegistrationOptionsIncludeText = def }
 
 data TextDocumentSaveRegistrationOptions = TextDocumentSaveRegistrationOptions { textDocumentSaveRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                , textDocumentSaveRegistrationOptionsIncludeText :: Maybe Bool }

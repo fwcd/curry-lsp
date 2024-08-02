@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.MarkedString
 import LSP.Protocol.Types.MarkupContent
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Hover where
@@ -22,6 +23,9 @@ instance FromJSON Hover where
 instance ToJSON Hover where
   toJSON x =
     object [(.=) "contents" (hoverContents x),  (.?=) "range" (hoverRange x)]
+
+instance Default Hover where
+  def = Hover { hoverContents = def, hoverRange = def }
 
 data Hover = Hover { hoverContents :: Either (Either MarkupContent MarkedString) [MarkedString]
                    , hoverRange :: Maybe Range }

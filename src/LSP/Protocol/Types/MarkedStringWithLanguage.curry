@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MarkedStringWithLanguage where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MarkedStringWithLanguage where
@@ -23,6 +24,11 @@ instance ToJSON MarkedStringWithLanguage where
      [(.=) "language" (markedStringWithLanguageLanguage x),  (.=) "value"
                                                               (markedStringWithLanguageValue
                                                                 x)]
+
+instance Default MarkedStringWithLanguage where
+  def =
+    MarkedStringWithLanguage { markedStringWithLanguageLanguage = def
+                             , markedStringWithLanguageValue = def }
 
 data MarkedStringWithLanguage = MarkedStringWithLanguage { markedStringWithLanguageLanguage :: String
                                                          , markedStringWithLanguageValue :: String }

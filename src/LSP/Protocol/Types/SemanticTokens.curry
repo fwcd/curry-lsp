@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokens where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokens where
@@ -22,6 +23,10 @@ instance ToJSON SemanticTokens where
     object
      [(.?=) "resultId" (semanticTokensResultId x),  (.=) "data"
                                                      (semanticTokensData x)]
+
+instance Default SemanticTokens where
+  def =
+    SemanticTokens { semanticTokensResultId = def, semanticTokensData = def }
 
 data SemanticTokens = SemanticTokens { semanticTokensResultId :: Maybe String
                                      , semanticTokensData :: [Int] }

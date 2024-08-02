@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DidChangeConfigurationParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DidChangeConfigurationParams where
@@ -19,6 +20,10 @@ instance FromJSON DidChangeConfigurationParams where
 
 instance ToJSON DidChangeConfigurationParams where
   toJSON x = object [(.=) "settings" (didChangeConfigurationParamsSettings x)]
+
+instance Default DidChangeConfigurationParams where
+  def =
+    DidChangeConfigurationParams { didChangeConfigurationParamsSettings = def }
 
 data DidChangeConfigurationParams = DidChangeConfigurationParams { didChangeConfigurationParamsSettings :: LSPAny }
  deriving (Show,Eq)

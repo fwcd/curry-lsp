@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SemanticTokensDeltaPartialResult where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SemanticTokensEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensDeltaPartialResult where
@@ -20,6 +21,10 @@ instance FromJSON SemanticTokensDeltaPartialResult where
 
 instance ToJSON SemanticTokensDeltaPartialResult where
   toJSON x = object [(.=) "edits" (semanticTokensDeltaPartialResultEdits x)]
+
+instance Default SemanticTokensDeltaPartialResult where
+  def =
+    SemanticTokensDeltaPartialResult { semanticTokensDeltaPartialResultEdits = def }
 
 data SemanticTokensDeltaPartialResult = SemanticTokensDeltaPartialResult { semanticTokensDeltaPartialResultEdits :: [SemanticTokensEdit] }
  deriving (Show,Eq)

@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
 import LSP.Protocol.Types.TextDocumentSyncKind
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentChangeRegistrationOptions where
@@ -30,6 +31,11 @@ instance ToJSON TextDocumentChangeRegistrationOptions where
                                                                     "syncKind"
                                                                     (textDocumentChangeRegistrationOptionsSyncKind
                                                                       x)]
+
+instance Default TextDocumentChangeRegistrationOptions where
+  def =
+    TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsDocumentSelector = def
+                                          , textDocumentChangeRegistrationOptionsSyncKind = def }
 
 data TextDocumentChangeRegistrationOptions = TextDocumentChangeRegistrationOptions { textDocumentChangeRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                    , textDocumentChangeRegistrationOptionsSyncKind :: TextDocumentSyncKind }

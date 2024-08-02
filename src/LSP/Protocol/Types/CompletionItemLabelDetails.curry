@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CompletionItemLabelDetails where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionItemLabelDetails where
@@ -25,6 +26,11 @@ instance ToJSON CompletionItemLabelDetails where
                                                              "description"
                                                              (completionItemLabelDetailsDescription
                                                                x)]
+
+instance Default CompletionItemLabelDetails where
+  def =
+    CompletionItemLabelDetails { completionItemLabelDetailsDetail = def
+                               , completionItemLabelDetailsDescription = def }
 
 data CompletionItemLabelDetails = CompletionItemLabelDetails { completionItemLabelDetailsDetail :: Maybe String
                                                              , completionItemLabelDetailsDescription :: Maybe String }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.MonikerClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON MonikerClientCapabilities where
@@ -22,6 +23,10 @@ instance ToJSON MonikerClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (monikerClientCapabilitiesDynamicRegistration x)]
+
+instance Default MonikerClientCapabilities where
+  def =
+    MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration = def }
 
 data MonikerClientCapabilities = MonikerClientCapabilities { monikerClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

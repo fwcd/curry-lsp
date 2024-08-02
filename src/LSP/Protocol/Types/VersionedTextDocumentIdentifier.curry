@@ -5,6 +5,7 @@ module LSP.Protocol.Types.VersionedTextDocumentIdentifier where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON VersionedTextDocumentIdentifier where
@@ -26,6 +27,11 @@ instance ToJSON VersionedTextDocumentIdentifier where
      [(.=) "uri" (versionedTextDocumentIdentifierUri x),  (.=) "version"
                                                            (versionedTextDocumentIdentifierVersion
                                                              x)]
+
+instance Default VersionedTextDocumentIdentifier where
+  def =
+    VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierUri = def
+                                    , versionedTextDocumentIdentifierVersion = def }
 
 data VersionedTextDocumentIdentifier = VersionedTextDocumentIdentifier { versionedTextDocumentIdentifierUri :: DocumentUri
                                                                        , versionedTextDocumentIdentifierVersion :: Int }

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineCompletionList where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.InlineCompletionItem
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineCompletionList where
@@ -18,6 +19,9 @@ instance FromJSON InlineCompletionList where
 
 instance ToJSON InlineCompletionList where
   toJSON x = object [(.=) "items" (inlineCompletionListItems x)]
+
+instance Default InlineCompletionList where
+  def = InlineCompletionList { inlineCompletionListItems = def }
 
 data InlineCompletionList = InlineCompletionList { inlineCompletionListItems :: [InlineCompletionItem] }
  deriving (Show,Eq)

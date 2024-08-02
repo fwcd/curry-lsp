@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentHighlightOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightOptions where
@@ -19,6 +20,10 @@ instance ToJSON DocumentHighlightOptions where
   toJSON x =
     object
      [(.?=) "workDoneProgress" (documentHighlightOptionsWorkDoneProgress x)]
+
+instance Default DocumentHighlightOptions where
+  def =
+    DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress = def }
 
 data DocumentHighlightOptions = DocumentHighlightOptions { documentHighlightOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

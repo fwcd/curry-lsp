@@ -5,6 +5,7 @@ module LSP.Protocol.Types.TextDocumentRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentRegistrationOptions where
@@ -23,6 +24,10 @@ instance ToJSON TextDocumentRegistrationOptions where
     object
      [(.=) "documentSelector"
        (textDocumentRegistrationOptionsDocumentSelector x)]
+
+instance Default TextDocumentRegistrationOptions where
+  def =
+    TextDocumentRegistrationOptions { textDocumentRegistrationOptionsDocumentSelector = def }
 
 data TextDocumentRegistrationOptions = TextDocumentRegistrationOptions { textDocumentRegistrationOptionsDocumentSelector :: Either DocumentSelector () }
  deriving (Show,Eq)

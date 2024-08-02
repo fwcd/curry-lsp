@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.CallHierarchyItem
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CallHierarchyOutgoingCall where
@@ -25,6 +26,11 @@ instance ToJSON CallHierarchyOutgoingCall where
      [(.=) "to" (callHierarchyOutgoingCallTo x),  (.=) "fromRanges"
                                                    (callHierarchyOutgoingCallFromRanges
                                                      x)]
+
+instance Default CallHierarchyOutgoingCall where
+  def =
+    CallHierarchyOutgoingCall { callHierarchyOutgoingCallTo = def
+                              , callHierarchyOutgoingCallFromRanges = def }
 
 data CallHierarchyOutgoingCall = CallHierarchyOutgoingCall { callHierarchyOutgoingCallTo :: CallHierarchyItem
                                                            , callHierarchyOutgoingCallFromRanges :: [Range] }

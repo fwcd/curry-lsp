@@ -35,6 +35,7 @@ import LSP.Protocol.Types.SignatureHelpClientCapabilities
 import LSP.Protocol.Types.TextDocumentSyncClientCapabilities
 import LSP.Protocol.Types.TypeDefinitionClientCapabilities
 import LSP.Protocol.Types.TypeHierarchyClientCapabilities
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentClientCapabilities where
@@ -207,6 +208,40 @@ instance ToJSON TextDocumentClientCapabilities where
                                                                                                                                                                                                                                                                                                     "inlineCompletion"
                                                                                                                                                                                                                                                                                                     (textDocumentClientCapabilitiesInlineCompletion
                                                                                                                                                                                                                                                                                                       x)]
+
+instance Default TextDocumentClientCapabilities where
+  def =
+    TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization = def
+                                   , textDocumentClientCapabilitiesCompletion = def
+                                   , textDocumentClientCapabilitiesHover = def
+                                   , textDocumentClientCapabilitiesSignatureHelp = def
+                                   , textDocumentClientCapabilitiesDeclaration = def
+                                   , textDocumentClientCapabilitiesDefinition = def
+                                   , textDocumentClientCapabilitiesTypeDefinition = def
+                                   , textDocumentClientCapabilitiesImplementation = def
+                                   , textDocumentClientCapabilitiesReferences = def
+                                   , textDocumentClientCapabilitiesDocumentHighlight = def
+                                   , textDocumentClientCapabilitiesDocumentSymbol = def
+                                   , textDocumentClientCapabilitiesCodeAction = def
+                                   , textDocumentClientCapabilitiesCodeLens = def
+                                   , textDocumentClientCapabilitiesDocumentLink = def
+                                   , textDocumentClientCapabilitiesColorProvider = def
+                                   , textDocumentClientCapabilitiesFormatting = def
+                                   , textDocumentClientCapabilitiesRangeFormatting = def
+                                   , textDocumentClientCapabilitiesOnTypeFormatting = def
+                                   , textDocumentClientCapabilitiesRename = def
+                                   , textDocumentClientCapabilitiesFoldingRange = def
+                                   , textDocumentClientCapabilitiesSelectionRange = def
+                                   , textDocumentClientCapabilitiesPublishDiagnostics = def
+                                   , textDocumentClientCapabilitiesCallHierarchy = def
+                                   , textDocumentClientCapabilitiesSemanticTokens = def
+                                   , textDocumentClientCapabilitiesLinkedEditingRange = def
+                                   , textDocumentClientCapabilitiesMoniker = def
+                                   , textDocumentClientCapabilitiesTypeHierarchy = def
+                                   , textDocumentClientCapabilitiesInlineValue = def
+                                   , textDocumentClientCapabilitiesInlayHint = def
+                                   , textDocumentClientCapabilitiesDiagnostic = def
+                                   , textDocumentClientCapabilitiesInlineCompletion = def }
 
 data TextDocumentClientCapabilities = TextDocumentClientCapabilities { textDocumentClientCapabilitiesSynchronization :: Maybe TextDocumentSyncClientCapabilities
                                                                      , textDocumentClientCapabilitiesCompletion :: Maybe CompletionClientCapabilities

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentSymbolOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentSymbolOptions where
@@ -24,6 +25,11 @@ instance ToJSON DocumentSymbolOptions where
        (documentSymbolOptionsWorkDoneProgress x),  (.?=) "label"
                                                     (documentSymbolOptionsLabel
                                                       x)]
+
+instance Default DocumentSymbolOptions where
+  def =
+    DocumentSymbolOptions { documentSymbolOptionsWorkDoneProgress = def
+                          , documentSymbolOptionsLabel = def }
 
 data DocumentSymbolOptions = DocumentSymbolOptions { documentSymbolOptionsWorkDoneProgress :: Maybe Bool
                                                    , documentSymbolOptionsLabel :: Maybe String }

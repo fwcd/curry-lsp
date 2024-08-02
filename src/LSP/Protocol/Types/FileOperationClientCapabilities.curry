@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileOperationClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationClientCapabilities where
@@ -54,6 +55,16 @@ instance ToJSON FileOperationClientCapabilities where
                                                                                                          "willDelete"
                                                                                                          (fileOperationClientCapabilitiesWillDelete
                                                                                                            x)]
+
+instance Default FileOperationClientCapabilities where
+  def =
+    FileOperationClientCapabilities { fileOperationClientCapabilitiesDynamicRegistration = def
+                                    , fileOperationClientCapabilitiesDidCreate = def
+                                    , fileOperationClientCapabilitiesWillCreate = def
+                                    , fileOperationClientCapabilitiesDidRename = def
+                                    , fileOperationClientCapabilitiesWillRename = def
+                                    , fileOperationClientCapabilitiesDidDelete = def
+                                    , fileOperationClientCapabilitiesWillDelete = def }
 
 data FileOperationClientCapabilities = FileOperationClientCapabilities { fileOperationClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                        , fileOperationClientCapabilitiesDidCreate :: Maybe Bool

@@ -5,6 +5,7 @@ module LSP.Protocol.Types.InlineValueRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueRegistrationOptions where
@@ -32,6 +33,12 @@ instance ToJSON InlineValueRegistrationOptions where
                                                                x),  (.?=) "id"
                                                                      (inlineValueRegistrationOptionsId
                                                                        x)]
+
+instance Default InlineValueRegistrationOptions where
+  def =
+    InlineValueRegistrationOptions { inlineValueRegistrationOptionsWorkDoneProgress = def
+                                   , inlineValueRegistrationOptionsDocumentSelector = def
+                                   , inlineValueRegistrationOptionsId = def }
 
 data InlineValueRegistrationOptions = InlineValueRegistrationOptions { inlineValueRegistrationOptionsWorkDoneProgress :: Maybe Bool
                                                                      , inlineValueRegistrationOptionsDocumentSelector :: Either DocumentSelector ()

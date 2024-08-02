@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Diagnostic
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PublishDiagnosticsParams where
@@ -29,6 +30,12 @@ instance ToJSON PublishDiagnosticsParams where
                                                       x),  (.=) "diagnostics"
                                                             (publishDiagnosticsParamsDiagnostics
                                                               x)]
+
+instance Default PublishDiagnosticsParams where
+  def =
+    PublishDiagnosticsParams { publishDiagnosticsParamsUri = def
+                             , publishDiagnosticsParamsVersion = def
+                             , publishDiagnosticsParamsDiagnostics = def }
 
 data PublishDiagnosticsParams = PublishDiagnosticsParams { publishDiagnosticsParamsUri :: DocumentUri
                                                          , publishDiagnosticsParamsVersion :: Maybe Int

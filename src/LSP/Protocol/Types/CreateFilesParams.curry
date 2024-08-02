@@ -5,6 +5,7 @@ module LSP.Protocol.Types.CreateFilesParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileCreate
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CreateFilesParams where
@@ -17,6 +18,9 @@ instance FromJSON CreateFilesParams where
 
 instance ToJSON CreateFilesParams where
   toJSON x = object [(.=) "files" (createFilesParamsFiles x)]
+
+instance Default CreateFilesParams where
+  def = CreateFilesParams { createFilesParamsFiles = def }
 
 data CreateFilesParams = CreateFilesParams { createFilesParamsFiles :: [FileCreate] }
  deriving (Show,Eq)

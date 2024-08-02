@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ServerCompletionItemOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ServerCompletionItemOptions where
@@ -23,6 +24,10 @@ instance ToJSON ServerCompletionItemOptions where
     object
      [(.?=) "labelDetailsSupport"
        (serverCompletionItemOptionsLabelDetailsSupport x)]
+
+instance Default ServerCompletionItemOptions where
+  def =
+    ServerCompletionItemOptions { serverCompletionItemOptionsLabelDetailsSupport = def }
 
 data ServerCompletionItemOptions = ServerCompletionItemOptions { serverCompletionItemOptionsLabelDetailsSupport :: Maybe Bool }
  deriving (Show,Eq)

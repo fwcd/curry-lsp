@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ChangeAnnotationIdentifier
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON AnnotatedTextEdit where
@@ -29,6 +30,12 @@ instance ToJSON AnnotatedTextEdit where
                                                    x),  (.=) "annotationId"
                                                          (annotatedTextEditAnnotationId
                                                            x)]
+
+instance Default AnnotatedTextEdit where
+  def =
+    AnnotatedTextEdit { annotatedTextEditRange = def
+                      , annotatedTextEditNewText = def
+                      , annotatedTextEditAnnotationId = def }
 
 data AnnotatedTextEdit = AnnotatedTextEdit { annotatedTextEditRange :: Range
                                            , annotatedTextEditNewText :: String

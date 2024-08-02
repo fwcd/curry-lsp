@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentRangeFormattingClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentRangeFormattingClientCapabilities where
@@ -29,6 +30,11 @@ instance ToJSON DocumentRangeFormattingClientCapabilities where
        (documentRangeFormattingClientCapabilitiesDynamicRegistration
          x),  (.?=) "rangesSupport"
                (documentRangeFormattingClientCapabilitiesRangesSupport x)]
+
+instance Default DocumentRangeFormattingClientCapabilities where
+  def =
+    DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration = def
+                                              , documentRangeFormattingClientCapabilitiesRangesSupport = def }
 
 data DocumentRangeFormattingClientCapabilities = DocumentRangeFormattingClientCapabilities { documentRangeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool
                                                                                            , documentRangeFormattingClientCapabilitiesRangesSupport :: Maybe Bool }

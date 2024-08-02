@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SaveOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SaveOptions where
@@ -16,6 +17,9 @@ instance FromJSON SaveOptions where
 
 instance ToJSON SaveOptions where
   toJSON x = object [(.?=) "includeText" (saveOptionsIncludeText x)]
+
+instance Default SaveOptions where
+  def = SaveOptions { saveOptionsIncludeText = def }
 
 data SaveOptions = SaveOptions { saveOptionsIncludeText :: Maybe Bool }
  deriving (Show,Eq)

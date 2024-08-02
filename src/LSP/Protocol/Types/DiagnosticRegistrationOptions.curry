@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DiagnosticRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DiagnosticRegistrationOptions where
@@ -51,6 +52,15 @@ instance ToJSON DiagnosticRegistrationOptions where
                                                                                             "id"
                                                                                             (diagnosticRegistrationOptionsId
                                                                                               x)]
+
+instance Default DiagnosticRegistrationOptions where
+  def =
+    DiagnosticRegistrationOptions { diagnosticRegistrationOptionsDocumentSelector = def
+                                  , diagnosticRegistrationOptionsWorkDoneProgress = def
+                                  , diagnosticRegistrationOptionsIdentifier = def
+                                  , diagnosticRegistrationOptionsInterFileDependencies = def
+                                  , diagnosticRegistrationOptionsWorkspaceDiagnostics = def
+                                  , diagnosticRegistrationOptionsId = def }
 
 data DiagnosticRegistrationOptions = DiagnosticRegistrationOptions { diagnosticRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                    , diagnosticRegistrationOptionsWorkDoneProgress :: Maybe Bool

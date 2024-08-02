@@ -10,6 +10,7 @@ import LSP.Protocol.Types.ClientInfo
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TraceValue
 import LSP.Protocol.Types.WorkspaceFolder
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InitializeParams where
@@ -72,6 +73,19 @@ instance ToJSON InitializeParams where
                                                                                                                                  "workspaceFolders"
                                                                                                                                  (initializeParamsWorkspaceFolders
                                                                                                                                    x)]
+
+instance Default InitializeParams where
+  def =
+    InitializeParams { initializeParamsWorkDoneToken = def
+                     , initializeParamsProcessId = def
+                     , initializeParamsClientInfo = def
+                     , initializeParamsLocale = def
+                     , initializeParamsRootPath = def
+                     , initializeParamsRootUri = def
+                     , initializeParamsCapabilities = def
+                     , initializeParamsInitializationOptions = def
+                     , initializeParamsTrace = def
+                     , initializeParamsWorkspaceFolders = def }
 
 data InitializeParams = InitializeParams { initializeParamsWorkDoneToken :: Maybe ProgressToken
                                          , initializeParamsProcessId :: Either Int ()

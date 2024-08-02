@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentHighlightRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightRegistrationOptions where
@@ -29,6 +30,11 @@ instance ToJSON DocumentHighlightRegistrationOptions where
                                                                    "workDoneProgress"
                                                                    (documentHighlightRegistrationOptionsWorkDoneProgress
                                                                      x)]
+
+instance Default DocumentHighlightRegistrationOptions where
+  def =
+    DocumentHighlightRegistrationOptions { documentHighlightRegistrationOptionsDocumentSelector = def
+                                         , documentHighlightRegistrationOptionsWorkDoneProgress = def }
 
 data DocumentHighlightRegistrationOptions = DocumentHighlightRegistrationOptions { documentHighlightRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                                  , documentHighlightRegistrationOptionsWorkDoneProgress :: Maybe Bool }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ExecutionSummary where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ExecutionSummary where
@@ -24,6 +25,11 @@ instance ToJSON ExecutionSummary where
                                                                   "success"
                                                                   (executionSummarySuccess
                                                                     x)]
+
+instance Default ExecutionSummary where
+  def =
+    ExecutionSummary { executionSummaryExecutionOrder = def
+                     , executionSummarySuccess = def }
 
 data ExecutionSummary = ExecutionSummary { executionSummaryExecutionOrder :: Int
                                          , executionSummarySuccess :: Maybe Bool }

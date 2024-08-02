@@ -8,6 +8,7 @@ import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.FullDocumentDiagnosticReport
 import LSP.Protocol.Types.UnchangedDocumentDiagnosticReport
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentDiagnosticReportPartialResult where
@@ -27,6 +28,10 @@ instance ToJSON DocumentDiagnosticReportPartialResult where
     object
      [(.=) "relatedDocuments"
        (documentDiagnosticReportPartialResultRelatedDocuments x)]
+
+instance Default DocumentDiagnosticReportPartialResult where
+  def =
+    DocumentDiagnosticReportPartialResult { documentDiagnosticReportPartialResultRelatedDocuments = def }
 
 data DocumentDiagnosticReportPartialResult = DocumentDiagnosticReportPartialResult { documentDiagnosticReportPartialResultRelatedDocuments :: Map DocumentUri (Either FullDocumentDiagnosticReport UnchangedDocumentDiagnosticReport) }
  deriving (Show,Eq)

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.HoverOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON HoverOptions where
@@ -18,6 +19,9 @@ instance FromJSON HoverOptions where
 instance ToJSON HoverOptions where
   toJSON x =
     object [(.?=) "workDoneProgress" (hoverOptionsWorkDoneProgress x)]
+
+instance Default HoverOptions where
+  def = HoverOptions { hoverOptionsWorkDoneProgress = def }
 
 data HoverOptions = HoverOptions { hoverOptionsWorkDoneProgress :: Maybe Bool }
  deriving (Show,Eq)

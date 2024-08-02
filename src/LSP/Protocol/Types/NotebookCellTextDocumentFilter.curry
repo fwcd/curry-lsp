@@ -5,6 +5,7 @@ module LSP.Protocol.Types.NotebookCellTextDocumentFilter where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.NotebookDocumentFilter
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookCellTextDocumentFilter where
@@ -27,6 +28,11 @@ instance ToJSON NotebookCellTextDocumentFilter where
                                                                     "language"
                                                                     (notebookCellTextDocumentFilterLanguage
                                                                       x)]
+
+instance Default NotebookCellTextDocumentFilter where
+  def =
+    NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook = def
+                                   , notebookCellTextDocumentFilterLanguage = def }
 
 data NotebookCellTextDocumentFilter = NotebookCellTextDocumentFilter { notebookCellTextDocumentFilterNotebook :: Either String NotebookDocumentFilter
                                                                      , notebookCellTextDocumentFilterLanguage :: Maybe String }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentOnTypeFormattingClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentOnTypeFormattingClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON DocumentOnTypeFormattingClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (documentOnTypeFormattingClientCapabilitiesDynamicRegistration x)]
+
+instance Default DocumentOnTypeFormattingClientCapabilities where
+  def =
+    DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration = def }
 
 data DocumentOnTypeFormattingClientCapabilities = DocumentOnTypeFormattingClientCapabilities { documentOnTypeFormattingClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

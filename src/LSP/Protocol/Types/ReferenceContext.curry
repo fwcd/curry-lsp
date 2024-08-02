@@ -4,6 +4,7 @@ module LSP.Protocol.Types.ReferenceContext where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ReferenceContext where
@@ -18,6 +19,9 @@ instance FromJSON ReferenceContext where
 instance ToJSON ReferenceContext where
   toJSON x =
     object [(.=) "includeDeclaration" (referenceContextIncludeDeclaration x)]
+
+instance Default ReferenceContext where
+  def = ReferenceContext { referenceContextIncludeDeclaration = def }
 
 data ReferenceContext = ReferenceContext { referenceContextIncludeDeclaration :: Bool }
  deriving (Show,Eq)

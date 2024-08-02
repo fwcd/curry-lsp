@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON BaseSymbolInformation where
@@ -34,6 +35,13 @@ instance ToJSON BaseSymbolInformation where
                                                                    "containerName"
                                                                    (baseSymbolInformationContainerName
                                                                      x)]
+
+instance Default BaseSymbolInformation where
+  def =
+    BaseSymbolInformation { baseSymbolInformationName = def
+                          , baseSymbolInformationKind = def
+                          , baseSymbolInformationTags = def
+                          , baseSymbolInformationContainerName = def }
 
 data BaseSymbolInformation = BaseSymbolInformation { baseSymbolInformationName :: String
                                                    , baseSymbolInformationKind :: SymbolKind

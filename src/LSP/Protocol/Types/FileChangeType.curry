@@ -4,6 +4,7 @@ module LSP.Protocol.Types.FileChangeType where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileChangeType where
@@ -21,6 +22,9 @@ instance ToJSON FileChangeType where
       FileChangeTypeCreated -> toJSON 1
       FileChangeTypeChanged -> toJSON 2
       FileChangeTypeDeleted -> toJSON 3
+
+instance Default FileChangeType where
+  def = FileChangeTypeCreated
 
 data FileChangeType = FileChangeTypeCreated
                     | FileChangeTypeChanged

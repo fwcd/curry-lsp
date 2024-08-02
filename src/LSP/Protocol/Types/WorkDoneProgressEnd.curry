@@ -4,6 +4,7 @@ module LSP.Protocol.Types.WorkDoneProgressEnd where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkDoneProgressEnd where
@@ -23,6 +24,11 @@ instance ToJSON WorkDoneProgressEnd where
      [(.=) "kind" (workDoneProgressEndKind x),  (.?=) "message"
                                                  (workDoneProgressEndMessage
                                                    x)]
+
+instance Default WorkDoneProgressEnd where
+  def =
+    WorkDoneProgressEnd { workDoneProgressEndKind = def
+                        , workDoneProgressEndMessage = def }
 
 data WorkDoneProgressEnd = WorkDoneProgressEnd { workDoneProgressEndKind :: String
                                                , workDoneProgressEndMessage :: Maybe String }

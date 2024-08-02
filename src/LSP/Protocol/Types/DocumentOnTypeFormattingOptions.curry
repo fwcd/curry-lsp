@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentOnTypeFormattingOptions where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentOnTypeFormattingOptions where
@@ -31,6 +32,11 @@ instance ToJSON DocumentOnTypeFormattingOptions where
                                                                    "moreTriggerCharacter"
                                                                    (documentOnTypeFormattingOptionsMoreTriggerCharacter
                                                                      x)]
+
+instance Default DocumentOnTypeFormattingOptions where
+  def =
+    DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter = def
+                                    , documentOnTypeFormattingOptionsMoreTriggerCharacter = def }
 
 data DocumentOnTypeFormattingOptions = DocumentOnTypeFormattingOptions { documentOnTypeFormattingOptionsFirstTriggerCharacter :: String
                                                                        , documentOnTypeFormattingOptionsMoreTriggerCharacter :: Maybe [String] }

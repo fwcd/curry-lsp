@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FileOperationFilter where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileOperationPattern
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationFilter where
@@ -24,6 +25,11 @@ instance ToJSON FileOperationFilter where
      [(.?=) "scheme" (fileOperationFilterScheme x),  (.=) "pattern"
                                                       (fileOperationFilterPattern
                                                         x)]
+
+instance Default FileOperationFilter where
+  def =
+    FileOperationFilter { fileOperationFilterScheme = def
+                        , fileOperationFilterPattern = def }
 
 data FileOperationFilter = FileOperationFilter { fileOperationFilterScheme :: Maybe String
                                                , fileOperationFilterPattern :: FileOperationPattern }

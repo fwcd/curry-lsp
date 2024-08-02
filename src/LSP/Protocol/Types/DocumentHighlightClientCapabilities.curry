@@ -4,6 +4,7 @@ module LSP.Protocol.Types.DocumentHighlightClientCapabilities where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentHighlightClientCapabilities where
@@ -25,6 +26,10 @@ instance ToJSON DocumentHighlightClientCapabilities where
     object
      [(.?=) "dynamicRegistration"
        (documentHighlightClientCapabilitiesDynamicRegistration x)]
+
+instance Default DocumentHighlightClientCapabilities where
+  def =
+    DocumentHighlightClientCapabilities { documentHighlightClientCapabilitiesDynamicRegistration = def }
 
 data DocumentHighlightClientCapabilities = DocumentHighlightClientCapabilities { documentHighlightClientCapabilitiesDynamicRegistration :: Maybe Bool }
  deriving (Show,Eq)

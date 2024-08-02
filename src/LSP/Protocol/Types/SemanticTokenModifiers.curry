@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SemanticTokenModifiers where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokenModifiers where
@@ -35,6 +36,9 @@ instance ToJSON SemanticTokenModifiers where
       SemanticTokenModifiersModification -> toJSON "modification"
       SemanticTokenModifiersDocumentation -> toJSON "documentation"
       SemanticTokenModifiersDefaultLibrary -> toJSON "defaultLibrary"
+
+instance Default SemanticTokenModifiers where
+  def = SemanticTokenModifiersDeclaration
 
 data SemanticTokenModifiers = SemanticTokenModifiersDeclaration
                             | SemanticTokenModifiersDefinition

@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.NotebookCell
 import LSP.Protocol.Types.NotebookDocumentCellChangeStructure
 import LSP.Protocol.Types.NotebookDocumentCellContentChanges
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON NotebookDocumentCellChanges where
@@ -33,6 +34,12 @@ instance ToJSON NotebookDocumentCellChanges where
                                                                             "textContent"
                                                                             (notebookDocumentCellChangesTextContent
                                                                               x)]
+
+instance Default NotebookDocumentCellChanges where
+  def =
+    NotebookDocumentCellChanges { notebookDocumentCellChangesStructure = def
+                                , notebookDocumentCellChangesData = def
+                                , notebookDocumentCellChangesTextContent = def }
 
 data NotebookDocumentCellChanges = NotebookDocumentCellChanges { notebookDocumentCellChangesStructure :: Maybe NotebookDocumentCellChangeStructure
                                                                , notebookDocumentCellChangesData :: Maybe [NotebookCell]

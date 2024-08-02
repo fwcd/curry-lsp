@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CompletionTriggerKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CompletionTriggerKind where
@@ -21,6 +22,9 @@ instance ToJSON CompletionTriggerKind where
       CompletionTriggerKindInvoked -> toJSON 1
       CompletionTriggerKindTriggerCharacter -> toJSON 2
       CompletionTriggerKindTriggerForIncompleteCompletions -> toJSON 3
+
+instance Default CompletionTriggerKind where
+  def = CompletionTriggerKindInvoked
 
 data CompletionTriggerKind = CompletionTriggerKindInvoked
                            | CompletionTriggerKindTriggerCharacter

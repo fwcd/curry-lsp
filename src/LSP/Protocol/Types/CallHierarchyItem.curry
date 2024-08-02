@@ -8,6 +8,7 @@ import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.SymbolKind
 import LSP.Protocol.Types.SymbolTag
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CallHierarchyItem where
@@ -55,6 +56,17 @@ instance ToJSON CallHierarchyItem where
                                                                                                "data"
                                                                                                (callHierarchyItemData
                                                                                                  x)]
+
+instance Default CallHierarchyItem where
+  def =
+    CallHierarchyItem { callHierarchyItemName = def
+                      , callHierarchyItemKind = def
+                      , callHierarchyItemTags = def
+                      , callHierarchyItemDetail = def
+                      , callHierarchyItemUri = def
+                      , callHierarchyItemRange = def
+                      , callHierarchyItemSelectionRange = def
+                      , callHierarchyItemData = def }
 
 data CallHierarchyItem = CallHierarchyItem { callHierarchyItemName :: String
                                            , callHierarchyItemKind :: SymbolKind

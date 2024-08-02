@@ -5,6 +5,7 @@ module LSP.Protocol.Types.FileOperationRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.FileOperationFilter
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON FileOperationRegistrationOptions where
@@ -21,6 +22,10 @@ instance FromJSON FileOperationRegistrationOptions where
 instance ToJSON FileOperationRegistrationOptions where
   toJSON x =
     object [(.=) "filters" (fileOperationRegistrationOptionsFilters x)]
+
+instance Default FileOperationRegistrationOptions where
+  def =
+    FileOperationRegistrationOptions { fileOperationRegistrationOptionsFilters = def }
 
 data FileOperationRegistrationOptions = FileOperationRegistrationOptions { fileOperationRegistrationOptionsFilters :: [FileOperationFilter] }
  deriving (Show,Eq)

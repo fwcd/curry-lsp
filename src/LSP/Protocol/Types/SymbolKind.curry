@@ -4,6 +4,7 @@ module LSP.Protocol.Types.SymbolKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SymbolKind where
@@ -67,6 +68,9 @@ instance ToJSON SymbolKind where
       SymbolKindEvent -> toJSON 24
       SymbolKindOperator -> toJSON 25
       SymbolKindTypeParameter -> toJSON 26
+
+instance Default SymbolKind where
+  def = SymbolKindFile
 
 data SymbolKind = SymbolKindFile
                 | SymbolKindModule

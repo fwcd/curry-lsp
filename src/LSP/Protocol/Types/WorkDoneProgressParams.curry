@@ -5,6 +5,7 @@ module LSP.Protocol.Types.WorkDoneProgressParams where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.ProgressToken
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON WorkDoneProgressParams where
@@ -19,6 +20,9 @@ instance FromJSON WorkDoneProgressParams where
 instance ToJSON WorkDoneProgressParams where
   toJSON x =
     object [(.?=) "workDoneToken" (workDoneProgressParamsWorkDoneToken x)]
+
+instance Default WorkDoneProgressParams where
+  def = WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken = def }
 
 data WorkDoneProgressParams = WorkDoneProgressParams { workDoneProgressParamsWorkDoneToken :: Maybe ProgressToken }
  deriving (Show,Eq)

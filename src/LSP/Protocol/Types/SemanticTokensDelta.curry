@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SemanticTokensDelta where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SemanticTokensEdit
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SemanticTokensDelta where
@@ -24,6 +25,11 @@ instance ToJSON SemanticTokensDelta where
      [(.?=) "resultId" (semanticTokensDeltaResultId x),  (.=) "edits"
                                                           (semanticTokensDeltaEdits
                                                             x)]
+
+instance Default SemanticTokensDelta where
+  def =
+    SemanticTokensDelta { semanticTokensDeltaResultId = def
+                        , semanticTokensDeltaEdits = def }
 
 data SemanticTokensDelta = SemanticTokensDelta { semanticTokensDeltaResultId :: Maybe String
                                                , semanticTokensDeltaEdits :: [SemanticTokensEdit] }

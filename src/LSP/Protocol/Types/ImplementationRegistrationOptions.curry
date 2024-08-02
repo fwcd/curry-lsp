@@ -5,6 +5,7 @@ module LSP.Protocol.Types.ImplementationRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON ImplementationRegistrationOptions where
@@ -34,6 +35,12 @@ instance ToJSON ImplementationRegistrationOptions where
                                                                         "id"
                                                                         (implementationRegistrationOptionsId
                                                                           x)]
+
+instance Default ImplementationRegistrationOptions where
+  def =
+    ImplementationRegistrationOptions { implementationRegistrationOptionsDocumentSelector = def
+                                      , implementationRegistrationOptionsWorkDoneProgress = def
+                                      , implementationRegistrationOptionsId = def }
 
 data ImplementationRegistrationOptions = ImplementationRegistrationOptions { implementationRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , implementationRegistrationOptionsWorkDoneProgress :: Maybe Bool

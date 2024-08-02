@@ -8,6 +8,7 @@ import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.SignatureHelpContext
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelpParams where
@@ -38,6 +39,13 @@ instance ToJSON SignatureHelpParams where
                                                                                  "context"
                                                                                  (signatureHelpParamsContext
                                                                                    x)]
+
+instance Default SignatureHelpParams where
+  def =
+    SignatureHelpParams { signatureHelpParamsTextDocument = def
+                        , signatureHelpParamsPosition = def
+                        , signatureHelpParamsWorkDoneToken = def
+                        , signatureHelpParamsContext = def }
 
 data SignatureHelpParams = SignatureHelpParams { signatureHelpParamsTextDocument :: TextDocumentIdentifier
                                                , signatureHelpParamsPosition :: Position

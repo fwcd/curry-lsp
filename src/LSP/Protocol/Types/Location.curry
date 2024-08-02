@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Support
 import LSP.Protocol.Types.Range
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON Location where
@@ -21,6 +22,9 @@ instance FromJSON Location where
 instance ToJSON Location where
   toJSON x =
     object [(.=) "uri" (locationUri x),  (.=) "range" (locationRange x)]
+
+instance Default Location where
+  def = Location { locationUri = def, locationRange = def }
 
 data Location = Location { locationUri :: DocumentUri
                          , locationRange :: Range }

@@ -4,6 +4,7 @@ module LSP.Protocol.Types.TextDocumentContentChangeWholeDocument where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON TextDocumentContentChangeWholeDocument where
@@ -21,6 +22,10 @@ instance FromJSON TextDocumentContentChangeWholeDocument where
 instance ToJSON TextDocumentContentChangeWholeDocument where
   toJSON x =
     object [(.=) "text" (textDocumentContentChangeWholeDocumentText x)]
+
+instance Default TextDocumentContentChangeWholeDocument where
+  def =
+    TextDocumentContentChangeWholeDocument { textDocumentContentChangeWholeDocumentText = def }
 
 data TextDocumentContentChangeWholeDocument = TextDocumentContentChangeWholeDocument { textDocumentContentChangeWholeDocumentText :: String }
  deriving (Show,Eq)

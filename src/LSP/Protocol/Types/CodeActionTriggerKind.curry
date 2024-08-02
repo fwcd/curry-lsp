@@ -4,6 +4,7 @@ module LSP.Protocol.Types.CodeActionTriggerKind where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON CodeActionTriggerKind where
@@ -19,6 +20,9 @@ instance ToJSON CodeActionTriggerKind where
     case x of
       CodeActionTriggerKindInvoked -> toJSON 1
       CodeActionTriggerKindAutomatic -> toJSON 2
+
+instance Default CodeActionTriggerKind where
+  def = CodeActionTriggerKindInvoked
 
 data CodeActionTriggerKind = CodeActionTriggerKindInvoked
                            | CodeActionTriggerKindAutomatic

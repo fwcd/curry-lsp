@@ -8,6 +8,7 @@ import LSP.Protocol.Types.InlineValueContext
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.Range
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON InlineValueParams where
@@ -38,6 +39,13 @@ instance ToJSON InlineValueParams where
                                                                                   "context"
                                                                                   (inlineValueParamsContext
                                                                                     x)]
+
+instance Default InlineValueParams where
+  def =
+    InlineValueParams { inlineValueParamsWorkDoneToken = def
+                      , inlineValueParamsTextDocument = def
+                      , inlineValueParamsRange = def
+                      , inlineValueParamsContext = def }
 
 data InlineValueParams = InlineValueParams { inlineValueParamsWorkDoneToken :: Maybe ProgressToken
                                            , inlineValueParamsTextDocument :: TextDocumentIdentifier

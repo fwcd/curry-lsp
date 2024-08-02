@@ -6,6 +6,7 @@ import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.MarkupContent
 import LSP.Protocol.Types.ParameterInformation
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureInformation where
@@ -34,6 +35,13 @@ instance ToJSON SignatureInformation where
                                                                     "activeParameter"
                                                                     (signatureInformationActiveParameter
                                                                       x)]
+
+instance Default SignatureInformation where
+  def =
+    SignatureInformation { signatureInformationLabel = def
+                         , signatureInformationDocumentation = def
+                         , signatureInformationParameters = def
+                         , signatureInformationActiveParameter = def }
 
 data SignatureInformation = SignatureInformation { signatureInformationLabel :: String
                                                  , signatureInformationDocumentation :: Maybe (Either String MarkupContent)

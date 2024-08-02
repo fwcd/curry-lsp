@@ -8,6 +8,7 @@ import LSP.Protocol.Types.MarkdownClientCapabilities
 import LSP.Protocol.Types.PositionEncodingKind
 import LSP.Protocol.Types.RegularExpressionsClientCapabilities
 import LSP.Protocol.Types.StaleRequestSupportOptions
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON GeneralClientCapabilities where
@@ -44,6 +45,13 @@ instance ToJSON GeneralClientCapabilities where
                                                                            "positionEncodings"
                                                                            (generalClientCapabilitiesPositionEncodings
                                                                              x)]
+
+instance Default GeneralClientCapabilities where
+  def =
+    GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport = def
+                              , generalClientCapabilitiesRegularExpressions = def
+                              , generalClientCapabilitiesMarkdown = def
+                              , generalClientCapabilitiesPositionEncodings = def }
 
 data GeneralClientCapabilities = GeneralClientCapabilities { generalClientCapabilitiesStaleRequestSupport :: Maybe StaleRequestSupportOptions
                                                            , generalClientCapabilitiesRegularExpressions :: Maybe RegularExpressionsClientCapabilities

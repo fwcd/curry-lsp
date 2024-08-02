@@ -5,6 +5,7 @@ module LSP.Protocol.Types.DocumentSymbolRegistrationOptions where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.DocumentSelector
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON DocumentSymbolRegistrationOptions where
@@ -34,6 +35,12 @@ instance ToJSON DocumentSymbolRegistrationOptions where
                                                                         "label"
                                                                         (documentSymbolRegistrationOptionsLabel
                                                                           x)]
+
+instance Default DocumentSymbolRegistrationOptions where
+  def =
+    DocumentSymbolRegistrationOptions { documentSymbolRegistrationOptionsDocumentSelector = def
+                                      , documentSymbolRegistrationOptionsWorkDoneProgress = def
+                                      , documentSymbolRegistrationOptionsLabel = def }
 
 data DocumentSymbolRegistrationOptions = DocumentSymbolRegistrationOptions { documentSymbolRegistrationOptionsDocumentSelector :: Either DocumentSelector ()
                                                                            , documentSymbolRegistrationOptionsWorkDoneProgress :: Maybe Bool

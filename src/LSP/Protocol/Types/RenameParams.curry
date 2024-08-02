@@ -7,6 +7,7 @@ import JSON.Pretty
 import LSP.Protocol.Types.Position
 import LSP.Protocol.Types.ProgressToken
 import LSP.Protocol.Types.TextDocumentIdentifier
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON RenameParams where
@@ -37,6 +38,13 @@ instance ToJSON RenameParams where
                                                                              "newName"
                                                                              (renameParamsNewName
                                                                                x)]
+
+instance Default RenameParams where
+  def =
+    RenameParams { renameParamsWorkDoneToken = def
+                 , renameParamsTextDocument = def
+                 , renameParamsPosition = def
+                 , renameParamsNewName = def }
 
 data RenameParams = RenameParams { renameParamsWorkDoneToken :: Maybe ProgressToken
                                  , renameParamsTextDocument :: TextDocumentIdentifier

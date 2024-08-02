@@ -5,6 +5,7 @@ module LSP.Protocol.Types.SignatureHelp where
 import JSON.Data
 import JSON.Pretty
 import LSP.Protocol.Types.SignatureInformation
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON SignatureHelp where
@@ -29,6 +30,12 @@ instance ToJSON SignatureHelp where
                                                                "activeParameter"
                                                                (signatureHelpActiveParameter
                                                                  x)]
+
+instance Default SignatureHelp where
+  def =
+    SignatureHelp { signatureHelpSignatures = def
+                  , signatureHelpActiveSignature = def
+                  , signatureHelpActiveParameter = def }
 
 data SignatureHelp = SignatureHelp { signatureHelpSignatures :: [SignatureInformation]
                                    , signatureHelpActiveSignature :: Maybe Int

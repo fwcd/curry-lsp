@@ -4,6 +4,7 @@ module LSP.Protocol.Types.PrepareRenameDefaultBehavior where
 
 import JSON.Data
 import JSON.Pretty
+import LSP.Utils.Default
 import LSP.Utils.JSON
 
 instance FromJSON PrepareRenameDefaultBehavior where
@@ -20,6 +21,10 @@ instance ToJSON PrepareRenameDefaultBehavior where
   toJSON x =
     object
      [(.=) "defaultBehavior" (prepareRenameDefaultBehaviorDefaultBehavior x)]
+
+instance Default PrepareRenameDefaultBehavior where
+  def =
+    PrepareRenameDefaultBehavior { prepareRenameDefaultBehaviorDefaultBehavior = def }
 
 data PrepareRenameDefaultBehavior = PrepareRenameDefaultBehavior { prepareRenameDefaultBehaviorDefaultBehavior :: Bool }
  deriving (Show,Eq)
