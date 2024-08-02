@@ -5,7 +5,7 @@ module LSP.Protocol.Stream
 
 import Control.Monad ( unless )
 import Data.Char ( toLower )
-import System.IO ( Handle, hGetChar, hPutStrLn, hPutStr, stderr )
+import System.IO ( Handle, hGetChar, hPutStrLn, hPutStr, hFlush, stderr )
 import LSP.Utils.General ( fromJust', fromRight' )
 import LSP.Utils.JSON ( FromJSON (..), ToJSON (..) )
 
@@ -81,7 +81,9 @@ readString n h | n <= 0    = return ""
 
 -- | Writes the given string.
 writeString :: String -> Handle -> IO ()
-writeString = flip hPutStr
+writeString s h = do
+  hPutStr h s
+  hFlush h
 
 -- | Skips over an expected string, erroring if some character doesn't match.
 skipString :: String -> Handle -> IO ()
