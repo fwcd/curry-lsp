@@ -2,6 +2,7 @@ module LSP.Utils.Default
   ( Default (..)
   ) where
 
+import qualified Data.Map as M
 import JSON.Data ( JValue (..) )
 
 class Default a where
@@ -28,6 +29,9 @@ instance Default (Maybe a) where
 
 instance Default [a] where
   def = []
+
+instance Default (M.Map k v) where
+  def = M.empty
 
 instance (Default a, Default b) => Default (a, b) where
   def = (def, def)
