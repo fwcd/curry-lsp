@@ -6,5 +6,5 @@ cd "$(dirname $0)/.."
 mkdir -p bin
 
 echo "==> Compiling example language server..."
-curry :set v2 :l LSP.Example.ServerMain :save main :q
+curry :set v2 :l LSP.Example.ServerMain :save :q
 mv LSP.Example.ServerMain bin/curry-lsp-example-server
